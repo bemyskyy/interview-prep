@@ -1,0 +1,3568 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../oop/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Основы JVM - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#java-basics" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Основы JVM
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-jre-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM, JRE, JDK
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM, JRE, JDK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-jvm-java-virtual-machine-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. JVM (Java Virtual Machine) — Сердце Java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-jre-java-runtime-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. JRE (Java Runtime Environment) — Среда выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-jdk-java-development-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. JDK (Java Development Kit) — Инструментарий разработчика
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Garbage Collector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Garbage Collector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. В чем суть Garbage Collector?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gc-roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GC Roots и достижимость объектов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-weak-generational-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Гипотеза поколений (Weak Generational Hypothesis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gc-mark-sweep-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Фазы работы классического GC (Mark-Sweep-Compact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-java-stop-the-world-stw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Боль всей Java: Stop-The-World (STW)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Эволюция сборщиков
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heap-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap &amp; Stack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Heap &amp; Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stack (Стек) — Личный рабочий стол потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Heap (Куча) — Общий склад компании
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metaspace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metaspace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое Metaspace и где он находится?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-permgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Исторический контекст: Убийство PermGen (Вопрос с собеседования)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ловушка для сеньора: Где теперь живут статические переменные?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-metaspace-garbage-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как Metaspace очищается (Garbage Collection)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OOM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OOM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что вообще такое OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Основные виды OOM (Почему он падает)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Как обнаружить и расследовать OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как лечить OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примитивные типы данных vs Ссылочные типы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примитивные типы данных vs Ссылочные типы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Примитивные типы (Primitives)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главные отличия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Классическая ловушка: Передача в методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autoboxing-unboxing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автоупаковка (Autoboxing) и Распаковка (Unboxing)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоупаковка (Autoboxing) и Распаковка (Unboxing)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как это работает под капотом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главные подводные камни (Ловушки с собеседований)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equals-hashcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контракт equals() и hashCode()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контракт equals() и hashCode()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Четыре правила контракта (Шпаргалка)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Зачем вообще нужен этот контракт? (Суть для собеседования)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Цена ошибки (Что будет, если нарушить контракт)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как избежать проблем на практике?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-stringbuilder-stringbuffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String, StringBuilder и StringBuffer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String, StringBuilder и StringBuffer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-string-immutable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. String — Неизменяемый (Immutable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stringbuilder-mutable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. StringBuilder — Изменяемый работяга (Mutable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-stringbuffer-mutable-synchronized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. StringBuffer — Потокобезопасный дедушка (Mutable &amp; Synchronized)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Секретный бонус для сеньорского ответа (Оптимизация компилятора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-pool-intern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пул строк (String Pool) и метод intern()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пул строк (String Pool) и метод intern()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-string-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое String Pool?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vs-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Классическая ловушка: Литерал vs Ключевое слово new
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-intern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Магия метода intern()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Историческая справка (Бонус для сеньорского ответа)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Значения по умолчанию и инициализация переменных
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Значения по умолчанию и инициализация переменных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-instance-static-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Поля класса (Instance &amp; Static variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-local-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Локальные переменные (Local variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Почему создатели Java сделали именно так? (Ответ для сеньора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-finally-finalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        final, finally и finalize()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="final, finally и finalize()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. final (Модификатор) — Печать неизменности
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-finally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. finally (Блок кода) — Гарантия выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-finalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. finalize() (Метод) — Предсмертная записка объекта
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевое слово static и блоки инициализации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевое слово static и блоки инициализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Суть ключевого слова static
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Статические переменные (Поля)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Статические методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Блоки инициализации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Секретное оружие для собеса: Порядок инициализации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перечисления (Enum) под капотом
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перечисления (Enum) под капотом">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Главные ограничения (Ловушки)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Откуда берутся методы? (Секрет компилятора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enum-middlesenior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Суперсилы Enum (Для уровня Middle/Senior)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модификаторы доступа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модификаторы доступа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Классическая шпаргалка (Матрица видимости)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. private — Твоя крепость
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-default-package-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. default (Package-Private) — Командный игрок
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-protected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. protected — Наследственный фактор
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. public — Открытая дверь
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modern-java-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modern Java Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modern Java Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-var-java-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Вывод типов локальных переменных: var (Java 10)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-records-lombok-java-1416" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Records: Убийца Lombok (Java 14/16)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-switch-expressions-pattern-matching-java-12-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Switch Expressions и Pattern Matching (Java 12 - 21)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-sealed-classes-java-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Sealed Classes (Запечатанные классы) (Java 17)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multithreading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#jvm-jre-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM, JRE, JDK
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JVM, JRE, JDK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-jvm-java-virtual-machine-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. JVM (Java Virtual Machine) — Сердце Java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-jre-java-runtime-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. JRE (Java Runtime Environment) — Среда выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-jdk-java-development-kit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. JDK (Java Development Kit) — Инструментарий разработчика
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Garbage Collector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Garbage Collector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-garbage-collector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. В чем суть Garbage Collector?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gc-roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. GC Roots и достижимость объектов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-weak-generational-hypothesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Гипотеза поколений (Weak Generational Hypothesis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-gc-mark-sweep-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Фазы работы классического GC (Mark-Sweep-Compact)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-java-stop-the-world-stw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Боль всей Java: Stop-The-World (STW)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Эволюция сборщиков
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heap-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap &amp; Stack
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Heap &amp; Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Stack (Стек) — Личный рабочий стол потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Heap (Куча) — Общий склад компании
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metaspace
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Metaspace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое Metaspace и где он находится?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-permgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Исторический контекст: Убийство PermGen (Вопрос с собеседования)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Ловушка для сеньора: Где теперь живут статические переменные?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-metaspace-garbage-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как Metaspace очищается (Garbage Collection)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OOM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OOM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что вообще такое OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Основные виды OOM (Почему он падает)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Как обнаружить и расследовать OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как лечить OOM?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Примитивные типы данных vs Ссылочные типы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Примитивные типы данных vs Ссылочные типы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Примитивные типы (Primitives)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главные отличия
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Классическая ловушка: Передача в методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#autoboxing-unboxing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Автоупаковка (Autoboxing) и Распаковка (Unboxing)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Автоупаковка (Autoboxing) и Распаковка (Unboxing)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как это работает под капотом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главные подводные камни (Ловушки с собеседований)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#equals-hashcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контракт equals() и hashCode()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контракт equals() и hashCode()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Четыре правила контракта (Шпаргалка)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Зачем вообще нужен этот контракт? (Суть для собеседования)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Цена ошибки (Что будет, если нарушить контракт)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как избежать проблем на практике?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-stringbuilder-stringbuffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        String, StringBuilder и StringBuffer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="String, StringBuilder и StringBuffer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-string-immutable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. String — Неизменяемый (Immutable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stringbuilder-mutable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. StringBuilder — Изменяемый работяга (Mutable)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-stringbuffer-mutable-synchronized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. StringBuffer — Потокобезопасный дедушка (Mutable &amp; Synchronized)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Секретный бонус для сеньорского ответа (Оптимизация компилятора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-pool-intern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пул строк (String Pool) и метод intern()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Пул строк (String Pool) и метод intern()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-string-pool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое String Pool?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vs-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Классическая ловушка: Литерал vs Ключевое слово new
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-intern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Магия метода intern()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Историческая справка (Бонус для сеньорского ответа)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Значения по умолчанию и инициализация переменных
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Значения по умолчанию и инициализация переменных">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-instance-static-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Поля класса (Instance &amp; Static variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-local-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Локальные переменные (Local variables)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Почему создатели Java сделали именно так? (Ответ для сеньора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-finally-finalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        final, finally и finalize()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="final, finally и finalize()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-final" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. final (Модификатор) — Печать неизменности
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-finally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. finally (Блок кода) — Гарантия выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-finalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. finalize() (Метод) — Предсмертная записка объекта
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключевое слово static и блоки инициализации
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключевое слово static и блоки инициализации">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Суть ключевого слова static
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Статические переменные (Поля)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Статические методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Блоки инициализации
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Секретное оружие для собеса: Порядок инициализации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перечисления (Enum) под капотом
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Перечисления (Enum) под капотом">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Главные ограничения (Ловушки)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Откуда берутся методы? (Секрет компилятора)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enum-middlesenior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Суперсилы Enum (Для уровня Middle/Senior)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Модификаторы доступа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Модификаторы доступа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Классическая шпаргалка (Матрица видимости)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. private — Твоя крепость
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-default-package-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. default (Package-Private) — Командный игрок
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-protected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. protected — Наследственный фактор
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. public — Открытая дверь
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modern-java-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modern Java Basics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modern Java Basics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-var-java-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Вывод типов локальных переменных: var (Java 10)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-records-lombok-java-1416" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Records: Убийца Lombok (Java 14/16)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-switch-expressions-pattern-matching-java-12-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Switch Expressions и Pattern Matching (Java 12 - 21)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-sealed-classes-java-17" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Sealed Classes (Запечатанные классы) (Java 17)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="java-basics">Java Basics<a class="headerlink" href="#java-basics" title="Permanent link">&para;</a></h1>
+<h2 id="jvm-jre-jdk">JVM, JRE, JDK<a class="headerlink" href="#jvm-jre-jdk" title="Permanent link">&para;</a></h2>
+<h3 id="1-jvm-java-virtual-machine-java">1. JVM (Java Virtual Machine) — Сердце Java<a class="headerlink" href="#1-jvm-java-virtual-machine-java" title="Permanent link">&para;</a></h3>
+<p>JVM — это виртуальная машина, та самая программа, которая непосредственно выполняет наш Java-код.</p>
+<ul>
+<li><strong>Как это работает:</strong> Ты пишешь код на Java (<code>.java</code>), компилятор превращает его в промежуточный байт-код (<code>.class</code>). JVM берет этот байт-код и переводит его в машинный код, понятный конкретной операционной системе (Windows, Linux, macOS).</li>
+<li><strong>Главная фишка:</strong> Именно JVM обеспечивает знаменитый принцип Java: <em>"Write Once, Run Anywhere"</em> (Написал один раз, запускай где угодно).</li>
+<li><strong>Важный нюанс:</strong> Сам байт-код платформонезависим, а вот <strong>JVM — платформозависима</strong>. Для каждой ОС нужна своя версия JVM.</li>
+<li><strong>Что внутри (кратко):</strong><ul>
+<li><strong>Classloader:</strong> загружает классы в память.</li>
+<li><strong>Memory Area:</strong> управляет памятью (здесь живут Heap, Stack, Metaspace).</li>
+<li><strong>Execution Engine:</strong> выполняет код (здесь работают Интерпретатор, JIT-компилятор для оптимизации "горячего" кода и наш любимый Garbage Collector, который чистит память).</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-jre-java-runtime-environment">2. JRE (Java Runtime Environment) — Среда выполнения<a class="headerlink" href="#2-jre-java-runtime-environment" title="Permanent link">&para;</a></h3>
+<p>JRE — это минимальный пакет, необходимый исключительно для <strong>запуска</strong> уже написанных и скомпилированных Java-приложений.</p>
+<ul>
+<li><strong>Из чего состоит:</strong> <strong>JRE = JVM + Core Libraries (базовые библиотеки).</strong></li>
+<li><strong>Зачем нужны библиотеки:</strong> Сама по себе JVM только выполняет инструкции. Чтобы твое приложение могло работать с файлами, сетью, коллекциями (все эти <code>java.lang</code>, <code>java.util</code>, <code>java.io</code>), ему нужны готовые классы. JRE их предоставляет.</li>
+<li><strong>Кому это нужно:</strong> Обычным пользователям или серверам, на которых приложение просто должно работать (хотя сейчас чаще используют урезанные кастомные образы, но концептуально это так). Писать код, имея только JRE, ты не сможешь — там нет компилятора.</li>
+</ul>
+<h3 id="3-jdk-java-development-kit">3. JDK (Java Development Kit) — Инструментарий разработчика<a class="headerlink" href="#3-jdk-java-development-kit" title="Permanent link">&para;</a></h3>
+<p>JDK — это полный набор инструментов, необходимый нам с тобой для <strong>разработки</strong> программного обеспечения на Java.</p>
+<ul>
+<li><strong>Из чего состоит:</strong> <strong>JDK = JRE + Development Tools (утилиты для разработки).</strong></li>
+<li><strong>Что за утилиты:</strong><ul>
+<li><code>javac</code> (компилятор, который делает байт-код из твоего текста),</li>
+<li><code>java</code> (запускатор),</li>
+<li><code>jdb</code> (дебаггер для поиска багов),</li>
+<li><code>javadoc</code> (генератор документации) и множество других профилировщиков и анализаторов.</li>
+</ul>
+</li>
+<li><strong>Кому это нужно:</strong> Разработчикам. Когда мы ставим Java на свой рабочий компьютер, мы всегда скачиваем именно JDK.</li>
+</ul>
+<h2 id="garbage-collector">Garbage Collector<a class="headerlink" href="#garbage-collector" title="Permanent link">&para;</a></h2>
+<h3 id="1-garbage-collector">1. В чем суть Garbage Collector?<a class="headerlink" href="#1-garbage-collector" title="Permanent link">&para;</a></h3>
+<p>В языках вроде C или C++ программист сам выделяет память и сам должен ее очищать. Забыл очистить — получил утечку памяти (Memory Leak). В Java мы просто создаем объекты (<code>new Object()</code>), а JVM сама решает, когда их уничтожить и освободить место. GC — это фоновый процесс, который ищет объекты, которые больше не нужны твоему коду, и удаляет их.</p>
+<p>Но как он понимает, что объект больше "не нужен"?</p>
+<h3 id="2-gc-roots">2. GC Roots и достижимость объектов<a class="headerlink" href="#2-gc-roots" title="Permanent link">&para;</a></h3>
+<p>GC не считает ссылки объектов друг на друга, чтобы не попасть в ловушку "циклических ссылок" (когда объект А ссылается на Б, а Б на А, но при этом оба уже не нужны программе).</p>
+<p>Вместо этого GC использует алгоритм <strong>Tracing (трассировка)</strong>. Он начинает с так называемых <strong>GC Roots (корней сборки мусора)</strong>. Это "железно" живые объекты:</p>
+<ul>
+<li>Локальные переменные в текущих выполняемых методах (в стеках потоков).</li>
+<li>Статические переменные классов.</li>
+<li>Активные потоки (Threads).</li>
+</ul>
+<p><strong>Правило простое:</strong> GC строит граф ссылок от этих корней. Если до объекта можно добраться по цепочке ссылок от GC Root — он <strong>жив</strong>. Если цепочка оборвалась и до объекта не дойти — он <strong>мусор</strong>, его можно удалять.</p>
+<h3 id="3-weak-generational-hypothesis">3. Гипотеза поколений (Weak Generational Hypothesis)<a class="headerlink" href="#3-weak-generational-hypothesis" title="Permanent link">&para;</a></h3>
+<p>Это фундамент работы большинства сборщиков мусора в Java. Создатели JVM заметили интересную закономерность в поведении программ:</p>
+<ol>
+<li><strong>Большинство объектов умирают молодыми.</strong> (Например, переменные внутри цикла или метода — метод отработал, и они больше не нужны).</li>
+<li><strong>Те объекты, которые пережили пару сборок мусора, скорее всего, будут жить очень долго.</strong> (Например, кэши, пулы соединений с базой, синглтоны Spring).</li>
+</ol>
+<p>Исходя из этого, всю память (Heap — кучу) разделили на регионы, чтобы не сканировать всю память каждый раз.</p>
+<ul>
+<li><strong>Young Generation (Молодое поколение):</strong> Здесь создаются все новые объекты. Состоит из зоны <strong>Eden</strong> (Эдем) и двух небольших зон <strong>Survivor</strong> (S0 и S1). Когда Eden заполняется, происходит быстрая и легкая сборка мусора — <strong>Minor GC</strong>. Выжившие объекты перекидываются в Survivor.</li>
+<li><strong>Old Generation / Tenured (Старое поколение):</strong> Сюда попадают объекты-"долгожители", которые пережили несколько циклов Minor GC в молодом поколении. Когда заполняется эта зона, запускается <strong>Major GC (или Full GC)</strong>. Это тяжелая и долгая операция, так как сканируется огромный объем памяти.</li>
+</ul>
+<h3 id="4-gc-mark-sweep-compact">4. Фазы работы классического GC (Mark-Sweep-Compact)<a class="headerlink" href="#4-gc-mark-sweep-compact" title="Permanent link">&para;</a></h3>
+<p>Когда GC решает навести порядок, он делает три основные вещи:</p>
+<ol>
+<li><strong>Mark (Маркировка):</strong> Проходит от GC Roots и ставит "флажок" на всех живых объектах.</li>
+<li><strong>Sweep (Очистка):</strong> Проходит по памяти и удаляет все объекты без флажка.</li>
+<li><strong>Compact (Сжатие — <em>опционально, но важно</em>):</strong> После удаления мусора память становится похожа на швейцарский сыр (фрагментация). GC сдвигает оставшиеся живые объекты в начало памяти, чтобы новые объекты можно было выделять быстро и целым куском.</li>
+</ol>
+<h3 id="5-java-stop-the-world-stw">5. Боль всей Java: Stop-The-World (STW)<a class="headerlink" href="#5-java-stop-the-world-stw" title="Permanent link">&para;</a></h3>
+<p>Это самый важный концепт для понимания архитектуры. Когда GC делает свои основные дела (особенно перемещает объекты в памяти), он <strong>ставит на паузу все потоки твоего приложения</strong>. Это называется <strong>Stop-The-World</strong>. В этот момент твой код замирает, API не отвечает, данные не пишутся.</p>
+<p>Вся эволюция сборщиков мусора в Java сводится к одной цели: <strong>сделать эти STW-паузы максимально короткими</strong>, чтобы приложение не "фризило".</p>
+<h3 id="6">6. Эволюция сборщиков<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Serial GC:</strong> Однопоточный. Подходит только для крошечных приложений.</li>
+<li><strong>Parallel GC:</strong> Использует несколько потоков для сборки, но всё еще вызывает долгие STW. Долгое время был дефолтным.</li>
+<li><strong>G1 GC (Garbage-First):</strong> Дефолт начиная с Java 9. Дробит память на множество мелких регионов и чистит сначала те, где больше всего мусора. Отлично балансирует пропускную способность и предсказуемость пауз.</li>
+<li><strong>ZGC и Shenandoah:</strong> Современные шедевры (доступны в новых версиях Java). Они умудряются делать почти всю работу (включая перемещение объектов) <em>параллельно</em> с работой твоего приложения! Паузы STW у них составляют меньше миллисекунды даже на огромных хипах (терабайты памяти). Идеально для высоконагруженных микросервисов.</li>
+</ul>
+<h2 id="heap-stack">Heap &amp; Stack<a class="headerlink" href="#heap-stack" title="Permanent link">&para;</a></h2>
+<h3 id="1-stack">1. Stack (Стек) — Личный рабочий стол потока<a class="headerlink" href="#1-stack" title="Permanent link">&para;</a></h3>
+<p>Стек — это очень быстрая, но небольшая область памяти. Самое главное правило: <strong>у каждого потока (Thread) в Java есть свой собственный Стек</strong>. Потоки не могут "заглядывать" в стеки друг друга.</p>
+<ul>
+<li><strong>Как это работает:</strong> Стек работает по принципу LIFO (Last-In, First-Out / Последним пришел — первым ушел). Представь стопку тарелок: ты кладешь тарелку сверху и берешь всегда только верхнюю.</li>
+<li><strong>Что внутри (Frames):</strong> Когда ты вызываешь метод, в стеке создается новый "фрейм" (кадр). В этом фрейме хранятся:<ul>
+<li>Локальные переменные этого метода.</li>
+<li>Примитивные типы данных (<code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code> и т.д.).</li>
+<li><strong>Ссылки</strong> на объекты (сами объекты здесь не живут, только "адреса", где их найти).</li>
+</ul>
+</li>
+<li><strong>Жизненный цикл:</strong> Метод отработал — его фрейм мгновенно удаляется из стека (тарелка снимается). Память очищается сама, без всякого Garbage Collector.</li>
+<li><strong>Главная ошибка:</strong> Если методы будут вызывать друг друга бесконечно (например, рекурсия без выхода), стопка тарелок упрется в потолок. Ты получишь знаменитую ошибку <code>StackOverflowError</code>.</li>
+</ul>
+<h3 id="2-heap">2. Heap (Куча) — Общий склад компании<a class="headerlink" href="#2-heap" title="Permanent link">&para;</a></h3>
+<p>Куча — это огромная область памяти, которая выделяется приложению при запуске. Главное правило: <strong>Куча одна на всё приложение, и все потоки имеют к ней доступ</strong>.</p>
+<ul>
+<li><strong>Что внутри:</strong> Здесь живут <strong>все объекты</strong> (экземпляры классов, созданные через <code>new</code>, массивы, строки).</li>
+<li><strong>Связь со Стеком:</strong> Когда ты пишешь <code>User user = new User();</code>, в Стеке создается локальная переменная <code>user</code> (ссылка/адрес), а в Куче выделяется место под сам тяжеловесный объект <code>User</code>. Ссылка из Стека указывает на объект в Куче.</li>
+<li><strong>Жизненный цикл:</strong> Объекты живут здесь до тех пор, пока на них есть хотя бы одна ссылка из Стека (те самые GC Roots, о которых мы говорили). Как только ссылки пропадают, приходит Garbage Collector и вычищает мусор.</li>
+<li><strong>Главная ошибка:</strong> Если ты создаешь слишком много объектов и не отпускаешь ссылки на них (например, складываешь всё в бесконечный <code>List</code>), место на складе закончится. Ты получишь <code>OutOfMemoryError: Java heap space</code>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>Stack (Стек)</strong></th>
+<th><strong>Heap (Куча)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Доступ</strong></td>
+<td>Локальный (только для одного потока)</td>
+<td>Глобальный (общий для всех потоков)</td>
+</tr>
+<tr>
+<td><strong>Что хранится</strong></td>
+<td>Примитивы, ссылки, вызовы методов</td>
+<td>Сами объекты, JRE классы</td>
+</tr>
+<tr>
+<td><strong>Управление</strong></td>
+<td>Автоматически (ОС/JVM при вызове методов)</td>
+<td>Garbage Collector</td>
+</tr>
+<tr>
+<td><strong>Скорость</strong></td>
+<td>Очень быстрая</td>
+<td>Медленнее (требует поиска места и работы GC)</td>
+</tr>
+<tr>
+<td><strong>Размер</strong></td>
+<td>Маленький (задается флагом <code>-Xss</code>)</td>
+<td>Большой (задается флагами <code>-Xms</code> и <code>-Xmx</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="metaspace">Metaspace<a class="headerlink" href="#metaspace" title="Permanent link">&para;</a></h2>
+<p>Раньше мы говорили, что объекты живут в Куче (Heap), а локальные переменные и вызовы методов — в Стеке (Stack). Но где JVM хранит информацию о самих классах (их структуру, методы, имена полей)? Для этого существует <strong>Metaspace</strong>.</p>
+<h3 id="1-metaspace">1. Что такое Metaspace и где он находится?<a class="headerlink" href="#1-metaspace" title="Permanent link">&para;</a></h3>
+<p>Главное отличие Metaspace от Кучи в том, что он находится <strong>вне кучи (Off-Heap)</strong>.</p>
+<ul>
+<li><strong>Где он физически:</strong> Metaspace использует так называемую <em>Native Memory</em> (нативную память). Это оперативная память (RAM) твоего сервера/компьютера, которую операционная система выделяет процессу JVM напрямую.</li>
+<li><strong>Что там хранится:</strong> Метаданные классов. Это "чертежи" твоих объектов: структура класса, байт-код его методов, данные JIT-компилятора и другая служебная информация, необходимая JVM для работы.</li>
+</ul>
+<h3 id="2-permgen">2. Исторический контекст: Убийство PermGen (Вопрос с собеседования)<a class="headerlink" href="#2-permgen" title="Permanent link">&para;</a></h3>
+<p>Интервьюер почти со 100% вероятностью спросит: <em>"А что было до Metaspace и почему это изменили в Java 8?"</em></p>
+<ul>
+<li><strong>До Java 8:</strong> Эта область памяти называлась <strong>PermGen</strong> (Permanent Generation). Она находилась <em>внутри</em> памяти JVM и имела жестко заданный максимальный размер. Если приложение динамически создавало много классов (что постоянно делают фреймворки вроде Spring или Hibernate через проксирование), память PermGen переполнялась, и приложение насмерть падало с ошибкой <code>OutOfMemoryError: PermGen space</code>.</li>
+<li><strong>С Java 8:</strong> PermGen полностью удалили и заменили на Metaspace. Главная фишка Metaspace в том, что по умолчанию он <strong>динамически растет</strong> и ограничен только общим объемом оперативной памяти твоего сервера. Ошибка <code>OOM: PermGen</code> ушла в прошлое.</li>
+</ul>
+<h3 id="3">3. Ловушка для сеньора: Где теперь живут статические переменные?<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Это самый каверзный вопрос по этой теме.</p>
+<p>Многие разработчики по старой памяти из книжек по Java 7 отвечают, что статические переменные и String Pool хранятся в Metaspace (или PermGen). <strong>Это грубая ошибка!</strong></p>
+<ul>
+<li><strong>String Pool</strong> переехал в основную Кучу (Heap) еще в Java 7.</li>
+<li><strong>Статические переменные</strong> (и сами объекты типа <code>java.lang.Class</code>) переехали из PermGen в основную Кучу (Heap) в Java 8.</li>
+</ul>
+<p>В Metaspace осталась <em>только</em> чистая метаинформация и байт-код для JVM.</p>
+<h3 id="4-metaspace-garbage-collection">4. Как Metaspace очищается (Garbage Collection)?<a class="headerlink" href="#4-metaspace-garbage-collection" title="Permanent link">&para;</a></h3>
+<p>Хотя Metaspace может резиново растягиваться, он не бесконечен. Как оттуда удаляется мусор?</p>
+<p>Метаданные класса живут в Metaspace до тех пор, пока жив его <strong>ClassLoader</strong> (Загрузчик классов).</p>
+<ul>
+<li>В обычном приложении базовые классы живут от старта до остановки сервера.</li>
+<li>Но если ты используешь "горячую замену" кода (Hot Reload) или сложные архитектуры серверов приложений (Tomcat), старые <code>ClassLoader</code>-ы уничтожаются вместе со своими классами, и тогда Garbage Collector приходит в Metaspace и освобождает нативную память.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Практический совет (Best Practice)</p>
+<p>В production-среде (особенно в облаках вроде Kubernetes, где память жестко лимитирована) всегда нужно ограничивать рост Metaspace специальным флагом (например, <code>-XX:MaxMetaspaceSize=256m</code>). Иначе при утечке классов Metaspace может сожрать всю RAM сервера, и операционная система просто "убьет" твой контейнер (сработает OOM Killer).</p>
+</div>
+<h2 id="oom">OOM<a class="headerlink" href="#oom" title="Permanent link">&para;</a></h2>
+<h3 id="1-oom">1. Что вообще такое OOM?<a class="headerlink" href="#1-oom" title="Permanent link">&para;</a></h3>
+<p>Первое и самое важное правило для собеседования: <strong>OOM — это не Exception, это Error</strong>. Он наследуется от <code>java.lang.VirtualMachineError</code>. Это значит, что JVM сигнализирует о критической ситуации: память закончилась, Garbage Collector (GC) сделал всё что мог, но не смог освободить место для нового объекта. Ловить его через <code>try-catch</code> — плохая практика (хоть технически и возможная), потому что приложение уже находится в нестабильном состоянии.</p>
+<h3 id="2-oom">2. Основные виды OOM (Почему он падает)<a class="headerlink" href="#2-oom" title="Permanent link">&para;</a></h3>
+<p>На собеседовании не говори просто "закончилась память". Память бывает разная. Вот основные варианты, с которыми ты столкнешься на практике:</p>
+<table>
+<thead>
+<tr>
+<th>Тип ошибки</th>
+<th>Суть проблемы</th>
+<th>Частая причина в коде</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Java heap space</strong></td>
+<td>Классика. В Куче (Heap) нет места для создания нового объекта.</td>
+<td>Утечка памяти (коллекция бесконечно растет), попытка выгрузить огромный файл или <code>SELECT *</code> из БД в память.</td>
+</tr>
+<tr>
+<td><strong>GC overhead limit exceeded</strong></td>
+<td>Приложение "буксует". GC работает более 98% времени, но освобождает менее 2% памяти.</td>
+<td>Выделяется слишком много временных объектов, GC постоянно работает, но не успевает их чистить.</td>
+</tr>
+<tr>
+<td><strong>Metaspace</strong></td>
+<td>Переполнилась область памяти, где JVM хранит метаданные классов.</td>
+<td>Баги с динамической генерацией классов (часто грешат фреймворки типа Spring/Hibernate при кривой настройке).</td>
+</tr>
+<tr>
+<td><strong>Unable to create new native thread</strong></td>
+<td>JVM не может создать новый поток на уровне операционной системы.</td>
+<td>Лимит ОС на количество потоков исчерпан, либо закончилась физическая оперативная память на сервере.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-oom">3. Как обнаружить и расследовать OOM?<a class="headerlink" href="#3-oom" title="Permanent link">&para;</a></h3>
+<p>Обычно OOM обнаруживается сам — приложение просто умирает с ошибкой в логах. Твоя задача как инженера — понять, <strong>почему</strong> это произошло.</p>
+<ul>
+<li><strong>JVM Флаги (Must-have):</strong> Ты обязан знать флаг <code>-XX:+HeapDumpOnOutOfMemoryError</code>. Если добавить его при запуске приложения, JVM в момент падения от OOM автоматически создаст файл-слепок памяти (Heap Dump). Также полезен флаг <code>-XX:HeapDumpPath=...</code>, чтобы указать, куда этот файл сохранить.</li>
+<li><strong>Мониторинг (Grafana/Prometheus):</strong> В реальной жизни мы смотрим на графики. Если график использования памяти плавно ползет вверх днями и неделями, не падая после сборок мусора — это 100% утечка памяти (Memory Leak). Если график взлетел вертикально вверх за секунду — это резкий спайк трафика или кривой запрос к БД.</li>
+<li><strong>JMX и Профилировщики:</strong> Использование утилит вроде VisualVM или JProfiler, чтобы подключиться к работающей JVM в реальном времени и посмотреть, какие объекты занимают место.</li>
+</ul>
+<h3 id="4-oom">4. Как лечить OOM?<a class="headerlink" href="#4-oom" title="Permanent link">&para;</a></h3>
+<p>Интервьюеры обожают вопрос: "У тебя упал OOM, твои действия?". Никогда не отвечай: "Я просто увеличу память (флаг <code>-Xmx</code>)". Это костыль, который лишь отсрочит следующее падение, если в коде утечка.</p>
+<p>Вот правильный алгоритм Senior-разработчика:</p>
+<ol>
+<li><strong>Собрать данные:</strong> Забрать тот самый Heap Dump, который сгенерировала JVM при падении.</li>
+<li><strong>Провести анализ:</strong> Открыть дамп в специальной программе (золотой стандарт — <strong>Eclipse MAT</strong> — Memory Analyzer Tool).</li>
+<li><strong>Найти виновника:</strong> В MAT есть функция <em>Dominator Tree</em> или <em>Leak Suspects Report</em>. Инструмент сам покажет тебе: "Вот этот <code>HashMap</code> держит 80% всей памяти, а внутри него лежат миллионы объектов <code>User</code>".</li>
+<li><strong>Пофиксить код:</strong><ul>
+<li>Если это утечка: найти, где мы складываем объекты в кэш/коллекцию и забываем их оттуда удалять.</li>
+<li>Если это спайк данных: переписать запрос к БД на использование пагинации (вытягивать батчами по 1000 строк, а не миллион за раз), использовать потоковое чтение файлов (Stream API, <code>BufferedReader</code>), а не грузить файл в <code>byte[]</code> целиком.</li>
+</ul>
+</li>
+<li><strong>Оптимизировать JVM:</strong> И вот только если анализ показал, что утечек нет, а приложению просто реально нужно больше памяти для нормальной работы возросшей нагрузки, мы аккуратно увеличиваем <code>-Xmx</code>.</li>
+</ol>
+<h2 id="vs">Примитивные типы данных vs Ссылочные типы<a class="headerlink" href="#vs" title="Permanent link">&para;</a></h2>
+<p>В Java существует четкое разделение на примитивные (8 штук) и ссылочные типы данных (объекты, массивы, интерфейсы, <code>enum</code>).</p>
+<h3 id="1-primitives">1. Примитивные типы (Primitives)<a class="headerlink" href="#1-primitives" title="Permanent link">&para;</a></h3>
+<p>Они встроены в язык, не являются объектами (у них нет методов) и максимально оптимизированы для скорости.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Категория</strong></th>
+<th><strong>Тип</strong></th>
+<th><strong>Размер в памяти</strong></th>
+<th><strong>Значение по умолчанию</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Целочисленные</strong></td>
+<td><code>byte</code></td>
+<td>1 байт (8 бит)</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td><code>short</code></td>
+<td>2 байта (16 бит)</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td><code>int</code></td>
+<td>4 байта (32 бита)</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td><code>long</code></td>
+<td>8 байт (64 бита)</td>
+<td>0L</td>
+</tr>
+<tr>
+<td><strong>С плавающей точкой</strong></td>
+<td><code>float</code></td>
+<td>4 байта (32 бита)</td>
+<td>0.0f</td>
+</tr>
+<tr>
+<td></td>
+<td><code>double</code></td>
+<td>8 байт (64 бита)</td>
+<td>0.0d</td>
+</tr>
+<tr>
+<td><strong>Символьный</strong></td>
+<td><code>char</code></td>
+<td>2 байта (16 бит)</td>
+<td><code>\u0000</code></td>
+</tr>
+<tr>
+<td><strong>Логический</strong></td>
+<td><code>boolean</code></td>
+<td>Зависит от JVM</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2">2. Главные отличия<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Расположение в памяти:</strong><ul>
+<li><strong>Примитивы:</strong> Хранят само значение. Локальные переменные-примитивы всегда создаются в <strong>Стеке (Stack)</strong> потока. <em>(Исключение: если примитив является полем класса, он будет храниться в Куче вместе с самим объектом).</em></li>
+<li><strong>Ссылочные:</strong> Хранят <strong>ссылку (адрес памяти)</strong> на объект. Сама ссылка лежит в Стеке, а тяжеловесный объект, на который она указывает, всегда лежит в <strong>Куче (Heap)</strong>.</li>
+</ul>
+</li>
+<li><strong>Возможность быть <code>null</code>:</strong><ul>
+<li>Примитивы <strong>не могут</strong> быть <code>null</code>. У них всегда есть значение по умолчанию.</li>
+<li>Ссылочные типы могут указывать в никуда (иметь значение <code>null</code>), что часто приводит к <code>NullPointerException</code>.</li>
+</ul>
+</li>
+<li><strong>Производительность:</strong><ul>
+<li>Доступ к примитивам быстрее, так как не нужно "бегать" по ссылкам из Стека в Кучу. Кроме того, массивы примитивов лежат в памяти сплошным куском, что идеально для кэша процессора (Cache Locality).</li>
+</ul>
+</li>
+</ol>
+<h3 id="3_1">3. Классическая ловушка: Передача в методы<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>Это один из самых частых вопросов-ловушек.</p>
+<div class="admonition warning">
+<p class="admonition-title">Золотое правило Java</p>
+<p>В Java <strong>ВСЁ</strong> передается исключительно <strong>по значению</strong> (pass-by-value). Никакой передачи "по ссылке" в стиле C++ здесь нет.</p>
+</div>
+<ul>
+<li><strong>При передаче примитива:</strong> в метод копируется само его значение (например, число <code>5</code>). Изменения внутри метода никак не затронут оригинальную переменную.</li>
+<li><strong>При передаче объекта:</strong> в метод копируется <strong>значение ссылки</strong> (адрес в памяти).<ul>
+<li>Если внутри метода изменить состояние объекта (например, <code>user.setName("John")</code>), то оригинал <strong>изменится</strong>, так как обе ссылки (оригинальная и скопированная) указывают на один и тот же объект в Куче.</li>
+<li>Если внутри метода присвоить ссылке новый объект (<code>user = new User()</code>), оригинал <strong>НЕ изменится</strong>, так как ты просто переопределил локальную копию адреса, а не сам исходный объект.</li>
+</ul>
+</li>
+</ul>
+<h2 id="autoboxing-unboxing">Автоупаковка (Autoboxing) и Распаковка (Unboxing)<a class="headerlink" href="#autoboxing-unboxing" title="Permanent link">&para;</a></h2>
+<p>В Java исторически сложилось две системы типов: быстрые примитивы (<code>int</code>, <code>boolean</code>) и тяжеловесные объекты. Но коллекции (например, <code>ArrayList</code>) и Generics умеют работать <strong>только с объектами</strong>. Чтобы подружить эти два мира, в Java 5 добавили классы-обертки (Wrapper classes: <code>Integer</code>, <code>Double</code>, <code>Boolean</code> и т.д.) и механизм автоматического преобразования между ними.</p>
+<h3 id="1">1. Как это работает под капотом<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>Компилятор делает всю грязную работу за нас, подставляя нужные методы на этапе компиляции:</p>
+<ul>
+<li><strong>Autoboxing (Автоупаковка):</strong> Преобразование примитива в объект-обертку.<ul>
+<li><strong>Ты пишешь:</strong> <code>Integer num = 10;</code></li>
+<li><strong>Компилятор делает:</strong> <code>Integer num = Integer.valueOf(10);</code></li>
+</ul>
+</li>
+<li><strong>Unboxing (Распаковка):</strong> Преобразование объекта-обертки обратно в примитив.<ul>
+<li><strong>Ты пишешь:</strong> <code>int a = num;</code></li>
+<li><strong>Компилятор делает:</strong> <code>int a = num.intValue();</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2_1">2. Главные подводные камни (Ловушки с собеседований)<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p>Это именно то, что нужно знать для успешного прохождения технического скрининга. Здесь кроются три главные проблемы:</p>
+<p><strong>Ловушка №1: Скрытый <code>NullPointerException</code> (NPE)</strong> — Примитивы не могут быть <code>null</code>, а объекты-обертки — могут. Если попытаться распаковать <code>null</code>, приложение упадет.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Integer</span><span class="w"> </span><span class="n">wrapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">primitive</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">wrapper</span><span class="p">;</span><span class="w"> </span><span class="c1">// Ошибка в рантайме! Под капотом вызовется null.intValue(), что даст NPE.</span>
+</span></code></pre></div>
+<p><strong>Ловушка №2: Кэширование целых чисел (Integer Cache)</strong> — Это классический вопрос на понимание того, как работает оператор <code>==</code> со ссылочными типами. В целях экономии памяти JVM кэширует объекты-обертки для небольших значений: от <strong>-128 до 127</strong> (этот диапазон можно увеличить флагами JVM, но по умолчанию он такой).</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Integer</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">Integer</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c1">// true. Оба указывают на один и тот же объект в кэше.</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">Integer</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">Integer</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">d</span><span class="p">);</span><span class="w"> </span><span class="c1">// false. Значение 200 не кэшируется, в Куче (Heap) создаются два разных объекта.</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Правило</p>
+<p>Никогда не сравнивай классы-обертки через <code>==</code>. Всегда используй метод <code>.equals()</code>.</p>
+</div>
+<p><strong>Ловушка №3: Удар по производительности и памяти</strong> — Поскольку компилятор делает упаковку незаметно, очень легко написать код, который будет незаметно создавать миллионы объектов в цикле, забивая Heap и заставляя Garbage Collector работать на износ.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Long</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="n">L</span><span class="p">;</span><span class="w"> </span><span class="c1">// Объект-обертка</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">MAX_VALUE</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="c1">// Здесь на каждой итерации происходит распаковка, сложение и создание НОВОГО объекта Long!</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><em>Решение:</em> Использовать <code>long sum = 0L;</code> (примитив), чтобы избежать ненужного создания объектов.</p>
+<h2 id="equals-hashcode">Контракт <code>equals()</code> и <code>hashCode()</code><a class="headerlink" href="#equals-hashcode" title="Permanent link">&para;</a></h2>
+<p>В базовом классе <code>Object</code> (от которого наследуются все классы в Java) уже есть эти два метода. По умолчанию <code>equals()</code> работает точно так же, как оператор <code>==</code> (сравнивает ссылки в памяти), а <code>hashCode()</code> возвращает число, сгенерированное на основе адреса объекта в памяти.</p>
+<p>Но для бизнес-логики нам нужно сравнивать объекты по их содержимому (полям), поэтому мы их переопределяем. И вот тут вступает в силу жесткий контракт.</p>
+<h3 id="1_1">1. Четыре правила контракта (Шпаргалка)<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Согласованность с <code>equals</code>:</strong> Если <code>a.equals(b) == true</code>, то их хэш-коды <strong>обязаны</strong> быть одинаковыми (<code>a.hashCode() == b.hashCode()</code>).</li>
+<li><strong>Коллизии допустимы:</strong> Если <code>a.hashCode() == b.hashCode()</code>, то объекты <strong>не обязательно</strong> равны по <code>equals()</code>. Такая ситуация называется <em>коллизией</em>.</li>
+<li><strong>Оптимизация:</strong> Если <code>a.hashCode() != b.hashCode()</code>, то объекты <strong>гарантированно не равны</strong> по <code>equals()</code>.</li>
+<li><strong>Неизменность (Идемпотентность):</strong> Вызов <code>hashCode()</code> на одном и том же объекте несколько раз подряд должен возвращать одно и то же число (если поля объекта не менялись).</li>
+</ol>
+<h3 id="2_2">2. Зачем вообще нужен этот контракт? (Суть для собеседования)<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h3>
+<p>Интервьюер обязательно спросит: <em>"А что будет, если я переопределю <code>equals</code>, но забуду переопределить <code>hashCode</code>?"</em></p>
+<p>Чтобы ответить блестяще, нужно объяснить, как под капотом работает <code>HashMap</code> (или <code>HashSet</code>). Хэш-таблицы созданы для того, чтобы искать элементы с невероятной скоростью — за время O(1).</p>
+<p>Представь <code>HashMap</code> как шкаф с множеством пронумерованных ящиков (бакетов/корзин):</p>
+<ol>
+<li><strong>Поиск ящика (работает <code>hashCode</code>):</strong> Когда ты кладешь объект в <code>HashMap</code> (<code>map.put(key, value)</code>), коллекция берет твой <code>key</code>, вызывает у него <code>hashCode()</code> и с помощью математической формулы вычисляет номер ящика. Это происходит мгновенно.</li>
+<li><strong>Поиск внутри ящика (работает <code>equals</code>):</strong> Проблема в том, что размер шкафа ограничен, а вариантов хэш-кодов — 4 миллиарда (<code>int</code>). Неизбежно разные объекты попадут в один и тот же ящик (это и есть коллизия). Внутри ящика они выстраиваются в связный список (или в красно-черное дерево). Чтобы найти нужный объект среди соседей по ящику, <code>HashMap</code> по очереди вызывает метод <code>equals()</code> и сравнивает твой ключ с теми, что уже лежат там.</li>
+</ol>
+<h3 id="3_2">3. Цена ошибки (Что будет, если нарушить контракт)<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<p><strong>Сценарий 1: Забыли <code>hashCode</code> (Разные хэш-коды у равных объектов)</strong> — Ты создал двух пользователей с одинаковым ID, именем и почтой. По логике <code>equals()</code> они равны. Ты кладешь первого в <code>HashMap</code>. Позже ты хочешь достать его данные, используя второго как ключ. <em>Что произойдет:</em> Так как <code>hashCode</code> не переопределен, у второго объекта будет <em>другой</em> хэш-код. <code>HashMap</code> пойдет искать его <strong>в другой ящик</strong>! Он посмотрит в пустой ящик, вернет <code>null</code>, и объект навсегда "потеряется" в памяти. Это прямой путь к утечке памяти (Memory Leak).</p>
+<p><strong>Сценарий 2: Плохой <code>hashCode</code> (Например, всегда возвращает 1)</strong> — Контракт не нарушен, но ты решил возвращать константу. <em>Что произойдет:</em> Все объекты пойдут в один-единственный ящик. <code>HashMap</code> выродится в обычный связный список. Скорость поиска упадет с мгновенного O(1) до медленного O(N). Сервер начнет жестко тормозить при увеличении данных.</p>
+<h3 id="4">4. Как избежать проблем на практике?<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Никогда не пиши руками:</strong> Всегда генерируй эти методы через IDE (IntelliJ IDEA) или используй Lombok (<code>@EqualsAndHashCode</code>).</li>
+<li><strong>Используй неизменяемые поля:</strong> Хэш-код должен вычисляться только на основе тех полей, которые участвуют в <code>equals</code>. Желательно, чтобы эти поля были <code>final</code>. Если ты поменяешь поле объекта <em>после</em> того, как положил его в <code>HashSet</code>, его хэш-код изменится, и ты больше никогда не сможешь его оттуда достать.</li>
+<li><strong>Современный подход:</strong> Начиная с Java 14, можно использовать <code>record</code>. Там <code>equals()</code> и <code>hashCode()</code> переопределены идеально и "из коробки" прямо на уровне языка.</li>
+</ul>
+<h2 id="string-stringbuilder-stringbuffer">String, StringBuilder и StringBuffer<a class="headerlink" href="#string-stringbuilder-stringbuffer" title="Permanent link">&para;</a></h2>
+<p>Вся суть различий между этими тремя классами сводится к двум концепциям: <strong>Изменяемость (Mutability)</strong> и <strong>Потокобезопасность (Thread Safety)</strong>.</p>
+<h3 id="1-string-immutable">1. String — Неизменяемый (Immutable)<a class="headerlink" href="#1-string-immutable" title="Permanent link">&para;</a></h3>
+<p>Объекты класса <code>String</code> в Java неизменяемы. Это значит, что после создания строки её содержимое нельзя поменять. Вообще никак.</p>
+<ul>
+<li><strong>Как это работает:</strong> Когда ты делаешь конкатенацию <code>String s = "Hello" + " World";</code> или вызываешь методы вроде <code>s.replace()</code>, <code>s.toUpperCase()</code>, оригинальная строка <strong>не меняется</strong>. В Куче (Heap) каждый раз создается абсолютно <strong>новый</strong> объект, а старый отправляется на съедение Garbage Collector-у.</li>
+<li><strong>Зачем так сделали?</strong><ol>
+<li><strong>Безопасность:</strong> Строки часто используются как ключи в <code>HashMap</code>, пароли, пути к файлам и URL. Если бы строку можно было изменить из другого места программы, это создало бы гигантские дыры в безопасности.</li>
+<li><strong>Потокобезопасность:</strong> Неизменяемый объект можно смело передавать между любыми потоками, не боясь состояний гонки (Race Conditions).</li>
+<li><strong>Кэширование:</strong> Благодаря неизменяемости стал возможен String Pool (о котором мы поговорим чуть позже).</li>
+</ol>
+</li>
+<li><strong>Главная проблема:</strong> Конкатенация в цикле. Если ты склеиваешь тысячи строк через <code>+</code> в цикле, ты создаешь тысячи промежуточных "мусорных" объектов, убивая производительность и память.</li>
+</ul>
+<h3 id="2-stringbuilder-mutable">2. StringBuilder — Изменяемый работяга (Mutable)<a class="headerlink" href="#2-stringbuilder-mutable" title="Permanent link">&para;</a></h3>
+<p><code>StringBuilder</code> был создан специально для решения проблемы производительности <code>String</code>.</p>
+<ul>
+<li><strong>Как это работает:</strong> Внутри него лежит обычный расширяемый массив (<code>byte[]</code> в современных версиях Java). Когда ты вызываешь <code>append()</code>, он не создает новый объект, а просто дописывает символы в этот внутренний массив. Если массив заполняется, он пересоздает его, увеличивая размер (по умолчанию в 2 раза + 2), и копирует данные.</li>
+<li><strong>Где применять:</strong> Везде, где нужно динамически собирать текст. Например, когда ты пишешь логику для форматирования документов, парсинга больших файлов или генерации сложных SQL-запросов, использование <code>StringBuilder</code> — это единственный правильный путь.</li>
+<li><strong>Важный нюанс:</strong> Он <strong>не потокобезопасен</strong>. Если два потока одновременно попытаются сделать <code>append()</code>, данные перемешаются или приложение упадет с ошибкой <code>ArrayIndexOutOfBoundsException</code>.</li>
+</ul>
+<h3 id="3-stringbuffer-mutable-synchronized">3. StringBuffer — Потокобезопасный дедушка (Mutable &amp; Synchronized)<a class="headerlink" href="#3-stringbuffer-mutable-synchronized" title="Permanent link">&para;</a></h3>
+<p><code>StringBuffer</code> — это брат-близнец <code>StringBuilder</code>, но с одним отличием.</p>
+<ul>
+<li><strong>Как это работает:</strong> Все его основные методы (например, <code>append</code>, <code>insert</code>, <code>delete</code>) помечены ключевым словом <code>synchronized</code>. Это значит, что в один момент времени только один поток может изменять эту строку.</li>
+<li><strong>Где применять:</strong> Практически <strong>нигде</strong> в современном коде.</li>
+<li><strong>Почему он устарел:</strong> Синхронизация работает очень медленно. На практике нам крайне редко нужно, чтобы несколько потоков одновременно дописывали что-то в одну и ту же строку. А учитывая, что сейчас в ходу современные архитектуры с виртуальными потоками, блокировки через <code>synchronized</code> на уровне конкатенации строк — это огромный антипаттерн. Обычно каждый поток собирает свою строку локально через <code>StringBuilder</code>, а потом уже передает готовый <code>String</code> дальше.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>String</strong></th>
+<th><strong>StringBuilder</strong></th>
+<th><strong>StringBuffer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Изменяемость</strong></td>
+<td>Нет (Immutable)</td>
+<td>Да (Mutable)</td>
+<td>Да (Mutable)</td>
+</tr>
+<tr>
+<td><strong>Потокобезопасность</strong></td>
+<td>Да (из-за неизменяемости)</td>
+<td>Нет</td>
+<td>Да (через <code>synchronized</code>)</td>
+</tr>
+<tr>
+<td><strong>Производительность</strong></td>
+<td>Медленно (при склеивании)</td>
+<td><strong>Очень быстро</strong></td>
+<td>Медленно (из-за блокировок)</td>
+</tr>
+<tr>
+<td><strong>Когда использовать</strong></td>
+<td>Для хранения текста, ключей <code>Map</code></td>
+<td>Для сборки текста в одном потоке</td>
+<td>Только в легаси-коде (Legacy)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1">Секретный бонус для сеньорского ответа (Оптимизация компилятора)<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>Интервьюеры любят валить вопросом: <em>"А что будет, если я напишу <code>String s = a + b + c;</code> вне цикла? Обязательно ли тут писать <code>StringBuilder</code> руками?"</em></p>
+<p><strong>Правильный ответ:</strong> Нет, не обязательно. Начиная с Java 9, компилятор больше не переводит оператор <code>+</code> в <code>StringBuilder</code> под капотом (как это было в Java 8). Теперь используется механизм <code>StringConcatFactory</code> с инструкцией <code>invokedynamic</code>. JVM сама на лету решает, как максимально эффективно и быстро склеить эти строки, выделяя ровно столько памяти, сколько нужно, без создания лишних объектов.</p>
+<p>Поэтому для простых склеиваний вне циклов обычный <code>+</code> сейчас работает даже эффективнее и читается лучше. А вот <strong>внутри циклов</strong> <code>StringBuilder</code> всё еще обязателен.</p>
+<h2 id="string-pool-intern">Пул строк (String Pool) и метод intern()<a class="headerlink" href="#string-pool-intern" title="Permanent link">&para;</a></h2>
+<p>Поскольку строки (<code>String</code>) используются в приложениях повсюду (текст, ключи, пути, настройки), они занимают огромную часть памяти. Чтобы не плодить тысячи одинаковых объектов "User" или "Error" в памяти, разработчики Java придумали хитрый механизм кэширования — <strong>String Pool</strong>.</p>
+<h3 id="1-string-pool">1. Что такое String Pool?<a class="headerlink" href="#1-string-pool" title="Permanent link">&para;</a></h3>
+<p>Это специальная область памяти внутри Кучи (Heap). Ее главная задача — хранить <strong>только один экземпляр</strong> каждой уникальной строки, созданной через литерал (в двойных кавычках).</p>
+<ul>
+<li><strong>Как это работает при создании через литерал:</strong> Когда ты пишешь <code>String s1 = "Java";</code>, JVM сначала идет в String Pool и проверяет: <em>"Есть ли у меня уже строка 'Java'?"</em>.<ul>
+<li>Если <strong>нет</strong> — она создает новый объект в пуле и возвращает ссылку на него.</li>
+<li>Если <strong>есть</strong> (например, ты пишешь <code>String s2 = "Java";</code> строчкой ниже) — JVM <strong>не создает</strong> новый объект. Она просто возвращает ссылку на уже существующий объект из пула.</li>
+<li><strong>Итог:</strong> <code>s1 == s2</code> вернет <code>true</code>, потому что обе переменные указывают на один и тот же участок памяти.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-vs-new">2. Классическая ловушка: Литерал vs Ключевое слово <code>new</code><a class="headerlink" href="#2-vs-new" title="Permanent link">&para;</a></h3>
+<p>Это любимый вопрос на скринингах. Что будет, если создать строку через оператор <code>new</code>?</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Java&quot;</span><span class="p">;</span><span class="w">               </span><span class="c1">// Идет в пул</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;Java&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// Игнорирует пул для создания объекта</span>
+</span></code></pre></div>
+<p>Когда ты используешь <code>new</code>, ты <strong>принудительно</strong> приказываешь JVM: <em>"Создай мне абсолютно новый объект в основной Куче (Heap), даже если такая строка уже есть в пуле!"</em>.</p>
+<ul>
+<li><strong>Итог:</strong> <code>s1 == s2</code> вернет <code>false</code>. Ссылки разные. <code>s1</code> смотрит в String Pool, а <code>s2</code> смотрит в обычный Heap.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Золотое правило</p>
+<p>Никогда не создавай строки через <code>new String("text")</code>, если на то нет очень специфической причины. Это пустая трата памяти.</p>
+</div>
+<h3 id="3-intern">3. Магия метода intern()<a class="headerlink" href="#3-intern" title="Permanent link">&para;</a></h3>
+<p>А что делать, если строка пришла к нам динамически (например, мы прочитали ее из файла, из базы данных или склеили через <code>StringBuilder</code>), и мы хотим положить ее в пул для экономии памяти?</p>
+<p>Для этого существует метод <code>intern()</code>.</p>
+<ul>
+<li><strong>Как он работает:</strong> Когда ты вызываешь <code>someString.intern()</code>, JVM берет содержимое этой строки и идет в String Pool.<ul>
+<li>Если такая строка там <strong>уже есть</strong> — метод возвращает ссылку на объект из пула (а оригинальный динамический объект со временем съест Garbage Collector).</li>
+<li>Если такой строки там <strong>нет</strong> — JVM добавляет эту строку в пул и возвращает ссылку на нее.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Пример для понимания:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;Hello&quot;</span><span class="p">);</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">String</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s2</span><span class="p">.</span><span class="na">intern</span><span class="p">();</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s2</span><span class="p">);</span><span class="w"> </span><span class="c1">// false (один в пуле, другой в Heap)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s3</span><span class="p">);</span><span class="w"> </span><span class="c1">// true (s3 получил ссылку из пула, где уже лежал s1)</span>
+</span></code></pre></div>
+<h3 id="4_1">4. Историческая справка (Бонус для сеньорского ответа)<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
+<p>Если на собеседовании заикнутся про "опасность" метода <code>intern()</code>, смело выдавай этот факт:</p>
+<ul>
+<li><strong>До Java 7:</strong> String Pool находился в специальной памяти <em>PermGen</em> (Permanent Generation), которая имела жестко фиксированный размер и <strong>не очищалась</strong> Garbage Collector'ом. Если разработчик активно использовал <code>intern()</code>, память быстро забивалась, и приложение падало с ошибкой <code>OutOfMemoryError: PermGen space</code>.</li>
+<li><strong>С Java 7 и выше:</strong> String Pool перенесли в основную часть Кучи (Heap). Теперь Garbage Collector умеет чистить пул от строк, на которые больше нет ссылок в приложении. Использовать <code>intern()</code> стало абсолютно безопасно, а PermGen в новых версиях Java (начиная с 8-й) вообще заменили на <em>Metaspace</em>.</li>
+</ul>
+<h2 id="_2">Значения по умолчанию и инициализация переменных<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>В Java поведение переменной критически зависит от того, <strong>где именно</strong> она объявлена: на уровне класса (поля) или внутри метода (локальные переменные).</p>
+<h3 id="1-instance-static-variables">1. Поля класса (Instance &amp; Static variables)<a class="headerlink" href="#1-instance-static-variables" title="Permanent link">&para;</a></h3>
+<p>Когда ты создаешь объект через <code>new</code>, под него выделяется память в Куче (Heap). JVM заботливо "зачищает" эту память, автоматически присваивая всем полям класса безопасные значения по умолчанию (фактически, забивает память нулями).</p>
+<p>Тебе не обязательно их инициализировать руками. Если ты не присвоишь значение, JVM сделает это за тебя:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Тип данных</strong></th>
+<th><strong>Значение по умолчанию</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code></td>
+<td><code>0</code> (или <code>0L</code> для long)</td>
+</tr>
+<tr>
+<td><code>float</code>, <code>double</code></td>
+<td><code>0.0f</code> или <code>0.0d</code></td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td><code>'\u0000'</code> (нулевой символ, пустота)</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><strong>Все ссылочные типы</strong> (String, объекты, массивы)</td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition info">
+<p class="admonition-title">Важно</p>
+<p>Элементы массива (даже если массив создан локально в методе) тоже получают значения по умолчанию, так как сам массив всегда является объектом и создается в Куче. Например, <code>int[] arr = new int[5];</code> будет сразу заполнен пятью нулями.</p>
+</div>
+<h3 id="2-local-variables">2. Локальные переменные (Local variables)<a class="headerlink" href="#2-local-variables" title="Permanent link">&para;</a></h3>
+<p>Локальные переменные — это те, которые ты объявляешь <strong>внутри методов</strong>, конструкторов или блоков кода (например, внутри цикла <code>for</code>).</p>
+<p>Главное правило: <strong>У локальных переменных НЕТ значений по умолчанию.</strong></p>
+<p>Если ты объявишь переменную внутри метода и попытаешься ее использовать (например, вывести в консоль или прибавить к ней число) до того, как присвоишь ей значение, <strong>компилятор выдаст ошибку</strong> (<code>variable might not have been initialized</code>), и программа даже не скомпилируется.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">calculate</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="c1">// System.out.println(result); // Ошибка компиляции!</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w"> </span><span class="c1">// Теперь всё отлично</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="3-java">3. Почему создатели Java сделали именно так? (Ответ для сеньора)<a class="headerlink" href="#3-java" title="Permanent link">&para;</a></h3>
+<p>Интервьюер обязательно спросит: <em>"А почему JVM не может так же заботливо заполнять нулями и локальные переменные?"</em></p>
+<p>Здесь есть две фундаментальные причины:</p>
+<ol>
+<li><strong>Защита от глупых ошибок (Safety):</strong> В языках вроде C или C++ неинициализированная локальная переменная просто берет тот "мусор", который случайно остался в этой ячейке памяти от предыдущих операций. Это приводило к ужасным и трудноуловимым багам. Создатели Java решили жестко бить разработчика по рукам на этапе компиляции, заставляя его явно указывать стартовое значение. Это заставляет писать более осознанный и предсказуемый код.</li>
+<li><strong>Производительность (Performance):</strong> Как мы помним, локальные переменные живут в Стеке. Стек работает невероятно быстро: методы постоянно вызываются, их фреймы создаются и уничтожаются миллионы раз в секунду. Если бы JVM тратила время на зануление каждой переменной в Стеке при каждом вызове метода, это нанесло бы колоссальный удар по производительности приложения. Поэтому JVM оставляет эту ответственность разработчику.</li>
+</ol>
+<h2 id="final-finally-finalize">final, finally и finalize()<a class="headerlink" href="#final-finally-finalize" title="Permanent link">&para;</a></h2>
+<h3 id="1-final">1. <code>final</code> (Модификатор) — Печать неизменности<a class="headerlink" href="#1-final" title="Permanent link">&para;</a></h3>
+<p>Это ключевое слово, которое запрещает изменения. Его поведение зависит от того, к чему именно ты его применяешь: к переменной, методу или классу.</p>
+<ul>
+<li><strong><code>final</code> переменная (Константа):</strong> Значение переменной можно задать только один раз.<ul>
+<li><em>Ловушка для мидла:</em> Если переменная примитивная (<code>final int x = 5;</code>), ее значение изменить нельзя. Но если переменная ссылочная (например, <code>final List&lt;String&gt; list = new ArrayList&lt;&gt;();</code>), то <strong>нельзя изменить саму ссылку</strong> (присвоить новый <code>new ArrayList()</code>), но <strong>можно менять состояние самого объекта</strong> (добавлять и удалять элементы через <code>list.add()</code>).</li>
+</ul>
+</li>
+<li><strong><code>final</code> метод:</strong> Запрещает переопределение (Override) этого метода в классах-наследниках. Это нужно, когда ты написал критически важную бизнес-логику и хочешь гарантировать, что никто не сломает ее поведение при наследовании.</li>
+<li><strong><code>final</code> класс:</strong> Запрещает наследование от этого класса. Самый яркий пример из JDK — класс <code>String</code>. Никто не может создать <code>class MyString extends String</code>, что гарантирует его безопасность и неизменяемость.</li>
+</ul>
+<h3 id="2-finally">2. <code>finally</code> (Блок кода) — Гарантия выполнения<a class="headerlink" href="#2-finally" title="Permanent link">&para;</a></h3>
+<p>Это часть конструкции <code>try-catch-finally</code> для обработки исключений.</p>
+<ul>
+<li><strong>Как это работает:</strong> Блок <code>finally</code> выполняется <strong>всегда</strong>, независимо от того, выбросилось исключение в блоке <code>try</code> или программа отработала успешно. Даже если внутри <code>try</code> или <code>catch</code> стоит оператор <code>return</code>, JVM сначала выполнит блок <code>finally</code>, и только потом выйдет из метода.</li>
+<li><strong>Зачем нужно:</strong> Исторически он использовался для железобетонного закрытия ресурсов: сетевых соединений, потоков ввода-вывода (файлов) или соединений с базой данных.</li>
+<li><strong>Секрет для сеньора (Когда <code>finally</code> НЕ выполнится?):</strong> Интервьюер обязательно спросит об этом. Блок <code>finally</code> не отработает только в экстремальных случаях:<ol>
+<li>Если вызвать <code>System.exit(0)</code> внутри <code>try</code> или <code>catch</code> (это принудительно убивает JVM).</li>
+<li>Если произойдет фатальная ошибка на уровне памяти (например, <code>OutOfMemoryError</code> или падение самой операционной системы).</li>
+<li>Если поток, выполняющий <code>try</code>, убьют снаружи.</li>
+</ol>
+</li>
+<li><strong>Современный подход:</strong> Начиная с Java 7, для закрытия ресурсов лучше использовать конструкцию <strong><code>try-with-resources</code></strong>. Она делает то же самое под капотом, но код становится чище, и тебе не нужно писать блок <code>finally</code> руками.</li>
+</ul>
+<h3 id="3-finalize">3. <code>finalize()</code> (Метод) — Предсмертная записка объекта<a class="headerlink" href="#3-finalize" title="Permanent link">&para;</a></h3>
+<p>Это метод, определенный в самом главном классе <code>Object</code>.</p>
+<ul>
+<li><strong>Как это задумывалось:</strong> Garbage Collector (сборщик мусора) вызывает этот метод у объекта прямо перед тем, как навсегда удалить его из памяти. Разработчики могли переопределить этот метод, чтобы написать логику "последнего шанса" для закрытия ресурсов.</li>
+<li><strong>Почему это стало антипаттерном:</strong><ol>
+<li><strong>Непредсказуемость:</strong> Никто не дает гарантий, когда именно GC решит собрать мусор. Метод <code>finalize()</code> может вызваться через секунду, через час, или вообще никогда (если программа завершится раньше).</li>
+<li><strong>Падение производительности:</strong> Объекты с переопределенным <code>finalize()</code> собираются в разы медленнее. GC приходится ставить их в специальную очередь (Finalization Queue), что сильно тормозит очистку Кучи (Heap).</li>
+<li><strong>Опасность "воскрешения":</strong> Внутри <code>finalize()</code> неопытный разработчик мог случайно присвоить ссылку на этот умирающий объект какой-нибудь статической переменной, тем самым "воскресив" его и сломав логику GC.</li>
+</ol>
+</li>
+<li><strong>Статус:</strong> Начиная с Java 9 метод официально помечен как <code>@Deprecated</code> (устаревший). Использовать его в реальном коде категорически запрещено. Для сложной очистки ресурсов сейчас используют <code>java.lang.ref.Cleaner</code>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Понятие</strong></th>
+<th><strong>Что это такое?</strong></th>
+<th><strong>Где применяется?</strong></th>
+<th><strong>Главная суть</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>final</code></strong></td>
+<td>Ключевое слово</td>
+<td>Переменные, методы, классы</td>
+<td>Запрет на изменения/наследование</td>
+</tr>
+<tr>
+<td><strong><code>finally</code></strong></td>
+<td>Блок кода</td>
+<td>Обработка исключений (<code>try-catch</code>)</td>
+<td>Выполняется всегда (освобождение ресурсов)</td>
+</tr>
+<tr>
+<td><strong><code>finalize()</code></strong></td>
+<td>Метод класса <code>Object</code></td>
+<td>Жизненный цикл объекта (Garbage Collector)</td>
+<td>Вызывается перед удалением (Устарел!)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="static">Ключевое слово static и блоки инициализации<a class="headerlink" href="#static" title="Permanent link">&para;</a></h2>
+<h3 id="1-static">1. Суть ключевого слова <code>static</code><a class="headerlink" href="#1-static" title="Permanent link">&para;</a></h3>
+<p>Главное правило, которое нужно запомнить: <strong>Всё, что помечено словом <code>static</code>, принадлежит самому классу, а не конкретному объекту (экземпляру) этого класса.</strong></p>
+<p>Чтобы обратиться к статическому члену, тебе не нужно создавать объект через <code>new</code>. Ты обращаешься к нему напрямую через имя класса (например, <code>Math.max()</code>).</p>
+<h3 id="2_3">2. Статические переменные (Поля)<a class="headerlink" href="#2_3" title="Permanent link">&para;</a></h3>
+<p>Когда ты объявляешь обычное поле, каждый новый объект получает свою собственную копию этой переменной в Куче (Heap). Но если ты делаешь поле <code>static</code>:</p>
+<ul>
+<li><strong>Общая память:</strong> Оно существует в <strong>единственном экземпляре</strong> для всех объектов этого класса.</li>
+<li><strong>Где хранится:</strong> Статические переменные вместе с метаданными класса хранятся в специальной области памяти — <strong>Metaspace</strong> (начиная с Java 8, раньше это был PermGen). <em>(Примечание: сами объекты, на которые ссылаются статические поля, лежат в Heap; в Metaspace — служебная информация.)</em></li>
+<li><strong>Ловушка:</strong> Если один поток изменит значение статической переменной, это изменение мгновенно отразится для всех остальных объектов этого класса в приложении. Именно поэтому статические поля чаще всего делают константами (<code>public static final</code>).</li>
+</ul>
+<h3 id="3_3">3. Статические методы<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h3>
+<p>Это методы, которые выполняют логику, не привязанную к состоянию конкретного объекта. Отличный пример — утилитные классы (вроде <code>StringUtils</code> или <code>Math</code>).</p>
+<p><strong>Два главных ограничения (очень любят спрашивать):</strong></p>
+<ol>
+<li><strong>Нет слова <code>this</code> и <code>super</code>:</strong> Статический метод не знает, от имени какого объекта его вызвали (ведь объекта может и не быть). Поэтому из статического метода <strong>нельзя</strong> напрямую обратиться к нестатическим полям или методам.</li>
+<li><strong>Method Hiding (Сокрытие), а не Переопределение (Override):</strong> Статические методы <strong>нельзя переопределить</strong>. Если в классе-наследнике ты напишешь статический метод с точно таким же названием и аргументами, компилятор не ругнется. Но полиморфизм (позднее связывание) работать не будет. Вызовется тот метод, чей тип ссылки указан при компиляции. Это называется "сокрытием метода".</li>
+</ol>
+<h3 id="4_2">4. Блоки инициализации<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h3>
+<p>Иногда просто присвоить значение переменной при объявлении (<code>static int x = 5;</code>) недостаточно. Нужна сложная логика (например, загрузить данные из файла или собрать сложную <code>Map</code>). Для этого есть блоки.</p>
+<ul>
+<li><strong>Статический блок (<code>static { ... }</code>):</strong> Выполняется <strong>только один раз</strong> за всё время работы приложения — в тот момент, когда <code>ClassLoader</code> загружает этот класс в память (еще до создания каких-либо объектов).</li>
+<li><strong>Логический / Нестатический блок (<code>{ ... }</code>):</strong> Выполняется <strong>каждый раз</strong> при создании нового объекта через <code>new</code>, причем <em>до</em> того, как отработает конструктор. Исторически это использовалось, чтобы вынести общую логику из нескольких разных конструкторов, чтобы не дублировать код.</li>
+</ul>
+<h3 id="5">5. Секретное оружие для собеса: Порядок инициализации<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p>Это топ-1 задача на скринингах. Тебе дадут класс-наследник с кучей статических и нестатических блоков, полей и конструкторов, и спросят: <em>"В каком порядке в консоль выведутся сообщения при вызове <code>new Child()</code>?"</em>.</p>
+<p><strong>Вот железобетонный алгоритм (заучить и сохранить):</strong> Когда ты создаешь объект дочернего класса, инициализация всегда идет сверху вниз, от родителя к наследнику, и от статики к динамике:</p>
+<ol>
+<li><strong>Статические поля и статические блоки Суперкласса</strong> (Родителя).</li>
+<li><strong>Статические поля и статические блоки Подкласса</strong> (Наследника). <em>(На этом этапе классы загружены в память. Теперь начинается создание самого объекта.)</em></li>
+<li><strong>Нестатические поля и логические блоки Суперкласса</strong>.</li>
+<li><strong>Конструктор Суперкласса</strong>.</li>
+<li><strong>Нестатические поля и логические блоки Подкласса</strong>.</li>
+<li><strong>Конструктор Подкласса</strong>.</li>
+</ol>
+<h2 id="enum">Перечисления (<code>Enum</code>) под капотом<a class="headerlink" href="#enum" title="Permanent link">&para;</a></h2>
+<p>Главное, что нужно сказать на собеседовании: <strong><code>enum</code> — это синтаксический сахар.</strong> На уровне JVM никаких "перечислений" не существует. Есть только обычные классы.</p>
+<p>Когда ты пишешь:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">enum</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">NEW</span><span class="p">,</span><span class="w"> </span><span class="n">IN_PROGRESS</span><span class="p">,</span><span class="w"> </span><span class="n">DONE</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Компилятор делает магию и превращает этот код примерно в следующее:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Status</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">java</span><span class="p">.</span><span class="na">lang</span><span class="p">.</span><span class="na">Enum</span><span class="o">&lt;</span><span class="n">Status</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="n">NEW</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Status</span><span class="p">(</span><span class="s">&quot;NEW&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="n">IN_PROGRESS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Status</span><span class="p">(</span><span class="s">&quot;IN_PROGRESS&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Status</span><span class="w"> </span><span class="n">DONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Status</span><span class="p">(</span><span class="s">&quot;DONE&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="nf">Status</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ordinal</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">ordinal</span><span class="p">);</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="c1">// ... скрытые методы компилятора ...</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Из этого факта вытекают все жесткие правила и каверзные вопросы с собеседований.</p>
+<h3 id="1_2">1. Главные ограничения (Ловушки)<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Наследование запрещено:</strong> Так как твой <code>enum</code> уже неявно унаследован от класса <code>java.lang.Enum</code>, он не может наследоваться ни от чего другого (в Java нет множественного наследования классов).</li>
+<li><strong>Интерфейсы разрешены:</strong> А вот реализовывать (<code>implements</code>) сколько угодно интерфейсов <code>enum</code> может. Это часто используют, чтобы связать разные перечисления общим контрактом поведения.</li>
+<li><strong>Конструктор всегда <code>private</code>:</strong> Ты не можешь создать новый экземпляр <code>enum</code> через <code>new</code> где-то в коде. Объекты перечисления создаются самой JVM один раз при загрузке класса в память.</li>
+</ul>
+<h3 id="2_4">2. Откуда берутся методы? (Секрет компилятора)<a class="headerlink" href="#2_4" title="Permanent link">&para;</a></h3>
+<p>У <code>enum</code> есть базовые методы: <code>name()</code> (возвращает имя константы строкой) и <code>ordinal()</code> (возвращает порядковый номер, начиная с 0). Они приходят из родительского класса <code>java.lang.Enum</code>.</p>
+<p>Но есть два метода, о которых часто спрашивают: <code>values()</code> и <code>valueOf(String)</code>. <strong>Их нет в классе <code>Enum</code>!</strong> Их заботливо генерирует и добавляет в твой класс сам компилятор на этапе сборки.</p>
+<ul>
+<li><code>values()</code> — возвращает массив всех констант.</li>
+<li><code>valueOf("NEW")</code> — ищет константу по точному совпадению имени (и бросает <code>IllegalArgumentException</code>, если не найдет).</li>
+</ul>
+<h3 id="3-enum-middlesenior">3. Суперсилы Enum (Для уровня Middle/Senior)<a class="headerlink" href="#3-enum-middlesenior" title="Permanent link">&para;</a></h3>
+<p>Вот что реально хотят услышать на собеседовании, когда просят "рассказать про <code>enum</code>":</p>
+<p><strong>Суперсила 1: Состояние и поведение</strong> — Так как это полноценный класс, ты можешь добавлять в него свои поля, писать кастомные конструкторы и методы.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">enum</span><span class="w"> </span><span class="n">ErrorCode</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">NOT_FOUND</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Ресурс не найден&quot;</span><span class="p">),</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">SERVER_ERROR</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Ошибка сервера&quot;</span><span class="p">);</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="n">ErrorCode</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Конструктор неявно private</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">code</span><span class="p">;</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="c1">// Геттеры...</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Суперсила 2: Полиморфизм констант (Паттерн Стратегия/Состояние)</strong> — Ты можешь заставить каждую константу реализовать один и тот же метод по-своему! Это избавляет код от огромных простыней <code>switch-case</code> или <code>if-else</code>.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">enum</span><span class="w"> </span><span class="n">Operation</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">PLUS</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="p">},</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="n">MINUS</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="p">};</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">abstract</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span><span class="w"> </span><span class="c1">// Абстрактный метод внутри enum!</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Суперсила 3: Идеальный Singleton (Совет от Джошуа Блоха)</strong> — На собеседованиях по паттернам часто просят написать потокобезопасный <code>Singleton</code>. Самый пуленепробиваемый способ в Java — это <code>enum</code> из одного элемента. Почему?</p>
+<ol>
+<li>JVM сама гарантирует потокобезопасность при инициализации.</li>
+<li>Его невозможно сломать через Рефлексию (Reflection API).</li>
+<li>Он абсолютно безопасен при сериализации/десериализации (стандартные синглтоны ломаются и создают новые объекты при десериализации, а <code>enum</code> — нет).</li>
+</ol>
+<p><strong>Суперсила 4: Высокопроизводительные коллекции</strong> — Если тебе нужно хранить набор <code>enum</code> или использовать их как ключи в мапе, всегда используй <code>EnumSet</code> и <code>EnumMap</code> вместо обычных <code>HashSet</code> и <code>HashMap</code>. Под капотом они реализованы через битовые векторы (Bit Vectors). Это работает с невероятной, "железной" скоростью и занимает минимум памяти (нет никаких хэшей, корзин и коллизий).</p>
+<h2 id="_3">Модификаторы доступа<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>В Java их всего четыре. Они определяют, кто и откуда может видеть твои классы, переменные, методы и конструкторы.</p>
+<h3 id="1_3">1. Классическая шпаргалка (Матрица видимости)<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h3>
+<p>Для начала зафиксируем сухую базу:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Модификатор</strong></th>
+<th><strong>Внутри класса</strong></th>
+<th><strong>В том же пакете</strong></th>
+<th><strong>В классе-наследнике (другой пакет)</strong></th>
+<th><strong>Везде (глобально)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>private</code></strong></td>
+<td>✅ Да</td>
+<td>❌ Нет</td>
+<td>❌ Нет</td>
+<td>❌ Нет</td>
+</tr>
+<tr>
+<td><strong><code>default</code> (без слова)</strong></td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+<td>❌ Нет</td>
+<td>❌ Нет</td>
+</tr>
+<tr>
+<td><strong><code>protected</code></strong></td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+<td>❌ Нет</td>
+</tr>
+<tr>
+<td><strong><code>public</code></strong></td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+<td>✅ Да</td>
+</tr>
+</tbody>
+</table>
+<p>А теперь давай разберем каждый из них через призму ловушек на собеседованиях и реальной архитектуры.</p>
+<h3 id="2-private">2. <code>private</code> — Твоя крепость<a class="headerlink" href="#2-private" title="Permanent link">&para;</a></h3>
+<p>Самый строгий модификатор. Виден только внутри того класса, где объявлен.</p>
+<ul>
+<li><strong>Архитектурное правило:</strong> Все поля класса <strong>всегда</strong> должны быть <code>private</code>. Доступ к ним должен осуществляться только через методы (геттеры/сеттеры) или бизнес-методы. Это основа инкапсуляции.</li>
+<li><strong>Секретный прием:</strong> Конструктор тоже может быть <code>private</code>. Мы уже обсуждали это в теме <code>Enum</code> и паттерне <code>Singleton</code>. Также приватные конструкторы используют в утилитных классах (например, <code>Math</code>), чтобы никто не мог сделать <code>new Math()</code>.</li>
+</ul>
+<h3 id="3-default-package-private">3. <code>default</code> (Package-Private) — Командный игрок<a class="headerlink" href="#3-default-package-private" title="Permanent link">&para;</a></h3>
+<p>Если ты не написал никакого модификатора, Java применяет <code>default</code>. Элемент будет виден <strong>только внутри того же пакета</strong>.</p>
+<ul>
+<li><strong>Где это ловушка:</strong> Многие новички думают, что если не написать модификатор, то это равносильно <code>public</code> или что это "просто так".</li>
+<li><strong>Архитектурная ценность:</strong> Это невероятно мощный инструмент для построения чистой архитектуры и Domain-Driven Design. Ты можешь создать в пакете 10 классов, которые общаются между собой, но сделать <code>public</code> только один фасадный класс. Остальные 9 классов будут <code>package-private</code>. Никто из других слоев приложения (например, из контроллеров) физически не сможет вызвать их напрямую и сломать логику.</li>
+</ul>
+<h3 id="4-protected">4. <code>protected</code> — Наследственный фактор<a class="headerlink" href="#4-protected" title="Permanent link">&para;</a></h3>
+<p>Виден внутри своего пакета <strong>И</strong> во всех классах-наследниках, даже если они лежат в других пакетах.</p>
+<ul>
+<li><strong>Любимый вопрос на засыпку:</strong> <em>"Я создал класс <code>Parent</code> в пакете А с <code>protected</code> методом. В пакете Б я создал класс <code>Child extends Parent</code>. Могу ли я в пакете Б создать объект <code>Parent p = new Parent();</code> и вызвать у него этот метод?"</em></li>
+<li><strong>Правильный ответ:</strong> НЕТ! Ты не сможешь вызвать <code>p.method()</code>. Модификатор <code>protected</code> дает доступ к методу только <strong>через наследование</strong> (внутри методов самого <code>Child</code>), а не через ссылку на экземпляр родительского класса в другом пакете. На этом сыплются очень многие.</li>
+</ul>
+<h3 id="5-public">5. <code>public</code> — Открытая дверь<a class="headerlink" href="#5-public" title="Permanent link">&para;</a></h3>
+<p>Виден абсолютно везде.</p>
+<ul>
+<li><strong>Архитектурное правило:</strong> <code>public</code> должно быть как можно меньше. Делай публичными только те методы, которые составляют API твоего класса — то есть его контракт, то, что он обещает делать для других компонентов системы. Чем шире публичный API, тем сложнее потом поддерживать и рефакторить код, потому что на него могут быть завязаны сотни других классов.</li>
+</ul>
+<h2 id="modern-java-basics">Modern Java Basics<a class="headerlink" href="#modern-java-basics" title="Permanent link">&para;</a></h2>
+<h3 id="1-var-java-10">1. Вывод типов локальных переменных: <code>var</code> (Java 10)<a class="headerlink" href="#1-var-java-10" title="Permanent link">&para;</a></h3>
+<p>Многие новички, приходящие из JavaScript или Python, радуются <code>var</code>, думая, что Java стала динамически типизированной. Это главная ловушка на собеседовании.</p>
+<ul>
+<li><strong>Как это работает:</strong> <code>var</code> — это синтаксический сахар для компилятора. Java остается строго типизированной. Просто компилятор сам догадывается о типе переменной по тому значению, которое ты ей присваиваешь справа от знака равно.<ul>
+<li><em>Было:</em> <code>Map&lt;String, List&lt;User&gt;&gt; map = new HashMap&lt;&gt;();</code></li>
+<li><em>Стало:</em> <code>var map = new HashMap&lt;String, List&lt;User&gt;&gt;();</code></li>
+</ul>
+</li>
+<li><strong>Где можно использовать:</strong> <strong>Только для локальных переменных</strong> внутри методов, в циклах <code>for</code> и <code>try-with-resources</code>.</li>
+<li><strong>Где НЕЛЬЗЯ использовать (ошибки компиляции):</strong><ul>
+<li>Для полей класса (потому что тип поля должен быть известен до создания объекта).</li>
+<li>В параметрах методов и возвращаемых типах.</li>
+<li>Нельзя написать <code>var x;</code> без инициализации (компилятору не за что зацепиться, чтобы понять тип).</li>
+<li>Нельзя присвоить <code>null</code>: <code>var str = null;</code> (тип <code>null</code> не определен).</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-records-lombok-java-1416">2. Records: Убийца Lombok (Java 14/16)<a class="headerlink" href="#2-records-lombok-java-1416" title="Permanent link">&para;</a></h3>
+<p>Это, пожалуй, самое важное архитектурное нововведение для работы с данными. <code>record</code> — это специальный вид класса, созданный для одной цели: быть прозрачным и неизменяемым носителем данных (DTO, сообщения для брокеров вроде Kafka, ответы API).</p>
+<ul>
+<li><strong>Как это работает:</strong> Ты пишешь всего одну строчку: <code>public record UserDto(Long id, String name) {}</code></li>
+<li><strong>Что делает компилятор под капотом:</strong><ol>
+<li>Создает класс <code>final</code> (от него нельзя наследоваться).</li>
+<li>Делает все поля <code>private final</code> (они неизменяемые).</li>
+<li>Генерирует конструктор со всеми аргументами.</li>
+<li>Автоматически создает идеальные <code>equals()</code>, <code>hashCode()</code> и <code>toString()</code>.</li>
+<li>Создает геттеры, но <strong>без префикса get</strong> (методы называются просто <code>id()</code> и <code>name()</code>).</li>
+</ol>
+</li>
+<li><strong>Ловушки на собеседовании:</strong><ul>
+<li><em>"Может ли record наследоваться от другого класса?"</em> — <strong>Нет</strong>, так как он уже неявно наследуется от <code>java.lang.Record</code>.</li>
+<li><em>"Может ли реализовывать интерфейсы?"</em> — <strong>Да</strong>, сколько угодно.</li>
+<li><em>"Можно ли добавить валидацию?"</em> — <strong>Да</strong>, через "компактный конструктор" (без указания аргументов), где можно проверить данные (например, <code>if (id &lt; 0) throw ...</code>) перед тем, как они запишутся в поля.</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-switch-expressions-pattern-matching-java-12-21">3. Switch Expressions и Pattern Matching (Java 12 - 21)<a class="headerlink" href="#3-switch-expressions-pattern-matching-java-12-21" title="Permanent link">&para;</a></h3>
+<p>Старый <code>switch-case</code> с его вечными <code>break</code> был источником тысяч багов (забыл <code>break</code> — логика "провалилась" в следующий <code>case</code>). Современная Java полностью переосмыслила этот оператор.</p>
+<ul>
+<li><strong>Новый синтаксис (Стрелочный <code>switch</code>):</strong> Вместо двоеточия используется стрелка <code>-&gt;</code>. Главный плюс — <strong>нет эффекта проваливания (fall-through)</strong>. Отрабатывает только один блок, и <code>break</code> больше писать не нужно.</li>
+<li>
+<p><strong>Switch как выражение (Expression):</strong> Теперь <code>switch</code> может <strong>возвращать значение</strong> прямо в переменную.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">String</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">day</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">MONDAY</span><span class="p">,</span><span class="w"> </span><span class="n">FRIDAY</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Рабочий&quot;</span><span class="p">;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">SATURDAY</span><span class="p">,</span><span class="w"> </span><span class="n">SUNDAY</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Выходной&quot;</span><span class="p">;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="k">default</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Неизвестно&quot;</span><span class="p">;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">};</span>
+</span></code></pre></div>
+</li>
+<li>
+<p><strong>Ключевое слово <code>yield</code>:</strong> Если логика внутри <code>case</code> сложная и занимает несколько строк (нужны фигурные скобки <code>{}</code>), то для возврата значения из этого блока используется новое слово <code>yield</code> (вместо <code>return</code>).</p>
+</li>
+<li><strong>Pattern Matching для <code>instanceof</code> (Java 16):</strong> Раньше мы писали так: <code>if (obj instanceof String) { String s = (String) obj; s.length(); }</code>. Теперь приведение типов происходит автоматически прямо в условии: <code>if (obj instanceof String s) { s.length(); }</code>.</li>
+<li>
+<p><strong>Pattern Matching для <code>switch</code> (Java 21):</strong> Теперь в <code>switch</code> можно передавать не только числа, строки и Enum, но и <strong>любые объекты</strong>, проверяя их типы:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">return</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Строка: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">Integer</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Число: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">UserDto</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Пользователь: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">u</span><span class="p">.</span><span class="na">name</span><span class="p">();</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="k">default</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Что-то другое&quot;</span><span class="p">;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">};</span>
+</span></code></pre></div>
+</li>
+</ul>
+<h3 id="4-sealed-classes-java-17">4. Sealed Classes (Запечатанные классы) (Java 17)<a class="headerlink" href="#4-sealed-classes-java-17" title="Permanent link">&para;</a></h3>
+<p>До появления <code>sealed</code> у нас было только две крайности: либо класс открыт для наследования всем подряд (обычный класс), либо закрыт для всех абсолютно (модификатор <code>final</code>). <code>sealed</code> классы дают нам золотую середину: мы можем разрешить наследование, но <strong>только строго определенному списку классов</strong>.</p>
+<p><strong>Как это работает:</strong> Ты объявляешь класс или интерфейс с ключевым словом <code>sealed</code> и через ключевое слово <code>permits</code> явно перечисляешь, кто имеет право от него наследоваться.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">PaymentResult</span><span class="w"> </span><span class="kd">permits</span><span class="w"> </span><span class="n">Success</span><span class="p">,</span><span class="w"> </span><span class="n">Error</span><span class="p">,</span><span class="w"> </span><span class="n">Pending</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="p">}</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1">// Эти классы могут быть обычными классами или record&#39;ами</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">Success</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">receiptId</span><span class="p">)</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PaymentResult</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">Error</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">errorMessage</span><span class="p">)</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PaymentResult</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">Pending</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">transactionId</span><span class="p">)</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">PaymentResult</span><span class="w"> </span><span class="p">{}</span>
+</span></code></pre></div>
+<p><strong>Зачем это нужно (Архитектурная ценность):</strong> Это инструмент для Domain-Driven Design (DDD). Когда ты пишешь ядро бизнес-логики (например, модуль оплат), ты хочешь гарантировать, что результат оплаты может быть только трех видов: Успех, Ошибка или Ожидание. И ты физически запрещаешь другим разработчикам в других пакетах создать свой класс <code>class Timeout implements PaymentResult</code>, который сломает твою логику обработки.</p>
+<p><strong>Жесткие правила (Ловушки на собеседовании):</strong> Интервьюер спросит: <em>"Какие правила обязаны соблюдать классы-наследники запечатанного класса?"</em> Их три, и их нужно знать наизусть:</p>
+<ol>
+<li><strong>Знание при компиляции:</strong> Все разрешенные классы (указанные в <code>permits</code>) должны быть известны компилятору и лежать в том же модуле (или пакете).</li>
+<li><strong>Прямое наследование:</strong> Наследник обязан напрямую расширять (extends) или реализовывать (implements) <code>sealed</code> класс.</li>
+<li><strong>Обязательный модификатор наследника:</strong> Каждый разрешенный класс-наследник <strong>обязан</strong> выбрать свою дальнейшую судьбу, указав один из трех модификаторов:<ul>
+<li><code>final</code> — иерархия закрывается навсегда (дальше наследоваться нельзя). Эту роль отлично выполняют <code>record</code>, так как они <code>final</code> по умолчанию.</li>
+<li><code>sealed</code> — наследник тоже становится запечатанным и должен перечислить уже своих разрешенных потомков через <code>permits</code>.</li>
+<li><code>non-sealed</code> — (пишется через дефис!) наследник заново открывает иерархию для всего остального мира, разрешая наследоваться от себя кому угодно.</li>
+</ul>
+</li>
+</ol>
+<p><strong>Секретное комбо для сеньора: Sealed + Switch Pattern Matching</strong> — Главная суперсила <code>sealed</code> классов раскрывается в паре с новым <code>switch</code>. Если ты прогоняешь <code>sealed</code> тип через <code>switch</code>, компилятор <strong>знает все возможные варианты наследников</strong>. Это значит, что тебе <strong>больше не нужно писать блок <code>default</code></strong>!</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">PaymentResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">...;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">// Компилятор видит, что мы перебрали все 3 разрешенных варианта.</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1">// Блок default не нужен!</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">Success</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Оплачено: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="na">receiptId</span><span class="p">();</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">Error</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Ошибка: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="na">errorMessage</span><span class="p">();</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">Pending</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;В обработке: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">transactionId</span><span class="p">();</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">};</span>
+</span></code></pre></div>
+<p><em>В чем профит:</em> Если завтра кто-то добавит новый статус <code>Refunded</code> в <code>permits</code>, код не скомпилируется, пока ты не добавишь обработку этого нового кейса в <code>switch</code>. Никаких скрытых багов в рантайме!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Назад: Главная">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Главная
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../oop/" class="md-footer__link md-footer__link--next" aria-label="Вперед: ООП">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                ООП
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
