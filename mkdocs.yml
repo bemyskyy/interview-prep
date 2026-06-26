@@ -1,25 +1,90 @@
 site_name: Interview Prep
+site_description: База знаний для подготовки к техническим собеседованиям по Java
+site_author: Tolebek
+
 theme:
   name: material
+  language: ru  # Локализует: поиск, навигацию, подписи, кнопки — всё на русский
+
   palette:
     - scheme: default
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-7
         name: Тёмная тема
     - scheme: slate
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Светлая тема
+
   features:
-    - navigation.sections
-    - navigation.top
-    - search.suggest
-    - search.highlight
-    - content.code.copy
+    # Навигация
+    - navigation.sections       # разделы в боковом меню
+    - navigation.expand         # автоматически раскрывать текущий раздел
+    - navigation.top            # кнопка "Наверх" при прокрутке
+    - navigation.indexes        # раздел может иметь свою index-страницу
+    - navigation.footer         # кнопки "Предыдущая / Следующая" внизу страницы
+
+    # Поиск
+    - search.suggest            # автодополнение в поиске
+    - search.highlight          # подсветка найденного на странице
+    - search.share              # кнопка поделиться поисковым запросом
+
+    # Код
+    - content.code.copy         # кнопка "Копировать" у блоков кода
+    - content.code.annotate     # аннотации к строкам кода (# (1))
+
+    # Вкладки (если понадобятся разделы верхнего уровня)
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+
 markdown_extensions:
-  - admonition
-  - pymdownx.highlight
-  - pymdownx.superfences
-  - pymdownx.inlinehilite
+  # Базовые
+  - admonition                  # !!! tip, !!! warning и т.д.
   - toc:
-      permalink: true
+      permalink: true           # якорные ссылки у заголовков
+      title: Содержание         # заголовок блока TOC на русском
+
+  # Код
+  - pymdownx.highlight:
+      anchor_linenums: true     # номера строк с якорями
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences        # блоки кода с языком
+  - pymdownx.inlinehilite       # `inline code` с подсветкой
+
+  # Расширения текста
+  - pymdownx.details            # ??? details — сворачиваемые блоки
+  - pymdownx.tabbed:
+      alternate_style: true     # === "Вкладка" — вкладки внутри страницы
+  - pymdownx.tasklist:
+      custom_checkbox: true     # - [x] чекбоксы
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+  # Таблицы и форматирование
+  - tables
+  - attr_list                   # {.class} атрибуты для элементов
+  - md_in_html                  # Markdown внутри HTML-тегов
+
+plugins:
+  - search:
+      lang: ru                  # русский стеммер для поиска
+
+nav:
+  - Главная: index.md
+  - Java:
+      - Основы JVM: java/basics.md
+      - ООП: java/oop.md
+      - Коллекции: java/collections.md
+      - Исключения: java/exceptions.md
+      - Дженерики: java/generics.md
+      - Stream API: java/streams.md
+      - Многопоточность: java/multithreading.md
+      - SOLID: java/solid.md
+      - Паттерны проектирования: java/patterns.md
+      - IO / NIO: java/io-nio.md
