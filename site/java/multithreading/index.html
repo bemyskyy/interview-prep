@@ -1,0 +1,2317 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../streams/">
+      
+      
+        <link rel="next" href="../solid/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Многопоточность - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#multithreading" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Многопоточность
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Фундамент
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Фундамент">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-threads-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Потоки (Threads) и Процессы (Processes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-thread-vs-runnable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Создание: Thread vs Runnable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Жизненный цикл потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Базовая синхронизация: Мониторы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-wait-notify-spurious-wakeup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. wait() / notify() и Spurious Wakeup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-join-sleep-yield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. join, sleep, yield
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Правильная остановка: interrupt()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-memory-model-jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java Memory Model (JMM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java Memory Model (JMM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Три кита JMM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-happens-before" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Happens-Before — твоя главная аксиома
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-volatile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Анатомия volatile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-final-field-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Final Field Semantics (Безопасная публикация)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javautilconcurrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.util.concurrent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="java.util.concurrent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Locks (Блокировки)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-atomics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Atomics (Атомарные переменные)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-concurrent-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Concurrent Collections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-synchronizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synchronizers (Синхронизаторы)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Управление потоками (Executors)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Управление потоками (Executors)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему не делаем new Thread() вручную?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Иерархия интерфейсов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-threadpoolexecutor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ThreadPoolExecutor — сердце управления потоками
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Готовые пулы — фабрика Executors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-forkjoinpool-fjp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. ForkJoinPool (FJP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Асинхронность и Future
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Асинхронность и Future">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Future — в чём боль?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-completablefuture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. CompletableFuture — функциональный конвейер
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deep-dive-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deep Dive — Under the Hood
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deep Dive — Under the Hood">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cas-aba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CAS и Проблема ABA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-aqs-abstractqueuedsynchronizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AQS (AbstractQueuedSynchronizer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-locksupportpark-unpark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LockSupport.park() / unpark()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-false-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. False Sharing (Ложное разделение)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-loom-java-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Loom (Java 21+)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Loom (Java 21+)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-threads-vs-platform-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual Threads vs Platform Threads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carrier-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carrier Threads и монтирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pinning (Прикалывание) — ахиллесова пята
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-concurrency-preview-java-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured Concurrency (Preview, Java 21+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Фундамент
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Фундамент">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-threads-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Потоки (Threads) и Процессы (Processes)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-thread-vs-runnable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Создание: Thread vs Runnable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Жизненный цикл потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Базовая синхронизация: Мониторы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-wait-notify-spurious-wakeup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. wait() / notify() и Spurious Wakeup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-join-sleep-yield" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. join, sleep, yield
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-interrupt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Правильная остановка: interrupt()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-memory-model-jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java Memory Model (JMM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java Memory Model (JMM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Три кита JMM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-happens-before" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Happens-Before — твоя главная аксиома
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-volatile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Анатомия volatile
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-final-field-semantics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Final Field Semantics (Безопасная публикация)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#javautilconcurrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.util.concurrent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="java.util.concurrent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Locks (Блокировки)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-atomics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Atomics (Атомарные переменные)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-concurrent-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Concurrent Collections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-synchronizers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Synchronizers (Синхронизаторы)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Управление потоками (Executors)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Управление потоками (Executors)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-thread" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему не делаем new Thread() вручную?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Иерархия интерфейсов
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-threadpoolexecutor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. ThreadPoolExecutor — сердце управления потоками
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Готовые пулы — фабрика Executors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-forkjoinpool-fjp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. ForkJoinPool (FJP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Асинхронность и Future
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Асинхронность и Future">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-future" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Future — в чём боль?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-completablefuture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. CompletableFuture — функциональный конвейер
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deep-dive-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deep Dive — Under the Hood
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deep Dive — Under the Hood">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-cas-aba" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. CAS и Проблема ABA
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-aqs-abstractqueuedsynchronizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. AQS (AbstractQueuedSynchronizer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-locksupportpark-unpark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. LockSupport.park() / unpark()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-false-sharing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. False Sharing (Ложное разделение)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-loom-java-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Loom (Java 21+)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Loom (Java 21+)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-threads-vs-platform-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual Threads vs Platform Threads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carrier-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Carrier Threads и монтирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pinning (Прикалывание) — ахиллесова пята
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structured-concurrency-preview-java-21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structured Concurrency (Preview, Java 21+)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="multithreading">Многопоточность (Multithreading)<a class="headerlink" href="#multithreading" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Фундамент<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="1-threads-processes">1. Потоки (Threads) и Процессы (Processes)<a class="headerlink" href="#1-threads-processes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Процесс</strong> — тяжеловесная единица (экземпляр запущенной программы). У процесса <strong>своя изолированная память</strong>. Если один упадёт — другие выживут.<ul>
+<li><em>Аналогия:</em> Отдельный дом. Чтобы поговорить с соседом (другим процессом), нужно орать через улицу (Socket, REST, IPC).</li>
+</ul>
+</li>
+<li><strong>Поток</strong> — лёгкая единица исполнения <em>внутри</em> процесса. Все потоки одного процесса делят <strong>общую память (Heap)</strong>, но имеют свой <strong>стек (Stack)</strong>.<ul>
+<li><em>Аналогия:</em> Жильцы одной квартиры. Легко передают вещи (объекты в Heap), но могут подраться за туалет (Race Condition).</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-thread-vs-runnable">2. Создание: <code>Thread</code> vs <code>Runnable</code><a class="headerlink" href="#2-thread-vs-runnable" title="Permanent link">&para;</a></h3>
+<p>Почему <code>extends Thread</code> — моветон:</p>
+<ol>
+<li><strong>Ограниченность наследования:</strong> нет множественного наследования — ты теряешь возможность унаследоваться от бизнес-класса.</li>
+<li><strong>SRP:</strong> Поток (<code>Thread</code>) — это "рабочий" (механизм запуска). Задача (<code>Runnable</code>) — это "инструкция" (бизнес-логика). Нельзя вшивать инструкцию в рабочего.</li>
+</ol>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// ❌ Смешиваем инфраструктуру и логику</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span> <span class="nc">BadThread</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Thread</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Hard work...&quot;</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// ✅ Логика отдельно, запуск отдельно</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">Runnable</span><span class="w"> </span><span class="n">task</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Clean work!&quot;</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">Thread</span><span class="w"> </span><span class="n">worker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">worker</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+</span></code></pre></div>
+<h3 id="3">3. Жизненный цикл потока<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Состояния <code>Thread.State</code>:</p>
+<ol>
+<li><strong>NEW</strong> — создан <code>new Thread()</code>, <code>start()</code> ещё не вызван.</li>
+<li><strong>RUNNABLE</strong> — вызван <code>start()</code>. Поток либо выполняется на CPU, либо ждёт своей очереди в планировщике ОС.</li>
+<li><strong>BLOCKED</strong> — упёрся в <code>synchronized</code> и ждёт освобождения монитора.</li>
+<li><strong>WAITING</strong> — ждёт другого потока без лимита времени (<code>wait()</code>, <code>join()</code>).</li>
+<li><strong>TIMED_WAITING</strong> — ждёт с тайм-аутом (<code>sleep(1000)</code>, <code>wait(1000)</code>).</li>
+<li><strong>TERMINATED</strong> — <code>run()</code> завершился. Перезапустить нельзя — умер значит умер.</li>
+</ol>
+<h3 id="4">4. Базовая синхронизация: Мониторы<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>В Java <strong>каждый объект</strong> имеет встроенный замок (монитор/mutex). В один момент монитором может владеть только один поток.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Counter</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="c1">// Вариант 1: лок на this</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">synchronized</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="c1">// Вариант 2: лок на конкретном объекте (лучше для гранулярности)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">incrementBlock</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="kd">synchronized</span><span class="w"> </span><span class="p">(</span><span class="n">lock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">            </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="c1">// Вариант 3: лок на классе (static synchronized)</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="c1">// эквивалентно synchronized(Counter.class)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">synchronized</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">staticJob</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title"><code>synchronized</code> даёт сразу два свойства</p>
+<p><strong>Атомарность</strong> — никто не вмешается в середине. <strong>Видимость</strong> — после выхода из блока все потоки увидят актуальное значение.</p>
+</div>
+<h3 id="5-wait-notify-spurious-wakeup">5. <code>wait()</code> / <code>notify()</code> и Spurious Wakeup<a class="headerlink" href="#5-wait-notify-spurious-wakeup" title="Permanent link">&para;</a></h3>
+<p>Работают <strong>только</strong> внутри <code>synchronized</code> блока того же объекта.</p>
+<ul>
+<li><code>wait()</code> — "Отпускаю монитор и иду спать, пока не разбудят".</li>
+<li><code>notify()</code> — будит одного случайного из спящих.</li>
+<li><code>notifyAll()</code> — будит всех, они начинают драться за монитор.</li>
+</ul>
+<p><strong>Spurious Wakeup:</strong> ОС может разбудить поток без вызова <code>notify</code>. Поэтому всегда используем <code>while</code>, а не <code>if</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">synchronized</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">consume</span><span class="p">()</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">InterruptedException</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="c1">// ✅ while — если проснулись ложно, цикл проверит условие снова</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="n">wait</span><span class="p">();</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="na">poll</span><span class="p">();</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">notifyAll</span><span class="p">();</span><span class="w"> </span><span class="c1">// сообщаем продюсерам, что место освободилось</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="6-join-sleep-yield">6. <code>join</code>, <code>sleep</code>, <code>yield</code><a class="headerlink" href="#6-join-sleep-yield" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>Thread.sleep(ms)</code></strong> — пауза текущего потока. <strong>НЕ отпускает мониторы!</strong> Если уснул в <code>synchronized</code> — никто туда не зайдёт.</li>
+<li><strong><code>thread.join()</code></strong> — "Жду, пока поток <code>thread</code> завершится". Используется, чтобы дождаться результата.</li>
+<li><strong><code>Thread.yield()</code></strong> — подсказка планировщику "готов уступить CPU". Может быть проигнорирована. В реальном коде — редко.</li>
+</ul>
+<h3 id="7-interrupt">7. Правильная остановка: <code>interrupt()</code><a class="headerlink" href="#7-interrupt" title="Permanent link">&para;</a></h3>
+<p><code>stop()</code> — <strong>deprecated</strong> и опасен: убивает поток "на полуслове", данные могут остаться битыми.</p>
+<p>Правильный путь — <strong>кооперативное завершение</strong>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Thread</span><span class="w"> </span><span class="n">worker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Thread</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">isInterrupted</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Working...&quot;</span><span class="p">);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">InterruptedException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Попросили выйти во сне!&quot;</span><span class="p">);</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">            </span><span class="n">Thread</span><span class="p">.</span><span class="na">currentThread</span><span class="p">().</span><span class="na">interrupt</span><span class="p">();</span><span class="w"> </span><span class="c1">// ❗ восстанавливаем флаг — catch его сбрасывает</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">            </span><span class="k">break</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Clean shutdown.&quot;</span><span class="p">);</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">});</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="n">worker</span><span class="p">.</span><span class="na">start</span><span class="p">();</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">worker</span><span class="p">.</span><span class="na">interrupt</span><span class="p">();</span><span class="w"> </span><span class="c1">// &quot;стучимся&quot; к потоку</span>
+</span></code></pre></div>
+<h2 id="java-memory-model-jmm">Java Memory Model (JMM)<a class="headerlink" href="#java-memory-model-jmm" title="Permanent link">&para;</a></h2>
+<h3 id="1-jmm">1. Три кита JMM<a class="headerlink" href="#1-jmm" title="Permanent link">&para;</a></h3>
+<p><strong>Atomicity (Атомарность)</strong> — операция либо выполнена полностью, либо не начиналась. Другие потоки не видят промежуточного состояния.</p>
+<p>Атомарны из коробки: чтение/запись ссылок и всех примитивов, <strong>кроме</strong> <code>long</code> и <code>double</code> (если не <code>volatile</code>). 64-битная запись на 32-битной ОС может разбиться на два шага — другой поток прочитает "склейку" из старой и новой половины (Word Tearing).</p>
+<p><strong>Visibility (Видимость)</strong> — у каждого ядра CPU есть свой кэш (L1, L2, L3). Когда поток меняет переменную, он меняет её в кэше своего ядра. Другой поток читает старое значение из своего кэша. Без явной синхронизации JMM <strong>не гарантирует</strong>, когда данные доедут до другого ядра.</p>
+<p><strong>Ordering (Упорядочивание/Reordering)</strong> — компилятор и CPU вправе менять порядок инструкций, если это не ломает логику <em>текущего потока</em> (правило <em>as-if-serial</em>). В многопоточном коде это приводит к неожиданным эффектам.</p>
+<h3 id="2-happens-before">2. Happens-Before — твоя главная аксиома<a class="headerlink" href="#2-happens-before" title="Permanent link">&para;</a></h3>
+<p>Если событие A <em>happens-before</em> события B, то JMM гарантирует:</p>
+<ol>
+<li>Результат A будет <strong>виден</strong> для B.</li>
+<li>A гарантированно <strong>выполнится до</strong> B (запрет переупорядочивания).</li>
+</ol>
+<p>Если между записью в одном потоке и чтением в другом нет связи happens-before — у тебя <strong>data race</strong>.</p>
+<p><strong>Ключевые правила:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Правило</th>
+<th>Суть</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Program Order</strong></td>
+<td>Каждое действие в потоке HB следующего в том же потоке</td>
+</tr>
+<tr>
+<td><strong>Monitor Lock</strong></td>
+<td><code>unlock</code> HB следующего <code>lock</code> того же монитора</td>
+</tr>
+<tr>
+<td><strong>Volatile Variable</strong></td>
+<td>Запись в <code>volatile</code> HB любого последующего чтения этой переменной</td>
+</tr>
+<tr>
+<td><strong>Thread Start</strong></td>
+<td><code>Thread.start()</code> HB любой инструкции в <code>run()</code> этого потока</td>
+</tr>
+<tr>
+<td><strong>Thread Join</strong></td>
+<td>Любая инструкция потока HB успешного выхода из <code>join()</code></td>
+</tr>
+<tr>
+<td><strong>Transitivity</strong></td>
+<td>Если A HB B, и B HB C, то A HB C</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-volatile">3. Анатомия <code>volatile</code><a class="headerlink" href="#3-volatile" title="Permanent link">&para;</a></h3>
+<p>Решает проблемы <strong>видимости</strong> и <strong>упорядочивания</strong>, но <strong>не решает</strong> атомарность сложных операций.</p>
+<ul>
+<li><strong>Видимость:</strong> запись в <code>volatile</code> → немедленный сброс в RAM. Чтение → всегда из RAM, минуя кэш.</li>
+<li><strong>Memory Barriers:</strong> <code>volatile</code> расставляет барьеры (StoreStore, StoreLoad, LoadLoad, LoadStore), запрещающие переупорядочивание.</li>
+<li><strong>Release/Acquire семантика:</strong> если поток А записал <code>x = 5</code>, потом <code>volatile flag = true</code> — поток Б, увидев <code>flag == true</code>, гарантированно увидит и <code>x == 5</code>.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title"><code>volatile count++</code> — это баг</p>
+<p><code>count++</code> — это три шага: Read → Modify → Write. <code>volatile</code> гарантирует честное чтение и запись, но <strong>не защищает</strong> от двух потоков, одновременно прочитавших одно значение. Для атомарного инкремента — <code>AtomicInteger</code>.</p>
+</div>
+<h3 id="4-final-field-semantics">4. Final Field Semantics (Безопасная публикация)<a class="headerlink" href="#4-final-field-semantics" title="Permanent link">&para;</a></h3>
+<p>JMM даёт особую гарантию для <code>final</code> полей: если объект корректно создан (конструктор завершился), любой поток, получивший на него ссылку, <strong>гарантированно увидит инициализированные значения <code>final</code> полей</strong>.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ImmutableConfig</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">settings</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">ImmutableConfig</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">temp</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;timeout&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;5000&quot;</span><span class="p">);</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">settings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="c1">// В конце конструктора JMM ставит StoreStore-барьер:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="c1">// все записи внутри конструктора будут видны ВСЕМ потокам</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="c1">// ДО того, как ссылка на объект станет доступна снаружи</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Escape during construction (Утечка <code>this</code>)</p>
+<p>Гарантия ломается, если ссылка на объект "утекла" до завершения конструктора — например, передал <code>this</code> в глобальный Listener или запустил поток из конструктора. Другой поток может увидеть <code>final</code> поля ещё равными <code>null</code>.</p>
+</div>
+<h2 id="javautilconcurrent">java.util.concurrent<a class="headerlink" href="#javautilconcurrent" title="Permanent link">&para;</a></h2>
+<h3 id="1-locks">1. Locks (Блокировки)<a class="headerlink" href="#1-locks" title="Permanent link">&para;</a></h3>
+<p><strong><code>ReentrantLock</code> vs <code>synchronized</code>:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">ReentrantLock</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReentrantLock</span><span class="p">();</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">// ✅ tryLock — не зависнешь навсегда</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lock</span><span class="p">.</span><span class="na">tryLock</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">MILLISECONDS</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="c1">// критическая секция</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="n">lock</span><span class="p">.</span><span class="na">unlock</span><span class="p">();</span><span class="w"> </span><span class="c1">// обязателен в finally!</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="p">}</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1">// ✅ lockInterruptibly — можно прервать ожидание</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">lock</span><span class="p">.</span><span class="na">lockInterruptibly</span><span class="p">();</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Возможность</th>
+<th><code>synchronized</code></th>
+<th><code>ReentrantLock</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Попытка захвата без зависания</td>
+<td>❌</td>
+<td>✅ <code>tryLock()</code></td>
+</tr>
+<tr>
+<td>Прерываемое ожидание</td>
+<td>❌</td>
+<td>✅ <code>lockInterruptibly()</code></td>
+</tr>
+<tr>
+<td>Честная очередь (fairness)</td>
+<td>❌</td>
+<td>✅ <code>new ReentrantLock(true)</code></td>
+</tr>
+<tr>
+<td>Несколько Condition</td>
+<td>❌</td>
+<td>✅ <code>lock.newCondition()</code></td>
+</tr>
+<tr>
+<td>Автоматическое освобождение</td>
+<td>✅</td>
+<td>❌ (нужен <code>finally</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>ReadWriteLock</code></strong> — для кэшей: тысячи читателей одновременно, но при записи все ждут.</p>
+<p><strong><code>StampedLock</code></strong> (Java 8) — добавляет <strong>оптимистичное чтение</strong>: читаешь без блокировки, получаешь <code>stamp</code>, потом проверяешь "данные не изменились?". Если нет — сэкономили время. Если да — перечитываем с обычной блокировкой.</p>
+<p><strong><code>Condition</code></strong> — замена <code>wait/notify</code>. Для одного лока можно создать несколько независимых очередей ожидания:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">ReentrantLock</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReentrantLock</span><span class="p">();</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">Condition</span><span class="w"> </span><span class="n">notEmpty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lock</span><span class="p">.</span><span class="na">newCondition</span><span class="p">();</span><span class="w"> </span><span class="c1">// будим потребителей</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">Condition</span><span class="w"> </span><span class="n">notFull</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">lock</span><span class="p">.</span><span class="na">newCondition</span><span class="p">();</span><span class="w"> </span><span class="c1">// будим производителей</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">// При добавлении элемента:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">notEmpty</span><span class="p">.</span><span class="na">signal</span><span class="p">();</span><span class="w"> </span><span class="c1">// только потребителей, не всех подряд</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1">// При извлечении:</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">notFull</span><span class="p">.</span><span class="na">signal</span><span class="p">();</span><span class="w">  </span><span class="c1">// только производителей</span>
+</span></code></pre></div>
+<h3 id="2-atomics">2. Atomics (Атомарные переменные)<a class="headerlink" href="#2-atomics" title="Permanent link">&para;</a></h3>
+<p>Работают без блокировок (lock-free) через <strong>CAS</strong> (Compare-And-Swap — атомарная инструкция процессора <code>cmpxchg</code>): "обнови значение на X, но только если текущее == Y".</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">AtomicInteger</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AtomicInteger</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">counter</span><span class="p">.</span><span class="na">incrementAndGet</span><span class="p">();</span><span class="w">              </span><span class="c1">// атомарный ++</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">counter</span><span class="p">.</span><span class="na">compareAndSet</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">update</span><span class="p">);</span><span class="w"> </span><span class="c1">// CAS напрямую</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">AtomicReference</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">&gt;</span><span class="w"> </span><span class="n">head</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AtomicReference</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">head</span><span class="p">.</span><span class="na">compareAndSet</span><span class="p">(</span><span class="n">oldHead</span><span class="p">,</span><span class="w"> </span><span class="n">newHead</span><span class="p">);</span><span class="w">   </span><span class="c1">// lock-free структуры данных</span>
+</span></code></pre></div>
+<p><strong><code>LongAdder</code> vs <code>AtomicLong</code> — почему LongAdder рвёт под нагрузкой:</strong></p>
+<p>При 100 потоках, бьющих в один <code>AtomicInteger</code>, 99 промахнутся в CAS и уйдут на новый круг (spin-wait), сжигая CPU. <code>LongAdder</code> держит массив ячеек — потоки хешируются и обновляют разные ячейки, не мешая друг другу. <code>sum()</code> просто складывает ячейки.</p>
+<div class="admonition tip">
+<p class="admonition-title">Must-have для метрик</p>
+<p><code>LongAdder</code> — обязательный выбор для высоконагруженных счётчиков (метрики, статистика). <code>AtomicLong</code> — когда нужен точный CAS (<code>compareAndSet</code>) или <code>get()</code> с мгновенной точностью.</p>
+</div>
+<h3 id="3-concurrent-collections">3. Concurrent Collections<a class="headerlink" href="#3-concurrent-collections" title="Permanent link">&para;</a></h3>
+<p>Разобраны в разделе <a href="../collections/#_6">Коллекции → Потокобезопасные коллекции</a>. Краткая шпаргалка:</p>
+<table>
+<thead>
+<tr>
+<th>Коллекция</th>
+<th>Когда использовать</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ConcurrentHashMap</code></td>
+<td>Кэш, любое хранилище в многопоточной среде</td>
+</tr>
+<tr>
+<td><code>CopyOnWriteArrayList</code></td>
+<td>Список слушателей — читаем постоянно, пишем редко</td>
+</tr>
+<tr>
+<td><code>ArrayBlockingQueue</code></td>
+<td>Ограниченная очередь задач, жёсткий лимит</td>
+</tr>
+<tr>
+<td><code>LinkedBlockingQueue</code></td>
+<td>Очередь задач с высокой пропускной способностью</td>
+</tr>
+<tr>
+<td><code>SynchronousQueue</code></td>
+<td>Передача "из рук в руки" без буфера</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-synchronizers">4. Synchronizers (Синхронизаторы)<a class="headerlink" href="#4-synchronizers" title="Permanent link">&para;</a></h3>
+<p><strong><code>CountDownLatch</code> — "Защёлка" (одноразовый)</strong></p>
+<p>Главный поток ждёт, пока <code>N</code> других не выполнят работу.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">CountDownLatch</span><span class="w"> </span><span class="n">latch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CountDownLatch</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1">// В каждом из 3 потоков:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">latch</span><span class="p">.</span><span class="na">countDown</span><span class="p">();</span><span class="w"> </span><span class="c1">// уменьшает счётчик</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1">// В главном потоке:</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">latch</span><span class="p">.</span><span class="na">await</span><span class="p">();</span><span class="w"> </span><span class="c1">// блокируется, пока счётчик не станет 0</span>
+</span></code></pre></div>
+<p><em>Пример:</em> Отправили запросы в 3 микросервиса, дождались всех, собрали финальный ответ.</p>
+<p><strong><code>CyclicBarrier</code> — "Шлагбаум" (многоразовый)</strong></p>
+<p>N потоков делают расчёт по этапам. Кто дошёл до точки — ждёт остальных. Когда все пришли — идут дальше вместе.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">CyclicBarrier</span><span class="w"> </span><span class="n">barrier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CyclicBarrier</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Все пришли, переходим к следующему этапу!&quot;</span><span class="p">);</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="p">});</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1">// В каждом из 5 потоков:</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">barrier</span><span class="p">.</span><span class="na">await</span><span class="p">();</span><span class="w"> </span><span class="c1">// ждём остальных</span>
+</span></code></pre></div>
+<p><strong><code>Semaphore</code> — "Парковка"</strong></p>
+<p>Ограничивает количество потоков, работающих с ресурсом одновременно.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">Semaphore</span><span class="w"> </span><span class="n">semaphore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Semaphore</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"> </span><span class="c1">// 5 &quot;пропусков&quot;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">semaphore</span><span class="p">.</span><span class="na">acquire</span><span class="p">();</span><span class="w"> </span><span class="c1">// взять пропуск (блокируется если все заняты)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="n">callExternalApi</span><span class="p">();</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="n">semaphore</span><span class="p">.</span><span class="na">release</span><span class="p">();</span><span class="w"> </span><span class="c1">// вернуть пропуск</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><em>Идеально для rate limiting</em> — ограничить одновременные запросы к внешнему API.</p>
+<p><strong><code>Phaser</code> — "Комбайн"</strong></p>
+<p>Смесь Latch и Barrier на максималках. Динамически регистрирует и удаляет участников в процессе работы. Очень гибкий, но сложный.</p>
+<h2 id="executors">Управление потоками (Executors)<a class="headerlink" href="#executors" title="Permanent link">&para;</a></h2>
+<h3 id="new-thread">Почему не делаем <code>new Thread()</code> вручную?<a class="headerlink" href="#new-thread" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Дорого:</strong> создание системного потока (Java-поток → поток ОС) — тяжёлый системный вызов с выделением памяти под стек.</li>
+<li><strong>Риск OOM:</strong> 1000 запросов → 1000 потоков → <code>OutOfMemoryError: unable to create new native thread</code>.</li>
+<li><strong>Нет контроля:</strong> как собрать результаты? как отменить? как ограничить количество?</li>
+</ol>
+<p>Решение — <strong>пулы потоков</strong>: переиспользуем потоки, управляем жизненным циклом.</p>
+<h3 id="1">1. Иерархия интерфейсов<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>Executor</code></strong> — базовый: <code>execute(Runnable)</code>. Просто "выполни где-нибудь".</li>
+<li><strong><code>ExecutorService</code></strong> — рабочий инструмент: управление жизненным циклом (<code>shutdown</code>, <code>shutdownNow</code>), возврат результата через <code>submit(Callable)</code> → <code>Future</code>.</li>
+<li><strong><code>ScheduledExecutorService</code></strong> — выполнение с задержкой или периодически (замена устаревшему <code>Timer</code>).</li>
+</ul>
+<h3 id="2-threadpoolexecutor">2. ThreadPoolExecutor — сердце управления потоками<a class="headerlink" href="#2-threadpoolexecutor" title="Permanent link">&para;</a></h3>
+<p>Четыре главных параметра конструктора:</p>
+<ul>
+<li><strong><code>corePoolSize</code></strong> — базовое число потоков, живут всегда (даже без задач).</li>
+<li><strong><code>maxPoolSize</code></strong> — максимум потоков при пиковой нагрузке.</li>
+<li><strong><code>keepAliveTime</code></strong> — время простоя "лишних" потоков (сверх core) до удаления.</li>
+<li><strong><code>workQueue</code></strong> — очередь задач, когда все потоки заняты.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Золотое правило пула — алгоритм принятия решений</p>
+<p>Порядок строго такой, тут часто путаются:</p>
+<ol>
+<li>Потоков меньше <code>corePoolSize</code> → <strong>создать новый поток</strong>.</li>
+<li><code>corePoolSize</code> заполнен → <strong>положить в очередь</strong>.</li>
+<li>Очередь <strong>заполнена</strong> → <strong>создать поток до <code>maxPoolSize</code></strong>.</li>
+<li><code>maxPoolSize</code> достигнут, очередь полна → <strong>Rejection Policy</strong>.</li>
+</ol>
+<p>Важно: новые потоки сверх core создаются только когда <strong>и</strong> очередь заполнена!</p>
+</div>
+<p><strong>Rejection Policies:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Политика</th>
+<th>Поведение</th>
+<th>Когда применять</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AbortPolicy</code></td>
+<td>Бросает <code>RejectedExecutionException</code></td>
+<td>По умолчанию, когда важно не терять задачи</td>
+</tr>
+<tr>
+<td><code>CallerRunsPolicy</code></td>
+<td>Вызывающий поток сам выполняет задачу</td>
+<td>⭐ Продакшн — создаёт естественный Backpressure</td>
+</tr>
+<tr>
+<td><code>DiscardPolicy</code></td>
+<td>Молча выбрасывает новую задачу</td>
+<td>Некритичные логи, метрики</td>
+</tr>
+<tr>
+<td><code>DiscardOldestPolicy</code></td>
+<td>Выбрасывает самую старую задачу</td>
+<td>Редко</td>
+</tr>
+</tbody>
+</table>
+<p><code>CallerRunsPolicy</code> — любимая политика для продакшена. Пока главный поток сам обрабатывает задачу, он не может принимать новые запросы — пул получает время разгрести завал. Это <strong>Backpressure</strong>.</p>
+<h3 id="3-executors">3. Готовые пулы — фабрика <code>Executors</code><a class="headerlink" href="#3-executors" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Мины в продакшене</p>
+<p>Стандартные фабрики удобны, но каждая содержит архитектурную мину.</p>
+</div>
+<p><strong><code>Executors.newFixedThreadPool(n)</code></strong></p>
+<p>Под капотом: <code>core == max == n</code>, <code>LinkedBlockingQueue</code> — <strong>безлимитная</strong> очередь.</p>
+<p>При наплыве задач очередь бесконечно растёт → <code>OutOfMemoryError: Java heap space</code>.</p>
+<p>Когда юзать: нагрузка предсказуема, количество потоков строго ограничено ресурсами CPU.</p>
+<p><strong><code>Executors.newCachedThreadPool()</code></strong></p>
+<p>Под капотом: <code>core = 0</code>, <code>max = Integer.MAX_VALUE</code>, <code>SynchronousQueue</code> (ёмкость 0 — сразу передаёт потоку).</p>
+<p>При DDoS-атаке создаёт поток на каждую задачу → <code>OutOfMemoryError: unable to create new native thread</code>.</p>
+<p>Когда юзать: много коротких лёгких асинхронных задач.</p>
+<p><strong><code>Executors.newSingleThreadExecutor()</code></strong></p>
+<p>Под капотом: <code>core = max = 1</code>, <code>LinkedBlockingQueue</code>.</p>
+<p>Гарантирует строго последовательное выполнение. Если поток умрёт — пул создаст замену.</p>
+<div class="admonition tip">
+<p class="admonition-title">Вопрос с подвохом</p>
+<p>Чем отличается от <code>newFixedThreadPool(1)</code>?</p>
+<p><code>newFixedThreadPool(1)</code> возвращает обычный <code>ThreadPoolExecutor</code> — его можно привести к типу и перенастроить (например, <code>.setMaximumPoolSize(10)</code>). <code>newSingleThreadExecutor()</code> оборачивает пул в <strong>неизменяемый wrapper</strong> — изменить размер в процессе работы невозможно.</p>
+</div>
+<h3 id="4-forkjoinpool-fjp">4. ForkJoinPool (FJP)<a class="headerlink" href="#4-forkjoinpool-fjp" title="Permanent link">&para;</a></h3>
+<p>Особый вид пула для алгоритмов "Разделяй и властвуй" (рекурсивные задачи). Работает под капотом <code>parallelStream()</code> и <code>CompletableFuture</code> (по умолчанию).</p>
+<p>В обычном пуле — одна общая очередь, все толкаются. В FJP у <strong>каждого</strong> потока <strong>своя очередь (Deque)</strong>.</p>
+<p><strong>Work Stealing (Кража работы):</strong> Если поток выполнил все свои задачи — он идёт к загруженному соседу и "ворует" задачу с <strong>хвоста</strong> его очереди. Хозяин берёт с головы — конфликтов нет, синхронизация минимальна, CPU загружен максимально.</p>
+<h2 id="future">Асинхронность и Future<a class="headerlink" href="#future" title="Permanent link">&para;</a></h2>
+<h3 id="1-future">1. <code>Future</code> — в чём боль?<a class="headerlink" href="#1-future" title="Permanent link">&para;</a></h3>
+<p><code>Future</code> появился в Java 5. Отправляешь задачу в пул, получаешь "обещание" результата. Но он глухой и немой:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">Future</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">future</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">executor</span><span class="p">.</span><span class="na">submit</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetchData</span><span class="p">());</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c1">// Два варианта — оба плохие:</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">future</span><span class="p">.</span><span class="na">isDone</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// сжигаем CPU в опросном цикле</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">future</span><span class="p">.</span><span class="na">get</span><span class="p">();</span><span class="w">    </span><span class="c1">// БЛОКИРУЕМ текущий поток — вся суть асинхронности теряется</span>
+</span></code></pre></div>
+<h3 id="2-completablefuture">2. <code>CompletableFuture</code> — функциональный конвейер<a class="headerlink" href="#2-completablefuture" title="Permanent link">&para;</a></h3>
+<p>Java 8. Строим цепочки задач, передающих данные асинхронно — главный поток не блокируется.</p>
+<p><strong>Запуск:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1">// ❗ Всегда передавай свой Executor!</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1">// По умолчанию CF использует ForkJoinPool.commonPool() — его легко забить тяжёлыми задачами</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="w"> </span><span class="n">noResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="p">.</span><span class="na">runAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">sendEmail</span><span class="p">(),</span><span class="w"> </span><span class="n">executor</span><span class="p">);</span><span class="w">           </span><span class="c1">// void</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">withResult</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetchData</span><span class="p">(),</span><span class="w"> </span><span class="n">executor</span><span class="p">);</span><span class="w">        </span><span class="c1">// возвращает результат</span>
+</span></code></pre></div>
+<p><strong>Трансформация результата:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">// thenApply — как map() в стримах. Один к одному, в том же потоке</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">executor</span><span class="p">)</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="p">.</span><span class="na">thenApply</span><span class="p">(</span><span class="n">String</span><span class="p">::</span><span class="n">length</span><span class="p">);</span><span class="w">       </span><span class="c1">// String → Integer</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1">// thenCompose — как flatMap(). Когда следующий шаг тоже возвращает CF</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Document</span><span class="o">&gt;</span><span class="w"> </span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetchDocumentId</span><span class="p">(),</span><span class="w"> </span><span class="n">executor</span><span class="p">)</span><span class="w">       </span><span class="c1">// → Long</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="p">.</span><span class="na">thenCompose</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">loadDocument</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">executor</span><span class="p">));</span><span class="w">       </span><span class="c1">// Long → CF&lt;Document&gt;</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">    </span><span class="c1">// без thenCompose получили бы CF&lt;CF&lt;Document&gt;&gt;</span>
+</span></code></pre></div>
+<p><strong>Слияние независимых задач (<code>thenCombine</code>):</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">// Параллельно парсим таблицы и картинки из файла</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Table</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">tables</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">parseTables</span><span class="p">(</span><span class="n">file</span><span class="p">),</span><span class="w"> </span><span class="n">executor</span><span class="p">);</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Image</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">parseImages</span><span class="p">(</span><span class="n">file</span><span class="p">),</span><span class="w"> </span><span class="n">executor</span><span class="p">);</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1">// Ждём обоих, склеиваем результат — без блокировки главного потока</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Document</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tables</span><span class="p">.</span><span class="na">thenCombine</span><span class="p">(</span><span class="n">images</span><span class="p">,</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Document</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">);</span>
+</span></code></pre></div>
+<p><strong>Обработка ошибок:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Image</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">images</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CompletableFuture</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">parseImages</span><span class="p">(</span><span class="n">file</span><span class="p">),</span><span class="w"> </span><span class="n">executor</span><span class="p">)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="c1">// exceptionally — как catch: ловит ошибку, возвращает фоллбэк</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="p">.</span><span class="na">exceptionally</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">        </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Не удалось распарсить картинки: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">);</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Collections</span><span class="p">.</span><span class="na">emptyList</span><span class="p">();</span><span class="w"> </span><span class="c1">// вместо падения — пустой список</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="p">})</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">    </span><span class="c1">// handle — как finally + catch: вызывается В ЛЮБОМ СЛУЧАЕ</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">    </span><span class="c1">// удобно для закрытия ресурсов и записи статуса</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="p">.</span><span class="na">handle</span><span class="p">((</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">            </span><span class="n">log</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="s">&quot;Ошибка:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ex</span><span class="p">);</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Collections</span><span class="p">.</span><span class="na">emptyList</span><span class="p">();</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">    </span><span class="p">});</span>
+</span></code></pre></div>
+<p><strong>Ожидание нескольких CF:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">// Ждём ВСЕ завершатся</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">CompletableFuture</span><span class="p">.</span><span class="na">allOf</span><span class="p">(</span><span class="n">cf1</span><span class="p">,</span><span class="w"> </span><span class="n">cf2</span><span class="p">,</span><span class="w"> </span><span class="n">cf3</span><span class="p">).</span><span class="na">join</span><span class="p">();</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1">// Возвращает результат ПЕРВОГО завершившегося</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">CompletableFuture</span><span class="p">.</span><span class="na">anyOf</span><span class="p">(</span><span class="n">cf1</span><span class="p">,</span><span class="w"> </span><span class="n">cf2</span><span class="p">,</span><span class="w"> </span><span class="n">cf3</span><span class="p">).</span><span class="na">thenAccept</span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">...);</span>
+</span></code></pre></div>
+<h2 id="deep-dive-under-the-hood">Deep Dive — Under the Hood<a class="headerlink" href="#deep-dive-under-the-hood" title="Permanent link">&para;</a></h2>
+<h3 id="1-cas-aba">1. CAS и Проблема ABA<a class="headerlink" href="#1-cas-aba" title="Permanent link">&para;</a></h3>
+<p><strong>CAS (Compare-And-Swap)</strong> — неделимая инструкция процессора (<code>cmpxchg</code> в x86). За один такт: читает → сравнивает с ожидаемым → если совпало, записывает новое. Никаких блокировок ОС.</p>
+<p><strong>Проблема ABA:</strong></p>
+<ol>
+<li>Поток 1 читает значение <code>A</code>, вытесняется планировщиком.</li>
+<li>Поток 2 меняет <code>A → B</code>.</li>
+<li>Поток 3 меняет <code>B → A</code>.</li>
+<li>Поток 1 просыпается, видит <code>A</code> — совпало! — делает CAS. Но логически состояние уже другое.</li>
+</ol>
+<p><strong>Решение:</strong> <code>AtomicStampedReference</code> — к значению добавляется счётчик-версия. CAS проверяет и значение, и версию.</p>
+<h3 id="2-aqs-abstractqueuedsynchronizer">2. AQS (AbstractQueuedSynchronizer)<a class="headerlink" href="#2-aqs-abstractqueuedsynchronizer" title="Permanent link">&para;</a></h3>
+<p>Абсолютное ядро пакета <code>java.util.concurrent</code>. На нём построены <code>ReentrantLock</code>, <code>CountDownLatch</code>, <code>Semaphore</code>, <code>ReadWriteLock</code>.</p>
+<ul>
+<li>Хранит <code>volatile int state</code> (состояние: количество разрешений, статус лока и т.п.).</li>
+<li>Держит FIFO-очередь ожидания потоков (двусвязный список нод).</li>
+<li>Если поток не смог получить доступ (CAS не прошёл) — AQS <strong>сам паркует</strong> его и ставит в очередь. Когда ресурс освобождается — <strong>сам будит</strong> следующего.</li>
+</ul>
+<h3 id="3-locksupportpark-unpark">3. <code>LockSupport.park()</code> / <code>unpark()</code><a class="headerlink" href="#3-locksupportpark-unpark" title="Permanent link">&para;</a></h3>
+<p>Низкоуровневые примитивы, на которых работает AQS. Не нужен <code>synchronized</code>.</p>
+<p>У каждого потока есть один "пермит": <code>park()</code> блокирует если пермита нет; <code>unpark(thread)</code> выдаёт пермит.</p>
+<div class="admonition tip">
+<p class="admonition-title">Ключевое отличие от <code>wait/notify</code></p>
+<p>Если сделать <code>unpark()</code> <strong>до</strong> вызова <code>park()</code> — поток не заблокируется вообще. С <code>wait/notify</code> такой трюк приводит к вечному зависанию.</p>
+</div>
+<h3 id="4-false-sharing">4. False Sharing (Ложное разделение)<a class="headerlink" href="#4-false-sharing" title="Permanent link">&para;</a></h3>
+<p>Процессор читает память <strong>кэш-линиями</strong> по 64 байта. Если две независимые <code>volatile</code> переменные оказались в одной кэш-линии, и два потока на разных ядрах их постоянно обновляют — ядра непрерывно инвалидируют кэш друг друга. Производительность падает на ровном месте.</p>
+<p><strong>Решение:</strong> аннотация <code>@Contended</code> (или "паддинг" — добивка пустыми полями). Заставляет JVM разнести переменные по разным кэш-линиям. Именно так устроен <code>LongAdder</code> под капотом.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1">// Добавить JVM-флаг: -XX:-RestrictContended</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nd">@sun.misc.Contended</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">volatile</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="project-loom-java-21">Project Loom (Java 21+)<a class="headerlink" href="#project-loom-java-21" title="Permanent link">&para;</a></h2>
+<h3 id="virtual-threads-vs-platform-threads">Virtual Threads vs Platform Threads<a class="headerlink" href="#virtual-threads-vs-platform-threads" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Platform (OS) Threads</strong></th>
+<th><strong>Virtual Threads</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Управление</strong></td>
+<td>ОС</td>
+<td>JVM</td>
+</tr>
+<tr>
+<td><strong>Стек</strong></td>
+<td>~1-2 МБ в памяти ОС</td>
+<td>В Java Heap как обычный объект</td>
+</tr>
+<tr>
+<td><strong>Максимум</strong></td>
+<td>~тысячи</td>
+<td><strong>Миллионы</strong></td>
+</tr>
+<tr>
+<td><strong>Создание</strong></td>
+<td><code>new Thread(task)</code></td>
+<td><code>Thread.ofVirtual().start(task)</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="carrier-threads">Carrier Threads и монтирование<a class="headerlink" href="#carrier-threads" title="Permanent link">&para;</a></h3>
+<p>Виртуальные потоки выполняются на небольшом пуле обычных потоков-носителей (Carrier Threads, по умолчанию ForkJoinPool).</p>
+<ol>
+<li>Виртуальный поток <strong>монтируется</strong> на Carrier — выполняется на CPU.</li>
+<li>Встречает блокирующую I/O (ждёт БД, сеть) — <strong>размонтируется</strong>, стек сохраняется в Heap.</li>
+<li>Carrier-поток свободен — берёт другой виртуальный поток.</li>
+<li>Когда I/O готово — виртуальный поток монтируется снова.</li>
+</ol>
+<p>Никто не простаивает. Можно держать тысячи открытых соединений к БД без тысяч реальных потоков.</p>
+<h3 id="pinning">Pinning (Прикалывание) — ахиллесова пята<a class="headerlink" href="#pinning" title="Permanent link">&para;</a></h3>
+<p>Если виртуальный поток вызывает блокирующую операцию внутри <code>synchronized</code> или native-метода JNI — он <strong>не может</strong> размонтироваться. Он "прикалывает" (pins) Carrier-поток к себе.</p>
+<p>Если таких потоков будет много — пул Carrier-потоков исчерпается, приложение зависнет.</p>
+<div class="admonition warning">
+<p class="admonition-title">Золотое правило Loom</p>
+<p>Заменяй <code>synchronized</code> на <code>ReentrantLock</code>. С <code>ReentrantLock</code> виртуальные потоки корректно размонтируются при ожидании блокировки.</p>
+</div>
+<h3 id="structured-concurrency-preview-java-21">Structured Concurrency (Preview, Java 21+)<a class="headerlink" href="#structured-concurrency-preview-java-21" title="Permanent link">&para;</a></h3>
+<p>Управление подзадачами как единым блоком — по аналогии с обычным <code>try-catch</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="n">scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">StructuredTaskScope</span><span class="p">.</span><span class="na">ShutdownOnFailure</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="n">Future</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">user</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">scope</span><span class="p">.</span><span class="na">fork</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetchUser</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="n">Future</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w">  </span><span class="n">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scope</span><span class="p">.</span><span class="na">fork</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetchOrder</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="n">scope</span><span class="p">.</span><span class="na">join</span><span class="p">();</span><span class="w">           </span><span class="c1">// ждём обоих</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="n">scope</span><span class="p">.</span><span class="na">throwIfFailed</span><span class="p">();</span><span class="w">  </span><span class="c1">// если один упал — бросаем исключение</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Response</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="na">resultNow</span><span class="p">(),</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">resultNow</span><span class="p">());</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">}</span><span class="w"> </span><span class="c1">// при выходе из блока — все незавершённые подзадачи автоматически отменяются</span>
+</span></code></pre></div>
+<p>Если один fork падает с ошибкой — второй автоматически отменяется. Никаких утечек потоков. Код становится линейным и предсказуемым.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../streams/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Stream API">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Stream API
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../solid/" class="md-footer__link md-footer__link--next" aria-label="Вперед: SOLID">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                SOLID
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

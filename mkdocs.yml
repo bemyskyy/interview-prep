@@ -1,10 +1,10 @@
 site_name: Interview Prep
-site_description: База знаний для подготовки к техническим собеседованиям по Java
+site_description: База знаний для подготовки к техническим собеседованиям по Java и backend
 site_author: Tolebek
 
 theme:
   name: material
-  language: ru  # Локализует: поиск, навигацию, подписи, кнопки — всё на русский
+  language: ru
 
   palette:
     - scheme: default
@@ -20,71 +20,101 @@ theme:
         icon: material/brightness-4
         name: Светлая тема
 
+  icon:
+    repo: fontawesome/brands/github
+
   features:
-    # Навигация
-    - navigation.sections       # разделы в боковом меню
-    - navigation.expand         # автоматически раскрывать текущий раздел
-    - navigation.top            # кнопка "Наверх" при прокрутке
-    - navigation.indexes        # раздел может иметь свою index-страницу
-    - navigation.footer         # кнопки "Предыдущая / Следующая" внизу страницы
+    # Навигация верхнего уровня — вкладки (Java, Spring, БД...)
+    - navigation.tabs           # разделы верхнего уровня как вкладки сверху
+    - navigation.tabs.sticky    # вкладки закреплены при прокрутке
+    - navigation.sections       # подразделы группами в боковом меню
+    - navigation.top            # кнопка "Наверх"
+    - navigation.indexes        # раздел имеет свою обзорную страницу
+    - navigation.footer         # кнопки "Назад / Вперёд" внизу страницы
+    - toc.follow                # оглавление следует за прокруткой
 
     # Поиск
-    - search.suggest            # автодополнение в поиске
-    - search.highlight          # подсветка найденного на странице
-    - search.share              # кнопка поделиться поисковым запросом
+    - search.suggest            # автодополнение
+    - search.highlight          # подсветка найденного
+    - search.share              # поделиться поисковым запросом
 
     # Код
-    - content.code.copy         # кнопка "Копировать" у блоков кода
-    - content.code.annotate     # аннотации к строкам кода (# (1))
-
-    # Вкладки (если понадобятся разделы верхнего уровня)
-    # - navigation.tabs
-    # - navigation.tabs.sticky
+    - content.code.copy         # кнопка "Копировать"
+    - content.code.annotate     # аннотации к коду
 
 markdown_extensions:
-  # Базовые
-  - admonition                  # !!! tip, !!! warning и т.д.
+  - admonition
   - toc:
-      permalink: true           # якорные ссылки у заголовков
-      title: Содержание         # заголовок блока TOC на русском
-
-  # Код
+      permalink: true
+      title: Содержание
   - pymdownx.highlight:
-      anchor_linenums: true     # номера строк с якорями
+      anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - pymdownx.superfences        # блоки кода с языком
-  - pymdownx.inlinehilite       # `inline code` с подсветкой
-
-  # Расширения текста
-  - pymdownx.details            # ??? details — сворачиваемые блоки
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
   - pymdownx.tabbed:
-      alternate_style: true     # === "Вкладка" — вкладки внутри страницы
+      alternate_style: true
   - pymdownx.tasklist:
-      custom_checkbox: true     # - [x] чекбоксы
+      custom_checkbox: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-
-  # Таблицы и форматирование
   - tables
-  - attr_list                   # {.class} атрибуты для элементов
-  - md_in_html                  # Markdown внутри HTML-тегов
+  - attr_list
+  - md_in_html
 
 plugins:
   - search:
-      lang: ru                  # русский стеммер для поиска
+      lang: ru
 
 nav:
-  - Главная: index.md
-  - Java:
-      - Основы JVM: java/basics.md
-      - ООП: java/oop.md
-      - Коллекции: java/collections.md
-      - Исключения: java/exceptions.md
-      - Дженерики: java/generics.md
-      - Stream API: java/streams.md
-      - Многопоточность: java/multithreading.md
-      - SOLID: java/solid.md
-      - Паттерны проектирования: java/patterns.md
-      - IO / NIO: java/io-nio.md
+  - Старт: index.md
+
+  - Язык Java:
+      - Платформа и память:
+          - Основы JVM: java/basics.md
+          - Многопоточность: java/multithreading.md
+      - Язык и API:
+          - ООП: java/oop.md
+          - Коллекции: java/collections.md
+          - Исключения: java/exceptions.md
+          - Дженерики: java/generics.md
+          - Stream API: java/streams.md
+          - IO / NIO: java/io-nio.md
+      - Дизайн кода:
+          - SOLID: java/solid.md
+          - Паттерны проектирования: java/patterns.md
+
+  - Spring:
+      - Ядро:
+          - Core (IoC, DI, AOP): spring/spring-core.md
+          - Spring Boot: spring/spring-boot.md
+      - Веб и данные:
+          - Spring MVC / REST: spring/spring-mvc.md
+          - Spring Data JPA: spring/spring-data-jpa.md
+      - Экосистема:
+          - Security, Kafka, DDD: spring/spring-ecosystem.md
+          - Тестирование и инструменты: spring/spring-tools.md
+
+  - Данные:
+      - Реляционные:
+          - SQL и транзакции: database/sql.md
+      - Нереляционные:
+          - NoSQL: database/nosql.md
+
+  - Computer Science:
+      - Алгоритмы:
+          - Теория (Big O, структуры, сортировки): algorithms/algorithms.md
+          - Паттерны задач (LeetCode): algorithms/leetcode-patterns.md
+      - Сети:
+          - HTTP, TCP, REST, gRPC: networks/networks.md
+
+  - Проектирование:
+      - Системы:
+          - Масштабирование систем: system-design/system-design.md
+      - Архитектура:
+          - DDD, микросервисы, CQRS: architecture/architecture.md
+      - Эксплуатация:
+          - Docker, CI/CD, K8s: infrastructure/infrastructure.md

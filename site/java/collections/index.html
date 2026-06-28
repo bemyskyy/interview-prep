@@ -1,0 +1,1963 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../oop/">
+      
+      
+        <link rel="next" href="../exceptions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Коллекции - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#collections" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Коллекции
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Иерархия коллекций и базовые интерфейсы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархия коллекций и базовые интерфейсы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterable-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Вершина эволюции: Iterable и Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-map-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главный вопрос с подвохом: Почему Map — это не Collection?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-list-set-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Большая тройка коллекций: List, Set и Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-equals-hashcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Засада с equals() и hashCode()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lists-arraylist-vs-linkedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Списки (Lists): ArrayList vs LinkedList
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Списки (Lists): ArrayList vs LinkedList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-arraylist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Устройство ArrayList под капотом (Динамический массив)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-linkedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Устройство LinkedList под капотом (Двусвязный список)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Разрушение мифа о вставке в середину
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cache-locality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Магия кэша процессора (Cache Locality)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Магия Хэш-таблиц (HashMap под капотом)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Магия Хэш-таблиц (HashMap под капотом)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как устроена HashMap внутри
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-o1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Как вычисляется индекс бакета? (Секрет скорости O(1))
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Коллизии (Когда два ключа хотят в один бакет)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-load-factor-rehashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Load Factor и Rehashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-java-8-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Эволюция в Java 8: Красно-черные деревья
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-hashmap-vs-linkedhashmap-vs-treemap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. HashMap vs LinkedHashMap vs TreeMap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Множества (Sets) и уникальность
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Множества (Sets) и уникальность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hashset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как устроен HashSet под капотом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-treeset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. TreeSet и сортировка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-comparable-vs-comparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Comparable vs Comparator
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Comparable vs Comparator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#javalangcomparable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.lang.Comparable — Естественный порядок
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javautilcomparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.util.Comparator — Внешний судья (Паттерн Стратегия)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Очереди и Стеки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Очереди и Стеки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fifo-lifo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Базовые принципы: FIFO и LIFO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stack-arraydeque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Почему Stack мертв и да здравствует ArrayDeque
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-priorityqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PriorityQueue: Очередь с приоритетом
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итераторы и потокобезопасные коллекции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Итераторы и потокобезопасные коллекции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-concurrentmodificationexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ConcurrentModificationException: Почему падают итераторы?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-hashtable-vector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Почему нельзя использовать Hashtable и Vector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-concurrenthashmap-chm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ConcurrentHashMap (CHM) — Шедевр
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-copyonwritearraylist-cowal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CopyOnWriteArrayList (COWAL): Копируй при записи
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multithreading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Иерархия коллекций и базовые интерфейсы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Иерархия коллекций и базовые интерфейсы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-iterable-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Вершина эволюции: Iterable и Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-map-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Главный вопрос с подвохом: Почему Map — это не Collection?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-list-set-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Большая тройка коллекций: List, Set и Queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-equals-hashcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Засада с equals() и hashCode()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lists-arraylist-vs-linkedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Списки (Lists): ArrayList vs LinkedList
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Списки (Lists): ArrayList vs LinkedList">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-arraylist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Устройство ArrayList под капотом (Динамический массив)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-linkedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Устройство LinkedList под капотом (Двусвязный список)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Разрушение мифа о вставке в середину
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cache-locality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Магия кэша процессора (Cache Locality)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Магия Хэш-таблиц (HashMap под капотом)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Магия Хэш-таблиц (HashMap под капотом)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как устроена HashMap внутри
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-o1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Как вычисляется индекс бакета? (Секрет скорости O(1))
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Коллизии (Когда два ключа хотят в один бакет)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-load-factor-rehashing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Load Factor и Rehashing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-java-8-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Эволюция в Java 8: Красно-черные деревья
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-hashmap-vs-linkedhashmap-vs-treemap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. HashMap vs LinkedHashMap vs TreeMap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Множества (Sets) и уникальность
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Множества (Sets) и уникальность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hashset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Как устроен HashSet под капотом
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-treeset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. TreeSet и сортировка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-comparable-vs-comparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Comparable vs Comparator
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Comparable vs Comparator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#javalangcomparable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.lang.Comparable — Естественный порядок
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javautilcomparator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        java.util.Comparator — Внешний судья (Паттерн Стратегия)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Очереди и Стеки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Очереди и Стеки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fifo-lifo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Базовые принципы: FIFO и LIFO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-stack-arraydeque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Почему Stack мертв и да здравствует ArrayDeque
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-priorityqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. PriorityQueue: Очередь с приоритетом
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итераторы и потокобезопасные коллекции
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Итераторы и потокобезопасные коллекции">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-concurrentmodificationexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. ConcurrentModificationException: Почему падают итераторы?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-hashtable-vector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Почему нельзя использовать Hashtable и Vector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-concurrenthashmap-chm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. ConcurrentHashMap (CHM) — Шедевр
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-copyonwritearraylist-cowal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. CopyOnWriteArrayList (COWAL): Копируй при записи
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="collections">Collections<a class="headerlink" href="#collections" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Иерархия коллекций и базовые интерфейсы<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><img alt="Иерархия исключений Java" src="../../assets/collections-hierarchy.png" /></p>
+<h3 id="1-iterable-collection">1. Вершина эволюции: <code>Iterable</code> и <code>Collection</code><a class="headerlink" href="#1-iterable-collection" title="Permanent link">&para;</a></h3>
+<p>Вся иерархия начинается с интерфейса <strong><code>Iterable</code></strong>. У него всего одна главная задача: он говорит JVM, что <em>"по этому объекту можно пройтись в цикле <code>for-each</code>"</em>. Он возвращает <code>Iterator</code>, который умеет шагать по элементам (<code>hasNext()</code>, <code>next()</code>).</p>
+<p>От него наследуется интерфейс <strong><code>Collection</code></strong>. Это базовый контракт для группы элементов. Он добавляет фундаментальные методы, которые должны уметь делать все стандартные коллекции: <code>add()</code>, <code>remove()</code>, <code>size()</code>, <code>contains()</code>, <code>clear()</code>.</p>
+<h3 id="2-map-collection">2. Главный вопрос с подвохом: Почему <code>Map</code> — это не <code>Collection</code>?<a class="headerlink" href="#2-map-collection" title="Permanent link">&para;</a></h3>
+<p>На собеседовании обязательно спросят: <em>"Почему <code>List</code> и <code>Set</code> наследуются от <code>Collection</code>, а <code>Map</code> стоит особняком?"</em></p>
+<p>Ответ кроется в <strong>Принципе разделения интерфейсов (Interface Segregation из SOLID)</strong>:</p>
+<ul>
+<li><code>Collection</code> оперирует <strong>одиночными элементами</strong> (Values). Ее базовый метод: <code>add(Element e)</code>.</li>
+<li><code>Map</code> оперирует <strong>парами</strong> (Key → Value). Ее базовый метод: <code>put(Key k, Value v)</code>.</li>
+</ul>
+<p>Если бы разработчики Java заставили <code>Map</code> унаследоваться от <code>Collection</code>, им пришлось бы реализовать метод <code>add(Element)</code>. А что он должен был бы делать в мапе? Каким был бы ключ? Это сломало бы всю логику структуры данных. Поэтому <code>Map</code> — это абсолютно независимая ветка со своим интерфейсом.</p>
+<h3 id="3-list-set-queue">3. Большая тройка коллекций: <code>List</code>, <code>Set</code> и <code>Queue</code><a class="headerlink" href="#3-list-set-queue" title="Permanent link">&para;</a></h3>
+<p>От интерфейса <code>Collection</code> отходят три главные ветки. Каждая из них добавляет свои уникальные правила к базовому контракту.</p>
+<p><strong><code>List</code> (Список) — Контракт порядка и индексов</strong></p>
+<ul>
+<li>Элементы хранятся строго в том порядке, в котором их добавили.</li>
+<li>У каждого элемента есть порядковый номер (индекс). Появляются методы вроде <code>get(int index)</code>.</li>
+<li>Дубликаты разрешены.</li>
+<li><em>Пример:</em> История отметок пользователя за неделю строго по дням.</li>
+</ul>
+<p><strong><code>Set</code> (Множество) — Контракт уникальности</strong></p>
+<ul>
+<li>В коллекции не может быть двух одинаковых элементов.</li>
+<li>Нет индексов и (в большинстве реализаций) нет гарантии сохранения порядка добавления.</li>
+<li>Если попытаться добавить элемент, который там уже есть, метод <code>add()</code> просто вернет <code>false</code>.</li>
+<li><em>Пример:</em> Хранение списка уникальных названий привычек.</li>
+</ul>
+<p><strong><code>Queue</code> (Очередь) — Контракт обработки</strong></p>
+<ul>
+<li>Элементы хранятся в порядке, в котором они должны быть обработаны (обычно FIFO — First In, First Out).</li>
+<li>Специальные методы: <code>offer()</code> (безопасное добавление), <code>poll()</code> (достать и удалить из начала), <code>peek()</code> (просто посмотреть на первый, не удаляя).</li>
+<li><em>Пример:</em> Очередь отправки push-уведомлений.</li>
+</ul>
+<h3 id="4-equals-hashcode">4. Засада с <code>equals()</code> и <code>hashCode()</code><a class="headerlink" href="#4-equals-hashcode" title="Permanent link">&para;</a></h3>
+<p>Без правильного переопределения этих методов структуры данных, основанные на хэшировании (<code>HashSet</code>, <code>HashMap</code>), <strong>просто сломаются логически</strong>.</p>
+<p><strong>Практический сценарий:</strong> Есть класс <code>Habit</code>. Создаем два объекта и добавляем в <code>HashSet</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Habit</span><span class="w"> </span><span class="n">h1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Habit</span><span class="p">(</span><span class="s">&quot;Бег&quot;</span><span class="p">);</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Habit</span><span class="w"> </span><span class="n">h2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Habit</span><span class="p">(</span><span class="s">&quot;Бег&quot;</span><span class="p">);</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">h1</span><span class="p">);</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">h2</span><span class="p">);</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Если НЕ переопределил <code>equals()</code> и <code>hashCode()</code>:</strong> <code>HashSet</code> посмотрит на адреса в памяти (они разные — два вызова <code>new</code>), посчитает хэши от адресов и положит объекты в разные корзины. В итоге в <code>Set</code> окажется <strong>два логически одинаковых объекта</strong>. Контракт уникальности нарушен!</li>
+<li><strong>Если ПЕРЕОПРЕДЕЛИЛ:</strong> <code>HashSet</code> вычислит одинаковый хэш-код (строка "Бег" одинаковая), сравнит объекты через <code>equals()</code> и вернет <code>false</code>. Дубликат не добавится.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Золотое правило</p>
+<p>Если объект планируется использовать в качестве ключа в <code>Map</code> или элемента в <code>Set</code>, переопределение <code>equals()</code> и <code>hashCode()</code> <strong>обязательно</strong>.</p>
+</div>
+<h2 id="lists-arraylist-vs-linkedlist">Списки (Lists): ArrayList vs LinkedList<a class="headerlink" href="#lists-arraylist-vs-linkedlist" title="Permanent link">&para;</a></h2>
+<h3 id="1-arraylist">1. Устройство <code>ArrayList</code> под капотом (Динамический массив)<a class="headerlink" href="#1-arraylist" title="Permanent link">&para;</a></h3>
+<p><code>ArrayList</code> — это умная обертка над самым обычным массивом <code>Object[]</code>.</p>
+<ul>
+<li><strong>Как он создается:</strong> <code>new ArrayList&lt;&gt;()</code> создает пустой массив. При добавлении первого элемента массив инициализируется дефолтным размером (Capacity) — <strong>10 элементов</strong>.</li>
+<li><strong>Динамическое расширение (Resizing):</strong> Что делает <code>ArrayList</code>, когда ты пытаешься добавить 11-й элемент?<ol>
+<li>Создается абсолютно <strong>новый массив</strong>.</li>
+<li>Размер вычисляется по формуле: <code>oldCapacity + (oldCapacity &gt;&gt; 1)</code> — битовый сдвиг вправо на 1 — это деление на 2. Массив увеличивается <strong>в 1.5 раза</strong> (16 → 24 → 36...).</li>
+<li>Старый массив копируется в новый через нативный <code>System.arraycopy()</code>.</li>
+<li>Старый массив уходит в Garbage Collector.</li>
+</ol>
+</li>
+<li><strong>Сложность доступа:</strong> <code>get(index)</code> работает за <strong>O(1)</strong>, так как адреса в массиве вычисляются мгновенно.</li>
+</ul>
+<h3 id="2-linkedlist">2. Устройство <code>LinkedList</code> под капотом (Двусвязный список)<a class="headerlink" href="#2-linkedlist" title="Permanent link">&para;</a></h3>
+<p><code>LinkedList</code> — цепочка независимых объектов-узлов (<code>Node</code>). Никакого единого массива внутри.</p>
+<ul>
+<li><strong>Каждый узел хранит:</strong> сами данные (<code>item</code>), ссылку на <strong>следующий</strong> узел (<code>next</code>), ссылку на <strong>предыдущий</strong> узел (<code>prev</code>).</li>
+<li><strong>Сложность доступа:</strong> Чтобы найти 500-й элемент, <code>LinkedList</code> вынужден начать с головы (или хвоста) и последовательно перебирать узлы. Доступ по индексу — <strong>O(n)</strong>.</li>
+</ul>
+<h3 id="3">3. Разрушение мифа о вставке в середину<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Интервьюер задает классический вопрос: <em>"Мне нужно вставить элемент в середину списка из миллиона элементов. Что быстрее: <code>ArrayList</code> или <code>LinkedList</code>?"</em></p>
+<p>Ожидаемый неверный ответ джуна: <em>"Конечно <code>LinkedList</code>! Вставка O(1), просто перекинем ссылки. А <code>ArrayList</code> сдвинет полмиллиона элементов — O(n)."</em></p>
+<p><strong>Ответ сеньора — почему <code>ArrayList</code> победит:</strong></p>
+<ol>
+<li><strong>Проблема поиска узла:</strong> Сама операция вставки в <code>LinkedList</code> — O(1). Но чтобы добраться до середины, нужно сначала её <strong>найти</strong> — а это O(n) перебора.</li>
+<li><strong>Скорость сдвига массива:</strong> <code>ArrayList</code> сдвигает элементы через <code>System.arraycopy()</code>. Это низкоуровневая команда на C++, которая перемещает гигантские блоки памяти разом. Практически — в сотни раз быстрее перебора узлов.</li>
+</ol>
+<h3 id="4-cache-locality">4. Магия кэша процессора (Cache Locality)<a class="headerlink" href="#4-cache-locality" title="Permanent link">&para;</a></h3>
+<p>Произнеси фразу <strong>"Cache Locality"</strong> на интервью — это сразу покажет понимание архитектуры "железа".</p>
+<ul>
+<li>Процессоры читают из RAM не по одному байту, а целыми блоками (Cache Line). Запросил <code>ArrayList[0]</code> — в кэш процессора подтянулись <code>[1]</code>, <code>[2]</code>, <code>[3]</code> и т.д.</li>
+<li>Так как массив лежит в памяти <strong>сплошным непрерывным куском</strong>, следующие итерации цикла читают прямо из кэша — молниеносно.</li>
+<li>Узлы <code>LinkedList</code> разбросаны по Куче <strong>хаотично</strong>. Каждый переход по ссылке <code>next</code> — гарантированный <strong>Cache Miss</strong> (промах кэша). Процессор каждый раз лезет в медленную RAM.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Итог</p>
+<p><code>LinkedList</code> потребляет в несколько раз больше памяти (объекты <code>Node</code> + хранение ссылок) и катастрофически проигрывает на уровне кэша процессора. В современном коде <code>LinkedList</code> практически не используется. Даже там, где нужна семантика <code>Deque</code>, <code>ArrayDeque</code> справляется лучше.</p>
+</div>
+<h2 id="-hashmap">Магия Хэш-таблиц (HashMap под капотом)<a class="headerlink" href="#-hashmap" title="Permanent link">&para;</a></h2>
+<h3 id="1-hashmap">1. Как устроена <code>HashMap</code> внутри<a class="headerlink" href="#1-hashmap" title="Permanent link">&para;</a></h3>
+<p>Под капотом <code>HashMap</code> — это <strong>массив</strong> объектов <code>Node&lt;K, V&gt;</code>. Каждая ячейка называется <strong>бакетом (bucket / корзиной)</strong>.</p>
+<ul>
+<li><strong>Дефолтный размер:</strong> <code>new HashMap&lt;&gt;()</code> создает массив из <strong>16 бакетов</strong>.</li>
+<li><strong>Что хранит <code>Node</code>:</strong> ключ (<code>key</code>), значение (<code>value</code>), хэш ключа (<code>hash</code>), ссылку на следующий узел (<code>next</code>).</li>
+</ul>
+<h3 id="2-o1">2. Как вычисляется индекс бакета? (Секрет скорости O(1))<a class="headerlink" href="#2-o1" title="Permanent link">&para;</a></h3>
+<p>При <code>map.put("Tolebek", "Developer")</code>:</p>
+<ol>
+<li><strong>Хэш:</strong> Вызывается <code>hashCode()</code> у ключа <code>"Tolebek"</code>.</li>
+<li><strong>Защита:</strong> Внутренняя функция <code>hash()</code> перемешивает биты, чтобы нивелировать плохие реализации <code>hashCode</code>.</li>
+<li><strong>Индекс (Вопрос на сеньора):</strong> Как получить индекс от 0 до 15?<ul>
+<li><em>Наивный способ:</em> <code>hash % 16</code> — работает медленно.</li>
+<li><em>Как в Java на самом деле:</em> <code>(n - 1) &amp; hash</code> — <strong>побитовое И</strong> работает со скоростью света на уровне процессора.</li>
+<li><em>Почему размер всегда степень двойки:</em> Формула <code>(n - 1) &amp; hash</code> работает корректно <strong>только</strong> когда <code>n</code> — степень двойки. Попросишь <code>new HashMap&lt;&gt;(20)</code> — Java сама округлит до 32.</li>
+</ul>
+</li>
+</ol>
+<h3 id="3_1">3. Коллизии (Когда два ключа хотят в один бакет)<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>Если два ключа получают одинаковый индекс — это <strong>коллизия</strong>. Решается методом цепочек (Separate Chaining): новый <code>Node</code> прикрепляется к старому, формируя <strong>связный список</strong> внутри бакета.</p>
+<p>При <code>get(key)</code>: вычисляется индекс → прыжок в бакет → если там список, сравниваем через <code>equals()</code> каждый элемент до совпадения.</p>
+<h3 id="4-load-factor-rehashing">4. Load Factor и Rehashing<a class="headerlink" href="#4-load-factor-rehashing" title="Permanent link">&para;</a></h3>
+<p>Бесконечно накапливать элементы в 16 бакетах нельзя — списки вырастут и поиск замедлится.</p>
+<ul>
+<li><strong>Load Factor</strong> = <code>0.75</code> по умолчанию (баланс памяти и скорости).</li>
+<li><strong>Threshold</strong> = <code>Capacity × Load Factor</code> = <code>16 × 0.75 = 12</code>.</li>
+<li><strong>Rehashing:</strong> При добавлении 13-го элемента:<ol>
+<li>Создается новый массив <strong>в 2 раза больше</strong> (32 бакета).</li>
+<li>Все элементы пересчитывают свои индексы и перекладываются.</li>
+</ol>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка производительности</p>
+<p>Rehashing — <strong>очень тяжёлая операция</strong> O(N). Если заранее знаешь примерное количество элементов, задай начальный размер сразу: <code>new HashMap&lt;&gt;(135_000)</code> — это избавит от десятков лишних перестроений для 100к элементов.</p>
+</div>
+<h3 id="5-java-8-">5. Эволюция в Java 8: Красно-черные деревья<a class="headerlink" href="#5-java-8-" title="Permanent link">&para;</a></h3>
+<p>До Java 8 при жёстких коллизиях (все элементы в один бакет) мапа вырождалась в длинный список. Поиск падал до O(N). Хакеры использовали это для <strong>HashDoS-атак</strong>: специально слали запросы с ключами, дающими одинаковый хэш. Процессор загружался на 100%, приложение падало.</p>
+<p><strong>Решение в Java 8:</strong> Если список в бакете вырастает до <strong>8 элементов</strong> (и общий размер мапы &gt; 64), бакет трансформируется в <strong>Красно-черное дерево (Red-Black Tree)</strong>.</p>
+<ul>
+<li>Поиск в дереве: <strong>O(log N)</strong>. Миллион элементов в одном бакете = 20 шагов вместо миллиона.</li>
+<li>Обратно в список — при уменьшении до <strong>6 элементов</strong> (экономия памяти: узлы дерева тяжелее).</li>
+</ul>
+<h3 id="6-hashmap-vs-linkedhashmap-vs-treemap">6. <code>HashMap</code> vs <code>LinkedHashMap</code> vs <code>TreeMap</code><a class="headerlink" href="#6-hashmap-vs-linkedhashmap-vs-treemap" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>HashMap</strong></th>
+<th><strong>LinkedHashMap</strong></th>
+<th><strong>TreeMap</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Сложность (put/get)</strong></td>
+<td><strong>O(1)</strong> (самая быстрая)</td>
+<td>O(1)</td>
+<td>O(log N) (медленнее)</td>
+</tr>
+<tr>
+<td><strong>Порядок элементов</strong></td>
+<td>Хаотичный</td>
+<td><strong>Сохраняет порядок добавления</strong></td>
+<td><strong>Сортирует по ключу</strong></td>
+</tr>
+<tr>
+<td><strong>Внутреннее устройство</strong></td>
+<td>Массив + Списки/Деревья</td>
+<td>Массив + двусвязный список</td>
+<td>Только красно-черное дерево</td>
+</tr>
+<tr>
+<td><strong>Когда использовать</strong></td>
+<td>В 95% случаев</td>
+<td>LRU-кэш, сохранение хронологии</td>
+<td>Вывод ключей по алфавиту/возрастанию</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sets">Множества (Sets) и уникальность<a class="headerlink" href="#sets" title="Permanent link">&para;</a></h2>
+<h3 id="1-hashset">1. Как устроен <code>HashSet</code> под капотом<a class="headerlink" href="#1-hashset" title="Permanent link">&para;</a></h3>
+<p>На собеседовании спросят: <em>"Как реализована уникальность в <code>HashSet</code>? Писали новый алгоритм?"</em></p>
+<p><strong>Правильный ответ:</strong> Никакого нового алгоритма нет. <code>HashSet</code> — это просто <strong>обёртка над <code>HashMap</code></strong>.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Внутри HashSet:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">private</span><span class="w"> </span><span class="kd">transient</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">PRESENT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span><span class="w"> </span><span class="c1">// заглушка-значение</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">E</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="n">PRESENT</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">// твой элемент — ключ, PRESENT — заглушка</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Твой элемент становится <strong>ключом</strong> в <code>HashMap</code>. А ключи в <code>HashMap</code> всегда уникальны — вся работа по хэшам и коллизиям достается бесплатно. <code>PRESENT</code> — единственный объект на все записи, так что память не тратится.</p>
+<h3 id="2-treeset">2. <code>TreeSet</code> и сортировка<a class="headerlink" href="#2-treeset" title="Permanent link">&para;</a></h3>
+<p>Обычный <code>HashSet</code> хаотичен. Когда нужны уникальные элементы <strong>в отсортированном порядке</strong> — берём <strong><code>TreeSet</code></strong>.</p>
+<ul>
+<li><strong>Под капотом:</strong> <code>TreeMap</code> (красно-черное дерево).</li>
+<li><strong>Сложность:</strong> O(log n) для <code>add</code>, <code>remove</code>, <code>contains</code> — медленнее <code>HashSet</code>, зато элементы всегда отсортированы.</li>
+</ul>
+<p>Но возникает вопрос: <em>"Как <code>TreeSet</code> понимает, что 'больше', а что 'меньше'? Как отсортировать кастомный класс <code>Habit</code>?"</em></p>
+<p>Если положить в <code>TreeSet</code> объект без объяснения порядка — получишь <code>ClassCastException</code> в рантайме. Дерево не поймёт, куда класть элемент.</p>
+<h3 id="3-comparable-vs-comparator">3. <code>Comparable</code> vs <code>Comparator</code><a class="headerlink" href="#3-comparable-vs-comparator" title="Permanent link">&para;</a></h3>
+<h4 id="javalangcomparable"><code>java.lang.Comparable</code> — Естественный порядок<a class="headerlink" href="#javalangcomparable" title="Permanent link">&para;</a></h4>
+<p>Используй, когда хочешь задать сортировку <strong>по умолчанию</strong> прямо в самом классе.</p>
+<ul>
+<li><strong>Суть:</strong> "Я умею сравнивать <strong>себя</strong> с другими."</li>
+<li><strong>Реализуется внутри класса:</strong> <code>class Habit implements Comparable&lt;Habit&gt;</code></li>
+<li><strong>Метод:</strong> <code>compareTo(Habit other)</code> — возвращает отрицательное (меньше), 0 (равно), положительное (больше).</li>
+<li><strong>Когда:</strong> Для очевидной "естественной" сортировки — <code>String</code> по алфавиту, даты от старой к новой.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Habit</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Comparable</span><span class="o">&lt;</span><span class="n">Habit</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">compareTo</span><span class="p">(</span><span class="n">Habit</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="p">.</span><span class="na">compareTo</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="na">name</span><span class="p">);</span><span class="w"> </span><span class="c1">// сортировка по имени</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<h4 id="javautilcomparator"><code>java.util.Comparator</code> — Внешний судья (Паттерн Стратегия)<a class="headerlink" href="#javautilcomparator" title="Permanent link">&para;</a></h4>
+<p>Что если нужно сортировать по-разному: на главном экране — по дате, в профиле — по приоритету? <code>compareTo</code> один, а логик несколько.</p>
+<ul>
+<li><strong>Суть:</strong> "Я — независимый судья, сравниваю <strong>два чужих</strong> объекта."</li>
+<li><strong>Реализуется снаружи класса:</strong> лямбда, анонимный класс или отдельный класс. Передаётся в <code>TreeSet</code>, <code>Collections.sort()</code>, <code>Stream.sorted()</code>.</li>
+<li><strong>Метод:</strong> <code>compare(Habit h1, Habit h2)</code>.</li>
+<li><strong>Когда:</strong> Разная логика сортировки в разных местах; или нельзя изменить исходный код класса.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Сортировка по приоритету через лямбду</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Habit</span><span class="o">&gt;</span><span class="w"> </span><span class="n">byPriority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">h1</span><span class="p">,</span><span class="w"> </span><span class="n">h2</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">h1</span><span class="p">.</span><span class="na">getPriority</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h2</span><span class="p">.</span><span class="na">getPriority</span><span class="p">();</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">TreeSet</span><span class="o">&lt;</span><span class="n">Habit</span><span class="o">&gt;</span><span class="w"> </span><span class="n">byPrioritySet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TreeSet</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">byPriority</span><span class="p">);</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1">// Цепочка: сначала по приоритету, потом по имени</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">Comparator</span><span class="o">&lt;</span><span class="n">Habit</span><span class="o">&gt;</span><span class="w"> </span><span class="n">complex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Comparator</span><span class="p">.</span><span class="na">comparingInt</span><span class="p">(</span><span class="n">Habit</span><span class="p">::</span><span class="n">getPriority</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">                                       </span><span class="p">.</span><span class="na">thenComparing</span><span class="p">(</span><span class="n">Habit</span><span class="p">::</span><span class="n">getName</span><span class="p">);</span>
+</span></code></pre></div>
+<h2 id="_2">Очереди и Стеки<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="1-fifo-lifo">1. Базовые принципы: FIFO и LIFO<a class="headerlink" href="#1-fifo-lifo" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>FIFO (First-In, First-Out)</strong> — классическая <strong>Очередь</strong> (<code>Queue</code>). Кто первым встал в очередь в кассу — того первым и обслужат.<ul>
+<li><em>Где применяется:</em> Обработка потока задач, брокеры сообщений, алгоритм поиска в ширину (BFS).</li>
+</ul>
+</li>
+<li><strong>LIFO (Last-In, First-Out)</strong> — <strong>Стек</strong> (Stack). Стопка тарелок: берёшь ту, которую положил последней.<ul>
+<li><em>Где применяется:</em> Стек вызовов в JVM, отмена операций (Ctrl+Z), поиск в глубину (DFS).</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-stack-arraydeque">2. Почему <code>Stack</code> мертв и да здравствует <code>ArrayDeque</code><a class="headerlink" href="#2-stack-arraydeque" title="Permanent link">&para;</a></h3>
+<p>Если на собеседовании скажешь "использую <code>java.util.Stack</code>" — это красный флаг. Причины:</p>
+<ol>
+<li><strong>Наследование от <code>Vector</code>:</strong> <code>Stack</code> написан в Java 1.0 и унаследован от <code>Vector</code>. Стек внезапно получил кучу лишних методов (вставка по индексу в середину) — что ломает саму семантику LIFO.</li>
+<li><strong>Синхронизация везде:</strong> Все методы <code>Vector</code> (и <code>Stack</code>) помечены <code>synchronized</code>. В однопоточной среде — бессмысленная трата ресурсов.</li>
+</ol>
+<p><strong>Современная альтернатива: <code>ArrayDeque</code></strong> — двусторонняя очередь на динамическом массиве.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">Deque</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">stack</span><span class="p">.</span><span class="na">push</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w">      </span><span class="c1">// добавить на вершину (LIFO)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">stack</span><span class="p">.</span><span class="na">pop</span><span class="p">();</span><span class="w">          </span><span class="c1">// взять с вершины</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">Queue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">queue</span><span class="p">.</span><span class="na">offer</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">);</span><span class="w">     </span><span class="c1">// добавить в хвост (FIFO)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">queue</span><span class="p">.</span><span class="na">poll</span><span class="p">();</span><span class="w">         </span><span class="c1">// взять из головы</span>
+</span></code></pre></div>
+<ul>
+<li>Нет синхронизации → быстро.</li>
+<li>Данные в сплошном массиве → кэш процессора доволен.</li>
+<li><strong>Один класс заменяет и стек, и очередь.</strong></li>
+</ul>
+<h3 id="3-priorityqueue">3. <code>PriorityQueue</code>: Очередь с приоритетом<a class="headerlink" href="#3-priorityqueue" title="Permanent link">&para;</a></h3>
+<p>Обычная очередь — строго FIFO. Но если нужно, чтобы задача с пометкой "КРИТИЧЕСКИЙ БАГ" проскочила вперёд?</p>
+<p><strong>Под капотом</strong> — <strong>Бинарная Min-Heap</strong> (минимальная куча), физически хранящаяся в массиве.</p>
+<ul>
+<li>Приоритет определяется так же, как в <code>TreeSet</code> — через <code>Comparable</code> или <code>Comparator</code> в конструкторе.</li>
+<li><strong>Сложность:</strong> <code>peek()</code> (посмотреть на min) — O(1). <code>poll()</code> и <code>offer()</code> — O(log n) (перебалансировка кучи).</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка с итерацией</p>
+<p>Если вывести <code>PriorityQueue</code> через <code>for-each</code> или <code>println()</code>, элементы <strong>не будут</strong> в порядке приоритета! Куча гарантирует только одно: <strong>самый приоритетный элемент всегда в индексе 0</strong>. Строгий порядок — только при последовательных вызовах <code>poll()</code>.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th><strong>Структура</strong></th>
+<th><strong>Интерфейс</strong></th>
+<th><strong>Суть</strong></th>
+<th><strong>Скорость</strong></th>
+<th><strong>Когда использовать</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>ArrayDeque</code></strong></td>
+<td><code>Deque</code></td>
+<td>Универсал: и стек, и очередь</td>
+<td>O(1) на концах</td>
+<td>Очередь задач, обход графов (BFS/DFS)</td>
+</tr>
+<tr>
+<td><strong><code>Stack</code></strong></td>
+<td><code>Collection</code></td>
+<td>Устаревший</td>
+<td>O(1), но с <code>synchronized</code></td>
+<td><strong>Никогда</strong></td>
+</tr>
+<tr>
+<td><strong><code>PriorityQueue</code></strong></td>
+<td><code>Queue</code></td>
+<td>Очередь с приоритетом (Binary Heap)</td>
+<td>O(log n)</td>
+<td>Планировщики, алгоритм Дейкстры, Top-K задачи</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">Итераторы и потокобезопасные коллекции<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-concurrentmodificationexception">1. <code>ConcurrentModificationException</code>: Почему падают итераторы?<a class="headerlink" href="#1-concurrentmodificationexception" title="Permanent link">&para;</a></h3>
+<p>Один поток бежит по <code>ArrayList</code> в <code>for-each</code>, другой в это время делает <code>add()</code>. Результат — <code>ConcurrentModificationException</code>.</p>
+<p><strong>Как итератор это обнаруживает?</strong> У стандартных коллекций есть счётчик мутаций — <code>modCount</code>. При каждом <code>add</code> / <code>remove</code> он растёт. Итератор запоминает значение при старте в <code>expectedModCount</code> и при каждом шаге проверяет:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">modCount</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">expectedModCount</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcurrentModificationException</span><span class="p">();</span>
+</span></code></pre></div>
+<p>Это называется <strong>Fail-Fast</strong>: лучше сразу упасть с ошибкой, чем тихо работать с наполовину изменёнными данными и получить скрытый баг в бизнес-логике.</p>
+<p><strong>Fail-Safe / Weakly Consistent</strong> — подход потокобезопасных коллекций из <code>java.util.concurrent</code>. Они не кидают эту ошибку: работают либо со слепком данных, либо допускают параллельные изменения без падения.</p>
+<h3 id="2-hashtable-vector">2. Почему нельзя использовать <code>Hashtable</code> и <code>Vector</code><a class="headerlink" href="#2-hashtable-vector" title="Permanent link">&para;</a></h3>
+<p>Если на вопрос <em>"Как сделать <code>Map</code> потокобезопасной?"</em> ответишь <em>"Использовать <code>Hashtable</code>"</em> — интервью может закончиться досрочно.</p>
+<ul>
+<li><strong>Проблема:</strong> Эти классы из Java 1.0 вешают <code>synchronized</code> <strong>на все методы целиком</strong> (<em>Whole-Object Locking</em>).</li>
+<li><strong>Удар по производительности:</strong> Если Поток 1 делает <code>put()</code>, он блокирует ВСЮ таблицу. Потоки 2, 3, 100 — хотят просто прочитать (<code>get()</code>), но вынуждены ждать. В многоядерных системах это катастрофа.</li>
+</ul>
+<h3 id="3-concurrenthashmap-chm">3. <code>ConcurrentHashMap</code> (CHM) — Шедевр<a class="headerlink" href="#3-concurrenthashmap-chm" title="Permanent link">&para;</a></h3>
+<p>Позволяет сотням потоков одновременно читать и писать, почти не блокируя друг друга.</p>
+<p><strong>Эволюция CHM:</strong></p>
+<ul>
+<li><strong>Java 7 — Lock Striping:</strong> Мапу физически разрезали на 16 <strong>сегментов</strong>, у каждого свой замок. 16 потоков могут одновременно писать в разные сегменты. Чтение — вообще без блокировок.</li>
+<li><strong>Java 8+ — CAS + блокировка бакета:</strong><ul>
+<li>Сегменты убраны (жрали память).</li>
+<li>Если бакет <strong>пустой</strong> — вставка через <strong>CAS (Compare-And-Swap)</strong>, атомарную операцию уровня процессора, без <code>synchronized</code>.</li>
+<li>Если бакет <strong>занят</strong> — <code>synchronized</code> вешается <strong>только на первый узел конкретного бакета</strong>. Остальные миллионы бакетов остаются свободными.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Итог</p>
+<p><code>ConcurrentHashMap</code> — выбор по умолчанию для любого кэша или хранилища в многопоточной среде.</p>
+</div>
+<h3 id="4-copyonwritearraylist-cowal">4. <code>CopyOnWriteArrayList</code> (COWAL): Копируй при записи<a class="headerlink" href="#4-copyonwritearraylist-cowal" title="Permanent link">&para;</a></h3>
+<p>Чем <code>Collections.synchronizedList()</code> плох — те же тормоза от <code>synchronized</code>. <code>CopyOnWriteArrayList</code> решает это иначе.</p>
+<ul>
+<li><strong>Чтение</strong> (<code>get</code>, <code>iterator</code>) — без замков, молниеносно.</li>
+<li><strong>Запись</strong> (<code>add</code>, <code>remove</code>) — три шага:<ol>
+<li>Создаётся <strong>точная копия</strong> всего массива.</li>
+<li>Новый элемент добавляется в копию.</li>
+<li>Атомарно переключается ссылка на новый массив. Старый — в GC.</li>
+</ol>
+</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Когда применять</p>
+<p>Копирование массива при каждой записи — <strong>очень дорого</strong>. Идеальный сценарий: <strong>Read-Heavy, Write-Rare</strong> (читаем постоянно, пишем крайне редко). Пример: список Event Listeners — подписались при старте, потом миллионы раз просто перебираем для отправки уведомлений.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../oop/" class="md-footer__link md-footer__link--prev" aria-label="Назад: ООП">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                ООП
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../exceptions/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Исключения">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Исключения
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

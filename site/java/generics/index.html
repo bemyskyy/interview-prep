@@ -1,0 +1,1645 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../exceptions/">
+      
+      
+        <link rel="next" href="../streams/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Дженерики - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#generics" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Дженерики
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Дженерики и зачем они нужны?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-erasure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стирание типов (Type Erasure): Великая иллюзия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Стирание типов (Type Erasure): Великая иллюзия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bridge-methods-senior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge Methods (Мостовые методы) — вопрос уровня Senior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wildcards-pecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wildcards (?) и принцип PECS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wildcards (?) и принцип PECS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extends-t-upper-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? extends T (Ковариантность / Upper Bound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#super-t-lower-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? super T (Контравариантность / Lower Bound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-vs-listobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List&lt;?&gt; vs List&lt;Object&gt; — классическая ловушка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Железобетонное правило PECS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bounds-generic-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ограничения типов (Bounds) и Generic-классы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ограничения типов (Bounds) и Generic-классы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upper-bound-t-extends-someclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upper Bound — &lt;T extends SomeClass&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Множественные ограничения (Multiple Bounds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generic-методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Главные запреты Generics (Ловушки компилятора)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Главные запреты Generics (Ловушки компилятора)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя создать экземпляр new T()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя создать массив Generic-типа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя использовать примитивы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя делать статические поля типа T
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heap-pollution-raw-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap Pollution и Raw Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Heap Pollution и Raw Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raw-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Types (Сырые типы) — красный флаг на ревью
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heap-pollution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap Pollution (Загрязнение кучи)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safevarargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        @SafeVarargs — Когда и зачем
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multithreading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Дженерики и зачем они нужны?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-erasure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стирание типов (Type Erasure): Великая иллюзия
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Стирание типов (Type Erasure): Великая иллюзия">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bridge-methods-senior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bridge Methods (Мостовые методы) — вопрос уровня Senior
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wildcards-pecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wildcards (?) и принцип PECS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Wildcards (?) и принцип PECS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extends-t-upper-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? extends T (Ковариантность / Upper Bound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#super-t-lower-bound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ? super T (Контравариантность / Lower Bound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-vs-listobject" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List&lt;?&gt; vs List&lt;Object&gt; — классическая ловушка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pecs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Железобетонное правило PECS
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bounds-generic-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ограничения типов (Bounds) и Generic-классы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ограничения типов (Bounds) и Generic-классы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#upper-bound-t-extends-someclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Upper Bound — &lt;T extends SomeClass&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Множественные ограничения (Multiple Bounds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generic-методы
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generics_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Главные запреты Generics (Ловушки компилятора)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Главные запреты Generics (Ловушки компилятора)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#new-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя создать экземпляр new T()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generic-_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя создать массив Generic-типа
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя использовать примитивы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Нельзя делать статические поля типа T
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#heap-pollution-raw-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap Pollution и Raw Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Heap Pollution и Raw Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raw-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raw Types (Сырые типы) — красный флаг на ревью
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heap-pollution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap Pollution (Загрязнение кучи)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safevarargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        @SafeVarargs — Когда и зачем
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="generics">Generics (Дженерики)<a class="headerlink" href="#generics" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Что такое Дженерики и зачем они нужны?<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>До Java 5 (2004 год) любая коллекция хранила просто <code>Object</code>. Это порождало три проблемы:</p>
+<ol>
+<li>Можно было случайно положить в список строк число — компилятор молчал.</li>
+<li>При чтении <strong>всегда</strong> нужен был ручной каст: <code>String s = (String) list.get(0);</code></li>
+<li>Неправильный каст приводил к <code>ClassCastException</code> в рантайме — уже на продакшене.</li>
+</ol>
+<p><strong>Решение — Generics:</strong> Строгая типизация на этапе компиляции (Compile-time Type Safety). Пишешь <code>List&lt;String&gt;</code> — компилятор не пустит туда <code>Integer</code>. Ручные касты не нужны, ошибки выявляются до запуска.</p>
+<h2 id="type-erasure">Стирание типов (Type Erasure): Великая иллюзия<a class="headerlink" href="#type-erasure" title="Permanent link">&para;</a></h2>
+<p>Главный шок: <strong>JVM понятия не имеет о существовании дженериков.</strong> Для неё нет разницы между <code>List&lt;String&gt;</code> и <code>List&lt;Integer&gt;</code>. В скомпилированном байт-коде никаких угловых скобок нет. Вся магия существует <strong>только в исходном коде — для компилятора</strong>.</p>
+<p><strong>Что делает компилятор при сборке:</strong></p>
+<ol>
+<li>Проверяет, что ты не положил число в список строк.</li>
+<li><strong>Стирает</strong> все упоминания <code>&lt;String&gt;</code> / <code>&lt;T&gt;</code>. Параметры типа заменяются верхней границей (если ограничений нет — <code>Object</code>).</li>
+<li>Там, где ты достаёшь элемент, <strong>молча вставляет ручной каст</strong>: <code>String s = (String) list.get(0);</code></li>
+</ol>
+<p>То есть скомпилированный код с дженериками под капотом выглядит <strong>в точности как старый код Java 1.4</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Почему не сделали нормально?</p>
+<p>Интервьюер обязательно спросит: <em>"Почему не научили JVM понимать дженерики, как в C#?"</em></p>
+<p>Ответ: <strong>жажда 100% обратной совместимости.</strong> Новый код на Java 5 должен был без проблем работать со старыми библиотеками, скомпилированными на Java 1.4. Гениальный, но костыльный компромисс, за который мы расплачиваемся до сих пор.</p>
+</div>
+<h3 id="bridge-methods-senior">Bridge Methods (Мостовые методы) — вопрос уровня Senior<a class="headerlink" href="#bridge-methods-senior" title="Permanent link">&para;</a></h3>
+<p>Из-за стирания типов при наследовании возникает проблема, ломающая полиморфизм.</p>
+<p><strong>В чём проблема:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setData</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyNode</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Node</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setData</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>После стирания типов компилятор превращает методы в:</p>
+<ul>
+<li>Родитель: <code>public void setData(Object data)</code></li>
+<li>Наследник: <code>public void setData(Integer data)</code></li>
+</ul>
+<p>Сигнатуры перестали совпадать! Вместо Override получился Overload — полиморфизм сломан.</p>
+<p><strong>Как компилятор спасает ситуацию:</strong> Он молча генерирует в <code>MyNode</code> невидимый <strong>мостовой метод</strong>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Твой метод</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setData</span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">// СГЕНЕРИРОВАННЫЙ КОМПИЛЯТОРОМ — ты его не видишь</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">setData</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">setData</span><span class="p">((</span><span class="n">Integer</span><span class="p">)</span><span class="w"> </span><span class="n">data</span><span class="p">);</span><span class="w"> </span><span class="c1">// делегирует твоему методу с кастом</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Благодаря этому bridge method сигнатура родителя корректно переопределяется. Полиморфизм спасён.</p>
+<h2 id="wildcards-pecs">Wildcards (?) и принцип PECS<a class="headerlink" href="#wildcards-pecs" title="Permanent link">&para;</a></h2>
+<h3 id="extends-t-upper-bound"><code>? extends T</code> (Ковариантность / Upper Bound)<a class="headerlink" href="#extends-t-upper-bound" title="Permanent link">&para;</a></h3>
+<p><em>"Этот список хранит объекты класса <code>T</code> или любого его наследника — но я не знаю, какого именно."</em></p>
+<ul>
+<li><code>List&lt;? extends Animal&gt;</code> — сюда можно передать <code>List&lt;Dog&gt;</code>, <code>List&lt;Cat&gt;</code>, <code>List&lt;Animal&gt;</code>.</li>
+<li><strong>МОЖНО читать:</strong> ты уверен, что кто бы там ни лежал — он точно <code>Animal</code>.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Animal</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// безопасно</span>
+</span></code></pre></div>
+<ul>
+<li><strong>НЕЛЬЗЯ писать:</strong> под маской <code>List&lt;? extends Animal&gt;</code> могут передать <code>List&lt;Cat&gt;</code>. Если добавить <code>new Dog()</code> — собака окажется среди котов. Компилятор запрещает <code>add()</code> для любых элементов (кроме <code>null</code>).</li>
+</ul>
+<h3 id="super-t-lower-bound"><code>? super T</code> (Контравариантность / Lower Bound)<a class="headerlink" href="#super-t-lower-bound" title="Permanent link">&para;</a></h3>
+<p><em>"Этот список хранит объекты класса <code>T</code> или любого его предка (вплоть до <code>Object</code>)."</em></p>
+<ul>
+<li><code>List&lt;? super Dog&gt;</code> — сюда можно передать <code>List&lt;Dog&gt;</code>, <code>List&lt;Animal&gt;</code>, <code>List&lt;Object&gt;</code>.</li>
+<li><strong>МОЖНО писать:</strong> в список Собак, Животных или Объектов можно положить Собаку в любом случае.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">());</span><span class="w"> </span><span class="c1">// безопасно</span>
+</span></code></pre></div>
+<ul>
+<li><strong>НЕЛЬЗЯ читать</strong> как <code>Dog</code> или <code>Animal</code>:** под маской <code>List&lt;? super Dog&gt;</code> могли передать <code>List&lt;Object&gt;</code>, где лежат Стулья, Машины и Коты. Читать можно только как <code>Object obj = list.get(0)</code>.</li>
+</ul>
+<h3 id="list-vs-listobject"><code>List&lt;?&gt;</code> vs <code>List&lt;Object&gt;</code> — классическая ловушка<a class="headerlink" href="#list-vs-listobject" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>List&lt;Object&gt;</code> — строго типизирован. Можно и читать, и писать. Но передать <code>List&lt;String&gt;</code> туда нельзя (инвариантность).</li>
+<li><code>List&lt;?&gt;</code> — синтаксический сахар для <code>List&lt;? extends Object&gt;</code>. Можно передать <code>List&lt;String&gt;</code> или <code>List&lt;Integer&gt;</code>. Но добавить ничего нельзя (кроме <code>null</code>) — компилятор не знает конкретного типа.</li>
+</ul>
+<h3 id="pecs">Железобетонное правило PECS<a class="headerlink" href="#pecs" title="Permanent link">&para;</a></h3>
+<p>Джошуа Блох (<em>Effective Java</em>) вывел мнемонику, которую спрашивают на каждом мидл-интервью:</p>
+<div class="admonition tip">
+<p class="admonition-title">PECS — Producer Extends, Consumer Super</p>
+<p>Задай себе вопрос: <strong>что коллекция делает в этом методе?</strong></p>
+<ul>
+<li><strong>Producer (поставщик данных) → <code>? extends T</code></strong> — коллекция только выдаёт данные, ты из неё читаешь.</li>
+<li><strong>Consumer (потребитель данных) → <code>? super T</code></strong> — коллекция только принимает данные, ты в неё пишешь.</li>
+</ul>
+</div>
+<p><strong>Идеальный пример из JDK</strong> — метод <code>Collections.copy()</code>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">super</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">dest</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">src</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>src</code> (откуда копируем) — <strong>Producer</strong>, только читаем → <code>extends</code>.</li>
+<li><code>dest</code> (куда копируем) — <strong>Consumer</strong>, только пишем → <code>super</code>.</li>
+</ul>
+<h2 id="bounds-generic-">Ограничения типов (Bounds) и Generic-классы<a class="headerlink" href="#bounds-generic-" title="Permanent link">&para;</a></h2>
+<h3 id="upper-bound-t-extends-someclass">Upper Bound — <code>&lt;T extends SomeClass&gt;</code><a class="headerlink" href="#upper-bound-t-extends-someclass" title="Permanent link">&para;</a></h3>
+<p>Ограничить тип так, чтобы он был определённым классом или его наследником:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Только сущности с полем id — никаких произвольных классов</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BaseRepository</span><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">BaseEntity</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">findById</span><span class="p">(</span><span class="n">Long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">entity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Saving entity with id: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">entity</span><span class="p">.</span><span class="na">getId</span><span class="p">());</span><span class="w"> </span><span class="c1">// безопасно!</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Без ограничения <code>T extends BaseEntity</code> компилятор не дал бы вызвать <code>entity.getId()</code> — он не знал бы, что у <code>T</code> такой метод есть.</p>
+<h3 id="multiple-bounds">Множественные ограничения (Multiple Bounds)<a class="headerlink" href="#multiple-bounds" title="Permanent link">&para;</a></h3>
+<p>Тип можно ограничить сразу несколькими интерфейсами (и одним классом):</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// T обязан быть Animal И реализовывать Serializable И Comparable</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">public</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Serializable</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Comparable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">entity</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: порядок в Multiple Bounds</p>
+<p>Если среди ограничений есть <strong>класс</strong> (не интерфейс), он <strong>обязан стоять первым</strong>. Иначе — ошибка компиляции.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Serializable</span><span class="o">&gt;</span><span class="w">   </span><span class="c1">// ✅ класс первый</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Serializable</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Animal</span><span class="o">&gt;</span><span class="w">   </span><span class="c1">// ❌ ошибка компиляции</span>
+</span></code></pre></div>
+</div>
+<h3 id="generic-">Generic-методы<a class="headerlink" href="#generic-" title="Permanent link">&para;</a></h3>
+<p>Параметр типа можно задать не на уровне класса, а на уровне отдельного метода:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Utils</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="c1">// &lt;T&gt; перед возвращаемым типом — это объявление параметра типа метода</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Comparable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">compareTo</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">}</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1">// Компилятор сам выводит тип:</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utils</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;banana&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// T = String</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">Integer</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Utils</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">);</span><span class="w">             </span><span class="c1">// T = Integer</span>
+</span></code></pre></div>
+<h2 id="generics_1">Главные запреты Generics (Ловушки компилятора)<a class="headerlink" href="#generics_1" title="Permanent link">&para;</a></h2>
+<p>Интервьюеры обожают давать куски кода и спрашивать: <em>"Скомпилируется ли это? Если нет — почему?"</em></p>
+<h3 id="new-t">Нельзя создать экземпляр <code>new T()</code><a class="headerlink" href="#new-t" title="Permanent link">&para;</a></h3>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Box</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">create</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">T</span><span class="p">();</span><span class="w"> </span><span class="c1">// ❌ ОШИБКА КОМПИЛЯЦИИ</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Почему:</strong> После стирания типов <code>T</code> превращается в <code>Object</code>. Компилятор не знает, какой конструктор вызывать. Что, если у конкретного <code>T</code> нет конструктора без аргументов?</p>
+<p><strong>Решение через Supplier или рефлексию:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">public</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">create</span><span class="p">(</span><span class="n">Supplier</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">supplier</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">supplier</span><span class="p">.</span><span class="na">get</span><span class="p">();</span><span class="w"> </span><span class="c1">// ✅</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">}</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1">// Использование:</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">Box</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create</span><span class="p">(</span><span class="n">String</span><span class="p">::</span><span class="k">new</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="generic-_1">Нельзя создать массив Generic-типа<a class="headerlink" href="#generic-_1" title="Permanent link">&para;</a></h3>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">T</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">T</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span><span class="w">              </span><span class="c1">// ❌ ошибка компиляции</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">List</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="c1">// ❌ ошибка компиляции (unchecked warning)</span>
+</span></code></pre></div>
+<p><strong>Почему:</strong> Массивы в Java проверяют тип элементов в рантайме (они <strong>ковариантны</strong>). Но в рантайме <code>T</code> уже стёрт до <code>Object</code>. JVM не смогла бы проверить, что ты кладёшь в массив нужный тип — это открывало бы дыру в безопасности типов.</p>
+<p><strong>Решение:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nd">@SuppressWarnings</span><span class="p">(</span><span class="s">&quot;unchecked&quot;</span><span class="p">)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">T</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">[]</span><span class="p">)</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span><span class="w">  </span><span class="c1">// обходной путь через каст</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1">// Или через рефлексию (более безопасно):</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">T</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="o">[]</span><span class="p">)</span><span class="w"> </span><span class="n">Array</span><span class="p">.</span><span class="na">newInstance</span><span class="p">(</span><span class="n">clazz</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+</span></code></pre></div>
+<h3 id="_2">Нельзя использовать примитивы<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">List</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">    </span><span class="c1">// ❌ ошибка компиляции</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">List</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w"> </span><span class="c1">// ❌ ошибка компиляции</span>
+</span></code></pre></div>
+<p><strong>Почему:</strong> После стирания типов параметр превращается в <code>Object</code>. Примитивы (<code>int</code>, <code>double</code>) не наследуются от <code>Object</code> — они вообще не объекты. JVM не может положить <code>int</code> туда, где ожидается ссылка на объект.</p>
+<p><strong>Решение — классы-обёртки:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w">  </span><span class="c1">// ✅ autoboxing/unboxing делает остальное</span>
+</span></code></pre></div>
+<p>Именно поэтому существуют <code>Integer</code>, <code>Double</code>, <code>Long</code> и другие обёртки — они позволяют примитивам жить в дженерик-коллекциях.</p>
+<h3 id="t">Нельзя делать статические поля типа <code>T</code><a class="headerlink" href="#t" title="Permanent link">&para;</a></h3>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Box</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">instance</span><span class="p">;</span><span class="w"> </span><span class="c1">// ❌ ошибка компиляции</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Почему:</strong> Статическое поле одно на весь класс, а не на каждый экземпляр. <code>Box&lt;String&gt;</code> и <code>Box&lt;Integer&gt;</code> — это один и тот же класс в байт-коде. Какой тип должен иметь <code>instance</code> — <code>String</code> или <code>Integer</code>? Противоречие нерешаемо.</p>
+<h2 id="heap-pollution-raw-types">Heap Pollution и Raw Types<a class="headerlink" href="#heap-pollution-raw-types" title="Permanent link">&para;</a></h2>
+<h3 id="raw-types">Raw Types (Сырые типы) — красный флаг на ревью<a class="headerlink" href="#raw-types" title="Permanent link">&para;</a></h3>
+<p>Raw type — это использование дженерик-класса <strong>без угловых скобок</strong> в современном коде:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">List</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="p">();</span><span class="w">  </span><span class="c1">// ❌ Raw type — компилятор выдаёт предупреждение</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Текст&quot;</span><span class="p">);</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// ClassCastException в рантайме!</span>
+</span></code></pre></div>
+<p>Компилятор видит <code>List</code> без типа и "отключает" проверку типов для него. Любые ошибки снова переезжают в рантайм.</p>
+<div class="admonition warning">
+<p class="admonition-title">Raw Types в современном коде</p>
+<p>Raw types существуют только для совместимости с кодом до Java 5. В любом новом коде их использование — это <strong>красный флаг на код-ревью</strong>. Если видишь Raw type без <code>@SuppressWarnings("rawtypes")</code> и объяснения — это баг.</p>
+</div>
+<h3 id="heap-pollution">Heap Pollution (Загрязнение кучи)<a class="headerlink" href="#heap-pollution" title="Permanent link">&para;</a></h3>
+<p>Heap Pollution — это ситуация, когда переменная дженерик-типа ссылается на объект, <strong>не совместимый с её параметром типа</strong>. Возникает при смешивании Raw types и дженериков:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">strings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">List</span><span class="w"> </span><span class="n">rawList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strings</span><span class="p">;</span><span class="w">          </span><span class="c1">// Raw type — компилятор предупреждает, но пускает</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">rawList</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span><span class="w">                 </span><span class="c1">// добавляем Integer в List&lt;String&gt;!</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strings</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">      </span><span class="c1">// ClassCastException в рантайме — куча &quot;загрязнена&quot;</span>
+</span></code></pre></div>
+<p>Особенно коварна ситуация с <strong>Varargs и дженериками</strong>.</p>
+<h3 id="safevarargs"><code>@SafeVarargs</code> — Когда и зачем<a class="headerlink" href="#safevarargs" title="Permanent link">&para;</a></h3>
+<p>Varargs под капотом — это массив. А массивы дженериков создавать нельзя (мы разбирали выше). Поэтому компилятор всегда ругается на такую комбинацию:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">addAll</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">...</span><span class="w"> </span><span class="n">elements</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// ⚠️ unchecked warning</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">elements</span><span class="p">)</span><span class="w"> </span><span class="n">list</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Компилятор создаёт <code>Object[]</code> для <code>elements</code> — и кто угодно мог бы передать туда значение не того типа.</p>
+<p>Аннотация <code>@SafeVarargs</code> — это твоё <strong>торжественное обещание компилятору</strong>: <em>"Я гарантирую, что внутри метода varargs-массив используется только для чтения и не передаётся наружу. Heap Pollution невозможен."</em></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nd">@SafeVarargs</span><span class="w"> </span><span class="c1">// ✅ глушим предупреждение — метод действительно безопасен</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">listOf</span><span class="p">(</span><span class="n">T</span><span class="p">...</span><span class="w"> </span><span class="n">elements</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Arrays</span><span class="p">.</span><span class="na">asList</span><span class="p">(</span><span class="n">elements</span><span class="p">);</span><span class="w"> </span><span class="c1">// только читаем — безопасно</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Когда НЕ ставить <code>@SafeVarargs</code></p>
+<p>Если внутри метода varargs-массив <strong>передаётся в другой метод</strong> или <strong>сохраняется в поле</strong> — ставить аннотацию нельзя. Это будет ложь компилятору, которая обернётся <code>ClassCastException</code> в рантайме.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nd">@SafeVarargs</span><span class="w"> </span><span class="c1">// ❌ ОПАСНО — передаём массив наружу!</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">T</span><span class="o">[]</span><span class="w"> </span><span class="nf">toArray</span><span class="p">(</span><span class="n">T</span><span class="p">...</span><span class="w"> </span><span class="n">elements</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">elements</span><span class="p">;</span><span class="w"> </span><span class="c1">// Heap Pollution гарантирован</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<h2 id="_3">Итоговая шпаргалка<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Концепция</strong></th>
+<th><strong>Суть</strong></th>
+<th><strong>Запомнить</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type Erasure</strong></td>
+<td>JVM не знает о дженериках — они стираются при компиляции</td>
+<td><code>List&lt;String&gt;</code> и <code>List&lt;Integer&gt;</code> в байт-коде одинаковы</td>
+</tr>
+<tr>
+<td><strong>Bridge Method</strong></td>
+<td>Компилятор генерирует скрытый метод для сохранения полиморфизма</td>
+<td>Видно через <code>javap -verbose</code></td>
+</tr>
+<tr>
+<td><strong><code>? extends T</code></strong></td>
+<td>Читать можно, писать нельзя</td>
+<td>Producer → Extends</td>
+</tr>
+<tr>
+<td><strong><code>? super T</code></strong></td>
+<td>Писать можно, читать только как <code>Object</code></td>
+<td>Consumer → Super</td>
+</tr>
+<tr>
+<td><strong>PECS</strong></td>
+<td>Producer Extends, Consumer Super</td>
+<td>Правило Джошуа Блоха</td>
+</tr>
+<tr>
+<td><strong>Raw Types</strong></td>
+<td>Дженерик без <code>&lt;T&gt;</code> — отключает проверку типов</td>
+<td>Красный флаг в ревью</td>
+</tr>
+<tr>
+<td><strong>Heap Pollution</strong></td>
+<td>Переменная дженерик-типа ссылается на несовместимый объект</td>
+<td>Причина скрытых <code>ClassCastException</code></td>
+</tr>
+<tr>
+<td><strong><code>@SafeVarargs</code></strong></td>
+<td>Обещание компилятору: varargs используется только для чтения</td>
+<td>Только если не передаёшь массив наружу</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../exceptions/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Исключения">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Исключения
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../streams/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Stream API">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Stream API
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1679 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../basics/">
+      
+      
+        <link rel="next" href="../collections/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ООП - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#object-oriented-programming" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ООП
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Главная
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Четыре кита ООП
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Четыре кита ООП">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Инкапсуляция (Защита инвариантов)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Абстракция (Фокус на контракте)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Полиморфизм (Инверсия зависимостей)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Наследование (Повторное использование... с осторожностью)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интерфейсы vs Абстрактные классы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Интерфейсы vs Абстрактные классы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Фундаментальная разница на уровне дизайна
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-default-static-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Зачем добавили default, static и private методы?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Превратили ли нововведения интерфейс в абстрактный класс?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#override-vs-overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Переопределение (Override) vs Перегрузка (Overload)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Переопределение (Override) vs Перегрузка (Overload)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Сигнатура метода — фундамент понимания
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Перегрузка (Overload) — Статический полиморфизм
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Переопределение (Override) — Динамический полиморфизм
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ковариантность возвращаемых типов (Секретный вопрос)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Композиция vs Наследование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Композиция vs Наследование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Почему Наследование — это зло? (Проблема хрупкого базового класса)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-delegation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Спасение: Композиция и Делегирование (Delegation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. А когда наследование всё-таки можно использовать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coupling-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зацепление и Связность (Coupling &amp; Cohesion)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Зацепление и Связность (Coupling &amp; Cohesion)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-high-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. High Cohesion (Высокая внутренняя связность)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-low-coupling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Low Coupling (Слабое внешнее зацепление)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Мостик к Микросервисам (Бонус для сеньорского ответа)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multithreading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Четыре кита ООП
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Четыре кита ООП">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Инкапсуляция (Защита инвариантов)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Абстракция (Фокус на контракте)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Полиморфизм (Инверсия зависимостей)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Наследование (Повторное использование... с осторожностью)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интерфейсы vs Абстрактные классы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Интерфейсы vs Абстрактные классы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Фундаментальная разница на уровне дизайна
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-default-static-private" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Зачем добавили default, static и private методы?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Превратили ли нововведения интерфейс в абстрактный класс?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#override-vs-overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Переопределение (Override) vs Перегрузка (Overload)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Переопределение (Override) vs Перегрузка (Overload)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Сигнатура метода — фундамент понимания
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-overload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Перегрузка (Overload) — Статический полиморфизм
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Переопределение (Override) — Динамический полиморфизм
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Ковариантность возвращаемых типов (Секретный вопрос)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Композиция vs Наследование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Композиция vs Наследование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Почему Наследование — это зло? (Проблема хрупкого базового класса)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-delegation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Спасение: Композиция и Делегирование (Delegation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. А когда наследование всё-таки можно использовать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coupling-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зацепление и Связность (Coupling &amp; Cohesion)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Зацепление и Связность (Coupling &amp; Cohesion)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-high-cohesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. High Cohesion (Высокая внутренняя связность)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-low-coupling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Low Coupling (Слабое внешнее зацепление)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Мостик к Микросервисам (Бонус для сеньорского ответа)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="object-oriented-programming">ООП (Object-Oriented Programming)<a class="headerlink" href="#object-oriented-programming" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Четыре кита ООП<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><strong>ООП (Объектно-ориентированное программирование)</strong> — это парадигма (стиль) архитектуры и написания кода, при которой программа строится как набор взаимодействующих между собой <strong>объектов</strong>, а не как простой список последовательных команд.</p>
+<p>Суть в двух пунктах:</p>
+<ol>
+<li><strong>Объект объединяет данные и логику:</strong> Вместо того чтобы хранить переменные отдельно, а функции для их обработки — отдельно (как в старом процедурном программировании), мы объединяем их в единую сущность. Объект знает всё о своем <strong>состоянии</strong> (данные/поля) и сам управляет своим <strong>поведением</strong> (методы).</li>
+<li><strong>Моделирование реального мира:</strong> Программа становится похожа на механизм из реальной жизни. Мы не пишем разрозненные команды <code>проверить_баланс(карточка)</code> и <code>списать_деньги(карточка)</code>. Мы создаем самодостаточный объект <code>BankCard</code> и просим его: <code>card.pay()</code>. Как именно он это сделает внутри себя — нас не волнует.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Зачем это вообще придумали?</p>
+<p>Главная и единственная цель ООП — <strong>управление сложностью</strong>.</p>
+<p>Когда проект вырастает до сотен тысяч строк кода, процедурный подход неизбежно превращается в нечитаемую "спагетти-логику", где всё зависит от всего. ООП позволяет разбить огромную систему на маленькие, изолированные "черные ящики" (объекты). Ты можешь полностью переписать внутренности одного ящика (например, логику подсчета скидки), абсолютно не боясь, что из-за этого сломается код на другом конце приложения.</p>
+</div>
+<h3 id="1">1. Инкапсуляция (Защита инвариантов)<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>Для джуна инкапсуляция — это просто сделать поля <code>private</code> и написать к ним <code>get</code> и <code>set</code>. Для инженера это <strong>защита бизнес-правил (инвариантов)</strong> объекта от некорректного использования извне.</p>
+<ul>
+<li><strong>Как это работает:</strong> Объект должен сам управлять своим состоянием. Если у нас есть сущность <code>Order</code> (Заказ), у нее не должно быть метода <code>setStatus(Status.PAID)</code>. Почему? Потому что перед сменой статуса нам нужно проверить, не был ли заказ уже отменен, и хватает ли средств на балансе.</li>
+<li><strong>Правильный подход:</strong> Состояние меняется только через бизнес-методы с говорящими названиями: <code>order.pay()</code>, <code>order.cancel()</code>. Внутри этих методов инкапсулирована логика проверок.</li>
+<li><strong>Архитектурная ценность:</strong> Избавляет от антипаттерна «Анемичная модель домена» (Anemic Domain Model), когда объекты — это просто тупые структуры данных с геттерами/сеттерами, а вся бизнес-логика размазана тысячами строк по <code>Service</code>-классам. Инкапсуляция собирает данные и логику их изменения в одном месте.</li>
+</ul>
+<h3 id="2">2. Абстракция (Фокус на контракте)<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>Абстракция — это выделение значимых характеристик объекта и игнорирование незначимых деталей реализации. Это про то, <strong>ЧТО</strong> делает система, а не <strong>КАК</strong> она это делает.</p>
+<ul>
+<li><strong>Как это работает:</strong> В Java абстракция выражается через интерфейсы (<code>interface</code>) и абстрактные классы.</li>
+<li><strong>Архитектурная ценность:</strong> Это основа всего слабого зацепления (Low Coupling). В гексагональной архитектуре (Ports and Adapters) или слоистой архитектуре твой бизнес-домен работает только с абстракциями. Например, бизнес-логика знает только про интерфейс <code>PaymentGateway</code> с методом <code>charge()</code>. Ей абсолютно всё равно, как это будет реализовано под капотом — через Stripe API, PayPal или мок-объект для тестов. Абстракция скрывает сложность инфраструктуры.</li>
+</ul>
+<h3 id="3">3. Полиморфизм (Инверсия зависимостей)<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Слово переводится как «множество форм». Это способность системы использовать объекты с одинаковым интерфейсом без информации о типе и внутренней структуре объекта.</p>
+<ul>
+<li><strong>Как это работает:</strong> В Java полиморфизм бывает двух видов:<ol>
+<li><strong>Статический (Раннее связывание):</strong> Перегрузка методов (Overloading) — методы с одинаковым именем, но разными параметрами. Компилятор сам понимает, какой вызвать.</li>
+<li><strong>Динамический (Позднее связывание):</strong> Переопределение (Overriding). Когда переменная типа интерфейса ссылается на конкретную реализацию.</li>
+</ol>
+</li>
+<li><strong>Архитектурная ценность:</strong> Это Святой Грааль архитектуры. Именно благодаря динамическому полиморфизму работает принцип инверсии зависимостей (буква D в SOLID) и паттерн внедрения зависимостей (Dependency Injection в Spring). Ты просто просишь Spring дать тебе <code>NotificationSender</code>, а полиморфизм гарантирует, что вызовется метод <code>send()</code> нужного бина (будь то Email, SMS или Push-уведомление), не заставляя тебя переписывать ядро приложения.</li>
+</ul>
+<h3 id="4">4. Наследование (Повторное использование... с осторожностью)<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>Это механизм, позволяющий описать новый класс на основе уже существующего. Наследник получает все свойства и поведение родителя (отношение «IS-A» / «ЯВЛЯЕТСЯ»).</p>
+<ul>
+<li><strong>Как это работает:</strong> Ключевое слово <code>extends</code>. Класс <code>VipUser</code> наследует всё от <code>User</code> и добавляет скидку.</li>
+<li><strong>Архитектурная ценность (и главная ловушка):</strong> В современных архитектурах наследование реализаций считается самым опасным китом ООП. Его часто применяют неправильно, просто чтобы переиспользовать пару служебных методов (это антипаттерн). Глубокие иерархии наследования приводят к проблеме «хрупкого базового класса» (Fragile Base Class) — когда изменение логики в главном родителе непредсказуемо ломает поведение десятков наследников.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Правило сеньора</p>
+<p>Джошуа Блох в книге <em>Effective Java</em> вывел золотое правило: <strong>«Предпочитайте композицию наследованию»</strong>. Наследовать стоит только интерфейсы (для полиморфизма) или использовать абстрактные классы исключительно как шаблоны (паттерн Template Method).</p>
+</div>
+<h2 id="vs">Интерфейсы vs Абстрактные классы<a class="headerlink" href="#vs" title="Permanent link">&para;</a></h2>
+<p>Главное правило на собеседовании: сначала отвечай про архитектурный смысл (зачем это нужно), а потом уже про синтаксис (что можно писать внутри, а что нет).</p>
+<h3 id="1_1">1. Фундаментальная разница на уровне дизайна<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>Разница кроется в семантике отношений между классами:</p>
+<ul>
+<li><strong>Абстрактный класс — это отношение «IS-A» (ЯВЛЯЕТСЯ).</strong> Он определяет <strong>идентичность</strong> (суть) объекта и выделяет общую базу для родственных классов. <em>Пример:</em> <code>BaseEntity</code> (Базовая сущность БД). И <code>User</code>, и <code>Order</code> <em>являются</em> сущностями. Они имеют общий корень: у них у всех есть поле <code>id</code>, дата создания и конструктор.</li>
+<li><strong>Интерфейс — это отношение «CAN-DO» (УМЕЕТ ДЕЛАТЬ) или Контракт.</strong> Он определяет <strong>роль</strong> или способность, независимо от того, кем объект является по своей сути. <em>Пример:</em> <code>Serializable</code>, <code>Runnable</code>, <code>PaymentGateway</code>. Класс <code>EmailSender</code> и класс <code>SmsSender</code> могут быть вообще из разных иерархий наследования, но оба реализуют контракт <code>NotificationSender</code>.</li>
+</ul>
+<p><strong>Вторая фундаментальная разница (Техническая): Множественное наследование.</strong> Java запрещает наследовать больше одного класса (даже абстрактного), чтобы избежать конфликтов состояния ("Проблема ромба"). Но реализовывать интерфейсов можно сколько угодно, потому что классический интерфейс не несет в себе состояния.</p>
+<h3 id="2-default-static-private">2. Зачем добавили <code>default</code>, <code>static</code> и <code>private</code> методы?<a class="headerlink" href="#2-default-static-private" title="Permanent link">&para;</a></h3>
+<p>Когда в Java 8 появились <code>default</code> методы, многие закричали: "Java сломалась, интерфейсы стали абстрактными классами!". Но у архитекторов языка была очень веская причина.</p>
+<ul>
+<li><strong><code>default</code> методы (Java 8) — Спасение обратной совместимости.</strong> Главная причина их появления — необходимость добавить новые методы (например, <code>stream()</code> или <code>forEach()</code>) в стандартные интерфейсы коллекций (<code>List</code>, <code>Collection</code>). Если бы они добавили их как обычные методы, миллионы проектов по всему миру перестали бы компилироваться, так как их кастомные коллекции не реализовали бы эти новые методы. <code>default</code> метод позволил дать реализацию "по умолчанию". Если класс хочет — он ее переопределяет. Если нет — использует готовую.</li>
+<li><strong><code>static</code> методы (Java 8) — Группировка утилит.</strong> Раньше разработчикам приходилось создавать интерфейс <code>Collection</code> и отдельный утилитный класс <code>Collections</code> с приватным конструктором, чтобы хранить там вспомогательные статические методы. Теперь статические методы (например, фабричные методы вроде <code>List.of()</code>) живут прямо внутри самого интерфейса. Это делает API чище.</li>
+<li><strong><code>private</code> методы (Java 9) — Рефакторинг внутри интерфейса.</strong> Когда в интерфейсах разрешили писать код (в <code>default</code> и <code>static</code> методах), появилась проблема дублирования этого кода. Приватные методы добавили исключительно для того, чтобы ты мог вынести общий код из нескольких <code>default</code> методов в один скрытый метод внутри интерфейса.</li>
+</ul>
+<h3 id="3_1">3. Превратили ли нововведения интерфейс в абстрактный класс?<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p><strong>Правильный ответ: Категорически НЕТ.</strong></p>
+<p>Интервьюер спросит: <em>"Ну смотри, и там и там теперь можно писать код методов с реализацией. В чем тогда вообще разница сегодня?"</em></p>
+<p>Твой козырь — слово <strong>СОСТОЯНИЕ (State).</strong></p>
+<ol>
+<li><strong>Абстрактный класс может хранить состояние.</strong> У него могут быть обычные поля (instance variables), конструкторы, и он может изменять это состояние (мутабельность).</li>
+<li><strong>Интерфейс АБСОЛЮТНО не имеет состояния (Stateless).</strong> Ты по-прежнему не можешь объявить в интерфейсе обычную переменную (поле). Любая переменная там автоматически становится <code>public static final</code> (глобальной константой). У интерфейса нет и не может быть конструктора.</li>
+</ol>
+<p>Любой <code>default</code> метод в интерфейсе может оперировать только входящими аргументами или вызывать другие методы этого же интерфейса. Он не может сохранить что-то в поле <code>this.counter = 1</code>, потому что у интерфейса нет полей.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>Абстрактный класс</strong></th>
+<th><strong>Интерфейс</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Смысл</strong></td>
+<td>Отношение "IS-A" (Базовая идентичность)</td>
+<td>Отношение "CAN-DO" (Контракт / Роль)</td>
+</tr>
+<tr>
+<td><strong>Множественное наследование</strong></td>
+<td>❌ Нет (только один)</td>
+<td>✅ Да (сколько угодно)</td>
+</tr>
+<tr>
+<td><strong>Хранение состояния (Поля)</strong></td>
+<td>✅ Да (любые переменные)</td>
+<td>❌ Нет (только <code>public static final</code> константы)</td>
+</tr>
+<tr>
+<td><strong>Конструкторы</strong></td>
+<td>✅ Да (вызываются через <code>super()</code>)</td>
+<td>❌ Нет</td>
+</tr>
+<tr>
+<td><strong>Модификаторы доступа</strong></td>
+<td><code>public</code>, <code>protected</code>, <code>private</code>, <code>default</code></td>
+<td>Все методы по умолчанию <code>public abstract</code> (до Java 8)</td>
+</tr>
+<tr>
+<td><strong>Методы с реализацией</strong></td>
+<td>Да (любые)</td>
+<td>Да (<code>default</code>, <code>static</code>, <code>private</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="override-vs-overload">Переопределение (Override) vs Перегрузка (Overload)<a class="headerlink" href="#override-vs-overload" title="Permanent link">&para;</a></h2>
+<p>Эти два механизма — это реализация полиморфизма в Java, но работают они на абсолютно разных этапах жизни программы.</p>
+<h3 id="1_2">1. Сигнатура метода — фундамент понимания<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<p>Прежде чем говорить о том, как компилятор выбирает метод, нужно четко усвоить одно жесткое правило Java.</p>
+<p><strong>Сигнатура метода включает в себя ТОЛЬКО:</strong></p>
+<ol>
+<li>Имя метода.</li>
+<li>Список параметров (их количество, типы и порядок следования).</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка для собеседования</p>
+<p>Тип возвращаемого значения, модификаторы доступа (<code>public</code>, <code>private</code>) и выбрасываемые исключения (<code>throws</code>) <strong>НЕ входят</strong> в сигнатуру метода! Ты не можешь создать два метода с одинаковым именем и параметрами, но разными возвращаемыми типами — компилятор выдаст ошибку.</p>
+</div>
+<h3 id="2-overload">2. Перегрузка (Overload) — Статический полиморфизм<a class="headerlink" href="#2-overload" title="Permanent link">&para;</a></h3>
+<p>Перегрузка происходит <strong>внутри одного класса</strong> (или при наследовании), когда ты создаешь методы с <strong>одинаковым именем, но разной сигнатурой</strong> (разными параметрами).</p>
+<ul>
+<li><strong>Как это работает под капотом (Раннее связывание / Compile-time):</strong> Решение о том, какой именно метод вызвать, принимает <strong>компилятор</strong> еще на этапе написания кода (<code>javac</code>). Он смотрит на тип ссылки и на типы аргументов, которые ты передаешь в метод.</li>
+<li><strong>Пример:</strong> У тебя есть <code>print(String s)</code> и <code>print(Integer i)</code>. Если ты пишешь <code>print(5)</code>, компилятор видит число и жестко прописывает в байт-коде вызов метода <code>print(Integer)</code>. Во время работы программы (в рантайме) JVM уже ничего не выбирает, она просто исполняет команду компилятора.</li>
+</ul>
+<h3 id="3-override">3. Переопределение (Override) — Динамический полиморфизм<a class="headerlink" href="#3-override" title="Permanent link">&para;</a></h3>
+<p>Переопределение происходит <strong>между родителем и наследником</strong>. Это когда класс-наследник пишет свою реализацию метода, который уже есть у родителя, сохраняя <strong>точно такую же сигнатуру</strong>.</p>
+<ul>
+<li><strong>Как это работает под капотом (Позднее связывание / Runtime):</strong> Здесь компилятор бессилен. Представь код: <code>Animal a = getAnimalFromDb(); a.speak();</code>. Компилятор понятия не имеет, кто именно вернется из базы данных — Собака или Кошка. Он просто проверяет, есть ли метод <code>speak()</code> у класса <code>Animal</code>. Вся работа ложится на <strong>JVM во время выполнения</strong>. Когда дело доходит до строки <code>a.speak()</code>, JVM идет в Кучу (Heap), смотрит на <strong>реальный тип созданного объекта</strong> (например, это объект <code>Dog</code>), находит его виртуальную таблицу методов (vtable) и вызывает переопределенный метод именно из класса <code>Dog</code>.</li>
+</ul>
+<h3 id="4_1">4. Ковариантность возвращаемых типов (Секретный вопрос)<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
+<p>Это тот самый вопрос, который отличает мидла от джуна. Интервьюер спрашивает: <em>"При переопределении (Override) сигнатура должна совпадать. А можно ли изменить тип возвращаемого значения?"</em></p>
+<p><strong>Правильный ответ:</strong> Да, можно, но только на <strong>класс-наследник</strong> (субтип). Это и называется ковариантностью.</p>
+<p>До Java 5 возвращаемый тип при переопределении должен был совпадать пуля в пулю. Но это было неудобно. Сейчас действует правило: ты можешь сузить тип, но не можешь его расширить или изменить на другой.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">class</span> <span class="nc">AnimalFactory</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="c1">// Родитель возвращает широкого Animal</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Animal</span><span class="w"> </span><span class="nf">create</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Animal</span><span class="p">();</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">class</span> <span class="nc">DogFactory</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AnimalFactory</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nd">@Override</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="c1">// Наследник переопределяет метод и СУЖАЕТ возвращаемый тип до Dog. Это абсолютно легально!</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Dog</span><span class="w"> </span><span class="nf">create</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Dog</span><span class="p">();</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Коду, который вызывает <code>DogFactory</code>, больше не нужно делать ручное приведение типов <code>(Dog) factory.create()</code>. Метод сразу возвращает нужный конкретный тип. А вот изменить возвращаемый тип с <code>Animal</code> на <code>String</code> при переопределении компилятор не позволит — это нарушит контракт родителя.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>Перегрузка (Overload)</strong></th>
+<th><strong>Переопределение (Override)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Где происходит?</strong></td>
+<td>В одном классе</td>
+<td>В классах-наследниках</td>
+</tr>
+<tr>
+<td><strong>Имя метода</strong></td>
+<td>Одинаковое</td>
+<td>Одинаковое</td>
+</tr>
+<tr>
+<td><strong>Параметры (Сигнатура)</strong></td>
+<td><strong>Разные</strong></td>
+<td><strong>Одинаковые</strong></td>
+</tr>
+<tr>
+<td><strong>Возвращаемый тип</strong></td>
+<td>Может быть любым</td>
+<td>Одинаковый или Ковариантный (субтип)</td>
+</tr>
+<tr>
+<td><strong>Кто решает?</strong></td>
+<td>Компилятор (Раннее связывание)</td>
+<td>JVM (Позднее связывание)</td>
+</tr>
+<tr>
+<td><strong>Аннотация</strong></td>
+<td>Не нужна</td>
+<td>Желательно писать <code>@Override</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="vs_1">Композиция vs Наследование<a class="headerlink" href="#vs_1" title="Permanent link">&para;</a></h2>
+<p>Для начала зафиксируем базовые понятия:</p>
+<ul>
+<li><strong>Наследование (Inheritance)</strong> — это отношение <strong>«IS-A» (ЯВЛЯЕТСЯ)</strong>. Класс <code>Dog</code> <em>является</em> <code>Animal</code>.</li>
+<li><strong>Композиция (Composition)</strong> — это отношение <strong>«HAS-A» (СОДЕРЖИТ)</strong>. Класс <code>Car</code> <em>содержит</em> <code>Engine</code>.</li>
+</ul>
+<h3 id="1_3">1. Почему Наследование — это зло? (Проблема хрупкого базового класса)<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h3>
+<p>Наследование реализаций (когда ты делаешь <code>extends</code> от обычного класса) — это самый сильный вид связи (Tight Coupling) в ООП.</p>
+<p>Джошуа Блох предупреждает: <strong>наследование нарушает инкапсуляцию</strong>. Когда ты наследуешься от класса, твой подкласс начинает зависеть не только от сигнатур методов родителя, но и от <strong>деталей их реализации</strong>.</p>
+<p><strong>Классический пример провала из Effective Java:</strong> Представь, что тебе нужно создать коллекцию <code>MyHashSet</code>, которая считает, сколько всего элементов в нее когда-либо добавляли. Ты делаешь <code>extends HashSet&lt;T&gt;</code>, создаешь поле <code>count = 0</code> и переопределяешь методы:</p>
+<ol>
+<li>Переопределяешь <code>add(T e)</code>: делаешь <code>count++</code> и вызываешь <code>super.add(e)</code>.</li>
+<li>Переопределяешь <code>addAll(Collection c)</code>: делаешь <code>count += c.size()</code> и вызываешь <code>super.addAll(c)</code>.</li>
+</ol>
+<p><em>Что произойдет?</em> Если ты вызовешь <code>mySet.addAll(List.of("A", "B", "C"))</code>, счетчик покажет <strong>6, а не 3</strong>! Почему? Потому что внутри самого <code>HashSet</code> метод <code>addAll</code> реализован через цикл вызовов метода <code>add</code>. Твой переопределенный <code>addAll</code> прибавит 3, а затем вызовет <code>super.addAll()</code>, который внутри себя вызовет твой же переопределенный <code>add</code> еще 3 раза!</p>
+<p>Логика сломана, хотя ты все сделал "по правилам". Если завтра разработчики JDK изменят внутреннюю реализацию <code>HashSet</code>, твой код может непредсказуемо сломаться. Это и называется <strong>Fragile Base Class (Хрупкий базовый класс)</strong>.</p>
+<h3 id="2-delegation">2. Спасение: Композиция и Делегирование (Delegation)<a class="headerlink" href="#2-delegation" title="Permanent link">&para;</a></h3>
+<p>Как решить ту же задачу без наследования? Через паттерн "Делегирование" (он же часто выступает основой для паттерна "Декоратор").</p>
+<p>Вместо того чтобы <em>быть</em> <code>HashSet</code>-ом, твой класс должен <em>содержать</em> его внутри себя.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MyHashSet</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="c1">// 1. Композиция: прячем реальный сет внутри</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">innerSet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="c1">// 2. Своя логика</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">innerSet</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">e</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3. Делегирование</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">addAll</span><span class="p">(</span><span class="n">Collection</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="n">count</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">c</span><span class="p">.</span><span class="na">size</span><span class="p">();</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">innerSet</span><span class="p">.</span><span class="na">addAll</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3. Делегирование</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">getCount</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li><strong>Композиция:</strong> Поле <code>innerSet</code>. Твой класс состоит из других объектов.</li>
+<li><strong>Делегирование (Delegation):</strong> Твой класс не делает грязную работу сам. Он просто принимает вызов метода <code>add</code> и "делегирует" (перепоручает) его внутреннему объекту <code>innerSet.add()</code>.</li>
+</ul>
+<p>Теперь твой класс абсолютно независим от того, как внутри устроен <code>HashSet</code>. Инкапсуляция сохранена на 100%.</p>
+<h3 id="3-">3. А когда наследование всё-таки можно использовать?<a class="headerlink" href="#3-" title="Permanent link">&para;</a></h3>
+<p>Наследование не нужно выкидывать на помойку, но применять его нужно строго по правилам:</p>
+<ol>
+<li><strong>Только для истинного отношения «IS-A».</strong> Если есть хоть малейшее сомнение, используй композицию.</li>
+<li><strong>Наследование интерфейсов — это хорошо.</strong> Когда ты делаешь <code>implements MyInterface</code>, ты наследуешь <em>тип и контракт</em>, а не реализацию. Это безопасно и необходимо для полиморфизма.</li>
+<li><strong>Проектируй для наследования или запрещай его.</strong> Джошуа Блох говорит: если класс специально не спроектирован для того, чтобы от него наследовались (не имеет подробной документации о внутренних вызовах методов), он должен быть помечен как <code>final</code> (или <code>sealed</code> в современном Java).</li>
+</ol>
+<h2 id="coupling-cohesion">Зацепление и Связность (Coupling &amp; Cohesion)<a class="headerlink" href="#coupling-cohesion" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Золотое правило архитектуры</p>
+<p><strong>High Cohesion and Low Coupling</strong> — Высокая связность внутри и Слабое зацепление снаружи.</p>
+</div>
+<h3 id="1-high-cohesion">1. High Cohesion (Высокая внутренняя связность)<a class="headerlink" href="#1-high-cohesion" title="Permanent link">&para;</a></h3>
+<p><strong>Cohesion</strong> показывает, насколько хорошо сфокусированы обязанности <em>внутри одного</em> класса или модуля.</p>
+<ul>
+<li><strong>Суть:</strong> Класс должен делать ровно одну вещь, но делать ее идеально. Все методы и поля внутри этого класса должны служить одной общей цели. Это прямое отражение буквы <strong>S</strong> из SOLID (Принцип единственной ответственности — SRP).</li>
+<li><strong>Антипаттерн (Low Cohesion):</strong> Представь класс <code>UserService</code>. Если он умеет сохранять пользователя в базу, генерировать для него PDF-отчет, отправлять ему email и считать его налоги — это <strong>God Object</strong> (Божественный объект). У него нулевая связность, потому что его методы вообще не связаны друг с другом логически. Его невозможно тестировать и страшно изменять.</li>
+<li><strong>Как сделать правильно (High Cohesion):</strong> Разбить монстра на сфокусированные компоненты: <code>UserRepository</code> (только работа с БД), <code>PdfGenerator</code> (только создание документов), <code>EmailSender</code> (только отправка почты). Теперь каждый класс имеет высокую связность.</li>
+</ul>
+<h3 id="2-low-coupling">2. Low Coupling (Слабое внешнее зацепление)<a class="headerlink" href="#2-low-coupling" title="Permanent link">&para;</a></h3>
+<p><strong>Coupling</strong> показывает, насколько сильно <em>разные</em> классы или модули зависят друг от друга.</p>
+<ul>
+<li><strong>Суть:</strong> Классы должны знать друг о друге как можно меньше. Если ты меняешь внутреннюю логику одного класса, это не должно заставлять тебя переписывать код в десяти других классах. Это отражение буквы <strong>D</strong> из SOLID (Принцип инверсии зависимостей — DIP).</li>
+<li><strong>Антипаттерн (High Coupling / Tight Coupling):</strong> Класс <code>OrderService</code> внутри себя напрямую создает объект <code>new MySQLOrderRepository()</code>. Это жесткое зацепление. Если завтра бизнес решит перейти на PostgreSQL или MongoDB, тебе придется переписывать <code>OrderService</code>.</li>
+<li><strong>Как сделать правильно (Low / Loose Coupling):</strong> Классы общаются <strong>только через абстракции (интерфейсы)</strong>. <code>OrderService</code> требует в конструкторе интерфейс <code>OrderRepository</code>. Какая именно база данных там под капотом — его вообще не волнует. Мы инжектим нужную реализацию через Spring (Dependency Injection).</li>
+</ul>
+<h3 id="3_2">3. Мостик к Микросервисам (Бонус для сеньорского ответа)<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<p>Интервьюер обязательно спросит: <em>"А как эти принципы масштабируются на микросервисную архитектуру?"</em></p>
+<ul>
+<li><strong>Микросервисы и High Cohesion:</strong> Один микросервис должен отвечать строго за один бизнес-домен (Domain-Driven Design). У нас есть отдельный сервис <code>Payment</code>, отдельный <code>Inventory</code> и отдельный <code>Shipping</code>. Если мы запихнем логику оплат и логику доставки в один сервис, мы получим "распределенный монолит" с низким Cohesion.</li>
+<li><strong>Микросервисы и Low Coupling:</strong> Микросервисы не должны лезть в базы данных друг друга (это строжайшее табу — жесткое зацепление по БД). Они должны общаться через асинхронные события (Kafka/RabbitMQ) или четкие REST/gRPC контракты. Если сервис оплат упал, сервис заказов не должен падать следом (слабое зацепление спасает систему от каскадного сбоя).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>Cohesion (Внутренняя связность)</strong></th>
+<th><strong>Coupling (Внешнее зацепление)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Где фокус?</strong></td>
+<td><strong>Внутри</strong> одного модуля/класса</td>
+<td><strong>Между</strong> разными модулями/классами</td>
+</tr>
+<tr>
+<td><strong>Что измеряет?</strong></td>
+<td>Насколько методы служат одной цели</td>
+<td>Насколько классы зависят друг от друга</td>
+</tr>
+<tr>
+<td><strong>Идеальное состояние</strong></td>
+<td><strong>Высокое (High):</strong> Класс сфокусирован</td>
+<td><strong>Слабое (Low):</strong> Классы независимы</td>
+</tr>
+<tr>
+<td><strong>Связь с SOLID</strong></td>
+<td>Single Responsibility (SRP)</td>
+<td>Dependency Inversion (DIP)</td>
+</tr>
+<tr>
+<td><strong>Аналогия из жизни</strong></td>
+<td>Хорошо организованный отдел (только бухгалтеры считают налоги)</td>
+<td>Компании-партнеры общаются через договора, а не лезут друг к другу в сейф</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../basics/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Основы JVM">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Основы JVM
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../collections/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Коллекции">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Коллекции
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "navigation.footer", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
