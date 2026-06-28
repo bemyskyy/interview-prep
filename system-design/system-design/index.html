@@ -1,0 +1,3746 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
+      
+      
+        <meta name="author" content="Tolebek">
+      
+      
+      
+        <link rel="prev" href="../../networks/networks/">
+      
+      
+        <link rel="next" href="../../architecture/architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Масштабирование систем - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#system-design" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Масштабирование систем
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Старт
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Язык Java
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/sql/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Данные
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Computer Science
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Проектирование
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Платформа и память
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Платформа и память
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы JVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/multithreading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык и API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык и API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дизайн кода
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дизайн кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны проектирования
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ядро
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ядро
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core (IoC, DI, AOP)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Веб и данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Веб и данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring MVC / REST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Data JPA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Экосистема
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Экосистема
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-ecosystem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security, Kafka, DDD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тестирование и инструменты
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реляционные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Реляционные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL и транзакции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Нереляционные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Нереляционные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Science
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Computer Science
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Алгоритмы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Алгоритмы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Теория (Big O, структуры, сортировки)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Паттерны задач (LeetCode)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сети
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Сети
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP, TCP, REST, gRPC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Проектирование
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Проектирование
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Системы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Системы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Масштабирование систем
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Масштабирование систем
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancing — балансировка нагрузки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load Balancing — балансировка нагрузки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L4 vs L7 — самый частый вопрос
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритмы балансировки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sticky Sessions (Липкие сессии)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching — кэширование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Caching — кэширование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Паттерны кэширования
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eviction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стратегии вытеснения (Eviction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-stampede-thundering-herd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Stampede (Thundering Herd)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-vs-hazelcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redis vs Hazelcast — нюансы кластеризации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Scaling — масштабирование БД
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Scaling — масштабирование БД">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Replication (Репликация)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Partitioning (Партиционирование)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sharding (Шардирование)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cap-pacelc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP и PACELC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CAP и PACELC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-теорема
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pacelc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PACELC — жизнь без аварий
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message Queues — очереди сообщений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Queues — очереди сообщений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-transactional-outbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transactional Outbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-idempotent-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Idempotent Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-dead-letter-queue-dlq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Dead Letter Queue (DLQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-saga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Saga — распределённые транзакции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как проектировать систему на собесе
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как проектировать систему на собесе">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1: Сбор требований (никакого кода и квадратиков!)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2: Проектирование API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3: Модель данных
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-high-level-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4: High-Level Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5: Deep Dive — поиск узких мест
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Золотые правила рассуждения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Разбор кейсов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разбор кейсов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-round-robin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 1: Round Robin убивает один сервер
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-1010-redis-1005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 2: База падает в 10:10, Redis-узел сгорел в 10:05
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-devops-100m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 3: DevOps хочет шардировать 100M строк
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 4: Экскаватор перерубил кабель Алматы–Астана
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 5: Потерянные и дублированные письма
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Архитектура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDD, микросервисы, CQRS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Эксплуатация
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Эксплуатация
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker, CI/CD, K8s
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancing — балансировка нагрузки
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load Balancing — балансировка нагрузки">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L4 vs L7 — самый частый вопрос
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Алгоритмы балансировки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sticky Sessions (Липкие сессии)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caching — кэширование
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Caching — кэширование">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Паттерны кэширования
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eviction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стратегии вытеснения (Eviction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-stampede-thundering-herd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Stampede (Thundering Herd)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis-vs-hazelcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Redis vs Hazelcast — нюансы кластеризации
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Scaling — масштабирование БД
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Scaling — масштабирование БД">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-replication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Replication (Репликация)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-partitioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Partitioning (Партиционирование)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-sharding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Sharding (Шардирование)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cap-pacelc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP и PACELC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CAP и PACELC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-теорема
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pacelc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PACELC — жизнь без аварий
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-queues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Message Queues — очереди сообщений
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Queues — очереди сообщений">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-transactional-outbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Transactional Outbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-idempotent-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Idempotent Consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-dead-letter-queue-dlq" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Dead Letter Queue (DLQ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-saga" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Saga — распределённые транзакции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как проектировать систему на собесе
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как проектировать систему на собесе">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 1: Сбор требований (никакого кода и квадратиков!)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 2: Проектирование API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 3: Модель данных
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-high-level-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 4: High-Level Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шаг 5: Deep Dive — поиск узких мест
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Золотые правила рассуждения
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Разбор кейсов
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Разбор кейсов">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-round-robin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 1: Round Robin убивает один сервер
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-1010-redis-1005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 2: База падает в 10:10, Redis-узел сгорел в 10:05
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-devops-100m" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 3: DevOps хочет шардировать 100M строк
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 4: Экскаватор перерубил кабель Алматы–Астана
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кейс 5: Потерянные и дублированные письма
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="system-design">Системный дизайн (System Design)<a class="headerlink" href="#system-design" title="Permanent link">&para;</a></h1>
+<h2 id="load-balancing">Load Balancing — балансировка нагрузки<a class="headerlink" href="#load-balancing" title="Permanent link">&para;</a></h2>
+<p>Балансировщик — регулировщик на перекрёстке. Стоит перед серверами и распределяет трафик так, чтобы ни один сервер не упал от перегрузки, пока другие простаивают.</p>
+<h3 id="l4-vs-l7">L4 vs L7 — самый частый вопрос<a class="headerlink" href="#l4-vs-l7" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>L4 (Transport — TCP/UDP)</strong></th>
+<th><strong>L7 (Application — HTTP/HTTPS)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Что видит</strong></td>
+<td>Только IP и порт</td>
+<td>URL, заголовки, cookie, тело</td>
+</tr>
+<tr>
+<td><strong>Скорость</strong></td>
+<td>Очень быстрый</td>
+<td>Медленнее (распаковка пакета)</td>
+</tr>
+<tr>
+<td><strong>Ресурсы</strong></td>
+<td>Минимум CPU/памяти</td>
+<td>Больше CPU/памяти</td>
+</tr>
+<tr>
+<td><strong>Возможности</strong></td>
+<td>Просто перекидывает пакеты</td>
+<td>Роутинг по URL, SSL termination, кэш</td>
+</tr>
+<tr>
+<td><strong>Пример решения</strong></td>
+<td>"Отправь на сервер 2"</td>
+<td>"/images → файловый сервер, /api → бэкенд"</td>
+</tr>
+</tbody>
+</table>
+<p>L4 — "глупый, но быстрый". L7 — "умный, но дороже". L7 умеет терминировать SSL (расшифровывать HTTPS на уровне балансировщика) и делать сложный роутинг.</p>
+<h3 id="_1">Алгоритмы балансировки<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p><strong>Round Robin (Карусель)</strong> — запросы раздаются по очереди: серверу 1, 2, 3, снова 1. Подходит когда серверы одинаковы и запросы примерно равны по нагрузке. Версия Weighted Round Robin даёт мощному серверу больший "вес".</p>
+<p><strong>Least Connections</strong> — трафик идёт на сервер с наименьшим числом активных подключений. Нужен для "тяжёлых" долгих запросов (скачивание файлов, WebSocket, сложные отчёты), где Round Robin может добить уже занятый сервер.</p>
+<h3 id="sticky-sessions">Sticky Sessions (Липкие сессии)<a class="headerlink" href="#sticky-sessions" title="Permanent link">&para;</a></h3>
+<p>Пользователь залогинился, сессия в памяти Сервера А. Следующий запрос балансировщик кинул на Сервер Б — пользователь "разлогинился". Sticky Sessions привязывают клиента к одному серверу через cookie.</p>
+<div class="admonition warning">
+<p class="admonition-title">Антипаттерн</p>
+<ol>
+<li>Нарушается равномерность — на одном сервере скапливается много юзеров. 2. Если сервер падает, все "прилипшие" к нему теряют сессии. <strong>Правильное решение</strong> — хранить сессии не в памяти, а в Redis (тогда любой сервер обслужит любого юзера).</li>
+</ol>
+</div>
+<hr />
+<h2 id="caching">Caching — кэширование<a class="headerlink" href="#caching" title="Permanent link">&para;</a></h2>
+<h3 id="_2">Паттерны кэширования<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p><strong>Cache-Aside (Lazy Loading)</strong> — приложение сначала идёт в кэш. Hit → отдаём. Miss → идём в БД, кладём в кэш, отдаём. В Spring — <code>@Cacheable</code>. Кэшируется только то, что реально запрашивают. Если кэш упадёт — система выживёт (пойдёт в БД напрямую).</p>
+<p><strong>Write-Through (Сквозная запись)</strong> — пишем всегда в кэш, кэш синхронно пишет в БД. Ответ — только когда сохранилось в обоих местах. В кэше всегда свежие данные, но запись медленнее.</p>
+<p><strong>Write-Behind (Отложенная запись)</strong> — пишем в кэш и сразу получаем ОК. Кэш асинхронно сбрасывает в БД пачками. Молниеносная запись (идеально для счётчиков просмотров/лайков), но если кэш сгорит до сброса — данные потеряны.</p>
+<h3 id="eviction">Стратегии вытеснения (Eviction)<a class="headerlink" href="#eviction" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>LRU (Least Recently Used)</strong> — выкидывает то, к чему дольше всего не обращались. Золотой стандарт. Вчерашняя статья уйдёт, освободив место сегодняшней горячей.</li>
+<li><strong>LFU (Least Frequently Used)</strong> — выкидывает то, к чему обращались меньше всего раз. Хорошо для статических справочников, плохо для трендов.</li>
+</ul>
+<h3 id="cache-stampede-thundering-herd">Cache Stampede (Thundering Herd)<a class="headerlink" href="#cache-stampede-thundering-herd" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Главная страница закэширована с TTL = 5 минут.
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>12:00:00 — TTL истёк, кэш пуст.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>12:00:01 — заходят 1000 юзеров одновременно.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Все 1000 потоков видят Cache Miss → одновременно бьют тяжёлым SQL в БД.
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>База ложится от перегрузки.
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Как лечить</p>
+<p><strong>Mutex/Lock</strong> — когда кэш протухает, только один первый поток получает право сходить в БД (захватывает лок). Остальные 999 либо ждут, либо получают чуть устаревшую копию (Stale Data), пока первый не обновит. Знакомо из многопоточности Java.</p>
+</div>
+<h3 id="redis-vs-hazelcast">Redis vs Hazelcast — нюансы кластеризации<a class="headerlink" href="#redis-vs-hazelcast" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Redis</strong></th>
+<th><strong>Hazelcast</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Что это</strong></td>
+<td>In-Memory Data Structure Store (C)</td>
+<td>In-Memory Data Grid (Java)</td>
+</tr>
+<tr>
+<td><strong>Шардирование</strong></td>
+<td>16 384 хэш-слота по Master-узлам</td>
+<td>271 партиция, у каждого узла основные + backup</td>
+</tr>
+<tr>
+<td><strong>Маршрутизация</strong></td>
+<td>Smart Clients (Lettuce/Jedis знают карту)</td>
+<td>P2P, узлы равны</td>
+</tr>
+<tr>
+<td><strong>Killer-фича</strong></td>
+<td>Скорость, простота</td>
+<td>Data Locality — EntryProcessor выполняется на узле с данными</td>
+</tr>
+<tr>
+<td><strong>Консистентность</strong></td>
+<td>AP по умолчанию</td>
+<td>AP + CP Subsystem (Raft) для надёжных локов</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Redis Cluster:</strong> нет центрального узла, все общаются по Gossip-протоколу. Клиент сам знает, что <code>user:123</code> лежит на Узле 2 (через хэш-слот). Если карта устарела — узел ответит <code>MOVED</code>, клиент обновит карту. У Master есть Replica, при падении — голосование и promotion реплики.</p>
+<p><strong>Hazelcast Data Locality:</strong> чтобы обновить зарплату миллиону сотрудников, в Redis пришлось бы тащить миллион записей по сети. В Hazelcast отправляешь маленький <code>EntryProcessor</code> (кусок Java-кода) внутрь кластера — он выполнится прямо на узлах с данными. Сеть не нагружается.</p>
+<hr />
+<h2 id="database-scaling">Database Scaling — масштабирование БД<a class="headerlink" href="#database-scaling" title="Permanent link">&para;</a></h2>
+<p>Три этапа. Нельзя сразу шардировать — особенно на простом MVP.</p>
+<h3 id="1-replication">1. Replication (Репликация)<a class="headerlink" href="#1-replication" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>              ┌──────────┐
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>   Запись ──→ │  Master  │ ──── async replication ────┐
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>              └──────────┘                            │
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>                                            ┌─────────┴─────────┐
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                                            ▼                   ▼
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                                      ┌──────────┐        ┌──────────┐
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                              Чтение  │ Replica  │        │ Replica  │  Чтение
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                                      └──────────┘        └──────────┘
+</span></code></pre></div>
+<p>Master принимает запись (INSERT/UPDATE/DELETE), реплики — только чтение (SELECT). Разгружает Master, даёт High Availability (если Master умер — реплика становится новым Master).</p>
+<div class="admonition warning">
+<p class="admonition-title">Replication Lag</p>
+<p>Копирование с Master на реплику занимает время (миллисекунды, под нагрузкой — секунды). Асинхронно. Проблема: записал данные → тут же прочитал → а их ещё нет на реплике. Решение для критичных чтений: читать из Master (Read-Your-Writes consistency).</p>
+</div>
+<h3 id="2-partitioning">2. Partitioning (Партиционирование)<a class="headerlink" href="#2-partitioning" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Главное правило</p>
+<p>Партиционирование происходит на <strong>ОДНОМ сервере</strong> (внутри одной БД).</p>
+</div>
+<p><strong>Горизонтальное (по строкам)</strong> — бьём гигантскую таблицу на партиции по правилу (например, по месяцам). Для приложения таблица одна (<code>news</code>), но физически январь хранится отдельно от февраля. Ищем за март — БД не трогает январь.</p>
+<p><strong>Вертикальное (по столбцам)</strong> — выносим тяжёлые колонки (<code>avatar_image_bytes</code>, <code>huge_bio_text</code>) в отдельную таблицу <code>user_details</code> (1-к-1), оставляя в основной только частые <code>id</code>, <code>name</code>, <code>email</code>. Кэш БД скажет спасибо.</p>
+<h3 id="3-sharding">3. Sharding (Шардирование)<a class="headerlink" href="#3-sharding" title="Permanent link">&para;</a></h3>
+<p>Когда данные не лезут на один сервер — ставим несколько. Данные размазываются по узлам на основе <strong>Shard Key</strong>. Юзеры ID 1–1M на Сервере А, 1M–2M на Сервере Б.</p>
+<div class="admonition danger">
+<p class="admonition-title">Почему шардирование — это ад</p>
+<ol>
+<li><strong>JOIN-ы умирают</strong> — нельзя сделать JOIN между таблицами на разных серверах. Джоины переезжают в Java-код.</li>
+<li><strong>Распределённые транзакции</strong> — перевод денег между серверами не покрыть обычным <code>BEGIN...COMMIT</code>. Привет, 2PC или Saga.</li>
+<li><strong>Ребалансировка</strong> — Сервер А заполнился → добавляем Сервер В → нужно без остановки продакшена перенести часть данных.</li>
+</ol>
+</div>
+<hr />
+<h2 id="cap-pacelc">CAP и PACELC<a class="headerlink" href="#cap-pacelc" title="Permanent link">&para;</a></h2>
+<h3 id="cap-">CAP-теорема<a class="headerlink" href="#cap-" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>C (Consistency)</strong> — каждый клиент видит самые последние данные или ошибку. Никто не видит устаревшую версию.</li>
+<li><strong>A (Availability)</strong> — любой живой узел всегда отвечает (без ошибки).</li>
+<li><strong>P (Partition tolerance)</strong> — система работает даже если сеть между узлами порвалась.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Суть компромисса</p>
+<p>В реальном мире сеть ломается <strong>всегда</strong>. P — это не опция, а реальность. Поэтому выбор всегда между <strong>C и A в момент аварии</strong>.</p>
+</div>
+<p>При обрыве связи между дата-центрами:</p>
+<p><strong>CP-система (выбираем Consistency)</strong> — запрещаем запись/чтение на изолированном узле. Пользователь видит "Ошибка 500" (жертвуем A), но никто не прочитает устаревшую финансовую сводку. <em>Примеры: MongoDB, HBase, Redis Cluster в строгом режиме.</em></p>
+<p><strong>AP-система (выбираем Availability)</strong> — узел продолжает отвечать из кэша до обрыва. Сайт работает, но данные могут быть устаревшими (жертвуем C). Это <strong>Eventual Consistency</strong> — когда сеть починят, узлы синхронизируются. <em>Примеры: Cassandra, DynamoDB, Hazelcast.</em></p>
+<h3 id="pacelc">PACELC — жизнь без аварий<a class="headerlink" href="#pacelc" title="Permanent link">&para;</a></h3>
+<p>CAP описывает только момент аварии. Но 99.9% времени сеть работает. PACELC:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>IF Partition (сеть порвалась):  выбирай между A и C
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ELSE (сеть работает):           выбирай между L (Latency) и C (Consistency)
+</span></code></pre></div>
+<p>Сеть в порядке, юзер публикует срочный пресс-релиз:</p>
+<ul>
+<li><strong>Выбрал Latency</strong> — узел быстро записал к себе, мгновенно ответил ОК. Молниеносно. Но пока данные асинхронно летят на другие узлы, кто-то прочитает старую версию.</li>
+<li><strong>Выбрал Consistency</strong> — узел записал, дождался записи на всех узлах, потом ответил ОК. Идеальная согласованность, но задержка огромная.</li>
+</ul>
+<hr />
+<h2 id="message-queues">Message Queues — очереди сообщений<a class="headerlink" href="#message-queues" title="Permanent link">&para;</a></h2>
+<h3 id="1-transactional-outbox">1. Transactional Outbox<a class="headerlink" href="#1-transactional-outbox" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Проблема Dual Write</p>
+<p>Редактор публикует новость. Нужно: 1) сохранить в PostgreSQL, 2) отправить событие в Kafka. Если сначала БД, а Kafka моргнёт — сервисы не узнают. Если сначала Kafka, а БД упадёт — фантомное событие без данных.</p>
+</div>
+<p><strong>Решение:</strong> в той же транзакции БД пишем во вторую табличку <code>outbox_events</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">BEGIN</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">news_metadata</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Новый листинг&#39;</span><span class="p">);</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">outbox_events</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">aggregate_type</span><span class="p">,</span><span class="w"> </span><span class="n">payload</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;News&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;{...json...}&#39;</span><span class="p">);</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">COMMIT</span><span class="p">;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1">-- Транзакция гарантирует: либо всё, либо ничего</span>
+</span></code></pre></div>
+<p>Отдельный фоновый процесс (часто Debezium, читающий WAL-логи БД) сканирует <code>outbox_events</code> и надёжно перекладывает сообщения в Kafka. Ушло — удаляется из outbox.</p>
+<h3 id="2-idempotent-consumer">2. Idempotent Consumer<a class="headerlink" href="#2-idempotent-consumer" title="Permanent link">&para;</a></h3>
+<p>Брокеры дают гарантию <strong>At-least-once</strong> — одно сообщение может прилететь дважды из-за рестартов или сетевых задержек. Идемпотентность — повторная обработка не создаёт дублей побочных эффектов (юзер не получит три одинаковых письма).</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@KafkaListener</span><span class="p">(</span><span class="n">topics</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;news-published&quot;</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nd">@Transactional</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onNewsPublished</span><span class="p">(</span><span class="n">NewsPublishedEvent</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="c1">// Способ 1: проверка по Idempotency Key</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">processedEventRepository</span><span class="p">.</span><span class="na">existsById</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getEventId</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="c1">// уже обрабатывали — игнорируем</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">sendEmails</span><span class="p">(</span><span class="n">event</span><span class="p">);</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="n">processedEventRepository</span><span class="p">.</span><span class="na">save</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ProcessedEvent</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">getEventId</span><span class="p">()));</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="c1">// Способ 2 (надёжнее): UNIQUE constraint в БД</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="c1">// При дубликате → DataIntegrityViolationException → ловим, коммитим offset</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="3-dead-letter-queue-dlq">3. Dead Letter Queue (DLQ)<a class="headerlink" href="#3-dead-letter-queue-dlq" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Проблема Poison Pill</p>
+<p>Консьюмер читает очередь. Приходит сломанный JSON. Парсер падает. Сообщение не подтверждено. Брокер думает "консьюмер не справился, дам ещё раз" — и так бесконечно. Очередь встаёт из-за одного сообщения.</p>
+</div>
+<p><strong>Решение:</strong> Retry Policy (3 попытки с растущей задержкой 1с/3с/10с). Если после 3 раз всё ещё ошибка — брокер перекидывает сообщение в DLQ. Основная очередь работает дальше, дефектные сообщения в DLQ разбирают разработчики или по ним стреляют алерты.</p>
+<h3 id="4-saga">4. Saga — распределённые транзакции<a class="headerlink" href="#4-saga" title="Permanent link">&para;</a></h3>
+<p>Бизнес-процесс размазан по микросервисам, единого <code>ROLLBACK</code> нет. Saga решает через <strong>компенсирующие транзакции</strong> (шаги отмены).</p>
+<p><strong>Choreography (Хореография)</strong> — сервисы общаются событиями, нет центра. А сохранил → кинул ивент. Б поймал → обновил → кинул ивент. Если В падает — кидает <code>FailedEvent</code>, А и Б ловят и компенсируют.
+- ➕ Слабая связность, нет единой точки отказа.
+- ➖ При 4+ сервисах логику невозможно отследить — спагетти.</p>
+<p><strong>Orchestration (Оркестрация)</strong> — центральный оркестратор (стейт-машина) шлёт команды: "А, сохрани" → ждёт → "Б, обнови" → ждёт. Если В вернул ошибку — оркестратор шлёт А и Б команды отката.
+- ➕ Весь флоу в одном месте, легче мониторить.
+- ➖ Оркестратор — единая точка отказа, может обрасти сложной логикой.</p>
+<hr />
+<h2 id="_3">Как проектировать систему на собесе<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1">Шаг 1: Сбор требований (никакого кода и квадратиков!)<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p><strong>Функциональные</strong> (что система делает?): только списываем/начисляем товары? Нужна история? Бронирование?</p>
+<p><strong>Нефункциональные</strong> (в каких условиях?): сколько складов? RPS? Критична ли latency? Что важнее — Availability или Consistency?</p>
+<div class="admonition tip">
+<p class="admonition-title">Для ERP/финансов ответ всегда — Consistency</p>
+<p>Лучше система выдаст ошибку, чем продаст один товар двум людям.</p>
+</div>
+<h3 id="2-api">Шаг 2: Проектирование API<a class="headerlink" href="#2-api" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>POST /api/v1/inventory/reserve     — забронировать товар
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>GET  /api/v1/inventory/{item_id}   — получить остатки
+</span></code></pre></div>
+<p>Покажи понимание версионирования, идемпотентности (что будет если клиент дважды вызовет POST из-за лага?), правильных HTTP-статусов.</p>
+<h3 id="3">Шаг 3: Модель данных<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Рассуждай вслух: "Выбираю реляционную БД, потому что нужны строгие гарантии целостности и джоины для отчётов". Обсуди нормализацию и индексы. Для критичных данных — Event Sourcing или append-only таблица истории транзакций (аудит).</p>
+<h3 id="4-high-level-design">Шаг 4: High-Level Design<a class="headerlink" href="#4-high-level-design" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Клиент → API Gateway → Warehouse Service → PostgreSQL (транзакция)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                              │
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                              ▼
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                         Event Bus (Kafka)
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>                              │
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>              ┌───────────────┼───────────────┐
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>              ▼               ▼               ▼
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        Billing Service  Analytics      Notification
+</span></code></pre></div>
+<h3 id="5-deep-dive">Шаг 5: Deep Dive — поиск узких мест<a class="headerlink" href="#5-deep-dive" title="Permanent link">&para;</a></h3>
+<p>Интервьюер начнёт ломать систему: <em>"А что если сервер упадёт после записи в БД, но до отправки в Kafka?"</em> Здесь блистаешь:</p>
+<ul>
+<li><strong>Transactional Outbox</strong> — сохраняем бизнес-сущность и событие в одну транзакцию, воркер читает и пушит в брокер.</li>
+<li><strong>Идемпотентность консьюмеров</strong> — <code>event_id</code> в таблице обработанных событий.</li>
+</ul>
+<h3 id="_4">Золотые правила рассуждения<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Три принципа</p>
+<ol>
+<li><strong>Думай вслух.</strong> Молчать 5 минут и выдать идеал хуже, чем 5 минут рассуждать вслух о компромиссах и выдать решение с небольшим изъяном.</li>
+<li><strong>Нет серебряной пули.</strong> Каждое решение имеет плюсы и минусы — озвучивай их.</li>
+<li><strong>Озвучивай компромиссы:</strong> "Redis для остатков даст скорость, но риск stale data — поэтому для чекаута идём в master-базу".</li>
+</ol>
+</div>
+<hr />
+<h2 id="_5">Разбор кейсов<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="1-round-robin">Кейс 1: Round Robin убивает один сервер<a class="headerlink" href="#1-round-robin" title="Permanent link">&para;</a></h3>
+<p><strong>Проблема:</strong> 3 сервера генерируют PDF-отчёты, L4 + Round Robin, трафик равномерный, но один сервер регулярно падает от OOM, два других на 20%.</p>
+<p><strong>Решение:</strong> Round Robin раздаёт запросы вслепую, не зная их веса. Генерация PDF — тяжёлая долгая операция. Если на один сервер случайно попало несколько "тяжёлых" PDF-запросов подряд, они копятся, а Round Robin продолжает слать новые. Заменить на <strong>Least Connections</strong> (увидит что сервер занят) или перейти на <strong>L7</strong> для роутинга по типу запроса. Тяжёлые PDF лучше вообще вынести в асинхронную очередь.</p>
+<h3 id="2-1010-redis-1005">Кейс 2: База падает в 10:10, Redis-узел сгорел в 10:05<a class="headerlink" href="#2-1010-redis-1005" title="Permanent link">&para;</a></h3>
+<p><strong>Проблема 1 — что убило базу в 10:10:</strong> <strong>Cache Stampede (Thundering Herd)</strong>. TTL = 10 минут, кэш создан в 10:00, истёк в 10:10. Тысячи брокеров одновременно получили Cache Miss и одновременно ударили в PostgreSQL. Лечить — mutex (один поток обновляет кэш) или вероятностное раннее обновление (probabilistic early expiration).</p>
+<p><strong>Проблема 2 — почему смерть Redis в 10:05 не положила кэш:</strong> В Redis Cluster у Master есть Replica. Узлы заметили падение по Gossip, проголосовали, повысили реплику до Master. Но репликация <strong>асинхронная</strong> — если Master принял запись и сгорел до репликации, эти данные могли потеряться (для кэша не критично — пересоберётся из БД).</p>
+<h3 id="3-devops-100m">Кейс 3: DevOps хочет шардировать 100M строк<a class="headerlink" href="#3-devops-100m" title="Permanent link">&para;</a></h3>
+<p><strong>Проблема:</strong> Таблица <code>kase_news</code> — 100M строк за 15 лет. Бизнес: "новости 2026 мгновенно, на архивы плевать". DevOps: "шардируем по <code>year</code>, 15 серверов".</p>
+<p><strong>Решение:</strong> Шардирование — пушка по воробьям. Получим всю боль (распределённые джоины, ребалансировка) ради задачи, решаемой на одном сервере:</p>
+<ol>
+<li><strong>Горизонтальное партиционирование</strong> по <code>year</code> — БД физически разделит данные, запрос за 2026 не тронет архивы. Свежие данные = маленькая горячая партиция в RAM.</li>
+<li><strong>Вертикальное партиционирование</strong> — вынести тяжёлое тело статьи в отдельную таблицу, оставив в основной <code>id</code>, <code>title</code>, <code>date</code> для быстрых списков.</li>
+</ol>
+<h3 id="4">Кейс 4: Экскаватор перерубил кабель Алматы–Астана<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p><strong>Проблема:</strong> Сервис "Избранное", БД в двух дата-центрах, Network Partition.</p>
+<p><strong>Решение:</strong> Для закладок выбираем <strong>AP (Availability)</strong>. Цена ошибки низкая — ну увидит юзер свой список закладок на секунду неактуальным. В момент аварии: оба дата-центра продолжают принимать запросы, юзер добавляет закладки, они сохраняются локально. После починки сети — Eventual Consistency, узлы синхронизируются (конфликты решаются, например, по timestamp). PACELC при рабочей сети: тоже выбираем <strong>L (Latency)</strong> — мгновенный отклик важнее идеальной согласованности для такой некритичной фичи.</p>
+<h3 id="5">Кейс 5: Потерянные и дублированные письма<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p><strong>Проблема:</strong> News сохраняет в БД и шлёт <code>NewsPublished</code> в Kafka, EmailSender рассылает письма. Баги: 1) события теряются, 2) приходит по 3 письма, 3) сломанный JSON блокирует очередь.</p>
+<p><strong>Решение — три паттерна:</strong></p>
+<ol>
+<li><strong>Transactional Outbox</strong> (потеря событий) — сохранять новость и событие в одну транзакцию БД, воркер надёжно перекладывает в Kafka.</li>
+<li><strong>Idempotent Consumer</strong> (дубли писем) — проверять <code>event_id</code> перед отправкой, UNIQUE constraint в БД.</li>
+<li><strong>Dead Letter Queue</strong> (poison pill) — после 3 retry перекидывать битое сообщение в DLQ, очередь работает дальше.</li>
+</ol>
+<hr />
+<h2 id="_6">Итоговая шпаргалка<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Тема</strong></th>
+<th><strong>Запомнить</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L4 vs L7</strong></td>
+<td>L4 — IP/порт, быстро. L7 — URL/заголовки, умный роутинг + SSL termination</td>
+</tr>
+<tr>
+<td><strong>Round Robin vs Least Connections</strong></td>
+<td>RR — равные запросы. LC — тяжёлые долгие запросы</td>
+</tr>
+<tr>
+<td><strong>Sticky Sessions</strong></td>
+<td>Антипаттерн. Лучше — сессии в Redis</td>
+</tr>
+<tr>
+<td><strong>Cache-Aside</strong></td>
+<td>Читай кэш → miss → БД → положи в кэш. Spring <code>@Cacheable</code></td>
+</tr>
+<tr>
+<td><strong>Write-Through vs Write-Behind</strong></td>
+<td>Through — синхронно, свежо. Behind — async, быстро, риск потери</td>
+</tr>
+<tr>
+<td><strong>LRU vs LFU</strong></td>
+<td>LRU — давно не трогали. LFU — мало раз трогали</td>
+</tr>
+<tr>
+<td><strong>Cache Stampede</strong></td>
+<td>Толпа на истёкший TTL. Лечить mutex-локом</td>
+</tr>
+<tr>
+<td><strong>Replication</strong></td>
+<td>Master пишет, реплики читают. Осторожно: Replication Lag</td>
+</tr>
+<tr>
+<td><strong>Partitioning</strong></td>
+<td>Один сервер. Горизонтальное (строки) / вертикальное (столбцы)</td>
+</tr>
+<tr>
+<td><strong>Sharding</strong></td>
+<td>Много серверов. Боль: джоины, распределённые транзакции, ребаланс</td>
+</tr>
+<tr>
+<td><strong>CAP</strong></td>
+<td>Сеть рвётся всегда → выбор между C и A. CP=MongoDB, AP=Cassandra</td>
+</tr>
+<tr>
+<td><strong>PACELC</strong></td>
+<td>Без аварии — выбор между Latency и Consistency</td>
+</tr>
+<tr>
+<td><strong>Transactional Outbox</strong></td>
+<td>Бизнес-данные + событие в одну транзакцию. Решает Dual Write</td>
+</tr>
+<tr>
+<td><strong>Idempotent Consumer</strong></td>
+<td>At-least-once → дубли → проверка event_id</td>
+</tr>
+<tr>
+<td><strong>DLQ</strong></td>
+<td>Poison pill → retry → Dead Letter Queue</td>
+</tr>
+<tr>
+<td><strong>Saga</strong></td>
+<td>Распределённые транзакции через компенсации. Choreography vs Orchestration</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../../networks/networks/" class="md-footer__link md-footer__link--prev" aria-label="Назад: HTTP, TCP, REST, gRPC">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                HTTP, TCP, REST, gRPC
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../architecture/architecture/" class="md-footer__link md-footer__link--next" aria-label="Вперед: DDD, микросервисы, CQRS">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                DDD, микросервисы, CQRS
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
