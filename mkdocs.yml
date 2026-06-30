@@ -30,7 +30,6 @@ theme:
     - navigation.sections       # подразделы группами в боковом меню
     - navigation.top            # кнопка "Наверх"
     - navigation.indexes        # раздел имеет свою обзорную страницу
-    - navigation.footer         # кнопки "Назад / Вперёд" внизу страницы
     - toc.follow                # оглавление следует за прокруткой
 
     # Поиск
