@@ -103,6 +103,11 @@ nav:
       - Нереляционные:
           - NoSQL: database/nosql.md
 
+  - Kafka:
+      - Физика брокера: kafka/kafka.md
+      - Consumer и Producer: kafka/kafka-consumer-producer.md
+      - Гарантии доставки: kafka/kafka-reliability.md
+
   - Computer Science:
       - Алгоритмы:
           - Теория (Big O, структуры, сортировки): algorithms/algorithms.md
