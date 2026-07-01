@@ -13,26 +13,28 @@
       
       
       
+        <link rel="prev" href="../../database/nosql/">
       
-        <link rel="next" href="java/basics/">
+      
+        <link rel="next" href="../kafka-consumer-producer/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Interview Prep</title>
+        <title>Физика брокера - Interview Prep</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#kafka" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Старт
+              Физика брокера
             
           </span>
         </div>
@@ -210,11 +212,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -242,7 +242,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="java/basics/" class="md-tabs__link">
+        <a href="../../java/basics/" class="md-tabs__link">
           
   
   
@@ -274,7 +274,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="spring/spring-core/" class="md-tabs__link">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
           
   
   
@@ -306,7 +306,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="database/sql/" class="md-tabs__link">
+        <a href="../../database/sql/" class="md-tabs__link">
           
   
   
@@ -327,11 +327,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="kafka/kafka/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -360,7 +362,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="algorithms/algorithms/" class="md-tabs__link">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
           
   
   
@@ -392,7 +394,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="system-design/system-design/" class="md-tabs__link">
+        <a href="../../system-design/system-design/" class="md-tabs__link">
           
   
   
@@ -437,7 +439,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -452,37 +454,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Старт
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -498,133 +473,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="Содержание">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Содержание
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        С чего начать
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Что внутри
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Что внутри">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#java" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Язык Java
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#spring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Spring
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Данные
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#computer-science" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer Science
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Проектирование
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Как устроены страницы
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Вклад в проект
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -754,7 +602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/basics/" class="md-nav__link">
+      <a href="../../java/basics/" class="md-nav__link">
         
   
   
@@ -782,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/multithreading/" class="md-nav__link">
+      <a href="../../java/multithreading/" class="md-nav__link">
         
   
   
@@ -884,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/oop/" class="md-nav__link">
+      <a href="../../java/oop/" class="md-nav__link">
         
   
   
@@ -912,7 +760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/collections/" class="md-nav__link">
+      <a href="../../java/collections/" class="md-nav__link">
         
   
   
@@ -940,7 +788,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/exceptions/" class="md-nav__link">
+      <a href="../../java/exceptions/" class="md-nav__link">
         
   
   
@@ -968,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/generics/" class="md-nav__link">
+      <a href="../../java/generics/" class="md-nav__link">
         
   
   
@@ -996,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/streams/" class="md-nav__link">
+      <a href="../../java/streams/" class="md-nav__link">
         
   
   
@@ -1024,7 +872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/io-nio/" class="md-nav__link">
+      <a href="../../java/io-nio/" class="md-nav__link">
         
   
   
@@ -1118,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/solid/" class="md-nav__link">
+      <a href="../../java/solid/" class="md-nav__link">
         
   
   
@@ -1146,7 +994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/patterns/" class="md-nav__link">
+      <a href="../../java/patterns/" class="md-nav__link">
         
   
   
@@ -1307,7 +1155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-core/" class="md-nav__link">
+      <a href="../../spring/spring-core/" class="md-nav__link">
         
   
   
@@ -1335,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-boot/" class="md-nav__link">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
         
   
   
@@ -1429,7 +1277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-mvc/" class="md-nav__link">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
         
   
   
@@ -1457,7 +1305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-data-jpa/" class="md-nav__link">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
         
   
   
@@ -1551,7 +1399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-ecosystem/" class="md-nav__link">
+      <a href="../../spring/spring-ecosystem/" class="md-nav__link">
         
   
   
@@ -1579,7 +1427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-tools/" class="md-nav__link">
+      <a href="../../spring/spring-tools/" class="md-nav__link">
         
   
   
@@ -1736,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/sql/" class="md-nav__link">
+      <a href="../../database/sql/" class="md-nav__link">
         
   
   
@@ -1828,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/nosql/" class="md-nav__link">
+      <a href="../../database/nosql/" class="md-nav__link">
         
   
   
@@ -1868,8 +1716,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1883,19 +1733,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1913,7 +1766,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1928,10 +1781,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="kafka/kafka/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Физика брокера
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1947,6 +1827,222 @@
   
 
       </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#topic-partition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topic и Partition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic и Partition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Распределённый лог против классической очереди
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Topics — логическая абстракция
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-partitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Partitions — физическая реальность
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Почему партиция — единица масштабирования
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Оффсет партиции (взгляд брокера / физика)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Оффсет консьюмера (взгляд потребителя / логика)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-kafka-senior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Где Kafka хранит эти закладки? (вопрос для Senior)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retention-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retention Policy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retention Policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Почему удалять по одному сообщению — самоубийство
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Как Kafka на самом деле удаляет данные (сегменты)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Настройки Retention: время или объём
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Зачем хранить данные неделями (бизнес-смысл)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-log-compaction-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Log Compaction — киллер-фича для интервью
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1959,7 +2055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="kafka/kafka-consumer-producer/" class="md-nav__link">
+      <a href="../kafka-consumer-producer/" class="md-nav__link">
         
   
   
@@ -1987,7 +2083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="kafka/kafka-reliability/" class="md-nav__link">
+      <a href="../kafka-reliability/" class="md-nav__link">
         
   
   
@@ -2138,7 +2234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="algorithms/algorithms/" class="md-nav__link">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
         
   
   
@@ -2166,7 +2262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="algorithms/leetcode-patterns/" class="md-nav__link">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
         
   
   
@@ -2258,7 +2354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="networks/networks/" class="md-nav__link">
+      <a href="../../networks/networks/" class="md-nav__link">
         
   
   
@@ -2417,7 +2513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="system-design/system-design/" class="md-nav__link">
+      <a href="../../system-design/system-design/" class="md-nav__link">
         
   
   
@@ -2509,7 +2605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/architecture/" class="md-nav__link">
+      <a href="../../architecture/architecture/" class="md-nav__link">
         
   
   
@@ -2601,7 +2697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="infrastructure/infrastructure/" class="md-nav__link">
+      <a href="../../infrastructure/infrastructure/" class="md-nav__link">
         
   
   
@@ -2666,33 +2762,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#topic-partition" class="md-nav__link">
     <span class="md-ellipsis">
       
-        С чего начать
+        Topic и Partition
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Что внутри
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Что внутри">
+    <nav class="md-nav" aria-label="Topic и Partition">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#java" class="md-nav__link">
+  <a href="#1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Язык Java
+        1. Распределённый лог против классической очереди
       
     </span>
   </a>
@@ -2700,10 +2785,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spring" class="md-nav__link">
+  <a href="#2-topics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spring
+        2. Topics — логическая абстракция
       
     </span>
   </a>
@@ -2711,10 +2796,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#3-partitions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Данные
+        3. Partitions — физическая реальность
       
     </span>
   </a>
@@ -2722,21 +2807,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#computer-science" class="md-nav__link">
+  <a href="#4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Computer Science
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Проектирование
+        4. Почему партиция — единица масштабирования
       
     </span>
   </a>
@@ -2749,21 +2823,132 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#offset" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Как устроены страницы
+        Offset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Оффсет партиции (взгляд брокера / физика)
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Вклад в проект
+        2. Оффсет консьюмера (взгляд потребителя / логика)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-kafka-senior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Где Kafka хранит эти закладки? (вопрос для Senior)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retention-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retention Policy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Retention Policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Почему удалять по одному сообщению — самоубийство
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Как Kafka на самом деле удаляет данные (сегменты)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-retention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Настройки Retention: время или объём
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Зачем хранить данные неделями (бизнес-смысл)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-log-compaction-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Log Compaction — киллер-фича для интервью
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
       
     </span>
   </a>
@@ -2787,34 +2972,214 @@
 
 
 
-<h1 id="_1">Подготовка к техническому собеседованию<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>Личная база знаний для backend-разработчика. Java, Spring, базы данных, алгоритмы, сети, системный дизайн и архитектура — всё, что реально спрашивают на собесах, с объяснением <strong>почему</strong> это работает именно так, а не просто определениями.</p>
-<hr />
-<h2 id="_2">С чего начать<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Разделы вверху идут в логике изучения: от языка к фреймворку, от данных к проектированию систем. Внутри каждого — от базового к продвинутому.</p>
-<p><strong>Готовишься к конкретному собесу?</strong> Используй поиск (нажми ++s++ или ++/++) — он понимает русский и найдёт термин по всем страницам: <code>volatile</code>, <code>PECS</code>, <code>N+1</code>, <code>Circuit Breaker</code>, <code>MVCC</code>.</p>
-<hr />
-<h2 id="_3">Что внутри<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h3 id="java">Язык Java<a class="headerlink" href="#java" title="Permanent link">&para;</a></h3>
-<p>Платформа и память (JVM, GC, многопоточность), язык и API (ООП, коллекции, дженерики, Stream API), дизайн кода (SOLID, паттерны). Разбор до уровня байт-кода и Java Memory Model.</p>
-<h3 id="spring">Spring<a class="headerlink" href="#spring" title="Permanent link">&para;</a></h3>
-<p>Ядро (IoC, DI, AOP, жизненный цикл бина), веб и данные (MVC, REST, JPA, транзакции, N+1), экосистема (Security, Kafka, DDD, тестирование). От автоконфигурации до прокси под капотом.</p>
-<h3 id="_4">Данные<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
-<p>Реляционные (ACID, уровни изоляции, MVCC, индексы, оконные функции) и нереляционные (четыре семейства NoSQL, CAP-теорема, Redis, Cassandra, паттерны кэширования).</p>
-<h3 id="computer-science">Computer Science<a class="headerlink" href="#computer-science" title="Permanent link">&para;</a></h3>
-<p>Алгоритмы (Big O, структуры данных, сортировки, графы) с разбором паттернов LeetCode-задач. Сети (TCP/UDP, HTTP/1-3, TLS, REST vs gRPC, WebSocket, DNS).</p>
-<h3 id="_5">Проектирование<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
-<p>Системный дизайн (масштабирование, балансировка, кэширование, очереди, Saga), архитектура (DDD, микросервисы, CQRS, Event Sourcing, гексагональная архитектура), эксплуатация (Docker, CI/CD, Kubernetes, observability).</p>
-<hr />
-<h2 id="_6">Как устроены страницы<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>Каждая тема построена одинаково: <strong>сначала суть и зачем нужно</strong>, потом <strong>код или схема</strong>, потом <strong>ловушки на собесах</strong> в выделенных блоках, и <strong>итоговая шпаргалка</strong> в конце для быстрого повторения перед звонком.</p>
-<div class="admonition tip">
-<p class="admonition-title">Совет по подготовке</p>
-<p>За день до собеса не пытайся прочитать всё. Открой шпаргалки в конце нужных страниц — они спроектированы как быстрое освежение уже изученного.</p>
+<h1 id="kafka">Kafka: Физика брокера<a class="headerlink" href="#kafka" title="Permanent link">&para;</a></h1>
+<h2 id="topic-partition">Topic и Partition<a class="headerlink" href="#topic-partition" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. Распределённый лог против классической очереди<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>Частый вопрос на собесах — сравнить Kafka с RabbitMQ/ActiveMQ. Главное отличие в архитектурном подходе.</p>
+<p><strong>Классическая очередь (RabbitMQ): «Умный брокер — глупый потребитель»</strong></p>
+<ul>
+<li>Брокер получает сообщение и пушит (Push) его консьюмеру. После подтверждения (ACK) брокер <strong>навсегда удаляет</strong> сообщение.</li>
+<li>Минусы: брокер тратит ресурсы на отслеживание кому отдал сообщение и получил ли ответ. Удалённое сообщение прочитать заново невозможно (если упала БД и данные не сохранились).</li>
+</ul>
+<p><strong>Kafka (распределённый лог): «Глупый брокер — умный потребитель»</strong></p>
+<ul>
+<li>Kafka не удаляет сообщения после прочтения. Работает как <strong>Append-Only Log</strong> — сообщения пишутся на диск друг за другом, иммутабельны (нельзя изменить или удалить поштучно).</li>
+<li>Брокер ничего не пушит. Консьюмеры сами вытягивают (Pull) данные когда удобно. Сообщения хранятся столько, сколько указано в <code>retention.ms</code> (например, 7 дней).</li>
+<li>Плюс: если сервис упал или в логике была ошибка — можно «отмотать» время назад и перечитать те же сообщения.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>RabbitMQ (очередь)</strong></th>
+<th><strong>Kafka (лог)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Модель доставки</strong></td>
+<td>Push (брокер → консьюмер)</td>
+<td>Pull (консьюмер ← брокер)</td>
+</tr>
+<tr>
+<td><strong>После прочтения</strong></td>
+<td>Сообщение удаляется</td>
+<td>Хранится до retention</td>
+</tr>
+<tr>
+<td><strong>Перечитать</strong></td>
+<td>Невозможно</td>
+<td>Отмотать оффсет назад</td>
+</tr>
+<tr>
+<td><strong>Где логика</strong></td>
+<td>В брокере</td>
+<td>В консьюмере</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-topics">2. Topics — логическая абстракция<a class="headerlink" href="#2-topics" title="Permanent link">&para;</a></h3>
+<p><strong>Топик</strong> — имя категории/папки для сообщений одного типа (<code>user-registrations</code>, <code>payment-events</code>).</p>
+<p>Топик не существует физически как единый файл. Для ОС сервера Kafka «топик» — это просто набор директорий. Физическая реальность начинается на уровне партиций.</p>
+<h3 id="3-partitions">3. Partitions — физическая реальность<a class="headerlink" href="#3-partitions" title="Permanent link">&para;</a></h3>
+<p>Каждый топик разбивается на <strong>партиции</strong>. Создавая топик <code>orders</code>, ты обязан указать на сколько партиций его распилить (например, 3).</p>
+<ul>
+<li><strong>Физически</strong> — партиция это буквально файл (сегмент лога) на диске брокера. Новые сообщения дописываются строго в конец.</li>
+<li><strong>Offset (Смещение)</strong> — каждое сообщение внутри партиции получает уникальный возрастающий порядковый номер. Первое — offset 0, второе — 1, миллионное — 999999.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Гарантия порядка</p>
+<p>Строгий порядок сообщений гарантируется <strong>только внутри одной партиции</strong>. Kafka НЕ гарантирует, что сообщение из Партиции 0 было отправлено раньше, чем из Партиции 1.</p>
 </div>
-<hr />
-<h2 id="_7">Вклад в проект<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>База открыта для дополнений. Нашёл ошибку, знаешь тему глубже, завалили вопросом которого здесь нет — присылай pull request или открой issue. Вместе сделаем ресурс, который реально помогает пройти собес.</p>
+<h3 id="4">4. Почему партиция — единица масштабирования<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>Ключевой вопрос на понимание горизонтального масштабирования.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Топик payments с 1 партицией:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Сколько бы консьюмеров ни запустил (2, 5, 100) —
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  читать эту партицию сможет ТОЛЬКО ОДИН.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Остальные простаивают. (Защита от Race Condition.)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Топик payments с 10 партициями:
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  1. Масштабирование брокеров — 10 файлов раскидываются по 10 серверам.
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>     Нагрузка на запись распределена между 10 дисками.
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  2. Масштабирование консьюмеров — 10 инстансов приложения,
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>     Kafka отдаёт каждому по партиции. Читают параллельно.
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>     Производительность ×10.
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Правило масштабирования</p>
+<p>Партиция — минимальная гранула параллелизма в Kafka. Упёрся в лимиты обработки → первым делом увеличивай количество партиций и добавляй консьюмеры.</p>
+</div>
+<h2 id="offset">Offset<a class="headerlink" href="#offset" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1. Оффсет партиции (взгляд брокера / физика)<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>Партиция — бесконечный лог-файл. Продюсер прислал сообщение → брокер дописал в конец → присвоил уникальный возрастающий номер. Это <strong>оффсет партиции</strong>.</p>
+<ul>
+<li><strong>Неизменен</strong> — сообщение с оффсетом <code>42</code> навсегда останется под номером <code>42</code> (пока не истечёт <code>retention.ms</code>).</li>
+<li><strong>Log End Offset (LEO)</strong> — указатель на конец файла. Если в партиции 100 сообщений (0–99), LEO = 100. Сюда запишется следующее входящее.</li>
+</ul>
+<h3 id="2">2. Оффсет консьюмера (взгляд потребителя / логика)<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>Оффсет консьюмера — <strong>виртуальная «закладка» в книге</strong>. Сервис читает данные и отмечает прогресс, чтобы при перезапуске не читать всё сначала.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>1. Консьюмер скачал пачку сообщений: оффсеты 10, 11, 12
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>2. Обработал бизнес-логикой, сохранил в БД
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>3. Отправил Kafka команду: &quot;Всё обработал, мой прогресс — оффсет 13&quot;
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>   ↑ это называется Commit (коммит)
+</span></code></pre></div>
+<h3 id="3-kafka-senior">3. Где Kafka хранит эти закладки? (вопрос для Senior)<a class="headerlink" href="#3-kafka-senior" title="Permanent link">&para;</a></h3>
+<p><em>"Консьюмер закоммитил оффсет. Куда физически Kafka его записала? Не в память же?"</em></p>
+<ul>
+<li><strong>Раньше (каменный век):</strong> Kafka хранила оффсеты в Zookeeper. Но Zookeeper не был рассчитан на миллионы операций записи в секунду — стал узким горлышком.</li>
+<li><strong>Сейчас:</strong> Kafka хранит оффсеты <strong>внутри самой себя</strong> — в скрытом системном топике <code>__consumer_offsets</code>.</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>При коммите консьюмер работает как продюсер —
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>отправляет служебное сообщение в __consumer_offsets:
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Ключ:     [Consumer Group + Топик + Номер Партиции]
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Значение: число (например, 13)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>При перезагрузке сервис идёт в __consumer_offsets,
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>находит свою последнюю цифру по ключу и говорит брокеру:
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>&quot;Давай данные из партиции, начиная с 13-го сообщения&quot;
+</span></code></pre></div>
+<h2 id="retention-policy">Retention Policy<a class="headerlink" href="#retention-policy" title="Permanent link">&para;</a></h2>
+<h3 id="1_2">1. Почему удалять по одному сообщению — самоубийство<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<p>Партиция — Append-Only Log. В файле миллион сообщений, консьюмер прочитал сообщение №5. Что если Kafka попытается его удалить?</p>
+<p>Придётся либо оставить "дырку" (фрагментация), либо сдвинуть 999 995 сообщений вверх. И то, и другое убьёт скорость диска.</p>
+<div class="admonition info">
+<p class="admonition-title">Почему Kafka такая быстрая</p>
+<p>Kafka пишет и читает со скоростью RAM благодаря Page Cache в Linux и последовательному I/O. Запись в конец файла — <strong>O(1)</strong>. Поштучное удаление превратило бы это в O(N) и уничтожило пропускную способность.</p>
+</div>
+<h3 id="2-kafka">2. Как Kafka на самом деле удаляет данные (сегменты)<a class="headerlink" href="#2-kafka" title="Permanent link">&para;</a></h3>
+<p>Kafka работает не с отдельными сообщениями, а с файлами-сегментами.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Партиция физически = не один гигантский файл, а куски (Segments)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>                     размер сегмента по умолчанию = 1 ГБ
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>┌──────────┬──────────┬──────────┬─────────────┐
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│ Segment1 │ Segment2 │ Segment3 │ Active Seg  │ ← сюда пишет продюсер
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│ (закрыт) │ (закрыт) │ (закрыт) │ (не удалить)│
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>└──────────┴──────────┴──────────┴─────────────┘
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>     ↑
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Log Cleaner проверяет: возраст самого свежего сообщения
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>в сегменте &gt; retention.ms (7 дней)?
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>Да → удаляет ВЕСЬ 1 ГБ файл целиком на уровне ОС. Мгновенно.
+</span></code></pre></div>
+<p>Активный сегмент (последний, куда пишет продюсер) Kafka не удалит никогда, даже если вышло время.</p>
+<h3 id="3-retention">3. Настройки Retention: время или объём<a class="headerlink" href="#3-retention" title="Permanent link">&para;</a></h3>
+<p>Политика очистки настраивается для каждого топика. Два триггера:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>1. По времени (log.retention.hours / ms):
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>   удалять сегменты старше N дней (дефолт 7 дней)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>2. По размеру (log.retention.bytes):
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>   удалять старые сегменты если размер партиции &gt; N ГБ
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   (лимит 50 ГБ → выросла до 51 ГБ → удаляется старейший сегмент)
+</span></code></pre></div>
+<p>Работают по принципу «ИЛИ» — что наступит раньше, то и удалит старые данные.</p>
+<h3 id="4-">4. Зачем хранить данные неделями (бизнес-смысл)<a class="headerlink" href="#4-" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Машина времени (Replayability)</strong> — упала БД или выкатил кривой код? Сообщения не потеряны. Чинишь баг, отматываешь оффсет назад, перечитываешь логи за 3 дня. С RabbitMQ невозможно — данные сгорели бы после первого прочтения.</li>
+<li><strong>Независимость множества систем</strong> — данные лежат 7 дней. Сервис уведомлений читает за миллисекунду, тяжёлый сервис аналитики выкачивает раз в сутки батчами. Данные дождутся всех.</li>
+<li><strong>Event Sourcing</strong> — топик с <code>retention.ms = -1</code> (бесконечное хранение) становится Source of Truth всей системы за всю историю.</li>
+</ul>
+<h3 id="5-log-compaction-">5. Log Compaction — киллер-фича для интервью<a class="headerlink" href="#5-log-compaction-" title="Permanent link">&para;</a></h3>
+<p><em>"Не хочу удалять по времени, но и бесконечно растить диск не могу. Топик с балансами юзеров — важен только текущий последний баланс."</em></p>
+<p>Козырь: <strong>Log Compaction</strong> (<code>cleanup.policy=compact</code>). Вместо удаления по времени, Kafka в фоне пробегается по старым сегментам, смотрит на <strong>ключи</strong> и удаляет все старые версии, оставляя <strong>только последнее сообщение для каждого уникального ключа</strong>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>По ключу user-123 было 50 изменений профиля за год:
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  user-123 → {баланс: 100}   ┐
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  user-123 → {баланс: 250}   ├─ удаляются
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  user-123 → {баланс: 180}   ┘
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  user-123 → {баланс: 4000}  ← остаётся только последнее
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Позволяет хранить справочники и стейты вечно, не раздувая диск.
+</span></code></pre></div>
+<h2 id="_1">Итоговая шпаргалка<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Тема</strong></th>
+<th><strong>Запомнить</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kafka vs RabbitMQ</strong></td>
+<td>Kafka — Pull-лог, хранит после чтения. RabbitMQ — Push-очередь, удаляет</td>
+</tr>
+<tr>
+<td><strong>Topic</strong></td>
+<td>Логическая абстракция, набор директорий. Физика — на уровне партиций</td>
+</tr>
+<tr>
+<td><strong>Partition</strong></td>
+<td>Файл на диске, Append-Only. Порядок гарантирован только внутри партиции</td>
+</tr>
+<tr>
+<td><strong>Партиция = масштаб</strong></td>
+<td>Одна партиция = один консьюмер. Больше партиций = больше параллелизма</td>
+</tr>
+<tr>
+<td><strong>Offset партиции</strong></td>
+<td>Неизменный номер сообщения. LEO = конец файла</td>
+</tr>
+<tr>
+<td><strong>Offset консьюмера</strong></td>
+<td>«Закладка» прогресса. Commit сохраняет позицию</td>
+</tr>
+<tr>
+<td><strong><code>__consumer_offsets</code></strong></td>
+<td>Скрытый топик где Kafka хранит оффсеты (раньше был Zookeeper)</td>
+</tr>
+<tr>
+<td><strong>Retention</strong></td>
+<td>Удаление целыми сегментами (1 ГБ), не по одному. По времени ИЛИ размеру</td>
+</tr>
+<tr>
+<td><strong>Сегменты</strong></td>
+<td>Партиция нарезана на куски. Активный сегмент не удаляется</td>
+</tr>
+<tr>
+<td><strong>Log Compaction</strong></td>
+<td><code>cleanup.policy=compact</code> — оставить последнее сообщение на каждый ключ</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -2870,10 +3235,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
