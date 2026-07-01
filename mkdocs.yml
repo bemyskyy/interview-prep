@@ -1,6 +1,6 @@
 site_name: Interview Prep
 site_description: База знаний для подготовки к техническим собеседованиям по Java и backend
-site_author: Tolebek
+site_author: bemyskyy
 
 theme:
   name: material

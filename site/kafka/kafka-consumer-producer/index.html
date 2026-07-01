@@ -13,26 +13,28 @@
       
       
       
+        <link rel="prev" href="../kafka/">
       
-        <link rel="next" href="java/basics/">
+      
+        <link rel="next" href="../kafka-reliability/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Interview Prep</title>
+        <title>Consumer и Producer - Interview Prep</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -51,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#kafka-consumer-producer" class="md-skip">
           Перейти к содержанию
         </a>
       
@@ -92,7 +94,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
-    <a href="." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Старт
+              Consumer и Producer
             
           </span>
         </div>
@@ -210,11 +212,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="." class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -242,7 +242,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="java/basics/" class="md-tabs__link">
+        <a href="../../java/basics/" class="md-tabs__link">
           
   
   
@@ -274,7 +274,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="spring/spring-core/" class="md-tabs__link">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
           
   
   
@@ -306,7 +306,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="database/sql/" class="md-tabs__link">
+        <a href="../../database/sql/" class="md-tabs__link">
           
   
   
@@ -327,11 +327,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="kafka/kafka/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../kafka/" class="md-tabs__link">
           
   
   
@@ -360,7 +362,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="algorithms/algorithms/" class="md-tabs__link">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
           
   
   
@@ -392,7 +394,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="system-design/system-design/" class="md-tabs__link">
+        <a href="../../system-design/system-design/" class="md-tabs__link">
           
   
   
@@ -437,7 +439,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -452,37 +454,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Старт
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -498,133 +473,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="Содержание">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Содержание
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        С чего начать
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Что внутри
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Что внутри">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#java" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Язык Java
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#spring" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Spring
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Данные
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#computer-science" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer Science
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Проектирование
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Как устроены страницы
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Вклад в проект
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -754,7 +602,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/basics/" class="md-nav__link">
+      <a href="../../java/basics/" class="md-nav__link">
         
   
   
@@ -782,7 +630,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/multithreading/" class="md-nav__link">
+      <a href="../../java/multithreading/" class="md-nav__link">
         
   
   
@@ -884,7 +732,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/oop/" class="md-nav__link">
+      <a href="../../java/oop/" class="md-nav__link">
         
   
   
@@ -912,7 +760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/collections/" class="md-nav__link">
+      <a href="../../java/collections/" class="md-nav__link">
         
   
   
@@ -940,7 +788,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/exceptions/" class="md-nav__link">
+      <a href="../../java/exceptions/" class="md-nav__link">
         
   
   
@@ -968,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/generics/" class="md-nav__link">
+      <a href="../../java/generics/" class="md-nav__link">
         
   
   
@@ -996,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/streams/" class="md-nav__link">
+      <a href="../../java/streams/" class="md-nav__link">
         
   
   
@@ -1024,7 +872,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/io-nio/" class="md-nav__link">
+      <a href="../../java/io-nio/" class="md-nav__link">
         
   
   
@@ -1118,7 +966,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/solid/" class="md-nav__link">
+      <a href="../../java/solid/" class="md-nav__link">
         
   
   
@@ -1146,7 +994,7 @@
   
   
     <li class="md-nav__item">
-      <a href="java/patterns/" class="md-nav__link">
+      <a href="../../java/patterns/" class="md-nav__link">
         
   
   
@@ -1307,7 +1155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-core/" class="md-nav__link">
+      <a href="../../spring/spring-core/" class="md-nav__link">
         
   
   
@@ -1335,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-boot/" class="md-nav__link">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
         
   
   
@@ -1429,7 +1277,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-mvc/" class="md-nav__link">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
         
   
   
@@ -1457,7 +1305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-data-jpa/" class="md-nav__link">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
         
   
   
@@ -1551,7 +1399,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-ecosystem/" class="md-nav__link">
+      <a href="../../spring/spring-ecosystem/" class="md-nav__link">
         
   
   
@@ -1579,7 +1427,7 @@
   
   
     <li class="md-nav__item">
-      <a href="spring/spring-tools/" class="md-nav__link">
+      <a href="../../spring/spring-tools/" class="md-nav__link">
         
   
   
@@ -1736,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/sql/" class="md-nav__link">
+      <a href="../../database/sql/" class="md-nav__link">
         
   
   
@@ -1828,7 +1676,7 @@
   
   
     <li class="md-nav__item">
-      <a href="database/nosql/" class="md-nav__link">
+      <a href="../../database/nosql/" class="md-nav__link">
         
   
   
@@ -1868,8 +1716,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1883,19 +1733,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1913,7 +1766,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1931,7 +1784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="kafka/kafka/" class="md-nav__link">
+      <a href="../kafka/" class="md-nav__link">
         
   
   
@@ -1956,10 +1809,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="kafka/kafka-consumer-producer/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consumer и Producer
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1975,6 +1855,222 @@
   
 
       </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ключи и гарантия порядка
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ключи и гарантия порядка">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Почему нет глобального порядка (цена скорости)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Отправка без ключа (хаос и балансировка)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Магия ключей (хэширование)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumer-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consumer Groups (Группы потребителей)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups (Группы потребителей)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое Consumer Group
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Золотое правило Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-3-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Классическая задача: 3 партиции и 5 консьюмеров
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consumer-groups-pubsub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Несколько Consumer Groups (паттерн Pub/Sub)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebalancing (Ребалансировка)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing (Ребалансировка)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что это
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Три триггера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Два вида пульса — как Kafka понимает что сервер «умер»
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как физически происходит ребаланс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cooperative-rebalancing-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cooperative Rebalancing — киллер-фича
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1987,7 +2083,7 @@
   
   
     <li class="md-nav__item">
-      <a href="kafka/kafka-reliability/" class="md-nav__link">
+      <a href="../kafka-reliability/" class="md-nav__link">
         
   
   
@@ -2138,7 +2234,7 @@
   
   
     <li class="md-nav__item">
-      <a href="algorithms/algorithms/" class="md-nav__link">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
         
   
   
@@ -2166,7 +2262,7 @@
   
   
     <li class="md-nav__item">
-      <a href="algorithms/leetcode-patterns/" class="md-nav__link">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
         
   
   
@@ -2258,7 +2354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="networks/networks/" class="md-nav__link">
+      <a href="../../networks/networks/" class="md-nav__link">
         
   
   
@@ -2417,7 +2513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="system-design/system-design/" class="md-nav__link">
+      <a href="../../system-design/system-design/" class="md-nav__link">
         
   
   
@@ -2509,7 +2605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/architecture/" class="md-nav__link">
+      <a href="../../architecture/architecture/" class="md-nav__link">
         
   
   
@@ -2601,7 +2697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="infrastructure/infrastructure/" class="md-nav__link">
+      <a href="../../infrastructure/infrastructure/" class="md-nav__link">
         
   
   
@@ -2666,33 +2762,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        С чего начать
+        Ключи и гарантия порядка
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Что внутри
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Что внутри">
+    <nav class="md-nav" aria-label="Ключи и гарантия порядка">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#java" class="md-nav__link">
+  <a href="#1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Язык Java
+        1. Почему нет глобального порядка (цена скорости)
       
     </span>
   </a>
@@ -2700,10 +2785,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#spring" class="md-nav__link">
+  <a href="#2" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Spring
+        2. Отправка без ключа (хаос и балансировка)
       
     </span>
   </a>
@@ -2711,32 +2796,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#3" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Данные
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#computer-science" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Computer Science
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Проектирование
+        3. Магия ключей (хэширование)
       
     </span>
   </a>
@@ -2749,21 +2812,143 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#consumer-groups" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Как устроены страницы
+        Consumer Groups (Группы потребителей)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Consumer Groups (Группы потребителей)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-consumer-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что такое Consumer Group
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#2-kafka" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Вклад в проект
+        2. Золотое правило Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-3-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Классическая задача: 3 партиции и 5 консьюмеров
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-consumer-groups-pubsub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Несколько Consumer Groups (паттерн Pub/Sub)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rebalancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rebalancing (Ребалансировка)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Rebalancing (Ребалансировка)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Что это
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Три триггера
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Два вида пульса — как Kafka понимает что сервер «умер»
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Как физически происходит ребаланс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-cooperative-rebalancing-" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cooperative Rebalancing — киллер-фича
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Итоговая шпаргалка
       
     </span>
   </a>
@@ -2787,34 +2972,173 @@
 
 
 
-<h1 id="_1">Подготовка к техническому собеседованию<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>Личная база знаний для backend-разработчика. Java, Spring, базы данных, алгоритмы, сети, системный дизайн и архитектура — всё, что реально спрашивают на собесах, с объяснением <strong>почему</strong> это работает именно так, а не просто определениями.</p>
-<hr />
-<h2 id="_2">С чего начать<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Разделы вверху идут в логике изучения: от языка к фреймворку, от данных к проектированию систем. Внутри каждого — от базового к продвинутому.</p>
-<p><strong>Готовишься к конкретному собесу?</strong> Используй поиск (нажми ++s++ или ++/++) — он понимает русский и найдёт термин по всем страницам: <code>volatile</code>, <code>PECS</code>, <code>N+1</code>, <code>Circuit Breaker</code>, <code>MVCC</code>.</p>
-<hr />
-<h2 id="_3">Что внутри<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
-<h3 id="java">Язык Java<a class="headerlink" href="#java" title="Permanent link">&para;</a></h3>
-<p>Платформа и память (JVM, GC, многопоточность), язык и API (ООП, коллекции, дженерики, Stream API), дизайн кода (SOLID, паттерны). Разбор до уровня байт-кода и Java Memory Model.</p>
-<h3 id="spring">Spring<a class="headerlink" href="#spring" title="Permanent link">&para;</a></h3>
-<p>Ядро (IoC, DI, AOP, жизненный цикл бина), веб и данные (MVC, REST, JPA, транзакции, N+1), экосистема (Security, Kafka, DDD, тестирование). От автоконфигурации до прокси под капотом.</p>
-<h3 id="_4">Данные<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
-<p>Реляционные (ACID, уровни изоляции, MVCC, индексы, оконные функции) и нереляционные (четыре семейства NoSQL, CAP-теорема, Redis, Cassandra, паттерны кэширования).</p>
-<h3 id="computer-science">Computer Science<a class="headerlink" href="#computer-science" title="Permanent link">&para;</a></h3>
-<p>Алгоритмы (Big O, структуры данных, сортировки, графы) с разбором паттернов LeetCode-задач. Сети (TCP/UDP, HTTP/1-3, TLS, REST vs gRPC, WebSocket, DNS).</p>
-<h3 id="_5">Проектирование<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
-<p>Системный дизайн (масштабирование, балансировка, кэширование, очереди, Saga), архитектура (DDD, микросервисы, CQRS, Event Sourcing, гексагональная архитектура), эксплуатация (Docker, CI/CD, Kubernetes, observability).</p>
-<hr />
-<h2 id="_6">Как устроены страницы<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
-<p>Каждая тема построена одинаково: <strong>сначала суть и зачем нужно</strong>, потом <strong>код или схема</strong>, потом <strong>ловушки на собесах</strong> в выделенных блоках, и <strong>итоговая шпаргалка</strong> в конце для быстрого повторения перед звонком.</p>
-<div class="admonition tip">
-<p class="admonition-title">Совет по подготовке</p>
-<p>За день до собеса не пытайся прочитать всё. Открой шпаргалки в конце нужных страниц — они спроектированы как быстрое освежение уже изученного.</p>
+<h1 id="kafka-consumer-producer">Kafka: Механика Consumer и Producer<a class="headerlink" href="#kafka-consumer-producer" title="Permanent link">&para;</a></h1>
+<h2 id="_1">Ключи и гарантия порядка<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. Почему нет глобального порядка (цена скорости)<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>Пользователи генерируют 10 000 событий/сек. Если бы Kafka гарантировала <strong>глобальный порядок</strong> — пришлось бы складывать всё в один лог (одну партицию) и читать одним потоком. Система захлебнулась бы.</p>
+<p>Компромисс Kafka: <strong>распиливаем топик на партиции (например, 3), читаем параллельно, но жертвуем глобальным порядком.</strong></p>
+<p>Но бизнесу часто плевать на глобальный порядок! Неважно что привычка Пети обработана раньше привычки Васи. Критично только одно: <strong>события одной конкретной привычки должны обрабатываться строго по очереди</strong> — сначала "создана", потом "выполнена", а не наоборот.</p>
+<p>Решение — Ключи (Keys).</p>
+<h3 id="2">2. Отправка без ключа (хаос и балансировка)<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>Сообщение состоит из <code>Key</code> и <code>Value</code>. Ключ не обязателен. Что будет с пустым ключом (<code>Key = null</code>)?</p>
+<p>Kafka включит <strong>Round-Robin</strong>: первое сообщение → Партиция 0, второе → Партиция 1, третье → Партиция 2, четвёртое → снова 0.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>❌ Как ломается порядок:
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>1. Событие 1 (Привычка 42 создана)  → Партиция 0
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>2. Событие 2 (Привычка 42 удалена)  → Партиция 1
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>Консьюмер Партиции 1 оказался быстрее:
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   вычитал &quot;Событие 2&quot; → лезет в БД удалять привычку 42 →
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>   а её ещё нет! → EntityNotFoundException
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Через миллисекунду второй консьюмер создаёт привычку.
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Бизнес-логика сломана.
+</span></code></pre></div>
+<h3 id="3">3. Магия ключей (хэширование)<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>Указываем явный ключ. Для привычек идеальный ключ — её <code>habitId = "42"</code>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Формула: Hash(Key) % Number_of_Partitions
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>1. Продюсер берёт ключ &quot;42&quot;
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>2. Прогоняет через хэш-функцию (по умолчанию Murmur2) → 8462947
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>3. Остаток от деления на количество партиций: 8462947 % 3 = 1
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>4. Сообщение летит строго в Партицию 1
+</span></code></pre></div>
+<p><strong>Почему это гарантирует порядок:</strong> хэш от <code>"42"</code> всегда = <code>8462947</code>. Математика не меняется. Все события этой привычки (создание, апдейт, выполнение, удаление) 100% попадут в <strong>одну Партицию 1</strong>. А партицию читает всегда один консьюмер строго последовательно → события обработаются ровно в том порядке, в котором сгенерированы.</p>
+<div class="admonition warning">
+<p class="admonition-title">Убийственный вопрос на собесе</p>
+<p><em>"Порядок работает. Через полгода трафик вырос в 10 раз. Добавляете ещё 2 партиции (итого 5). Что произойдёт с порядком?"</em></p>
+<p><strong>Ответ:</strong> Порядок сломается для существующих сущностей. Меняется знаменатель в формуле <code>Hash(Key) % 5</code>. Тот же ключ <code>"42"</code>, который всю жизнь летел в Партицию 1, теперь может дать остаток 4 и полететь в Партицию 4. Старые события в первой партиции, новые в четвёртой — их читают разные консьюмеры параллельно, Race Condition вернулся.</p>
 </div>
-<hr />
-<h2 id="_7">Вклад в проект<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
-<p>База открыта для дополнений. Нашёл ошибку, знаешь тему глубже, завалили вопросом которого здесь нет — присылай pull request или открой issue. Вместе сделаем ресурс, который реально помогает пройти собес.</p>
+<div class="admonition tip">
+<p class="admonition-title">Архитектурное правило</p>
+<p>Количество партиций в топиках, где важен порядок по ключу, <strong>нельзя менять на лету</strong>. Закладывай количество с запасом (Over-provisioning) на этапе проектирования — например, сразу 50 партиций, даже если сейчас всего 2 инстанса приложения.</p>
+</div>
+<h2 id="consumer-groups">Consumer Groups (Группы потребителей)<a class="headerlink" href="#consumer-groups" title="Permanent link">&para;</a></h2>
+<h3 id="1-consumer-group">1. Что такое Consumer Group<a class="headerlink" href="#1-consumer-group" title="Permanent link">&para;</a></h3>
+<p>Поднимая инстанс Spring Boot приложения, читающего Kafka, ты обязан указать <code>group.id</code> (например, <code>appointment-processor</code>).</p>
+<p><strong>Consumer Group</strong> — логическое объединение инстансов одного приложения, работающих над общей задачей. Для брокера вся группа выглядит как один «виртуальный супер-потребитель».</p>
+<h3 id="2-kafka">2. Золотое правило Kafka<a class="headerlink" href="#2-kafka" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Главное правило балансировки</p>
+<p><strong>Одна партиция в рамках одной Consumer Group может читаться только ОДНИМ консьюмером.</strong></p>
+</div>
+<p>Почему так жёстко? Из-за гарантии порядка. Если Kafka отдаст Партицию 0 двум инстансам, они начнут вытаскивать сообщения параллельно (Race Condition) — порядок для одного ключа мгновенно сломается.</p>
+<h3 id="3-3-5">3. Классическая задача: 3 партиции и 5 консьюмеров<a class="headerlink" href="#3-3-5" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Топик payments с 3 партициями, запущено 5 инстансов (один group.id):
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Консьюмер 1 → Партиция 0
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Консьюмер 2 → Партиция 1
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Консьюмер 3 → Партиция 2
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>Консьюмер 4 → Idle (простаивает)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Консьюмер 5 → Idle (простаивает)
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Вопрос-ловушка</p>
+<p><em>"Зачем запустили 2 лишних инстанса, если они простаивают и жгут ресурсы?"</em></p>
+<p><strong>Ответ:</strong> Ради отказоустойчивости (High Availability). Это горячий резерв. Если работающий сервер упадёт (OOM, потеря сети) — сработает Rebalance, и простаивающий консьюмер за миллисекунды подхватит осиротевшую партицию. Простой минимален.</p>
+</div>
+<h3 id="4-consumer-groups-pubsub">4. Несколько Consumer Groups (паттерн Pub/Sub)<a class="headerlink" href="#4-consumer-groups-pubsub" title="Permanent link">&para;</a></h3>
+<p>То, ради чего выбирают Kafka вместо классических брокеров. Один топик <code>appointments-events</code>, разные группы читают независимо:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>                    ┌─→ crm-core-group      → PostgreSQL (календарь)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>appointments-events ├─→ notification-group  → SMS клиенту
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>                    └─→ analytics-group      → дашборды владельца
+</span></code></pre></div>
+<ul>
+<li><code>crm-core-group</code> — основной бэкенд, кладёт запись в PostgreSQL.</li>
+<li><code>notification-group</code> — читает <strong>те же</strong> события, шлёт SMS.</li>
+<li><code>analytics-group</code> — тяжёлая аналитика, вычитывает раз в час.</li>
+</ul>
+<p><strong>Физически:</strong> каждая группа имеет свой независимый оффсет. Нотификации обрабатывают за 10мс и убегают вперёд, аналитика тормозит на 5 минут. Читают <strong>одни и те же физические файлы</strong> партиций. Никто никого не блокирует, сообщения не удаляются после первого прочтения. Идеальная развязка (decoupling) микросервисов.</p>
+<h2 id="rebalancing">Rebalancing (Ребалансировка)<a class="headerlink" href="#rebalancing" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1. Что это<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>Перераспределение партиций между живыми консьюмерами внутри группы. Цель — гарантировать что каждая партиция читается ровно одним консьюмером и ни одна не осталась «брошенной».</p>
+<h3 id="2_1">2. Три триггера<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>1. Падение инстанса      — консьюмер упал (OOM, питание, сеть)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>2. Масштабирование       — добавили новый инстанс, Kafka даёт ему партиции
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>3. Изменение топологии   — админ добавил новые партиции в топик
+</span></code></pre></div>
+<h3 id="3-kafka">3. Два вида пульса — как Kafka понимает что сервер «умер»<a class="headerlink" href="#3-kafka" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Сетевой пульс (session.timeout.ms):
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  Фоновый поток шлёт heartbeat брокеру.
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  Нет пульса дольше session.timeout.ms (~10 сек) → сервер физически умер → ребаланс
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Пульс бизнес-логики (max.poll.interval.ms):
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  Сеть есть, но код завис на тяжёлом SQL или дедлоке.
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  Между вызовами poll() прошло &gt; max.poll.interval.ms (дефолт 5 мин) →
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  сервис &quot;зомби&quot; (жив в сети, работу не делает) → выкидываем из группы
+</span></code></pre></div>
+<h3 id="4">4. Как физически происходит ребаланс<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<div class="admonition info">
+<p class="admonition-title">Брокер НЕ решает кому какая партиция</p>
+<p>Многие думают что брокер сам распределяет партиции. Ошибка! Kafka делегирует эту логику клиентам.</p>
+</div>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Group Coordinator (брокер) — следит кто жив, подаёт сигнал к сбору
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Group Leader (твоё приложение) — один из живых консьюмеров, применяет алгоритм
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Фаза JoinGroup:
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  Все живые консьюмеры шлют &quot;я жив&quot; Координатору
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  Координатор собирает список, отдаёт Лидеру
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Фаза SyncGroup:
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  Лидер (твой Spring Boot сервис) сам применяет алгоритм распределения
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  (Round Robin) → отправляет план Координатору → Координатор рассылает всем
+</span></code></pre></div>
+<p>Почему так? Чтобы брокер оставался «глупым» и быстрым. Логика распределения в клиентской библиотеке — можно написать свой Partition Assignor, не трогая код сервера Kafka.</p>
+<h3 id="5-cooperative-rebalancing-">5. Cooperative Rebalancing — киллер-фича<a class="headerlink" href="#5-cooperative-rebalancing-" title="Permanent link">&para;</a></h3>
+<p><strong>Eager Rebalancing (до Kafka 2.4)</strong> — при ребалансе ВСЕ консьюмеры бросали работу, отпускали ВСЕ партиции, ждали нового распределения. Полная остановка (<strong>Stop-The-World</strong>). На большой группе пауза — секунды и даже минуты.</p>
+<div class="admonition tip">
+<p class="admonition-title">Козырь сеньора</p>
+<p>С Kafka 2.4+ (и в современном Spring Kafka) по умолчанию <strong>Incremental Cooperative Rebalancing</strong>. Добавляешь новый сервер → старые серверы <strong>не бросают всю работу</strong>. Лидер просит отдать только те конкретные партиции, что нужны новичку. Остальные читаются без остановок. Никакого глобального простоя.</p>
+</div>
+<h2 id="_2">Итоговая шпаргалка<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th><strong>Тема</strong></th>
+<th><strong>Запомнить</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ключ сообщения</strong></td>
+<td><code>Hash(Key) % партиции</code>. Один ключ → всегда одна партиция → порядок</td>
+</tr>
+<tr>
+<td><strong>Без ключа</strong></td>
+<td>Round-Robin по партициям. Порядок не гарантирован</td>
+</tr>
+<tr>
+<td><strong>Смена числа партиций</strong></td>
+<td>Ломает порядок для существующих ключей. Закладывай с запасом</td>
+</tr>
+<tr>
+<td><strong>Consumer Group</strong></td>
+<td>Инстансы одного приложения. Для брокера — один супер-потребитель</td>
+</tr>
+<tr>
+<td><strong>Правило партиции</strong></td>
+<td>Одна партиция = один консьюмер в группе. Лишние — горячий резерв</td>
+</tr>
+<tr>
+<td><strong>Несколько групп</strong></td>
+<td>Pub/Sub: каждая группа свой оффсет, читают одни файлы независимо</td>
+</tr>
+<tr>
+<td><strong>Триггеры ребаланса</strong></td>
+<td>Падение / масштабирование / изменение топологии</td>
+</tr>
+<tr>
+<td><strong>Два пульса</strong></td>
+<td><code>session.timeout.ms</code> (сеть) + <code>max.poll.interval.ms</code> (бизнес-логика)</td>
+</tr>
+<tr>
+<td><strong>Кто распределяет</strong></td>
+<td>Group Leader (клиент), не брокер. Брокер — только Coordinator</td>
+</tr>
+<tr>
+<td><strong>Cooperative Rebalance</strong></td>
+<td>Kafka 2.4+. Не Stop-The-World, отдаются только нужные партиции</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -2870,10 +3194,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
