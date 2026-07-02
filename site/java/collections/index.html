@@ -9,7 +9,7 @@
         <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
       
       
-        <meta name="author" content="Tolebek">
+        <meta name="author" content="bemyskyy">
       
       
       
@@ -3484,9 +3484,9 @@
 <li><strong>Что хранит <code>Node</code>:</strong> ключ (<code>key</code>), значение (<code>value</code>), хэш ключа (<code>hash</code>), ссылку на следующий узел (<code>next</code>).</li>
 </ul>
 <h3 id="2-o1">2. Как вычисляется индекс бакета? (Секрет скорости O(1))<a class="headerlink" href="#2-o1" title="Permanent link">&para;</a></h3>
-<p>При <code>map.put("Tolebek", "Developer")</code>:</p>
+<p>При <code>map.put("First", "Developer")</code>:</p>
 <ol>
-<li><strong>Хэш:</strong> Вызывается <code>hashCode()</code> у ключа <code>"Tolebek"</code>.</li>
+<li><strong>Хэш:</strong> Вызывается <code>hashCode()</code> у ключа <code>"First"</code>.</li>
 <li><strong>Защита:</strong> Внутренняя функция <code>hash()</code> перемешивает биты, чтобы нивелировать плохие реализации <code>hashCode</code>.</li>
 <li><strong>Индекс (Вопрос на сеньора):</strong> Как получить индекс от 0 до 15?<ul>
 <li><em>Наивный способ:</em> <code>hash % 16</code> — работает медленно.</li>
