@@ -118,7 +118,7 @@ nav:
   - Проектирование:
       - Системы:
           - Масштабирование систем: system-design/system-design.md
-      - Архитектура:
+      - Архитектура приложений:
           - DDD, микросервисы, CQRS: architecture/architecture.md
-      - Эксплуатация:
+      - Инфраструктура:
           - Docker, CI/CD, K8s: infrastructure/infrastructure.md
