@@ -134,23 +134,36 @@ public class HabitService {
     Внешний метод вызывает внутренний. Внутренний падает с ошибкой, но внешний оборачивает вызов в `try-catch` и пытается продолжить. Что будет?
 
     ```java
-    @Transactional
-    public void outer() {
-        try {
-            inner(); // падает с RuntimeException
-        } catch (Exception e) {
-            log.error("поймал ошибку, продолжаю...");
+    @Slf4j
+    @Service
+    @RequiredArgsConstructor
+    public class OrderService {
+        private final InventoryService inventoryService; // другой бин → вызов пойдёт через его Proxy
+
+        @Transactional
+        public void outer() {
+            try {
+                inventoryService.inner(); // падает с RuntimeException
+            } catch (Exception e) {
+                log.error("поймал ошибку, продолжаю...");
+            }
+            // пытаемся дойти до конца и закоммитить
         }
-        // пытаемся дойти до конца и закоммитить
     }
 
-    @Transactional // REQUIRED — присоединяется к транзакции outer()
-    public void inner() {
-        throw new RuntimeException("упс");
+    @Service
+    public class InventoryService {
+
+        @Transactional // REQUIRED — присоединяется к транзакции outer()
+        public void inner() {
+            throw new RuntimeException("упс");
+        }
     }
     ```
 
-    **Ответ:** Приложение упадёт с `UnexpectedRollbackException`. Транзакция одна. Внутренний метод при падении пометил её флагом `rollback-only`. Внешний поймал ошибку в `catch`, дошёл до конца, попытался сделать `commit()`. Spring видит флаг и говорит: "Кто-то внутри уже забраковал эту транзакцию" — и кидает исключение.
+    **Ответ:** Приложение упадёт с `UnexpectedRollbackException`. Транзакция одна. Proxy `InventoryService` поймал исключение из `inner()` и пометил общую транзакцию флагом `rollback-only`. Внешний поймал ошибку в `catch`, дошёл до конца, попытался сделать `commit()`. Spring видит флаг и говорит: "Кто-то внутри уже забраковал эту транзакцию" — и кидает исключение.
+
+    **Почему `inner()` вынесен в отдельный бин:** если бы `outer()` и `inner()` лежали в одном классе, вызов `inner()` шёл бы через `this`, **минуя Proxy** (тот же самовызов, что и выше). `@Transactional` над `inner()` был бы проигнорирован, флаг `rollback-only` никто бы не поставил — исключение просто поймалось бы в `catch`, и `outer()` спокойно закоммитился бы. Никакого `UnexpectedRollbackException`.
 
 ---
 
@@ -187,22 +200,39 @@ public void logAudit(AuditEvent event) {
 Под капотом: **один Connection** + `connection.setSavepoint()` перед стартом внутреннего метода. При ошибке — `rollback` только до Savepoint, внешняя транзакция живёт дальше.
 
 ```java
-@Transactional
-public void processOrder(Order order) {
-    saveOrder(order);
-    try {
-        sendNotification(order); // может упасть — но не сломает всё
-    } catch (Exception e) {
-        log.warn("Уведомление не отправлено, заказ всё равно сохранён");
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final NotificationService notificationService; // отдельный бин
+
+    @Transactional
+    public void processOrder(Order order) {
+        orderRepository.save(order);
+        try {
+            notificationService.sendNotification(order); // может упасть — но не сломает всё
+        } catch (Exception e) {
+            log.warn("Уведомление не отправлено, заказ всё равно сохранён");
+        }
     }
 }
 
-@Transactional(propagation = Propagation.NESTED)
-public void sendNotification(Order order) {
-    // если упадёт — откат только до Savepoint, не весь processOrder
-    notificationRepository.save(new Notification(order));
+@Service
+@RequiredArgsConstructor
+public class NotificationService {
+    private final NotificationRepository notificationRepository;
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void sendNotification(Order order) {
+        // если упадёт — откат только до Savepoint, не весь processOrder
+        notificationRepository.save(new Notification(order));
+    }
 }
 ```
+
+!!! warning "Propagation работает только через Proxy"
+    Savepoint ставит `TransactionInterceptor` в Proxy бина `NotificationService`. Если оставить `sendNotification()` в `OrderService` и вызвать его как `this.sendNotification()`, Proxy не участвует: `NESTED` игнорируется, Savepoint не создаётся, и метод просто выполняется внутри транзакции `processOrder()`. То же касается `REQUIRES_NEW` и любых других настроек `@Transactional`.
 
 ---
 
