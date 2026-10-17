@@ -134,23 +134,36 @@ public class HabitService {
     Внешний метод вызывает внутренний. Внутренний падает с ошибкой, но внешний оборачивает вызов в `try-catch` и пытается продолжить. Что будет?
 
     ```java
-    @Transactional
-    public void outer() {
-        try {
-            inner(); // падает с RuntimeException
-        } catch (Exception e) {
-            log.error("поймал ошибку, продолжаю...");
+    @Slf4j
+    @Service
+    @RequiredArgsConstructor
+    public class OrderService {
+        private final InventoryService inventoryService; // другой бин → вызов пойдёт через его Proxy
+
+        @Transactional
+        public void outer() {
+            try {
+                inventoryService.inner(); // падает с RuntimeException
+            } catch (Exception e) {
+                log.error("поймал ошибку, продолжаю...");
+            }
+            // пытаемся дойти до конца и закоммитить
         }
-        // пытаемся дойти до конца и закоммитить
     }
 
-    @Transactional // REQUIRED — присоединяется к транзакции outer()
-    public void inner() {
-        throw new RuntimeException("упс");
+    @Service
+    public class InventoryService {
+
+        @Transactional // REQUIRED — присоединяется к транзакции outer()
+        public void inner() {
+            throw new RuntimeException("упс");
+        }
     }
     ```
 
-    **Ответ:** Приложение упадёт с `UnexpectedRollbackException`. Транзакция одна. Внутренний метод при падении пометил её флагом `rollback-only`. Внешний поймал ошибку в `catch`, дошёл до конца, попытался сделать `commit()`. Spring видит флаг и говорит: "Кто-то внутри уже забраковал эту транзакцию" — и кидает исключение.
+    **Ответ:** Приложение упадёт с `UnexpectedRollbackException`. Транзакция одна. Proxy `InventoryService` поймал исключение из `inner()` и пометил общую транзакцию флагом `rollback-only`. Внешний поймал ошибку в `catch`, дошёл до конца, попытался сделать `commit()`. Spring видит флаг и говорит: "Кто-то внутри уже забраковал эту транзакцию" — и кидает исключение.
+
+    **Почему `inner()` вынесен в отдельный бин:** если бы `outer()` и `inner()` лежали в одном классе, вызов `inner()` шёл бы через `this`, **минуя Proxy** (тот же самовызов, что и выше). `@Transactional` над `inner()` был бы проигнорирован, флаг `rollback-only` никто бы не поставил — исключение просто поймалось бы в `catch`, и `outer()` спокойно закоммитился бы. Никакого `UnexpectedRollbackException`.
 
 ---
 
@@ -187,22 +200,39 @@ public void logAudit(AuditEvent event) {
 Под капотом: **один Connection** + `connection.setSavepoint()` перед стартом внутреннего метода. При ошибке — `rollback` только до Savepoint, внешняя транзакция живёт дальше.
 
 ```java
-@Transactional
-public void processOrder(Order order) {
-    saveOrder(order);
-    try {
-        sendNotification(order); // может упасть — но не сломает всё
-    } catch (Exception e) {
-        log.warn("Уведомление не отправлено, заказ всё равно сохранён");
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final NotificationService notificationService; // отдельный бин
+
+    @Transactional
+    public void processOrder(Order order) {
+        orderRepository.save(order);
+        try {
+            notificationService.sendNotification(order); // может упасть — но не сломает всё
+        } catch (Exception e) {
+            log.warn("Уведомление не отправлено, заказ всё равно сохранён");
+        }
     }
 }
 
-@Transactional(propagation = Propagation.NESTED)
-public void sendNotification(Order order) {
-    // если упадёт — откат только до Savepoint, не весь processOrder
-    notificationRepository.save(new Notification(order));
+@Service
+@RequiredArgsConstructor
+public class NotificationService {
+    private final NotificationRepository notificationRepository;
+
+    @Transactional(propagation = Propagation.NESTED)
+    public void sendNotification(Order order) {
+        // если упадёт — откат только до Savepoint, не весь processOrder
+        notificationRepository.save(new Notification(order));
+    }
 }
 ```
+
+!!! warning "Propagation работает только через Proxy"
+    Savepoint ставит `TransactionInterceptor` в Proxy бина `NotificationService`. Если оставить `sendNotification()` в `OrderService` и вызвать его как `this.sendNotification()`, Proxy не участвует: `NESTED` игнорируется, Savepoint не создаётся, и метод просто выполняется внутри транзакции `processOrder()`. То же касается `REQUIRES_NEW` и любых других настроек `@Transactional`.
 
 ---
 
@@ -252,7 +282,10 @@ public void sendNotification(Order order) {
 !!! warning "`SERIALIZABLE` — зло для HighLoad"
     _"Если SERIALIZABLE решает все проблемы, почему бы не ставить его везде?"_
 
-    Потому что это убьёт производительность. База вешает тяжёлые блокировки на таблицы и строки, выстраивая транзакции строго последовательно. В высоконагруженной системе — колоссальные задержки и постоянные дедлоки.
+    Потому что это убьёт производительность. Как именно — зависит от БД:
+
+    - **Блокировочная реализация** (MySQL/InnoDB, SQL Server): даже обычные `SELECT` берут разделяемые блокировки, читатели и писатели ждут друг друга. В высоконагруженной системе — колоссальные задержки и дедлоки.
+    - **PostgreSQL (SSI — Serializable Snapshot Isolation):** читатели **не блокируются** — все работают со снимком, как на `REPEATABLE_READ`. Postgres лишь отслеживает зависимости чтение → запись между транзакциями, и если их нельзя выстроить в последовательный порядок, одна транзакция падает с ошибкой сериализации: `could not serialize access due to read/write dependencies among transactions` (SQLSTATE `40001`). Приложение обязано поймать её и **повторить транзакцию целиком**. При высокой конкуренции — лавина откатов и ретраев.
 
 ### Как решают на практике: блокировки на уровне JPA
 
@@ -406,21 +439,31 @@ public void updateName(Long id, String newName) {
 @Transactional
 public void example() {
     Habit habit = new Habit("Бег");
-    habitRepository.save(habit);
-    // SQL INSERT ещё НЕ отправлен в БД!
-    // Данные в Persistence Context, ждут коммита
-    System.out.println(habit.getId()); // ID может быть null если генерируется БД
+    habitRepository.save(habit); // для новой сущности это entityManager.persist()
+    System.out.println(habit.getId()); // ID уже есть!
+    // IDENTITY: Hibernate выполнил INSERT сразу — иначе БД не выдаст ID
+    // SEQUENCE: Hibernate взял ID из последовательности (nextval),
+    //           а сам INSERT отложен до flush / коммита
 
+    habit.setName("Утренний бег");
     habitRepository.saveAndFlush(habit);
-    // SQL INSERT отправлен в БД прямо сейчас
-    System.out.println(habit.getId()); // ID точно есть — его вернула БД
+    // flush(): все накопленные INSERT/UPDATE отправлены в БД прямо сейчас
     // НО! Транзакция ещё не закоммичена.
     // Если метод упадёт ниже — rollback, данные исчезнут.
 }
 ```
 
+**Почему ID есть сразу после `save()`:** `persist()` обязан сделать сущность `PERSISTENT`, а Persistence Context хранит объекты по ID. Значит, ID нужен немедленно:
+
+- **`GenerationType.IDENTITY`** (автоинкремент, `BIGSERIAL`) — ID знает только БД, поэтому Hibernate выполняет `INSERT` прямо внутри `save()`, не дожидаясь flush. Побочный эффект: JDBC-батчинг вставок для таких сущностей не работает.
+- **`GenerationType.SEQUENCE`** — Hibernate делает `SELECT nextval(...)` (с `allocationSize` — один раз на пачку ID) и присваивает ID объекту. `INSERT` остаётся в очереди до flush, поэтому вставки можно батчить.
+
 !!! tip "Когда нужен `saveAndFlush()`"
-    Когда до конца метода нужен сгенерированный БД `id`. Или когда на таблице висят триггеры, которые должны отработать немедленно, до выполнения следующего кода.
+    Не ради `id` — он есть и после `save()`. `saveAndFlush()` нужен, когда SQL должен выполниться **до следующей строки кода**:
+
+    - Нарушение ограничения (unique, FK) нужно поймать здесь и сейчас, а не при коммите за пределами метода.
+    - На таблице висят триггеры, которые должны отработать немедленно.
+    - Дальше код ходит в БД в обход Hibernate (`JdbcTemplate`, хранимая процедура) и должен увидеть изменения.
 
 ### 4. Кэш 1-го и 2-го уровня
 
@@ -434,8 +477,8 @@ public void example() {
 ```java
 @Transactional
 public void example() {
-    Client c1 = clientRepository.findById(1L); // SELECT в БД
-    Client c2 = clientRepository.findById(1L); // Из L1-кэша, SELECT нет!
+    Client c1 = clientRepository.findById(1L).orElseThrow(); // SELECT в БД
+    Client c2 = clientRepository.findById(1L).orElseThrow(); // Из L1-кэша, SELECT нет!
     // c1 == c2 (один и тот же объект)
 }
 ```
@@ -463,5 +506,5 @@ public void example() {
 | **Pessimistic Lock** | `SELECT FOR UPDATE`, физическая блокировка. Для критичных операций |
 | **N+1** | JOIN FETCH → @EntityGraph → @BatchSize |
 | **Dirty Checking** | PERSISTENT объект: `setName()` без `save()` — UPDATE при коммите |
-| **save() vs saveAndFlush()** | `save()` — откладывает SQL. `saveAndFlush()` — немедленно, но не коммитит |
+| **save() vs saveAndFlush()** | После `save()` ID уже есть (IDENTITY — INSERT сразу, SEQUENCE — `nextval`). `saveAndFlush()` — flush немедленно, но не коммитит |
 | **L2 Cache** | В Enterprise заменяют на Redis + `@Cacheable` |

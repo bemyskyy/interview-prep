@@ -144,6 +144,10 @@ User user = new User.Builder("Alice", "alice@mail.com")
 
 **Проблема:** Нужно создавать объекты, не привязываясь к конкретным классам.
 
+#### Simple Factory — "просто фабрика"
+
+То, что чаще всего показывают под видом Factory Method, на самом деле **Simple Factory**: один статический метод со `switch`, который выбирает класс по параметру. Это полезная идиома, но не паттерн GoF.
+
 ```java
 // Абстрактный продукт
 public interface Notification {
@@ -171,7 +175,7 @@ public class SmsNotification implements Notification {
     }
 }
 
-// Фабрика — централизованное место создания
+// Simple Factory — централизованное место создания
 public class NotificationFactory {
     public static Notification create(String type, String contact) {
         return switch (type) {
@@ -186,6 +190,54 @@ public class NotificationFactory {
 Notification n = NotificationFactory.create("EMAIL", "user@mail.com");
 n.send("Ваш заказ подтверждён");
 ```
+
+#### Factory Method (GoF) — настоящий фабричный метод
+
+**Суть:** базовый класс (Creator) содержит общий алгоритм и объявляет абстрактный **фабричный метод**. Какой именно объект создать — решает **подкласс**, переопределяя этот метод. Продукты (`Notification`, `EmailNotification`, `SmsNotification`) — те же, что выше.
+
+```java
+// Creator: общий алгоритм + абстрактный фабричный метод
+public abstract class NotificationService {
+
+    // Фабричный метод — КАКОЙ объект создать, решает подкласс
+    protected abstract Notification createNotification(String contact);
+
+    // Общая логика работает с любым продуктом через интерфейс
+    public void notifyUser(String contact, String message) {
+        Notification n = createNotification(contact);
+        n.send(message);
+    }
+}
+
+// Конкретные создатели переопределяют только фабричный метод
+public class EmailNotificationService extends NotificationService {
+    @Override
+    protected Notification createNotification(String contact) {
+        return new EmailNotification(contact);
+    }
+}
+
+public class SmsNotificationService extends NotificationService {
+    @Override
+    protected Notification createNotification(String contact) {
+        return new SmsNotification(contact);
+    }
+}
+
+// Клиент работает с абстрактным создателем
+NotificationService service = new EmailNotificationService();
+service.notifyUser("user@mail.com", "Ваш заказ подтверждён");
+```
+
+!!! warning "Simple Factory ≠ Factory Method"
+    | | **Simple Factory** | **Factory Method (GoF)** |
+    |---|---|---|
+    | **Кто выбирает класс** | Один статический метод по параметру (`switch`) | Подкласс, переопределяя фабричный метод |
+    | **Механизм** | Условная логика | Наследование и полиморфизм |
+    | **Новый тип продукта** | Правим `switch` — нарушаем OCP | Добавляем новый подкласс — старый код не трогаем |
+    | **Паттерн GoF?** | Нет, идиома | Да |
+
+    Пример из JDK: `Collection.iterator()` — фабричный метод. `ArrayList`, `HashSet`, `ArrayDeque` переопределяют его и возвращают каждый свой `Iterator`, а код, написанный против `Collection`, об этом не знает.
 
 !!! note "Factory vs Abstract Factory"
     **Factory Method** — один фабричный метод, создаёт один тип объекта. **Abstract Factory** — семейство связанных объектов (например, фабрика UI-элементов: `WindowsButton`, `WindowsCheckbox` или `MacButton`, `MacCheckbox`). На собесах чаще спрашивают Factory Method.
@@ -394,7 +446,7 @@ service.placeOrder(new Order(...));
 |---|---|---|---|
 | **Singleton** | Порождающий | Нужен один экземпляр | Приватный конструктор + статический метод доступа |
 | **Builder** | Порождающий | Объект с кучей параметров | Пошаговая сборка через fluent API |
-| **Factory Method** | Порождающий | Создание без привязки к классу | Метод возвращает интерфейс, скрывая `new` |
+| **Factory Method** | Порождающий | Создание без привязки к классу | Подкласс переопределяет фабричный метод и решает, какой объект создать. `switch` по параметру — это Simple Factory |
 | **Decorator** | Структурный | Добавить поведение без наследования | Обёртка, реализующая тот же интерфейс |
 | **Strategy** | Поведенческий | Взаимозаменяемые алгоритмы | Интерфейс + набор реализаций + контекст |
 | **Observer** | Поведенческий | Реакция нескольких на одно событие | Subject хранит список и уведомляет всех |

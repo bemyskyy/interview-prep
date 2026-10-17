@@ -131,7 +131,7 @@ worker.interrupt(); // "стучимся" к потоку
 
 Атомарны из коробки: чтение/запись ссылок и всех примитивов, **кроме** `long` и `double` (если не `volatile`). 64-битная запись на 32-битной ОС может разбиться на два шага — другой поток прочитает "склейку" из старой и новой половины (Word Tearing).
 
-**Visibility (Видимость)** — у каждого ядра CPU есть свой кэш (L1, L2, L3). Когда поток меняет переменную, он меняет её в кэше своего ядра. Другой поток читает старое значение из своего кэша. Без явной синхронизации JMM **не гарантирует**, когда данные доедут до другого ядра.
+**Visibility (Видимость)** — запись одного потока может долго оставаться невидимой для другого: значение лежит в регистре или store buffer ядра, а JIT вправе закэшировать поле в регистре и вообще не перечитывать его. Без явной синхронизации JMM **не гарантирует**, когда (и увидит ли вообще) другой поток новое значение.
 
 **Ordering (Упорядочивание/Reordering)** — компилятор и CPU вправе менять порядок инструкций, если это не ломает логику _текущего потока_ (правило _as-if-serial_). В многопоточном коде это приводит к неожиданным эффектам.
 
@@ -159,7 +159,7 @@ worker.interrupt(); // "стучимся" к потоку
 
 Решает проблемы **видимости** и **упорядочивания**, но **не решает** атомарность сложных операций.
 
-- **Видимость:** запись в `volatile` → немедленный сброс в RAM. Чтение → всегда из RAM, минуя кэш.
+- **Видимость:** запись в `volatile` happens-before любого последующего чтения этой переменной. Это **не** "запись в RAM и чтение из RAM в обход кэша": кэши ядер и так когерентны (протокол MESI), volatile-переменная спокойно живёт в L1. Значение "застревает" в регистрах и store buffer ядра, а ещё JIT может закэшировать поле в регистре и вынести чтение из цикла. `volatile` запрещает JIT такие оптимизации и ставит барьеры памяти, после которых запись становится видна другим ядрам.
 - **Memory Barriers:** `volatile` расставляет барьеры (StoreStore, StoreLoad, LoadLoad, LoadStore), запрещающие переупорядочивание.
 - **Release/Acquire семантика:** если поток А записал `x = 5`, потом `volatile flag = true` — поток Б, увидев `flag == true`, гарантированно увидит и `x == 5`.
 
@@ -258,7 +258,7 @@ head.compareAndSet(oldHead, newHead);   // lock-free структуры данн
 
 ### 3. Concurrent Collections
 
-Разобраны в разделе [Коллекции → Потокобезопасные коллекции](collections.md#_6). Краткая шпаргалка:
+Разобраны в разделе [Коллекции → Потокобезопасные коллекции](collections.md#concurrent-collections). Краткая шпаргалка:
 
 | Коллекция | Когда использовать |
 |---|---|
@@ -539,8 +539,10 @@ CompletableFuture.anyOf(cf1, cf2, cf3).thenAccept(result -> ...);
 **Решение:** аннотация `@Contended` (или "паддинг" — добивка пустыми полями). Заставляет JVM разнести переменные по разным кэш-линиям. Именно так устроен `LongAdder` под капотом.
 
 ```java
-// Добавить JVM-флаг: -XX:-RestrictContended
-@sun.misc.Contended
+// С Java 9 аннотация переехала из sun.misc во внутренний пакет JDK:
+// javac --add-exports java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+// java  -XX:-RestrictContended  (без флага вне JDK аннотация игнорируется)
+@jdk.internal.vm.annotation.Contended
 private volatile long value;
 ```
 
@@ -568,27 +570,48 @@ private volatile long value;
 
 ### Pinning (Прикалывание) — ахиллесова пята
 
-Если виртуальный поток вызывает блокирующую операцию внутри `synchronized` или native-метода JNI — он **не может** размонтироваться. Он "прикалывает" (pins) Carrier-поток к себе.
+Если виртуальный поток блокируется, но **не может** размонтироваться — он "прикалывает" (pins) Carrier-поток к себе.
 
 Если таких потоков будет много — пул Carrier-потоков исчерпается, приложение зависнет.
 
-!!! warning "Золотое правило Loom"
-    Заменяй `synchronized` на `ReentrantLock`. С `ReentrantLock` виртуальные потоки корректно размонтируются при ожидании блокировки.
+**Когда происходит пиннинг:**
 
-### Structured Concurrency (Preview, Java 21+)
+- **Java 21–23:** блокировка внутри `synchronized` (I/O под монитором, `Object.wait()`, ожидание входа в занятый монитор) и вызов native-метода (JNI).
+- **Java 24+ ([JEP 491](https://openjdk.org/jeps/491)):** `synchronized` больше **не пинит** — виртуальный поток размонтируется и при ожидании монитора, и внутри `synchronized`, и в `Object.wait()`. Пиннинг остался для native-кода (JNI, Foreign Function API) и для редких случаев вроде блокировки в статическом инициализаторе класса.
+
+!!! warning "Золотое правило Loom (только Java 21–23)"
+    На Java 21–23 заменяй `synchronized` на `ReentrantLock` там, где под блокировкой есть блокирующие операции. С `ReentrantLock` виртуальные потоки корректно размонтируются при ожидании.
+
+    С Java 24 переписывать `synchronized` ради виртуальных потоков не нужно. `ReentrantLock` выбирают только ради его возможностей: `tryLock()`, таймауты, fairness, несколько `Condition`.
+
+### Structured Concurrency (Preview)
 
 Управление подзадачами как единым блоком — по аналогии с обычным `try-catch`:
 
 ```java
-try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-    Future<String> user  = scope.fork(() -> fetchUser(id));
-    Future<Order>  order = scope.fork(() -> fetchOrder(id));
+// Java 25 (JEP 505), preview: javac/java --enable-preview
+try (var scope = StructuredTaskScope.open()) { // Joiner по умолчанию: все успешны или исключение
+    Subtask<String> user  = scope.fork(() -> fetchUser(id));
+    Subtask<Order>  order = scope.fork(() -> fetchOrder(id));
 
-    scope.join();           // ждём обоих
-    scope.throwIfFailed();  // если один упал — бросаем исключение
+    scope.join(); // ждём обе; если одна упала — вторая отменяется, join() бросает FailedException
 
-    return new Response(user.resultNow(), order.resultNow());
+    return new Response(user.get(), order.get());
 } // при выходе из блока — все незавершённые подзадачи автоматически отменяются
 ```
 
 Если один fork падает с ошибкой — второй автоматически отменяется. Никаких утечек потоков. Код становится линейным и предсказуемым.
+
+Политику ожидания задаёт `Joiner`, который передают в `open()`. Например, "кто первый — тот и победил" (гонка реплик):
+
+```java
+try (var scope = StructuredTaskScope.open(Joiner.<String>anySuccessfulResultOrThrow())) {
+    scope.fork(() -> fetchFromReplica("eu"));
+    scope.fork(() -> fetchFromReplica("us"));
+
+    return scope.join(); // результат первой успешной подзадачи, остальные отменяются
+}
+```
+
+!!! warning "Preview API"
+    Structured Concurrency — preview-фича (Java 21–25): без флага `--enable-preview` код не скомпилируется. API менялся от версии к версии: в Java 21–24 scope создавали через `new StructuredTaskScope.ShutdownOnFailure()`, а ошибку проверяли отдельным `throwIfFailed()` после `join()`. Примеры выше — для Java 25 ([JEP 505](https://openjdk.org/jeps/505)): фабрика `StructuredTaskScope.open()`, политика через `Joiner`, `fork()` возвращает `Subtask`.

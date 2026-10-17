@@ -54,7 +54,7 @@ _Секрет современного кода: конструктор рука
 
 1. **Иммутабельность** — поля `final`, инициализируются один раз, защищены от изменений. Thread-safe.
 2. **Чистая Java** — в юнит-тесте просто `new HabitService(mockRepository)`, никакого Spring.
-3. **Fail-Fast** — циклическая зависимость (A → B → A) при конструкторном инжекте падает с `BeanCurrentlyInCreationException` на старте. При Field Injection — `StackOverflowError` в рантайме.
+3. **Fail-Fast** — циклическая зависимость (A → B → A) при конструкторном инжекте не разрешима в принципе: падает с `BeanCurrentlyInCreationException` на старте. При Field Injection никакого `StackOverflowError` нет: Spring разрывает цикл сам — отдаёт B ссылку на ещё недособранный A (ранняя ссылка из кэша синглтонов), и цикл тихо работает, пряча плохой дизайн. Поэтому с **Spring Boot 2.6** циклы запрещены по умолчанию: при любом виде инжекта приложение падает на старте с ошибкой _"The dependencies of some of the beans in the application context form a cycle"_. Вернуть старое поведение можно через `spring.main.allow-circular-references=true`, но это костыль — правильнее разорвать цикл в дизайне.
 4. **Визуальный детектор запашка** — конструктор с 10 параметрами сразу бросается в глаза. Это сигнал разбить класс.
 
 ## ApplicationContext vs BeanFactory
