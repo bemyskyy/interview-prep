@@ -388,7 +388,7 @@ ELSE (сеть работает):           выбирай между L (Latency
 - Кластер переживает падение меньшинства узлов, но встаёт без большинства.
 - Два конфликтующих решения не могут победить одновременно — любые два большинства пересекаются.
 
-Где живёт: etcd, ZooKeeper, Consul, выбор нового Master при failover, CP Subsystem в Hazelcast. Самому реализовывать не надо — надо понимать, что внутри этих систем и зачем.
+Где живёт Raft: etcd, Consul, Kafka KRaft, CP Subsystem в Hazelcast, выбор нового Master при failover. **ZooKeeper** использует не Raft, а собственный протокол **ZAB** (ZooKeeper Atomic Broadcast) — идея та же: лидер, кворум, упорядоченная репликация. Самому реализовывать не надо — надо понимать, что внутри этих систем и зачем.
 
 ---
 
@@ -806,7 +806,7 @@ GET  /{shortCode}      → 301/302 redirect на longUrl
 | **CAP** | Сеть рвётся всегда → выбор C vs A в аварию. CP — деньги, AP — корзина/закладки |
 | **PACELC** | Без аварии — выбор между Latency и Consistency |
 | **Consistency-модели** | Strong → causal → read-your-writes → eventual. Бери минимально достаточную |
-| **Consensus** | Кворум N/2+1, кластеры нечётные (3/5), Raft — etcd/ZooKeeper/Consul |
+| **Consensus** | Кворум N/2+1, кластеры нечётные (3/5), Raft — etcd/Consul, ZAB — ZooKeeper |
 | **Доставка** | Брокеры = at-least-once → дубли. Exactly-once = at-least-once + идемпотентность |
 | **Idempotent Consumer** | Проверка event_id / UNIQUE constraint. Idempotency key в платёжных API |
 | **Transactional Outbox** | Бизнес-данные + событие в одну транзакцию. Решает Dual Write |
