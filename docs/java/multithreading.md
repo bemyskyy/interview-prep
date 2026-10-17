@@ -258,7 +258,7 @@ head.compareAndSet(oldHead, newHead);   // lock-free структуры данн
 
 ### 3. Concurrent Collections
 
-Разобраны в разделе [Коллекции → Потокобезопасные коллекции](collections.md#_6). Краткая шпаргалка:
+Разобраны в разделе [Коллекции → Потокобезопасные коллекции](collections.md#concurrent-collections). Краткая шпаргалка:
 
 | Коллекция | Когда использовать |
 |---|---|

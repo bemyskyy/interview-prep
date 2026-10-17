@@ -286,7 +286,7 @@ queue.poll();         // взять из головы
 | **`Stack`** | `Collection` | Устаревший | O(1), но с `synchronized` | **Никогда** |
 | **`PriorityQueue`** | `Queue` | Очередь с приоритетом (Binary Heap) | O(log n) | Планировщики, алгоритм Дейкстры, Top-K задачи |
 
-## Итераторы и потокобезопасные коллекции
+## Итераторы и потокобезопасные коллекции { #concurrent-collections }
 
 ### 1. `ConcurrentModificationException`: Почему падают итераторы?
 
