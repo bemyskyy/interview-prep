@@ -615,3 +615,31 @@ try (var scope = StructuredTaskScope.open(Joiner.<String>anySuccessfulResultOrTh
 
 !!! warning "Preview API"
     Structured Concurrency — preview-фича (Java 21–25): без флага `--enable-preview` код не скомпилируется. API менялся от версии к версии: в Java 21–24 scope создавали через `new StructuredTaskScope.ShutdownOnFailure()`, а ошибку проверяли отдельным `throwIfFailed()` после `join()`. Примеры выше — для Java 25 ([JEP 505](https://openjdk.org/jeps/505)): фабрика `StructuredTaskScope.open()`, политика через `Joiner`, `fork()` возвращает `Subtask`.
+
+## Шпаргалка { #cheatsheet }
+
+| Тема | Запомнить |
+|---|---|
+| **Процесс vs поток** | У процесса своя память; потоки процесса делят кучу, но у каждого свой стек |
+| **`Thread` vs `Runnable`** | Задача — в `Runnable` (или `Callable`), запуск — в `Thread` или пуле; `extends Thread` — моветон |
+| **Жизненный цикл** | NEW → RUNNABLE → BLOCKED / WAITING / TIMED_WAITING → TERMINATED; перезапустить нельзя |
+| **`synchronized`** | Монитор объекта: атомарность и видимость; `static synchronized` — монитор класса |
+| **`wait` / `notify`** | Только внутри `synchronized`; ждать в `while`, а не в `if` (spurious wakeup) |
+| **`sleep` / `join` / `yield`** | `sleep` не отпускает мониторы; `join` ждёт завершения потока; `yield` — лишь подсказка |
+| **Остановка потока** | `interrupt()` + проверка флага; в `catch (InterruptedException)` восстанавливай флаг |
+| **JMM** | Атомарность, видимость, упорядочивание; без happens-before — data race |
+| **`volatile`** | Видимость и запрет переупорядочивания через барьеры; `count++` не делает атомарным |
+| **`final`-поля** | Видны всем потокам после конструктора, если `this` не утёк |
+| **`ReentrantLock`** | `tryLock`, прерываемое ожидание, fairness, несколько `Condition`; `unlock()` — в `finally` |
+| **Atomics** | CAS без блокировок; под высокой конкуренцией счётчики — `LongAdder` |
+| **Синхронизаторы** | `CountDownLatch` — одноразовый, `CyclicBarrier` — многоразовый, `Semaphore` — ограничение доступа |
+| **`ThreadPoolExecutor`** | core → очередь → потоки до max → rejection policy; в проде — `CallerRunsPolicy` |
+| **Фабрики `Executors`** | Fixed и Single — безлимитная очередь (OOM heap), Cached — безлимит потоков (OOM native thread) |
+| **`ForkJoinPool`** | Своя очередь у каждого потока и work stealing; под капотом `parallelStream()` и `CompletableFuture` |
+| **`CompletableFuture`** | `thenApply` — map, `thenCompose` — flatMap, `thenCombine` — слияние; всегда свой `Executor` |
+| **CAS и ABA** | Неделимое «сравнить и записать»; ABA лечится `AtomicStampedReference` |
+| **AQS** | `volatile int state` + очередь ожидания; основа `ReentrantLock`, `Semaphore`, `CountDownLatch` |
+| **False sharing** | Независимые переменные в одной кэш-линии мешают друг другу; `@Contended` или паддинг |
+| **Виртуальные потоки** | Миллионы потоков на JVM; размонтируются на блокирующем I/O; Java 21+ |
+| **Pinning** | Java 21–23 — `synchronized` и native; с Java 24 (JEP 491) — только native-код и редкие случаи |
+| **Structured Concurrency** | Preview: `StructuredTaskScope.open()` + `Joiner`, `fork()` → `Subtask` (Java 25) |
