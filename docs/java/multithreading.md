@@ -582,20 +582,34 @@ private volatile long value;
 
     С Java 24 переписывать `synchronized` ради виртуальных потоков не нужно. `ReentrantLock` выбирают только ради его возможностей: `tryLock()`, таймауты, fairness, несколько `Condition`.
 
-### Structured Concurrency (Preview, Java 21+)
+### Structured Concurrency (Preview)
 
 Управление подзадачами как единым блоком — по аналогии с обычным `try-catch`:
 
 ```java
-try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-    Future<String> user  = scope.fork(() -> fetchUser(id));
-    Future<Order>  order = scope.fork(() -> fetchOrder(id));
+// Java 25 (JEP 505), preview: javac/java --enable-preview
+try (var scope = StructuredTaskScope.open()) { // Joiner по умолчанию: все успешны или исключение
+    Subtask<String> user  = scope.fork(() -> fetchUser(id));
+    Subtask<Order>  order = scope.fork(() -> fetchOrder(id));
 
-    scope.join();           // ждём обоих
-    scope.throwIfFailed();  // если один упал — бросаем исключение
+    scope.join(); // ждём обе; если одна упала — вторая отменяется, join() бросает FailedException
 
-    return new Response(user.resultNow(), order.resultNow());
+    return new Response(user.get(), order.get());
 } // при выходе из блока — все незавершённые подзадачи автоматически отменяются
 ```
 
 Если один fork падает с ошибкой — второй автоматически отменяется. Никаких утечек потоков. Код становится линейным и предсказуемым.
+
+Политику ожидания задаёт `Joiner`, который передают в `open()`. Например, "кто первый — тот и победил" (гонка реплик):
+
+```java
+try (var scope = StructuredTaskScope.open(Joiner.<String>anySuccessfulResultOrThrow())) {
+    scope.fork(() -> fetchFromReplica("eu"));
+    scope.fork(() -> fetchFromReplica("us"));
+
+    return scope.join(); // результат первой успешной подзадачи, остальные отменяются
+}
+```
+
+!!! warning "Preview API"
+    Structured Concurrency — preview-фича (Java 21–25): без флага `--enable-preview` код не скомпилируется. API менялся от версии к версии: в Java 21–24 scope создавали через `new StructuredTaskScope.ShutdownOnFailure()`, а ошибку проверяли отдельным `throwIfFailed()` после `join()`. Примеры выше — для Java 25 ([JEP 505](https://openjdk.org/jeps/505)): фабрика `StructuredTaskScope.open()`, политика через `Joiner`, `fork()` возвращает `Subtask`.
