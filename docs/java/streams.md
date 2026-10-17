@@ -332,7 +332,7 @@ Map<String, User> nameToUser = users.stream()
 !!! abstract "Ответ вслух"
     `groupingBy` раскладывает элементы по ключу в `Map<K, List<V>>`, а вторым аргументом принимает downstream-коллектор: посчитать, собрать в `Set`, усреднить. `partitioningBy` — частный случай: делит по предикату ровно на две группы, `true` и `false`. Группировки можно вкладывать друг в друга.
 
-#### `groupingBy` — самый мощный коллектор
+#### `groupingBy` — самый мощный коллектор { #grouping-by }
 
 ```java
 // Сгруппировать пользователей по городу
@@ -355,7 +355,7 @@ Map<String, Map<Role, List<User>>> byDeptAndRole = users.stream()
     ));
 ```
 
-#### `partitioningBy` — деление на две группы
+#### `partitioningBy` — деление на две группы { #partitioning-by }
 
 ```java
 // Делит на true/false по предикату
@@ -366,7 +366,7 @@ List<User> adults = adultSplit.get(true);
 List<User> minors = adultSplit.get(false);
 ```
 
-#### Downstream-коллекторы — коллекторы внутри коллекторов
+#### Downstream-коллекторы — коллекторы внутри коллекторов { #downstream }
 
 ```java
 // groupingBy + mapping + toSet = уникальные теги по категории
@@ -547,7 +547,7 @@ public class Profile {
 
 Функциональный интерфейс — интерфейс ровно с **одним абстрактным методом** (SAM — Single Abstract Method). Именно его можно заменить лямбда-выражением.
 
-#### Четыре основных из `java.util.function`
+#### Четыре основных из `java.util.function` { #core-interfaces }
 
 ```java
 // Predicate<T> — принимает T, возвращает boolean
@@ -582,7 +582,7 @@ List<String> newList = listFactory.get();
 | `Runnable` | `() → void` | `run()` | Задача без результата |
 | `Callable<T>` | `() → T` | `call()` | Задача с результатом (может бросить checked) |
 
-#### `@FunctionalInterface` — свой интерфейс
+#### `@FunctionalInterface` — свой интерфейс { #custom-functional-interface }
 
 ```java
 @FunctionalInterface  // компилятор проверит, что абстрактный метод ровно один
@@ -692,7 +692,7 @@ Consumer<String> greeter = person -> System.out.println(prefix + person); // ✅
 !!! abstract "Ответ вслух"
     Почти любая задача раскладывается на три шага: отфильтровать, сгруппировать или преобразовать, собрать результат нужным коллектором. Для подсчётов — `groupingBy` с `counting()`, для средних — `averagingDouble()`, для «найти или бросить» — `findFirst().orElseThrow()`. Сначала проговори цепочку словами, потом пиши код.
 
-#### Топ-3 города по числу пользователей
+#### Топ-3 города по числу пользователей { #task-top-cities }
 
 ```java
 Map<String, Long> countByCity = users.stream()
@@ -705,7 +705,7 @@ List<String> top3 = countByCity.entrySet().stream()
     .collect(Collectors.toList());
 ```
 
-#### Средняя зарплата по отделу
+#### Средняя зарплата по отделу { #task-avg-salary }
 
 ```java
 Map<String, Double> avgSalaryByDept = employees.stream()
@@ -715,7 +715,7 @@ Map<String, Double> avgSalaryByDept = employees.stream()
     ));
 ```
 
-#### Первый пользователь старше 30 или исключение
+#### Первый пользователь старше 30 или исключение { #task-find-or-throw }
 
 ```java
 User older = users.stream()
@@ -724,7 +724,7 @@ User older = users.stream()
     .orElseThrow(() -> new UserNotFoundException("No users older than 30"));
 ```
 
-#### Все теги из всех постов — уникальные и отсортированные
+#### Все теги из всех постов — уникальные и отсортированные { #task-unique-tags }
 
 ```java
 List<String> tags = posts.stream()
@@ -734,7 +734,7 @@ List<String> tags = posts.stream()
     .collect(Collectors.toList());
 ```
 
-#### Разбить список на активных и неактивных
+#### Разбить список на активных и неактивных { #task-partition-active }
 
 ```java
 Map<Boolean, List<User>> split = users.stream()

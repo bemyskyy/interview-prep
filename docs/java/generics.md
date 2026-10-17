@@ -274,7 +274,7 @@ public static <T> void copy(List<? super T> dest, List<? extends T> src) {
 !!! abstract "Ответ вслух"
     Через `<T extends SomeClass>`: тогда `T` — этот класс или его наследник, и у `T` можно вызывать его методы. Можно перечислить несколько ограничений через `&`: один класс и любое число интерфейсов, причём класс обязан стоять первым.
 
-#### Upper bound — `<T extends SomeClass>`
+#### Upper bound — `<T extends SomeClass>` { #bounded-type }
 
 Ограничим тип так, чтобы он был определённым классом или его наследником:
 
@@ -294,7 +294,7 @@ public class BaseRepository<T extends BaseEntity> {
 
 Без ограничения `T extends BaseEntity` компилятор не дал бы вызвать `entity.getId()` — он не знал бы, что у `T` есть такой метод.
 
-#### Множественные ограничения (multiple bounds)
+#### Множественные ограничения (multiple bounds) { #multiple-bounds }
 
 Тип можно ограничить сразу несколькими интерфейсами и одним классом:
 
@@ -359,7 +359,7 @@ Integer i = Utils.max(10, 42);             // T = Integer
 
 Интервьюеры любят давать куски кода и спрашивать: _"Скомпилируется ли это? Если нет — почему?"_
 
-#### Нельзя создать экземпляр `new T()`
+#### Нельзя создать экземпляр `new T()` { #no-new-t }
 
 ```java
 public class Box<T> {
@@ -383,7 +383,7 @@ String empty = create(String::new);              // ""
 List<String> list = create(ArrayList::new);      // пустой ArrayList
 ```
 
-#### Нельзя создать массив generic-типа
+#### Нельзя создать массив generic-типа { #no-generic-arrays }
 
 ```java
 static <T> void arrays() {
@@ -411,7 +411,7 @@ static <T> T[] newArray(Class<T> clazz, int size) {
 List<String>[] lists = new List[10];             // сырой тип: компилируется, но с unchecked-предупреждением
 ```
 
-#### Нельзя использовать примитивы
+#### Нельзя использовать примитивы { #no-primitives }
 
 ```java
 List<int> numbers = new ArrayList<>();    // ❌ ошибка компиляции
@@ -428,7 +428,7 @@ List<Integer> numbers = new ArrayList<>(); // ✅ автоупаковка сд�
 
 Именно поэтому существуют `Integer`, `Double`, `Long` и другие обёртки — они позволяют примитивам жить в дженерик-коллекциях. Подробнее — в [Основы языка → автоупаковка](basics.md#autoboxing).
 
-#### Нельзя делать статические поля типа `T`
+#### Нельзя делать статические поля типа `T` { #no-static-t }
 
 ```java
 public class Holder<T> {

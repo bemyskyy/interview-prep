@@ -404,7 +404,7 @@ Files.setLastModifiedTime(file, FileTime.from(Instant.now()));
 !!! abstract "Ответ вслух"
     Читать через `Files.newBufferedReader()` в `try-with-resources` и разбирать строку за строкой, а не загружать файл целиком. Писать результат — через `Files.newBufferedWriter()`, который сам сбросит буфер и закроет файл при выходе из блока.
 
-#### Чтение с `BufferedReader`
+#### Чтение с `BufferedReader` { #csv-read }
 
 ```java
 try (BufferedReader reader = Files.newBufferedReader(
@@ -420,7 +420,7 @@ try (BufferedReader reader = Files.newBufferedReader(
 }
 ```
 
-#### Запись с `BufferedWriter`
+#### Запись с `BufferedWriter` { #csv-write }
 
 ```java
 try (BufferedWriter writer = Files.newBufferedWriter(
