@@ -120,7 +120,8 @@ appointments-events ├─→ notification-group  → SMS клиенту
 ```
 Сетевой пульс (session.timeout.ms):
   Фоновый поток шлёт heartbeat брокеру.
-  Нет пульса дольше session.timeout.ms (~10 сек) → сервер физически умер → ребаланс
+  Нет пульса дольше session.timeout.ms (дефолт 45 сек с Kafka 3.0, раньше 10 сек) →
+  сервер физически умер → ребаланс
 
 Пульс бизнес-логики (max.poll.interval.ms):
   Сеть есть, но код завис на тяжёлом SQL или дедлоке.
