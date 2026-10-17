@@ -282,7 +282,10 @@ public class NotificationService {
 !!! warning "`SERIALIZABLE` — зло для HighLoad"
     _"Если SERIALIZABLE решает все проблемы, почему бы не ставить его везде?"_
 
-    Потому что это убьёт производительность. База вешает тяжёлые блокировки на таблицы и строки, выстраивая транзакции строго последовательно. В высоконагруженной системе — колоссальные задержки и постоянные дедлоки.
+    Потому что это убьёт производительность. Как именно — зависит от БД:
+
+    - **Блокировочная реализация** (MySQL/InnoDB, SQL Server): даже обычные `SELECT` берут разделяемые блокировки, читатели и писатели ждут друг друга. В высоконагруженной системе — колоссальные задержки и дедлоки.
+    - **PostgreSQL (SSI — Serializable Snapshot Isolation):** читатели **не блокируются** — все работают со снимком, как на `REPEATABLE_READ`. Postgres лишь отслеживает зависимости чтение → запись между транзакциями, и если их нельзя выстроить в последовательный порядок, одна транзакция падает с ошибкой сериализации: `could not serialize access due to read/write dependencies among transactions` (SQLSTATE `40001`). Приложение обязано поймать её и **повторить транзакцию целиком**. При высокой конкуренции — лавина откатов и ретраев.
 
 ### Как решают на практике: блокировки на уровне JPA
 
@@ -474,8 +477,8 @@ public void example() {
 ```java
 @Transactional
 public void example() {
-    Client c1 = clientRepository.findById(1L); // SELECT в БД
-    Client c2 = clientRepository.findById(1L); // Из L1-кэша, SELECT нет!
+    Client c1 = clientRepository.findById(1L).orElseThrow(); // SELECT в БД
+    Client c2 = clientRepository.findById(1L).orElseThrow(); // Из L1-кэша, SELECT нет!
     // c1 == c2 (один и тот же объект)
 }
 ```
