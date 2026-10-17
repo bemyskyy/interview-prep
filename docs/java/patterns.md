@@ -51,7 +51,7 @@ public class Singleton {
 }
 ```
 
-#### Вариант 3: Enum Singleton (совет Джошуа Блоха — самый надёжный)
+#### Вариант 3: Enum Singleton (совет Джошуа Блоха — самый надёжный) { #enum-singleton }
 
 ```java
 public enum Singleton {

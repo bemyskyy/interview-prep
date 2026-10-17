@@ -14,7 +14,7 @@
 
 Типичные представители:
 
-- **`OutOfMemoryError`** — закончилась память Кучи (Heap). Подробно разбирали в теме [JVM → OOM](basics.md#oom).
+- **`OutOfMemoryError`** — закончилась память Кучи (Heap). Подробно разбирали в теме [JVM и память → OutOfMemoryError](jvm.md#oom).
 - **`StackOverflowError`** — переполнение стека вызовов (бесконечная рекурсия).
 - **`AssertionError`** — нарушение утверждения (`assert`) в коде.
 
