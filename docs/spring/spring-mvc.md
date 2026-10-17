@@ -78,7 +78,7 @@ return ResponseEntity.notFound().build();                // 404
 return ResponseEntity.badRequest().body(errorDto);       // 400
 ```
 
-## Обработка исключений
+## Обработка исключений { #exception-handling }
 
 Вместо `try-catch` в каждом контроллере — централизованный обработчик.
 
@@ -116,6 +116,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(new ErrorResponse(500, "Внутренняя ошибка. Мы уже чиним.", LocalDateTime.now()));
+    }
+}
+```
+
+Вместо `ResponseEntity` HTTP-статус можно задать аннотацией `@ResponseStatus` на методе-обработчике — так короче, если заголовки ответа менять не нужно. Обработчик ловит и checked-исключения, например `InsufficientFundsException` из [Исключения → Свои исключения](../java/exceptions.md#custom-exceptions):
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleOrderNotFound(OrderNotFoundException ex) {
+        return new ErrorResponse(404, ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(InsufficientFundsException.class)
+    @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)
+    public ErrorResponse handleInsufficientFunds(InsufficientFundsException ex) {
+        return new ErrorResponse(402, ex.getMessage(), LocalDateTime.now());
     }
 }
 ```
