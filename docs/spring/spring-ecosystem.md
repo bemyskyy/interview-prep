@@ -528,7 +528,7 @@ public class DomainConfig {
     }
     ```
 
-    **Подход 2 — Прагматичный (принятый в индустрии):** Использовать `javax.transaction.Transactional` (стандарт JTA, не Spring-специфичный импорт) прямо в Use Case. Это допустимый компромисс — транзакции реально являются частью бизнес-требований (ACID), и завязка на JTA-стандарт некритична.
+    **Подход 2 — Прагматичный (принятый в индустрии):** Использовать `jakarta.transaction.Transactional` (стандарт JTA, не Spring-специфичный импорт; до Spring Boot 3 / Jakarta EE 9 пакет назывался `javax.transaction`) прямо в Use Case. Это допустимый компромисс — транзакции реально являются частью бизнес-требований (ACID), и завязка на JTA-стандарт некритична.
 
 ### Сеньорские нюансы
 
@@ -554,4 +554,4 @@ public class DomainConfig {
 | **DDD: Domain** | Чистая Java. Никаких `@Entity`, `@Service`. Богатая модель с бизнес-методами |
 | **DDD: Ports** | Incoming — Use Cases (что умеем). Outgoing — Repository и внешние сервисы |
 | **DDD: Adapters** | Driving (REST/Kafka) → Driven (JPA/HTTP-клиент). Здесь живёт Spring |
-| **`@Transactional` в DDD** | Декоратор (пуристы) или `javax.transaction.Transactional` в Use Case (прагматики) |
+| **`@Transactional` в DDD** | Декоратор (пуристы) или `jakarta.transaction.Transactional` в Use Case (прагматики) |
