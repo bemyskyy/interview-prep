@@ -2,7 +2,7 @@
 
 ## Иерархия коллекций и базовые интерфейсы
 
-![Иерархия исключений Java](../assets/collections-hierarchy.png)
+![Иерархия коллекций Java](../assets/collections-hierarchy.png)
 
 ### 1. Вершина эволюции: `Iterable` и `Collection`
 
@@ -73,7 +73,7 @@ set.add(h2);
 - **Как он создается:** `new ArrayList<>()` создает пустой массив. При добавлении первого элемента массив инициализируется дефолтным размером (Capacity) — **10 элементов**.
 - **Динамическое расширение (Resizing):** Что делает `ArrayList`, когда ты пытаешься добавить 11-й элемент?
     1. Создается абсолютно **новый массив**.
-    2. Размер вычисляется по формуле: `oldCapacity + (oldCapacity >> 1)` — битовый сдвиг вправо на 1 — это деление на 2. Массив увеличивается **в 1.5 раза** (16 → 24 → 36...).
+    2. Размер вычисляется по формуле: `oldCapacity + (oldCapacity >> 1)` — битовый сдвиг вправо на 1 — это деление на 2. Массив увеличивается **в 1.5 раза** с округлением вниз (10 → 15 → 22 → 33...).
     3. Старый массив копируется в новый через нативный `System.arraycopy()`.
     4. Старый массив уходит в Garbage Collector.
 - **Сложность доступа:** `get(index)` работает за **O(1)**, так как адреса в массиве вычисляются мгновенно.
@@ -228,7 +228,8 @@ public class Habit implements Comparable<Habit> {
 
 ```java
 // Сортировка по приоритету через лямбду
-Comparator<Habit> byPriority = (h1, h2) -> h1.getPriority() - h2.getPriority();
+Comparator<Habit> byPriority = (h1, h2) -> Integer.compare(h1.getPriority(), h2.getPriority());
+// ❌ не пиши h1.getPriority() - h2.getPriority(): на больших числах вычитание переполнит int
 TreeSet<Habit> byPrioritySet = new TreeSet<>(byPriority);
 
 // Цепочка: сначала по приоритету, потом по имени
