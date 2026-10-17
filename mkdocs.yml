@@ -80,9 +80,12 @@ nav:
 
   - Язык Java:
       - Платформа и память:
-          - Основы JVM: java/basics.md
+          - JVM и память: java/jvm.md
           - Многопоточность: java/multithreading.md
       - Язык и API:
+          - Основы языка: java/basics.md
+          - Строки: java/strings.md
+          - Современная Java: java/modern-java.md
           - ООП: java/oop.md
           - Коллекции: java/collections.md
           - Исключения: java/exceptions.md

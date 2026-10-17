@@ -1,14 +1,21 @@
 # SOLID
 
-SOLID — это пять принципов проектирования, которые делают код гибким, читаемым и легко расширяемым. Придуманы Робертом Мартином ("Дядя Боб"). На собесах важно не просто дать определение, а объяснить **на конкретном примере**, что ломается без принципа и как становится лучше с ним.
+Пять принципов проектирования Роберта Мартина («Дядя Боб»), которые делают код гибким, читаемым и легко расширяемым. На собесе важно не просто дать определение, а показать **на конкретном примере**, что ломается без принципа и как становится лучше с ним.
 
-## S — Single Responsibility Principle (Принцип единственной ответственности)
+## Принципы SOLID { #principles }
+
+### Что такое Single Responsibility Principle? { #srp }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    У класса должна быть только одна причина для изменения: он делает одну вещь. Если `OrderService` и подтверждает заказ, и генерирует PDF, и отправляет email, у него три причины меняться. Такие обязанности выносят в отдельные классы и делегируют им работу.
 
 > **Класс должен иметь только одну причину для изменения.**
 
-Иными словами — класс делает одну вещь и делает её хорошо. Если тебе нужно изменить класс из-за двух разных причин — он нарушает SRP.
+Иными словами, класс делает одну вещь и делает её хорошо. Если класс приходится менять по двум разным причинам — он нарушает SRP.
 
-### Антипаттерн
+#### Антипаттерн { #srp-bad }
 
 ```java
 // ❌ У этого класса три причины для изменения:
@@ -32,7 +39,7 @@ public class OrderService {
 }
 ```
 
-### Правильно
+#### Правильно { #srp-good }
 
 ```java
 // ✅ Каждый класс — одна ответственность
@@ -41,28 +48,56 @@ public class OrderService {
     private final PdfGenerator pdfGenerator;
     private final EmailSender emailSender;
 
+    public OrderService(OrderRepository repository, PdfGenerator pdfGenerator, EmailSender emailSender) {
+        this.repository = repository;
+        this.pdfGenerator = pdfGenerator;
+        this.emailSender = emailSender;
+    }
+
     public void processOrder(Order order) {
-        order.confirm();                              // бизнес-логика
-        repository.save(order);                      // персистентность
-        pdfGenerator.generate(order);                // делегируем
-        emailSender.sendConfirmation(order);         // делегируем
+        order.confirm();                       // бизнес-логика
+        repository.save(order);                // персистентность
+        pdfGenerator.generate(order);          // делегируем
+        emailSender.sendConfirmation(order);   // делегируем
     }
 }
 
-public class PdfGenerator { ... }   // только генерация PDF
-public class EmailSender { ... }    // только отправка email
+public class PdfGenerator {                    // только генерация PDF
+    public void generate(Order order) { }
+}
+
+public class EmailSender {                     // только отправка email
+    public void sendConfirmation(Order order) { }
+}
+
+public interface OrderRepository {
+    void save(Order order);
+}
 ```
 
 !!! tip "Архитектурный маркер"
-    Если при описании класса ты употребляешь союз **"и"** — скорее всего SRP нарушен. "Класс сохраняет заказ **и** отправляет email" — красный флаг.
+    Если при описании класса ты употребляешь союз **«и»** — скорее всего, SRP нарушен. «Класс сохраняет заказ **и** отправляет email» — красный флаг.
 
-## O — Open/Closed Principle (Принцип открытости/закрытости)
+!!! warning "Ловушка: «один класс — один метод»"
+    SRP — не про количество методов, а про причины изменения. `OrderRepository` с десятью методами работы с заказами в БД соблюдает SRP: все они меняются по одной причине — из-за хранилища.
+
+??? question "Проверь себя"
+    1. Как звучит SRP?
+    2. Сколько причин для изменения у `OrderService` из антипаттерна и какие?
+    3. Нарушает ли SRP класс с десятью методами?
+
+### Что такое Open/Closed Principle? { #ocp }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Класс открыт для расширения, но закрыт для изменения: новая функциональность добавляется новым кодом, а не правкой работающего. Вместо `if-else` по типу скидки — интерфейс `DiscountStrategy` и новый класс на каждый тип скидки. OCP реализуется через Стратегию, Декоратор и Фабрику.
 
 > **Класс должен быть открыт для расширения, но закрыт для изменения.**
 
 Добавление новой функциональности не должно требовать правки уже работающего кода — только написания нового.
 
-### Антипаттерн
+#### Антипаттерн { #ocp-bad }
 
 ```java
 // ❌ Каждый новый тип скидки требует редактировать этот метод
@@ -81,7 +116,7 @@ public class DiscountCalculator {
 }
 ```
 
-### Правильно
+#### Правильно { #ocp-good }
 
 ```java
 // ✅ Новый тип скидки = новый класс. Старый код не трогаем
@@ -113,15 +148,28 @@ public class DiscountCalculator {
 ```
 
 !!! note "Связь с паттернами"
-    OCP реализуется через **Стратегию**, **Декоратор** и **Фабрику**. Когда видишь гигантский `if-else` или `switch` по типу — это сигнал применить OCP.
+    OCP реализуется через [Стратегию](patterns.md#strategy), [Декоратор](patterns.md#decorator) и [Factory Method](patterns.md#factory-method). Когда видишь гигантский `if-else` или `switch` по типу — это сигнал применить OCP.
 
-## L — Liskov Substitution Principle (Принцип подстановки Лисков)
+!!! warning "Ловушка: OCP везде и сразу"
+    Выносить в стратегии каждый `if` заранее — переусложнение. Интерфейс окупается, когда вариантов действительно несколько и новые появляются регулярно. Пока вариант один, достаточно простого кода, который легко отрефакторить позже.
+
+??? question "Проверь себя"
+    1. Как звучит OCP?
+    2. Почему цепочка `if-else` по типу скидки нарушает OCP?
+    3. Какие паттерны помогают соблюдать OCP?
+
+### Что такое Liskov Substitution Principle? { #lsp }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Объекты наследника должны подставляться вместо объектов родителя без изменения корректности программы. Классический пример — `Square extends Rectangle`: сеттеры квадрата меняют обе стороны, и код, ожидающий прямоугольник, ломается. Признаки нарушения — `instanceof` в клиентском коде и `UnsupportedOperationException` в наследнике.
 
 > **Объекты наследника должны быть взаимозаменяемы с объектами родителя без изменения корректности программы.**
 
 Если код работает с типом `Animal`, он должен работать и с `Dog`, и с `Cat` без сюрпризов.
 
-### Антипаттерн — классический пример с квадратом и прямоугольником
+#### Антипаттерн — квадрат и прямоугольник { #lsp-bad }
 
 ```java
 // ❌ Математически квадрат IS-A прямоугольник.
@@ -150,10 +198,10 @@ public void resize(Rectangle r) {
 }
 ```
 
-### Правильно
+#### Правильно { #lsp-good }
 
 ```java
-// ✅ Разделяем иерархию или используем интерфейс
+// ✅ Разделяем иерархию через общий интерфейс
 public interface Shape {
     int area();
 }
@@ -181,20 +229,20 @@ public class Square implements Shape {
 }
 ```
 
-### Практический маркер нарушения LSP
+#### Практический маркер нарушения LSP { #lsp-marker }
 
 ```java
 // ❌ Если в коде встречается instanceof — это симптом нарушения LSP
 public void process(Animal animal) {
     if (animal instanceof Dog) {
-        ((Dog) animal).fetch(); // Тогда зачем нам полиморфизм?
+        ((Dog) animal).fetch(); // тогда зачем нам полиморфизм?
     } else if (animal instanceof Cat) {
         ((Cat) animal).purr();
     }
 }
 
 // ✅ Полиморфизм решает это без instanceof
-public void process(Animal animal) {
+public void processPolymorphic(Animal animal) {
     animal.makeSound(); // каждый знает, что делать сам
 }
 ```
@@ -202,16 +250,26 @@ public void process(Animal animal) {
 !!! warning "Красный флаг"
     Если наследник **выбрасывает исключение** в переопределённом методе (`throw new UnsupportedOperationException()`), **сужает** его поведение или **нарушает инварианты** родителя — это нарушение LSP.
 
-## I — Interface Segregation Principle (Принцип разделения интерфейсов)
+??? question "Проверь себя"
+    1. Как звучит LSP?
+    2. Почему `Square extends Rectangle` нарушает LSP, хотя квадрат — это прямоугольник?
+    3. Какие признаки в коде выдают нарушение LSP?
+
+### Что такое Interface Segregation Principle? { #isp }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Клиент не должен зависеть от методов, которые он не использует: лучше много маленьких интерфейсов-ролей, чем один толстый. Если `Dog` вынужден реализовать `fly()` заглушкой с исключением — интерфейс пора разделить. В Spring-мире это, например, отдельные интерфейсы для чтения, записи и аналитики.
 
 > **Клиент не должен зависеть от методов, которые он не использует.**
 
 Лучше много маленьких специализированных интерфейсов, чем один толстый.
 
-### Антипаттерн
+#### Антипаттерн { #isp-bad }
 
 ```java
-// ❌ "Жирный" интерфейс — не все животные умеют всё
+// ❌ «Жирный» интерфейс — не все животные умеют всё
 public interface Animal {
     void eat();
     void sleep();
@@ -221,15 +279,15 @@ public interface Animal {
 }
 
 public class Dog implements Animal {
-    public void eat()   { ... }
-    public void sleep() { ... }
+    public void eat()   { }
+    public void sleep() { }
     public void fly()   { throw new UnsupportedOperationException(); } // вынуждены!
-    public void swim()  { ... }
-    public void bark()  { ... }
+    public void swim()  { }
+    public void bark()  { }
 }
 ```
 
-### Правильно
+#### Правильно { #isp-good }
 
 ```java
 // ✅ Маленькие интерфейсы — роли
@@ -240,12 +298,26 @@ public interface Swimmer  { void swim(); }
 public interface Barker   { void bark(); }
 
 // Каждый класс реализует только то, что умеет
-public class Dog implements Eater, Sleeper, Swimmer, Barker { ... }
-public class Eagle implements Eater, Sleeper, Flyer { ... }
-public class Fish implements Eater, Swimmer { ... }
+public class Dog implements Eater, Sleeper, Swimmer, Barker {
+    public void eat() { }
+    public void sleep() { }
+    public void swim() { }
+    public void bark() { }
+}
+
+public class Eagle implements Eater, Sleeper, Flyer {
+    public void eat() { }
+    public void sleep() { }
+    public void fly() { }
+}
+
+public class Fish implements Eater, Swimmer {
+    public void eat() { }
+    public void swim() { }
+}
 ```
 
-### Реальный пример из Spring-мира
+#### Пример из Spring-мира { #isp-spring }
 
 ```java
 // ❌ Один интерфейс репозитория на всё
@@ -278,16 +350,33 @@ public interface UserAnalytics {
 // Сервис отчётов зависит только от того, что ему нужно
 public class ReportService {
     private final UserAnalytics analytics; // не тащим за собой save/delete
+
+    public ReportService(UserAnalytics analytics) {
+        this.analytics = analytics;
+    }
 }
 ```
 
-## D — Dependency Inversion Principle (Принцип инверсии зависимостей)
+!!! warning "Ловушка: `UnsupportedOperationException` в реализации"
+    Метод-заглушка, бросающий `UnsupportedOperationException`, — главный признак слишком толстого интерфейса. Он нарушает сразу и ISP, и [LSP](#lsp): код, работающий с интерфейсом, получит исключение там, где ждал поведение.
+
+??? question "Проверь себя"
+    1. Как звучит ISP?
+    2. Как понять, что интерфейс пора разделить?
+    3. Как ISP помогает сервису отчётов в примере со Spring?
+
+### Что такое Dependency Inversion Principle? { #dip }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Модули высокого уровня не зависят от модулей низкого уровня — оба зависят от абстракций. Бизнес-логика знает интерфейс `OrderRepository`, а MySQL, PostgreSQL или in-memory реализация передаётся снаружи. В Spring это делает Dependency Injection через конструктор, и это же условие тестируемости.
 
 > **Модули высокого уровня не должны зависеть от модулей низкого уровня. Оба должны зависеть от абстракций.**
 
-Бизнес-логика не должна знать о деталях инфраструктуры (БД, файловая система, HTTP-клиенты).
+Бизнес-логика не должна знать о деталях инфраструктуры: БД, файловой системе, HTTP-клиентах.
 
-### Антипаттерн
+#### Антипаттерн { #dip-bad }
 
 ```java
 // ❌ Бизнес-логика жёстко привязана к MySQL
@@ -306,7 +395,7 @@ public class OrderService {
 }
 ```
 
-### Правильно
+#### Правильно { #dip-good }
 
 ```java
 // ✅ Бизнес-логика зависит от абстракции
@@ -316,15 +405,28 @@ public interface OrderRepository {
 }
 
 // Реализации — детали инфраструктуры
-public class MySQLOrderRepository implements OrderRepository { ... }
-public class PostgreSQLOrderRepository implements OrderRepository { ... }
-public class InMemoryOrderRepository implements OrderRepository { ... } // для тестов!
+public class MySQLOrderRepository implements OrderRepository {
+    public MySQLOrderRepository(String host, int port) { }
+    public void save(Order order) { }
+    public Optional<Order> findById(Long id) { return Optional.empty(); }
+}
+
+public class PostgreSQLOrderRepository implements OrderRepository {
+    public void save(Order order) { }
+    public Optional<Order> findById(Long id) { return Optional.empty(); }
+}
+
+public class InMemoryOrderRepository implements OrderRepository { // для тестов!
+    private final Map<Long, Order> storage = new HashMap<>();
+    public void save(Order order) { storage.put(order.getId(), order); }
+    public Optional<Order> findById(Long id) { return Optional.ofNullable(storage.get(id)); }
+}
 
 // OrderService не знает, что под капотом
 public class OrderService {
     private final OrderRepository repository; // зависим от абстракции
 
-    // Зависимость инжектируется снаружи (Spring DI)
+    // Зависимость передаётся снаружи (Spring DI)
     public OrderService(OrderRepository repository) {
         this.repository = repository;
     }
@@ -336,12 +438,12 @@ public class OrderService {
 }
 ```
 
-### Как это выглядит в Spring
+#### Как это выглядит в Spring { #dip-spring }
 
 ```java
 @Service
 public class OrderService {
-    private final OrderRepository repository; // Spring инжектирует нужную реализацию
+    private final OrderRepository repository; // Spring внедрит нужную реализацию
 
     public OrderService(OrderRepository repository) { // Constructor Injection — лучший способ
         this.repository = repository;
@@ -349,18 +451,29 @@ public class OrderService {
 }
 
 @Repository
-public class JpaOrderRepository implements OrderRepository { ... }
+public class JpaOrderRepository implements OrderRepository {
+    public void save(Order order) { }
+    public Optional<Order> findById(Long id) { return Optional.empty(); }
+}
 ```
 
 !!! tip "DIP + тестируемость"
-    DIP — это не просто архитектурная красота. Это условие тестируемости. Если `OrderService` зависит от интерфейса `OrderRepository`, в тесте ты подставляешь `InMemoryOrderRepository` или мок — и тестируешь бизнес-логику без реальной БД.
+    DIP — не просто архитектурная красота, а условие тестируемости. Если `OrderService` зависит от интерфейса `OrderRepository`, в тесте подставляешь `InMemoryOrderRepository` или мок и проверяешь бизнес-логику без реальной БД.
 
-## Итоговая шпаргалка
+!!! warning "Ловушка: DIP ≠ Dependency Injection"
+    DIP — принцип: зависеть от абстракций. Dependency Injection — техника: передавать зависимости снаружи. Можно внедрять через конструктор конкретный `MySQLOrderRepository` — это DI, но DIP нарушен.
 
-| Принцип | Суть одной строкой | Красный флаг нарушения |
-|---|---|---|
-| **S** — SRP | Один класс — одна причина меняться | Класс делает "X и Y и Z" |
-| **O** — OCP | Расширяй новым кодом, не правь старый | Гигантский `if-else` / `switch` по типу |
-| **L** — LSP | Наследник не ломает поведение родителя | `instanceof` в клиентском коде, `UnsupportedOperationException` |
-| **I** — ISP | Не заставляй реализовывать лишнее | "Жирный" интерфейс с методами-заглушками |
-| **D** — DIP | Зависи от абстракций, не от реализаций | `new ConcreteClass()` внутри бизнес-логики |
+??? question "Проверь себя"
+    1. Как звучит DIP?
+    2. Чем DIP отличается от Dependency Injection?
+    3. Как DIP помогает тестировать бизнес-логику?
+
+## Шпаргалка { #cheatsheet }
+
+| Тема | Запомнить |
+|---|---|
+| **S — SRP** | Один класс — одна причина меняться; красный флаг — класс делает «X и Y и Z» |
+| **O — OCP** | Расширяй новым кодом, не правь старый; красный флаг — гигантский `if-else` / `switch` по типу |
+| **L — LSP** | Наследник не ломает поведение родителя; красные флаги — `instanceof` в клиенте, `UnsupportedOperationException` |
+| **I — ISP** | Не заставляй реализовывать лишнее; красный флаг — «жирный» интерфейс с методами-заглушками |
+| **D — DIP** | Зависи от абстракций, а не от реализаций; красный флаг — `new ConcreteClass()` внутри бизнес-логики |

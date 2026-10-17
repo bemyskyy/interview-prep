@@ -94,11 +94,16 @@ int index = (n - 1) & hash;
 
 | Тема | Дом |
 |---|---|
-| Контракт `equals()` и `hashCode()` | [java/basics.md](docs/java/basics.md) |
+| JVM, GC, Stack и Heap, Metaspace, `OutOfMemoryError` | [java/jvm.md](docs/java/jvm.md) |
+| Контракт `equals()` и `hashCode()`, `enum`, `static`, порядок инициализации | [java/basics.md](docs/java/basics.md) |
+| `String`, `StringBuilder`, String Pool | [java/strings.md](docs/java/strings.md) |
+| `var`, `record`, `switch`, pattern matching, `sealed` | [java/modern-java.md](docs/java/modern-java.md) |
 | Коллекции, включая потокобезопасные | [java/collections.md](docs/java/collections.md) |
+| `finally`, `try-with-resources` | [java/exceptions.md](docs/java/exceptions.md) |
 | Потоки, JMM, синхронизаторы, executors | [java/multithreading.md](docs/java/multithreading.md) |
-| Паттерны GoF (в том числе Strategy) | [java/patterns.md](docs/java/patterns.md) |
+| Паттерны GoF (в том числе Enum Singleton, Strategy, Decorator) | [java/patterns.md](docs/java/patterns.md) |
 | Принципы SOLID | [java/solid.md](docs/java/solid.md) |
+| `@ControllerAdvice`, `@ExceptionHandler` | [spring/spring-mvc.md](docs/spring/spring-mvc.md) |
 
 ## Схемы
 

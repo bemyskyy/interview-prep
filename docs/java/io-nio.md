@@ -1,37 +1,96 @@
-# IO / NIO — Работа с файлами
+# IO / NIO — работа с файлами
 
-## Две эпохи: java.io vs java.nio
+Два поколения API для файлов и потоков данных: классический `java.io` и современный `java.nio.file`. Чаще всего спрашивают разницу между байтовыми и символьными потоками, зачем нужны `Buffered`-классы, чем `Path` и `Files` лучше `File` и как прочитать файл, который не помещается в память.
 
-В Java есть два поколения API для работы с файлами и потоками данных:
+## java.io и java.nio { #io-vs-nio }
+
+### Чем `java.io` отличается от `java.nio`? { #io-vs-nio-diff }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    `java.io` (Java 1.0) работает с потоками байт и символов и всегда блокирует поток выполнения. `java.nio` (Java 1.4) добавил буферы, каналы и неблокирующий ввод-вывод, а `java.nio.file` (Java 7) — современный API `Path` и `Files`. В новом коде для файлов используют `Path` и `Files`.
 
 | | **java.io** (классика, Java 1.0) | **java.nio** / **java.nio.file** (Java 1.4 / Java 7) |
 |---|---|---|
-| **Модель** | Потоки байт/символов (streams) | Блоки данных (buffers, channels) + Path API |
+| **Модель** | Потоки байт и символов (streams) | Блоки данных (buffers, channels) + Path API |
 | **Блокировка** | Блокирующая (поток ждёт) | Блокирующая и неблокирующая |
 | **Работа с файлами** | `File` — устаревший класс | `Path` + `Files` — современный API |
 | **Удобство** | Многословно, много кода | Лаконично, богатый функционал |
 | **Когда использовать** | Редко в новом коде | **Всегда в современном коде** |
 
-## java.io — Классическое API
-
-### Иерархия потоков
-
-```
-Байтовые потоки (byte streams):
-InputStream  → FileInputStream, BufferedInputStream, DataInputStream
-OutputStream → FileOutputStream, BufferedOutputStream, DataOutputStream
-
-Символьные потоки (char streams, работают с Unicode):
-Reader → FileReader, BufferedReader, InputStreamReader
-Writer → FileWriter, BufferedWriter, OutputStreamWriter, PrintWriter
+```java
+File legacy = new File("data.txt");   // java.io — устаревший способ
+Path modern = Path.of("data.txt");    // java.nio.file — современный
+Path converted = legacy.toPath();     // мост между мирами для старых API
 ```
 
-!!! tip "Байты vs Символы"
-    Используй байтовые потоки (`InputStream`/`OutputStream`) для бинарных данных (изображения, архивы, сериализация). Символьные (`Reader`/`Writer`) — для текстовых файлов, они корректно обрабатывают кодировки.
+!!! warning "Ловушка: `File` молча возвращает `false`"
+    `new File("x.txt").delete()` при ошибке просто вернёт `false` — без причины. `Files.delete(path)` бросит исключение с объяснением: `NoSuchFileException`, `AccessDeniedException`, `DirectoryNotEmptyException`. Это одна из главных причин перейти на `Files`.
 
-### Паттерн Декоратора в java.io
+??? question "Проверь себя"
+    1. Чем модель `java.io` отличается от модели `java.nio`?
+    2. Какой API использовать для работы с файлами в новом коде?
+    3. Почему `File.delete()` хуже `Files.delete()`?
 
-Всё IO API построено на паттерне Декоратор — потоки оборачиваются друг в друга:
+## java.io { #java-io }
+
+### Как устроены потоки `java.io`? { #io-streams }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Есть две иерархии: байтовые потоки `InputStream`/`OutputStream` для бинарных данных и символьные `Reader`/`Writer` для текста с учётом кодировки. Мост между ними — `InputStreamReader` и `OutputStreamWriter`. Байтовые потоки — для картинок, архивов и сериализации, символьные — для текстовых файлов.
+
+```mermaid
+flowchart LR
+    subgraph bytes["Байтовые потоки"]
+        IS["InputStream"] --> FIS["FileInputStream"]
+        IS --> BIS["BufferedInputStream"]
+        IS --> DIS["DataInputStream"]
+        OS["OutputStream"] --> FOS["FileOutputStream"]
+        OS --> BOS["BufferedOutputStream"]
+        OS --> DOS["DataOutputStream"]
+    end
+    subgraph chars["Символьные потоки (Unicode)"]
+        R["Reader"] --> FR["FileReader"]
+        R --> BR["BufferedReader"]
+        R --> ISR["InputStreamReader"]
+        W["Writer"] --> FW["FileWriter"]
+        W --> BW["BufferedWriter"]
+        W --> OSW["OutputStreamWriter"]
+        W --> PW["PrintWriter"]
+    end
+```
+
+```java
+try (InputStream in = new FileInputStream("photo.png")) {        // байты — бинарные данные
+    byte[] header = in.readNBytes(8);
+}
+try (Reader reader = new FileReader("notes.txt", UTF_8)) {      // символы — текст в кодировке
+    int firstChar = reader.read();
+}
+```
+
+!!! tip "Байты vs символы"
+    Используй байтовые потоки (`InputStream`/`OutputStream`) для бинарных данных: изображений, архивов, сериализации. Символьные (`Reader`/`Writer`) — для текстовых файлов: они корректно обрабатывают кодировки.
+
+!!! warning "Ловушка: читать текст байтами"
+    Если читать UTF-8 текст байтовым потоком и превращать каждый байт в `char`, кириллица и эмодзи превратятся в мусор: один символ занимает 2–4 байта. Для текста нужен `Reader` с явной кодировкой.
+
+??? question "Проверь себя"
+    1. Какие две иерархии потоков есть в `java.io`?
+    2. Какой класс соединяет байтовые и символьные потоки?
+    3. Почему текст нельзя читать по одному байту?
+
+### Как в `java.io` используется паттерн Декоратор? { #io-decorator }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Каждый поток оборачивает другой и добавляет одну способность: `FileInputStream` читает байты, `InputStreamReader` декодирует их в символы, `BufferedReader` буферизирует и даёт `readLine()`. Это классический Декоратор. Кодировку нужно указывать явно, а не полагаться на значение по умолчанию.
+
+Всё IO API построено на паттерне [Декоратор](patterns.md#decorator): потоки оборачиваются друг в друга, и каждый слой добавляет свою способность.
 
 ```java
 // Читаем текстовый файл построчно через цепочку декораторов
@@ -50,44 +109,36 @@ try (BufferedReader reader = new BufferedReader(
 // BufferedReader       — буферизирует, добавляет readLine()
 ```
 
+Закрывать такие цепочки нужно через `try-with-resources`: при закрытии внешнего декоратора закрываются и все вложенные потоки. Подробно — в [Исключения → try-with-resources](exceptions.md#try-with-resources).
+
 !!! warning "Всегда явно указывай кодировку"
-    `new FileReader("file.txt")` использует системную кодировку по умолчанию — на разных машинах она разная. Это источник ошибок при переносе кода. Всегда передавай `StandardCharsets.UTF_8`.
+    До Java 18 `new FileReader("file.txt")` брал системную кодировку по умолчанию, а она на разных машинах разная (Windows-1251, UTF-8…). С Java 18 ([JEP 400](https://openjdk.org/jeps/400)) по умолчанию UTF-8, но флаг `-Dfile.encoding=COMPAT` и старые JDK возвращают прежнее поведение. Передавай `StandardCharsets.UTF_8` явно — код не будет зависеть от окружения.
 
-### Закрытие ресурсов — только try-with-resources
+??? question "Проверь себя"
+    1. Какую способность добавляет каждый слой в цепочке `BufferedReader` → `InputStreamReader` → `FileInputStream`?
+    2. Как этот подход связан с паттерном Декоратор?
+    3. Какая кодировка используется по умолчанию начиная с Java 18?
 
-```java
-// ❌ Старый способ — многословно и легко забыть закрыть
-FileInputStream fis = null;
-try {
-    fis = new FileInputStream("data.txt");
-    // работаем...
-} finally {
-    if (fis != null) {
-        try { fis.close(); } catch (IOException e) { /* проглатываем */ }
-    }
-}
+### Зачем нужны `Buffered`-потоки? { #buffered }
 
-// ✅ Современный способ — AutoCloseable, всегда закрывает в обратном порядке
-try (var fis = new FileInputStream("input.txt");
-     var fos = new FileOutputStream("output.txt")) {
-    fis.transferTo(fos); // копируем файл одной строкой (Java 9+)
-}
-```
+**Уровень:** Middle
 
-### Чтение и запись с буфером — зачем нужен Buffered
+!!! abstract "Ответ вслух"
+    Без буфера каждый `read()` — отдельный системный вызов к ОС, и чтение большого файла по байту превращается в миллионы дорогих вызовов. `BufferedInputStream` читает блоками (8 КБ по умолчанию) и отдаёт данные из памяти. Ещё лучше читать сразу в свой массив через `read(byte[])`.
 
 ```java
 // ❌ Без буфера — каждый вызов read() = системный вызов к ОС
-FileInputStream slow = new FileInputStream("big.txt");
-int b;
-while ((b = slow.read()) != -1) { // миллионы системных вызовов!
-    process(b);
+try (FileInputStream slow = new FileInputStream("big.txt")) {
+    int b;
+    while ((b = slow.read()) != -1) { // миллионы системных вызовов!
+        process(b);
+    }
 }
 
-// ✅ BufferedInputStream читает блоками (8KB по умолчанию)
+// ✅ BufferedInputStream читает блоками (8 КБ по умолчанию)
 // Системных вызовов в тысячи раз меньше
 try (BufferedInputStream fast = new BufferedInputStream(
-        new FileInputStream("big.txt"), 16384)) { // 16KB буфер
+        new FileInputStream("big.txt"), 16384)) { // буфер 16 КБ
 
     byte[] buffer = new byte[4096];
     int bytesRead;
@@ -97,18 +148,31 @@ try (BufferedInputStream fast = new BufferedInputStream(
 }
 ```
 
-## java.nio.file — Современный API (Java 7+)
+!!! warning "Ловушка: забыть `flush()` у `BufferedWriter`"
+    Буферизированный вывод копит данные в памяти и пишет на диск, только когда буфер заполнен или поток закрыт. Если не закрыть `BufferedWriter` (или не вызвать `flush()`), последние данные не попадут в файл. `try-with-resources` решает это автоматически.
 
-`Path` и `Files` — это то, что нужно использовать в любом новом коде.
+??? question "Проверь себя"
+    1. Почему чтение по одному байту без буфера медленное?
+    2. Какой размер буфера у `BufferedInputStream` по умолчанию?
+    3. Что будет, если не закрыть `BufferedWriter`?
 
-### Path — умная замена File
+## java.nio.file { #nio }
+
+### Чем `Path` лучше `File`? { #path }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    `Path` — неизменяемое представление пути с удобными операциями: `getParent()`, `resolve()`, `relativize()`, `normalize()`. Эти операции работают только со строкой пути и не трогают файловую систему. Работу с самими файлами берёт на себя утилитный класс `Files`.
+
+`Path` и `Files` — то, что нужно использовать в любом новом коде.
 
 ```java
 // Создание Path
 Path absolute = Path.of("/home/user/documents/report.pdf");
 Path relative = Path.of("src", "main", "resources", "config.yml");
 
-// Операции с путями — без работы с файловой системой
+// Операции с путями — без обращения к файловой системе
 Path parent   = absolute.getParent();      // /home/user/documents
 Path fileName = absolute.getFileName();    // report.pdf
 String ext    = absolute.toString()
@@ -127,7 +191,20 @@ Path messy = Path.of("/home/user/../user/./docs");
 Path clean = messy.normalize(); // /home/user/docs
 ```
 
-### Files — все операции с файлами
+!!! warning "Ловушка: `Path` не значит, что файл существует"
+    `Path.of("x.txt")` не проверяет, есть ли такой файл. Ошибка вылетит только при обращении к файловой системе — например, в `Files.readString()`. Проверить заранее можно через `Files.exists()`.
+
+??? question "Проверь себя"
+    1. Обращается ли `Path.of()` к файловой системе?
+    2. Что делают `resolve()`, `relativize()` и `normalize()`?
+    3. Как получить имя файла и родительскую папку из `Path`?
+
+### Как читать и писать файлы через `Files`? { #files-read-write }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Маленькие файлы читают целиком: `Files.readString()`, `readAllLines()`, `readAllBytes()`. Большие — лениво, через `Files.lines()` в `try-with-resources`, чтобы в памяти была только текущая строка. Писать — через `Files.writeString()` и `Files.write()`, для дозаписи передают `StandardOpenOption.APPEND`.
 
 ```java
 // === Чтение ===
@@ -141,7 +218,7 @@ List<String> lines = Files.readAllLines(Path.of("data.csv"), StandardCharsets.UT
 // Все байты
 byte[] bytes = Files.readAllBytes(Path.of("image.png"));
 
-// Стрим строк — ленивый, идеально для больших файлов
+// Стрим строк — ленивый, подходит для больших файлов
 try (Stream<String> stream = Files.lines(Path.of("big.log"), StandardCharsets.UTF_8)) {
     long errorCount = stream
         .filter(line -> line.contains("ERROR"))
@@ -169,17 +246,46 @@ Files.write(Path.of("output.txt"), lines2, StandardCharsets.UTF_8);
 Files.write(Path.of("image.png"), imageBytes);
 ```
 
-### Операции с файлами и директориями
+!!! warning "Ловушка: `readAllLines` на большом файле"
+    `readAllLines` и `readString` загружают файл в память целиком — на логе в 10 ГБ получишь `OutOfMemoryError`. Для больших файлов — `Files.lines()`: в памяти одновременно только несколько строк.
+
+    ```java
+    // ❌ readAllLines загружает весь файл в память
+    List<String> all = Files.readAllLines(hugePath); // OutOfMemoryError на файле в 10 ГБ!
+
+    // ✅ Files.lines — ленивый стрим, читает построчно
+    long count;
+    try (Stream<String> logLines = Files.lines(hugePath, StandardCharsets.UTF_8)) {
+        count = logLines
+            .filter(line -> line.contains("CRITICAL"))
+            .count();
+    }
+    ```
+
+!!! warning "Ловушка: `Files.lines()` без `try-with-resources`"
+    `Files.lines()` держит открытый файловый дескриптор, пока стрим не закрыт. Без `try-with-resources` дескрипторы утекают, и под нагрузкой приложение упрётся в `Too many open files`.
+
+??? question "Проверь себя"
+    1. Чем `Files.readAllLines()` отличается от `Files.lines()`?
+    2. Как дописать строку в конец файла?
+    3. Почему `Files.lines()` нужно закрывать?
+
+### Какие операции с файлами и директориями есть в `Files`? { #files-ops }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Проверки — `exists`, `isDirectory`, `size`; создание — `createFile`, `createDirectories`; копирование и перемещение — `copy`, `move` с опцией `REPLACE_EXISTING`; удаление — `delete` и `deleteIfExists`. Плюс временные файлы и папки через `createTempFile` и `createTempDirectory`.
 
 ```java
 Path src  = Path.of("source.txt");
 Path dest = Path.of("backup/source.txt");
 
 // Проверки
-Files.exists(src);           // существует?
-Files.isDirectory(src);      // это папка?
-Files.isReadable(src);       // можно читать?
-Files.size(src);             // размер в байтах
+boolean exists   = Files.exists(src);       // существует?
+boolean isDir    = Files.isDirectory(src);  // это папка?
+boolean readable = Files.isReadable(src);   // можно читать?
+long size        = Files.size(src);         // размер в байтах
 
 // Создание
 Files.createFile(Path.of("new.txt"));
@@ -188,19 +294,32 @@ Files.createDirectories(Path.of("a/b/c/d")); // создаёт всю цепоч
 
 // Копирование / перемещение
 Files.copy(src, dest);
-Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING); // перезаписать если есть
+Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING); // перезаписать, если есть
 Files.move(src, dest, StandardCopyOption.REPLACE_EXISTING);
 
 // Удаление
-Files.delete(src);                    // бросает исключение если нет файла
-Files.deleteIfExists(src);            // тихо, если нет
+Files.delete(src);          // бросает исключение, если файла нет
+Files.deleteIfExists(src);  // тихо, если нет
 
 // Временные файлы и папки
 Path tmpFile = Files.createTempFile("prefix", ".tmp");
 Path tmpDir  = Files.createTempDirectory("work");
 ```
 
-### Обход директорий
+!!! warning "Ловушка: `copy` и `move` без опций"
+    По умолчанию `Files.copy()` и `Files.move()` бросают `FileAlreadyExistsException`, если цель уже есть. Перезапись нужно разрешить явно — `StandardCopyOption.REPLACE_EXISTING`.
+
+??? question "Проверь себя"
+    1. Чем `createDirectory` отличается от `createDirectories`?
+    2. Что будет, если скопировать файл поверх существующего без опций?
+    3. Чем `delete` отличается от `deleteIfExists`?
+
+### Как обойти директорию? { #walk }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `Files.list()` — содержимое одной папки, `Files.walk()` — рекурсивный обход с ограничением глубины, `Files.find()` — поиск с фильтром по пути и атрибутам. Все три возвращают ленивые стримы, которые держат открытые дескрипторы, поэтому их всегда закрывают через `try-with-resources`.
 
 ```java
 // Список файлов в директории (не рекурсивно)
@@ -217,7 +336,7 @@ try (Stream<Path> tree = Files.walk(Path.of("src"), 3)) { // глубина 3
         .collect(Collectors.toList());
 }
 
-// Поиск файлов (glob-паттерны)
+// Поиск файлов по условию
 try (Stream<Path> found = Files.find(
         Path.of("logs"),
         Integer.MAX_VALUE,
@@ -229,49 +348,63 @@ try (Stream<Path> found = Files.find(
 }
 
 // Удалить директорию со всем содержимым
-Files.walk(Path.of("temp"))
-    .sorted(Comparator.reverseOrder()) // сначала вложенные
-    .forEach(p -> {
-        try { Files.delete(p); }
-        catch (IOException e) { throw new UncheckedIOException(e); }
-    });
+try (Stream<Path> toDelete = Files.walk(Path.of("temp"))) {
+    toDelete
+        .sorted(Comparator.reverseOrder()) // сначала вложенные, потом папки
+        .forEach(p -> {
+            try { Files.delete(p); }
+            catch (IOException e) { throw new UncheckedIOException(e); }
+        });
+}
 ```
 
-### Работа с атрибутами файлов
+!!! warning "Ловушка: `Files.walk()` без закрытия"
+    Стрим из `Files.walk()` держит открытые дескрипторы директорий. Удаление папки через `Files.walk(...).sorted().forEach(...)` без `try-with-resources` — частая утечка. Лямбда внутри `forEach` не может бросить `IOException`, поэтому его заворачивают в `UncheckedIOException`.
+
+??? question "Проверь себя"
+    1. Чем `Files.list()` отличается от `Files.walk()`?
+    2. Почему при удалении директории элементы сортируют в обратном порядке?
+    3. Зачем закрывать стрим из `Files.walk()`?
+
+### Как читать атрибуты файла? { #attributes }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Через `Files.readAttributes(path, BasicFileAttributes.class)` — время создания и изменения, размер, тип — за одно обращение к файловой системе. Менять отдельные атрибуты можно методами вроде `Files.setLastModifiedTime()`. Для атрибутов конкретной ОС есть `PosixFileAttributes` и `DosFileAttributes`.
 
 ```java
 Path file = Path.of("report.pdf");
 
-// Базовые атрибуты
+// Базовые атрибуты — одним обращением к файловой системе
 BasicFileAttributes attrs = Files.readAttributes(file, BasicFileAttributes.class);
-attrs.creationTime();       // время создания
-attrs.lastModifiedTime();   // время изменения
-attrs.size();               // размер
-attrs.isDirectory();
+FileTime created  = attrs.creationTime();     // время создания
+FileTime modified = attrs.lastModifiedTime(); // время изменения
+long size         = attrs.size();             // размер
+boolean isDir     = attrs.isDirectory();
 
 // Установить время изменения
 Files.setLastModifiedTime(file, FileTime.from(Instant.now()));
 ```
 
-## Практические паттерны
+!!! warning "Ловушка: `creationTime()` есть не везде"
+    Не все файловые системы хранят время создания. Там, где его нет, `creationTime()` вернёт время последнего изменения или другое значение по умолчанию — не стоит строить на нём бизнес-логику.
 
-### Потоковое чтение большого файла (Stream vs readAllLines)
+??? question "Проверь себя"
+    1. Как прочитать базовые атрибуты файла одним вызовом?
+    2. Как изменить время последней модификации файла?
+    3. Почему на `creationTime()` нельзя полагаться на всех ОС?
 
-```java
-// ❌ readAllLines загружает весь файл в память
-List<String> all = Files.readAllLines(hugePath); // OutOfMemoryError на файле в 10 ГБ!
+## Практические задачи { #practice }
 
-// ✅ Files.lines — ленивый стрим, читает построчно
-long count;
-try (Stream<String> lines = Files.lines(hugePath, StandardCharsets.UTF_8)) {
-    count = lines
-        .filter(line -> line.contains("CRITICAL"))
-        .count();
-}
-// В памяти одновременно только несколько строк
-```
+### Как обработать большой CSV построчно? { #big-files }
 
-### BufferedReader с try-with-resources (для кастомной обработки)
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Читать через `Files.newBufferedReader()` в `try-with-resources` и разбирать строку за строкой, а не загружать файл целиком. Писать результат — через `Files.newBufferedWriter()`, который сам сбросит буфер и закроет файл при выходе из блока.
+
+#### Чтение с `BufferedReader` { #csv-read }
 
 ```java
 try (BufferedReader reader = Files.newBufferedReader(
@@ -287,7 +420,7 @@ try (BufferedReader reader = Files.newBufferedReader(
 }
 ```
 
-### Запись с BufferedWriter
+#### Запись с `BufferedWriter` { #csv-write }
 
 ```java
 try (BufferedWriter writer = Files.newBufferedWriter(
@@ -306,9 +439,34 @@ try (BufferedWriter writer = Files.newBufferedWriter(
 } // flush и close — автоматически
 ```
 
-### Копирование файла через потоки (с прогрессом)
+!!! warning "Ловушка: `split(\",\")` для настоящего CSV"
+    `line.split(",")` ломается на значениях с запятой внутри кавычек (`"Иванов, Иван"`) и молча отбрасывает пустые хвостовые поля. Для реальных CSV используй библиотеку (OpenCSV, Apache Commons CSV) или `split(",", -1)` хотя бы для пустых полей.
+
+??? question "Проверь себя"
+    1. Как прочитать большой CSV, не загружая его целиком в память?
+    2. Зачем при записи передавать `TRUNCATE_EXISTING`?
+    3. Чем опасен `split(",")` для CSV?
+
+### Как скопировать файл? { #copy }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Проще всего — `Files.copy(src, dest, REPLACE_EXISTING)`. Если копировать нужно между потоками, есть `InputStream.transferTo()` (Java 9). А если нужен контроль — например, показывать прогресс, — копируют вручную буфером через `read(byte[])` и `write()`.
 
 ```java
+// 1. Одной строкой
+Files.copy(Path.of("input.txt"), Path.of("output.txt"), StandardCopyOption.REPLACE_EXISTING);
+
+// 2. Между потоками — transferTo (Java 9+)
+try (var fis = new FileInputStream("input.txt");
+     var fos = new FileOutputStream("output.txt")) {
+    fis.transferTo(fos);
+}
+```
+
+```java
+// 3. Вручную — с прогрессом
 public void copyWithProgress(Path src, Path dest) throws IOException {
     long totalSize = Files.size(src);
     long copied = 0;
@@ -328,7 +486,20 @@ public void copyWithProgress(Path src, Path dest) throws IOException {
 }
 ```
 
-### Работа с Properties файлами
+!!! warning "Ловушка: `out.write(buffer)` вместо `write(buffer, 0, bytesRead)`"
+    Последний `read()` обычно заполняет буфер не целиком. `out.write(buffer)` допишет в файл хвост из прошлой итерации, и копия окажется длиннее и битой. Всегда пиши ровно `bytesRead` байт.
+
+??? question "Проверь себя"
+    1. Назови три способа скопировать файл.
+    2. Что делает `InputStream.transferTo()` и с какой версии он есть?
+    3. Почему при ручном копировании нужен `write(buffer, 0, bytesRead)`?
+
+### Как работать с properties-файлами? { #properties }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Через класс `Properties`: `load()` читает пары `ключ=значение` из потока, `getProperty()` возвращает значение с необязательным дефолтом, `store()` записывает обратно. Поток открывают через `Files.newInputStream()` и закрывают через `try-with-resources`.
 
 ```java
 // Чтение
@@ -345,7 +516,15 @@ try (OutputStream out = Files.newOutputStream(Path.of("app.properties"))) {
 }
 ```
 
-## Итоговая шпаргалка
+!!! warning "Ловушка: кодировка в `load(InputStream)`"
+    `load(InputStream)` читает файл в ISO-8859-1: кириллица превратится в мусор. Для текста в UTF-8 загружай через `Reader`: `props.load(Files.newBufferedReader(path, UTF_8))`.
+
+??? question "Проверь себя"
+    1. Как прочитать значение из properties-файла с дефолтом?
+    2. Как сохранить изменённые свойства обратно в файл?
+    3. Почему кириллица ломается в `load(InputStream)`?
+
+## Шпаргалка { #cheatsheet }
 
 | Задача | Рекомендуемый способ |
 |---|---|
@@ -360,6 +539,8 @@ try (OutputStream out = Files.newOutputStream(Path.of("app.properties"))) {
 | Обойти директорию рекурсивно | `Files.walk(path)` в try-with-resources |
 | Работа с кастомной логикой парсинга | `Files.newBufferedReader(path, UTF_8)` |
 | Построчная запись | `Files.newBufferedWriter(path, UTF_8)` |
+| Байты против символов | `InputStream`/`OutputStream` — бинарное, `Reader`/`Writer` — текст |
+| Кодировка | Всегда явно `StandardCharsets.UTF_8`; по умолчанию UTF-8 только с Java 18 |
 
 !!! tip "Правило большого пальца"
     Если нужна простая операция — `Files.*`. Если нужен контроль над буфером, кодировкой или построчной обработкой — `Files.newBufferedReader` / `Files.newBufferedWriter`. `FileInputStream`/`FileOutputStream` напрямую — только для бинарных данных или совместимости со старым кодом.
