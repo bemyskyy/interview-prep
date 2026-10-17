@@ -68,6 +68,9 @@ plugins:
   - search:
       lang: ru
 
+validation:
+  anchors: warn
+
 nav:
   - Старт: index.md
 
