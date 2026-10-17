@@ -539,8 +539,10 @@ CompletableFuture.anyOf(cf1, cf2, cf3).thenAccept(result -> ...);
 **Решение:** аннотация `@Contended` (или "паддинг" — добивка пустыми полями). Заставляет JVM разнести переменные по разным кэш-линиям. Именно так устроен `LongAdder` под капотом.
 
 ```java
-// Добавить JVM-флаг: -XX:-RestrictContended
-@sun.misc.Contended
+// С Java 9 аннотация переехала из sun.misc во внутренний пакет JDK:
+// javac --add-exports java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+// java  -XX:-RestrictContended  (без флага вне JDK аннотация игнорируется)
+@jdk.internal.vm.annotation.Contended
 private volatile long value;
 ```
 
