@@ -39,7 +39,7 @@ git clone https://github.com/bemyskyy/interview-prep.git
 cd interview-prep
 
 # 2. Установить зависимости
-pip install mkdocs-material
+pip install -r requirements.txt
 
 # 3. Запустить локальный сервер с live-reload
 mkdocs serve
@@ -56,6 +56,7 @@ mkdocs serve
 ```
 interview-prep/
 ├── mkdocs.yml              # конфигурация сайта и навигация
+├── requirements.txt        # зафиксированная версия mkdocs-material
 └── docs/
     ├── index.md            # главная страница
     ├── java/               # раздел Java
