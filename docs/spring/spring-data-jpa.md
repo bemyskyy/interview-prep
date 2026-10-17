@@ -436,21 +436,31 @@ public void updateName(Long id, String newName) {
 @Transactional
 public void example() {
     Habit habit = new Habit("Бег");
-    habitRepository.save(habit);
-    // SQL INSERT ещё НЕ отправлен в БД!
-    // Данные в Persistence Context, ждут коммита
-    System.out.println(habit.getId()); // ID может быть null если генерируется БД
+    habitRepository.save(habit); // для новой сущности это entityManager.persist()
+    System.out.println(habit.getId()); // ID уже есть!
+    // IDENTITY: Hibernate выполнил INSERT сразу — иначе БД не выдаст ID
+    // SEQUENCE: Hibernate взял ID из последовательности (nextval),
+    //           а сам INSERT отложен до flush / коммита
 
+    habit.setName("Утренний бег");
     habitRepository.saveAndFlush(habit);
-    // SQL INSERT отправлен в БД прямо сейчас
-    System.out.println(habit.getId()); // ID точно есть — его вернула БД
+    // flush(): все накопленные INSERT/UPDATE отправлены в БД прямо сейчас
     // НО! Транзакция ещё не закоммичена.
     // Если метод упадёт ниже — rollback, данные исчезнут.
 }
 ```
 
+**Почему ID есть сразу после `save()`:** `persist()` обязан сделать сущность `PERSISTENT`, а Persistence Context хранит объекты по ID. Значит, ID нужен немедленно:
+
+- **`GenerationType.IDENTITY`** (автоинкремент, `BIGSERIAL`) — ID знает только БД, поэтому Hibernate выполняет `INSERT` прямо внутри `save()`, не дожидаясь flush. Побочный эффект: JDBC-батчинг вставок для таких сущностей не работает.
+- **`GenerationType.SEQUENCE`** — Hibernate делает `SELECT nextval(...)` (с `allocationSize` — один раз на пачку ID) и присваивает ID объекту. `INSERT` остаётся в очереди до flush, поэтому вставки можно батчить.
+
 !!! tip "Когда нужен `saveAndFlush()`"
-    Когда до конца метода нужен сгенерированный БД `id`. Или когда на таблице висят триггеры, которые должны отработать немедленно, до выполнения следующего кода.
+    Не ради `id` — он есть и после `save()`. `saveAndFlush()` нужен, когда SQL должен выполниться **до следующей строки кода**:
+
+    - Нарушение ограничения (unique, FK) нужно поймать здесь и сейчас, а не при коммите за пределами метода.
+    - На таблице висят триггеры, которые должны отработать немедленно.
+    - Дальше код ходит в БД в обход Hibernate (`JdbcTemplate`, хранимая процедура) и должен увидеть изменения.
 
 ### 4. Кэш 1-го и 2-го уровня
 
@@ -493,5 +503,5 @@ public void example() {
 | **Pessimistic Lock** | `SELECT FOR UPDATE`, физическая блокировка. Для критичных операций |
 | **N+1** | JOIN FETCH → @EntityGraph → @BatchSize |
 | **Dirty Checking** | PERSISTENT объект: `setName()` без `save()` — UPDATE при коммите |
-| **save() vs saveAndFlush()** | `save()` — откладывает SQL. `saveAndFlush()` — немедленно, но не коммитит |
+| **save() vs saveAndFlush()** | После `save()` ID уже есть (IDENTITY — INSERT сразу, SEQUENCE — `nextval`). `saveAndFlush()` — flush немедленно, но не коммитит |
 | **L2 Cache** | В Enterprise заменяют на Redis + `@Cacheable` |
