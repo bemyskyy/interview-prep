@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+---
+
 # Stream API и функциональное программирование
 
 Как устроены стримы, коллекторы, `Optional`, функциональные интерфейсы и лямбды. Чаще всего спрашивают про ленивость стримов, `map` против `flatMap`, ловушки `toMap`, `orElse` против `orElseGet` и почему лямбда требует effectively final.
@@ -329,60 +336,64 @@ Map<String, User> nameToUser = users.stream()
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    `groupingBy` раскладывает элементы по ключу в `Map<K, List<V>>`, а вторым аргументом принимает downstream-коллектор: посчитать, собрать в `Set`, усреднить. `partitioningBy` — частный случай: делит по предикату ровно на две группы, `true` и `false`. Группировки можно вкладывать друг в друга.
+=== "Коротко"
 
-#### `groupingBy` — группировка по ключу { #grouping-by }
+    !!! abstract "Ответ вслух"
+        `groupingBy` раскладывает элементы по ключу в `Map<K, List<V>>`, а вторым аргументом принимает downstream-коллектор: посчитать, собрать в `Set`, усреднить. `partitioningBy` — частный случай: делит по предикату ровно на две группы, `true` и `false`. Группировки можно вкладывать друг в друга.
 
-```java
-// Сгруппировать пользователей по городу
-Map<String, List<User>> byCity = users.stream()
-    .collect(Collectors.groupingBy(User::getCity));
-// {"Moscow": [User1, User3], "London": [User2]}
+=== "Подробно"
 
-// С downstream-коллектором: сгруппировать и посчитать
-Map<String, Long> countByCity = users.stream()
-    .collect(Collectors.groupingBy(
-        User::getCity,
-        Collectors.counting()   // downstream
-    ));
+    #### `groupingBy` — группировка по ключу { #grouping-by }
 
-// Многоуровневая группировка
-Map<String, Map<Role, List<User>>> byDeptAndRole = users.stream()
-    .collect(Collectors.groupingBy(
-        User::getDepartment,
-        Collectors.groupingBy(User::getRole)
-    ));
-```
+    ```java
+    // Сгруппировать пользователей по городу
+    Map<String, List<User>> byCity = users.stream()
+        .collect(Collectors.groupingBy(User::getCity));
+    // {"Moscow": [User1, User3], "London": [User2]}
 
-#### `partitioningBy` — деление на две группы { #partitioning-by }
+    // С downstream-коллектором: сгруппировать и посчитать
+    Map<String, Long> countByCity = users.stream()
+        .collect(Collectors.groupingBy(
+            User::getCity,
+            Collectors.counting()   // downstream
+        ));
 
-```java
-// Делит на true/false по предикату
-Map<Boolean, List<User>> adultSplit = users.stream()
-    .collect(Collectors.partitioningBy(u -> u.getAge() >= 18));
+    // Многоуровневая группировка
+    Map<String, Map<Role, List<User>>> byDeptAndRole = users.stream()
+        .collect(Collectors.groupingBy(
+            User::getDepartment,
+            Collectors.groupingBy(User::getRole)
+        ));
+    ```
 
-List<User> adults = adultSplit.get(true);
-List<User> minors = adultSplit.get(false);
-```
+    #### `partitioningBy` — деление на две группы { #partitioning-by }
 
-#### Downstream-коллекторы — коллекторы внутри коллекторов { #downstream }
+    ```java
+    // Делит на true/false по предикату
+    Map<Boolean, List<User>> adultSplit = users.stream()
+        .collect(Collectors.partitioningBy(u -> u.getAge() >= 18));
 
-```java
-// groupingBy + mapping + toSet = уникальные теги по категории
-Map<String, Set<String>> tagsByCategory = posts.stream()
-    .collect(Collectors.groupingBy(
-        Post::getCategory,
-        Collectors.mapping(Post::getTag, Collectors.toSet())
-    ));
+    List<User> adults = adultSplit.get(true);
+    List<User> minors = adultSplit.get(false);
+    ```
 
-// groupingBy + summarizingInt = статистика по возрасту в каждом городе
-Map<String, IntSummaryStatistics> statsByCity = users.stream()
-    .collect(Collectors.groupingBy(
-        User::getCity,
-        Collectors.summarizingInt(User::getAge)
-    ));
-```
+    #### Downstream-коллекторы — коллекторы внутри коллекторов { #downstream }
+
+    ```java
+    // groupingBy + mapping + toSet = уникальные теги по категории
+    Map<String, Set<String>> tagsByCategory = posts.stream()
+        .collect(Collectors.groupingBy(
+            Post::getCategory,
+            Collectors.mapping(Post::getTag, Collectors.toSet())
+        ));
+
+    // groupingBy + summarizingInt = статистика по возрасту в каждом городе
+    Map<String, IntSummaryStatistics> statsByCity = users.stream()
+        .collect(Collectors.groupingBy(
+            User::getCity,
+            Collectors.summarizingInt(User::getAge)
+        ));
+    ```
 
 !!! warning "Ловушка: `groupingBy` и `partitioningBy` с пустыми группами"
     `partitioningBy` всегда возвращает оба ключа — `true` и `false`, даже если одна группа пуста. А `groupingBy` создаёт ключи только для встретившихся значений: `byCity.get("Paris")` вернёт `null`, а не пустой список.
@@ -542,67 +553,71 @@ public class Profile {
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Это интерфейс ровно с одним абстрактным методом — SAM, Single Abstract Method; именно его можно заменить лямбдой. Основные из `java.util.function`: `Predicate`, `Function`, `Consumer` и `Supplier`. Аннотация `@FunctionalInterface` просит компилятор проверить, что абстрактный метод действительно один.
+=== "Коротко"
 
-Функциональный интерфейс — интерфейс ровно с **одним абстрактным методом** (SAM — Single Abstract Method). Именно его можно заменить лямбда-выражением.
+    !!! abstract "Ответ вслух"
+        Это интерфейс ровно с одним абстрактным методом — SAM, Single Abstract Method; именно его можно заменить лямбдой. Основные из `java.util.function`: `Predicate`, `Function`, `Consumer` и `Supplier`. Аннотация `@FunctionalInterface` просит компилятор проверить, что абстрактный метод действительно один.
 
-#### Четыре основных из `java.util.function` { #core-interfaces }
+=== "Подробно"
 
-```java
-// Predicate<T> — принимает T, возвращает boolean
-Predicate<String> isLong = s -> s.length() > 5;
-isLong.test("Hello");                                // false
-isLong.and(s -> s.startsWith("J")).test("JavaDev");  // true (композиция)
+    Функциональный интерфейс — интерфейс ровно с **одним абстрактным методом** (SAM — Single Abstract Method). Именно его можно заменить лямбда-выражением.
 
-// Function<T, R> — принимает T, возвращает R
-Function<String, Integer> length = String::length;
-length.apply("Hello");                               // 5
-length.andThen(n -> n * 2).apply("Hello");           // 10 (композиция)
+    #### Четыре основных из `java.util.function` { #core-interfaces }
 
-// Consumer<T> — принимает T, ничего не возвращает (void)
-Consumer<String> print = System.out::println;
-print.accept("Hello");
+    ```java
+    // Predicate<T> — принимает T, возвращает boolean
+    Predicate<String> isLong = s -> s.length() > 5;
+    isLong.test("Hello");                                // false
+    isLong.and(s -> s.startsWith("J")).test("JavaDev");  // true (композиция)
 
-// Supplier<T> — ничего не принимает, возвращает T
-Supplier<List<String>> listFactory = ArrayList::new;
-List<String> newList = listFactory.get();
-```
+    // Function<T, R> — принимает T, возвращает R
+    Function<String, Integer> length = String::length;
+    length.apply("Hello");                               // 5
+    length.andThen(n -> n * 2).apply("Hello");           // 10 (композиция)
 
-| **Интерфейс** | **Сигнатура** | **Метод** | **Типичное применение** |
-|---|---|---|---|
-| `Predicate<T>` | `T → boolean` | `test()` | `filter()` в стримах |
-| `Function<T,R>` | `T → R` | `apply()` | `map()` в стримах |
-| `Consumer<T>` | `T → void` | `accept()` | `forEach()` в стримах |
-| `Supplier<T>` | `() → T` | `get()` | `orElseGet()`, фабрики |
-| `BiFunction<T,U,R>` | `(T,U) → R` | `apply()` | Когда нужны два аргумента |
-| `BiPredicate<T,U>` | `(T,U) → boolean` | `test()` | Сравнение двух объектов |
-| `UnaryOperator<T>` | `T → T` | `apply()` | `replaceAll()` в списке |
-| `BinaryOperator<T>` | `(T,T) → T` | `apply()` | `reduce()` в стримах |
-| `Runnable` | `() → void` | `run()` | Задача без результата |
-| `Callable<T>` | `() → T` | `call()` | Задача с результатом (может бросить checked) |
+    // Consumer<T> — принимает T, ничего не возвращает (void)
+    Consumer<String> print = System.out::println;
+    print.accept("Hello");
 
-#### `@FunctionalInterface` — свой интерфейс { #custom-functional-interface }
+    // Supplier<T> — ничего не принимает, возвращает T
+    Supplier<List<String>> listFactory = ArrayList::new;
+    List<String> newList = listFactory.get();
+    ```
 
-```java
-@FunctionalInterface  // компилятор проверит, что абстрактный метод ровно один
-public interface Transformer<T, R> {
-    R transform(T input);
+    | **Интерфейс** | **Сигнатура** | **Метод** | **Типичное применение** |
+    |---|---|---|---|
+    | `Predicate<T>` | `T → boolean` | `test()` | `filter()` в стримах |
+    | `Function<T,R>` | `T → R` | `apply()` | `map()` в стримах |
+    | `Consumer<T>` | `T → void` | `accept()` | `forEach()` в стримах |
+    | `Supplier<T>` | `() → T` | `get()` | `orElseGet()`, фабрики |
+    | `BiFunction<T,U,R>` | `(T,U) → R` | `apply()` | Когда нужны два аргумента |
+    | `BiPredicate<T,U>` | `(T,U) → boolean` | `test()` | Сравнение двух объектов |
+    | `UnaryOperator<T>` | `T → T` | `apply()` | `replaceAll()` в списке |
+    | `BinaryOperator<T>` | `(T,T) → T` | `apply()` | `reduce()` в стримах |
+    | `Runnable` | `() → void` | `run()` | Задача без результата |
+    | `Callable<T>` | `() → T` | `call()` | Задача с результатом (может бросить checked) |
 
-    // default- и static-методы не считаются — это разрешено
-    default Transformer<T, R> andLog() {
-        return input -> {
-            R result = this.transform(input);
-            System.out.println(input + " → " + result);
-            return result;
-        };
+    #### `@FunctionalInterface` — свой интерфейс { #custom-functional-interface }
+
+    ```java
+    @FunctionalInterface  // компилятор проверит, что абстрактный метод ровно один
+    public interface Transformer<T, R> {
+        R transform(T input);
+
+        // default- и static-методы не считаются — это разрешено
+        default Transformer<T, R> andLog() {
+            return input -> {
+                R result = this.transform(input);
+                System.out.println(input + " → " + result);
+                return result;
+            };
+        }
     }
-}
 
-// Использование
-Transformer<String, Integer> lengthOf = String::length;
-lengthOf.andLog().transform("Hello"); // выведет "Hello → 5"
-```
+    // Использование
+    Transformer<String, Integer> lengthOf = String::length;
+    lengthOf.andLog().transform("Hello"); // выведет "Hello → 5"
+    ```
 
 !!! warning "Ловушка: лямбда и checked-исключения"
     Методы стандартных интерфейсов (`Function.apply`, `Consumer.accept`) не объявляют `throws`. Лямбда внутри `map()` не может бросить `IOException` — её придётся обернуть в `UncheckedIOException` или вынести в метод с `try-catch`. `Callable` — исключение: его `call()` объявляет `throws Exception`.
@@ -689,60 +704,64 @@ Consumer<String> greeter = person -> System.out.println(prefix + person); // ✅
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Почти любая задача раскладывается на три шага: отфильтровать, сгруппировать или преобразовать, собрать результат нужным коллектором. Для подсчётов — `groupingBy` с `counting()`, для средних — `averagingDouble()`, для «найти или бросить» — `findFirst().orElseThrow()`. Сначала проговори цепочку словами, потом пиши код.
+=== "Коротко"
 
-#### Топ-3 города по числу пользователей { #task-top-cities }
+    !!! abstract "Ответ вслух"
+        Почти любая задача раскладывается на три шага: отфильтровать, сгруппировать или преобразовать, собрать результат нужным коллектором. Для подсчётов — `groupingBy` с `counting()`, для средних — `averagingDouble()`, для «найти или бросить» — `findFirst().orElseThrow()`. Сначала проговори цепочку словами, потом пиши код.
 
-```java
-Map<String, Long> countByCity = users.stream()
-    .collect(Collectors.groupingBy(User::getCity, Collectors.counting()));
+=== "Подробно"
 
-List<String> top3 = countByCity.entrySet().stream()
-    .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-    .limit(3)
-    .map(Map.Entry::getKey)
-    .collect(Collectors.toList());
-```
+    #### Топ-3 города по числу пользователей { #task-top-cities }
 
-#### Средняя зарплата по отделу { #task-avg-salary }
+    ```java
+    Map<String, Long> countByCity = users.stream()
+        .collect(Collectors.groupingBy(User::getCity, Collectors.counting()));
 
-```java
-Map<String, Double> avgSalaryByDept = employees.stream()
-    .collect(Collectors.groupingBy(
-        Employee::getDepartment,
-        Collectors.averagingDouble(Employee::getSalary)
-    ));
-```
+    List<String> top3 = countByCity.entrySet().stream()
+        .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+        .limit(3)
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toList());
+    ```
 
-#### Первый пользователь старше 30 или исключение { #task-find-or-throw }
+    #### Средняя зарплата по отделу { #task-avg-salary }
 
-```java
-User older = users.stream()
-    .filter(u -> u.getAge() > 30)
-    .findFirst()
-    .orElseThrow(() -> new UserNotFoundException("No users older than 30"));
-```
+    ```java
+    Map<String, Double> avgSalaryByDept = employees.stream()
+        .collect(Collectors.groupingBy(
+            Employee::getDepartment,
+            Collectors.averagingDouble(Employee::getSalary)
+        ));
+    ```
 
-#### Все теги из всех постов — уникальные и отсортированные { #task-unique-tags }
+    #### Первый пользователь старше 30 или исключение { #task-find-or-throw }
 
-```java
-List<String> tags = posts.stream()
-    .flatMap(post -> post.getTags().stream())
-    .distinct()
-    .sorted()
-    .collect(Collectors.toList());
-```
+    ```java
+    User older = users.stream()
+        .filter(u -> u.getAge() > 30)
+        .findFirst()
+        .orElseThrow(() -> new UserNotFoundException("No users older than 30"));
+    ```
 
-#### Разбить список на активных и неактивных { #task-partition-active }
+    #### Все теги из всех постов — уникальные и отсортированные { #task-unique-tags }
 
-```java
-Map<Boolean, List<User>> split = users.stream()
-    .collect(Collectors.partitioningBy(User::isActive));
+    ```java
+    List<String> tags = posts.stream()
+        .flatMap(post -> post.getTags().stream())
+        .distinct()
+        .sorted()
+        .collect(Collectors.toList());
+    ```
 
-List<User> active   = split.get(true);
-List<User> inactive = split.get(false);
-```
+    #### Разбить список на активных и неактивных { #task-partition-active }
+
+    ```java
+    Map<Boolean, List<User>> split = users.stream()
+        .collect(Collectors.partitioningBy(User::isActive));
+
+    List<User> active   = split.get(true);
+    List<User> inactive = split.get(false);
+    ```
 
 !!! warning "Ловушка: `comparingByValue().reversed()` без типа"
     `Map.Entry.comparingByValue().reversed()` без явных типов не скомпилируется: после `.reversed()` компилятор не может вывести типы. Поэтому в примере стоит `Map.Entry.<String, Long>comparingByValue()` — или используй `Collections.reverseOrder(Map.Entry.comparingByValue())`.
@@ -754,6 +773,7 @@ List<User> inactive = split.get(false);
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Stream** | Не структура данных, а конвейер: источник → промежуточные → терминальная |
@@ -769,3 +789,5 @@ List<User> inactive = split.get(false);
 | **`Optional`** | Для возвращаемых значений; `orElseGet` для дорогого дефолта; не `isPresent` + `get` |
 | **Функциональные интерфейсы** | Один абстрактный метод; `Predicate`, `Function`, `Consumer`, `Supplier` |
 | **Effectively final** | Лямбда захватывает копию значения — переменная не должна меняться |
+
+<!-- --8<-- [end:cheatsheet] -->

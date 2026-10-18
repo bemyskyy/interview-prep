@@ -1,3 +1,11 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Базы данных
+  - Кэширование
+---
+
 # NoSQL
 
 Четыре семейства NoSQL-баз — документные, key-value, wide-column и графовые — и как с ними работать из Spring Boot. На собесе спрашивают, когда NoSQL лучше SQL, чем отличаются семейства, где каждая база стоит в CAP-теореме и какие задачи решают на Redis.
@@ -34,70 +42,74 @@
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Документная БД хранит данные как JSON/BSON-документы без фиксированной схемы: у каждого документа могут быть свои поля, а вложенные объекты лежат прямо внутри. Пример — MongoDB. Подходит для данных с переменной структурой и частыми изменениями схемы, плохо — для сложных связей между сущностями.
+=== "Коротко"
 
-**Представители:** MongoDB, CouchDB, Firestore.
+    !!! abstract "Ответ вслух"
+        Документная БД хранит данные как JSON/BSON-документы без фиксированной схемы: у каждого документа могут быть свои поля, а вложенные объекты лежат прямо внутри. Пример — MongoDB. Подходит для данных с переменной структурой и частыми изменениями схемы, плохо — для сложных связей между сущностями.
 
-```json
-// Документ "habit" в MongoDB
-{
-  "_id": "64a1f2c3d4e5f6a7b8c9d0e1",
-  "userId": "user_42",
-  "name": "Утренняя пробежка",
-  "frequency": "daily",
-  "reminders": [
-    { "time": "07:00", "enabled": true },
-    { "time": "07:30", "enabled": false }
-  ],
-  "streaks": {
-    "current": 14,
-    "longest": 30
-  },
-  "tags": ["здоровье", "спорт"],
-  "createdAt": "2024-01-15T07:00:00Z"
-}
-```
+=== "Подробно"
 
-**Spring Data MongoDB:**
+    **Представители:** MongoDB, CouchDB, Firestore.
 
-```java
-@Document(collection = "habits")
-public class Habit {
-    @Id
-    private String id;
-    private String userId;
-    private String name;
-    private List<Reminder> reminders;
-    private Map<String, Integer> streaks;
+    ```json
+    // Документ "habit" в MongoDB
+    {
+      "_id": "64a1f2c3d4e5f6a7b8c9d0e1",
+      "userId": "user_42",
+      "name": "Утренняя пробежка",
+      "frequency": "daily",
+      "reminders": [
+        { "time": "07:00", "enabled": true },
+        { "time": "07:30", "enabled": false }
+      ],
+      "streaks": {
+        "current": 14,
+        "longest": 30
+      },
+      "tags": ["здоровье", "спорт"],
+      "createdAt": "2024-01-15T07:00:00Z"
+    }
+    ```
 
-    // Вложенный объект — просто поле, никаких JOIN-ов
-    @Document
-    public record Reminder(String time, boolean enabled) {}
-}
+    **Spring Data MongoDB:**
 
-public interface HabitRepository extends MongoRepository<Habit, String> {
+    ```java
+    @Document(collection = "habits")
+    public class Habit {
+        @Id
+        private String id;
+        private String userId;
+        private String name;
+        private List<Reminder> reminders;
+        private Map<String, Integer> streaks;
 
-    List<Habit> findByUserId(String userId);
+        // Вложенный объект — просто поле, никаких JOIN-ов
+        @Document
+        public record Reminder(String time, boolean enabled) {}
+    }
 
-    // MongoDB Query
-    @Query("{ 'userId': ?0, 'streaks.current': { $gte: ?1 } }")
-    List<Habit> findActiveStreaks(String userId, int minDays);
-}
-```
+    public interface HabitRepository extends MongoRepository<Habit, String> {
 
-**Когда выбирать:**
+        List<Habit> findByUserId(String userId);
 
-- Данные имеют переменную структуру (каталог товаров, где у каждого свои атрибуты).
-- Нужно хранить вложенные объекты без нормализации.
-- Частые изменения схемы (стартап, быстрые итерации).
-- Целый документ читают чаще, чем отдельные поля.
+        // MongoDB Query
+        @Query("{ 'userId': ?0, 'streaks.current': { $gte: ?1 } }")
+        List<Habit> findActiveStreaks(String userId, int minDays);
+    }
+    ```
 
-**Когда не выбирать:**
+    **Когда выбирать:**
 
-- Сложные связи между сущностями (придётся делать JOIN в коде).
-- Нужны ACID-транзакции через несколько документов (MongoDB 4.0+ поддерживает, но дороже).
-- Данные высоко нормализованы и структурированы.
+    - Данные имеют переменную структуру (каталог товаров, где у каждого свои атрибуты).
+    - Нужно хранить вложенные объекты без нормализации.
+    - Частые изменения схемы (стартап, быстрые итерации).
+    - Целый документ читают чаще, чем отдельные поля.
+
+    **Когда не выбирать:**
+
+    - Сложные связи между сущностями (придётся делать JOIN в коде).
+    - Нужны ACID-транзакции через несколько документов (MongoDB 4.0+ поддерживает, но дороже).
+    - Данные высоко нормализованы и структурированы.
 
 !!! warning "Ловушка: связи между документами"
     JOIN-ов в привычном виде нет. Если сущности сильно связаны, связи придётся собирать в коде отдельными запросами — это признак, что нужна реляционная БД.
@@ -111,100 +123,104 @@ public interface HabitRepository extends MongoRepository<Habit, String> {
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Самая простая модель: ключ → значение, БД не знает, что внутри значения, а операции по ключу работают за O(1). Самый популярный представитель — Redis: данные в памяти, опциональная персистентность и богатые типы данных — строки, списки, множества, sorted sets, хэши, стримы. Используют для кэша, сессий, счётчиков, очередей и лидербордов.
+=== "Коротко"
 
-**Представители:** Redis, DynamoDB, Memcached.
+    !!! abstract "Ответ вслух"
+        Самая простая модель: ключ → значение, БД не знает, что внутри значения, а операции по ключу работают за O(1). Самый популярный представитель — Redis: данные в памяти, опциональная персистентность и богатые типы данных — строки, списки, множества, sorted sets, хэши, стримы. Используют для кэша, сессий, счётчиков, очередей и лидербордов.
 
-**Redis** — самый популярный: данные в памяти (in-memory), опциональная персистентность, богатые типы данных.
+=== "Подробно"
 
-```java
-// Spring Data Redis
-@Configuration
-public class RedisConfig {
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(factory);
-        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return template;
-    }
-}
+    **Представители:** Redis, DynamoDB, Memcached.
 
-@Service
-public class HabitCacheService {
+    **Redis** — самый популярный: данные в памяти (in-memory), опциональная персистентность, богатые типы данных.
 
-    private final RedisTemplate<String, Object> redis;
-    private static final Duration TTL = Duration.ofMinutes(30);
-
-    // Простой кэш
-    public void cacheHabit(String habitId, HabitDto habit) {
-        redis.opsForValue().set("habit:" + habitId, habit, TTL);
+    ```java
+    // Spring Data Redis
+    @Configuration
+    public class RedisConfig {
+        @Bean
+        public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+            RedisTemplate<String, Object> template = new RedisTemplate<>();
+            template.setConnectionFactory(factory);
+            template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+            return template;
+        }
     }
 
-    public HabitDto getCachedHabit(String habitId) {
-        return (HabitDto) redis.opsForValue().get("habit:" + habitId);
+    @Service
+    public class HabitCacheService {
+
+        private final RedisTemplate<String, Object> redis;
+        private static final Duration TTL = Duration.ofMinutes(30);
+
+        // Простой кэш
+        public void cacheHabit(String habitId, HabitDto habit) {
+            redis.opsForValue().set("habit:" + habitId, habit, TTL);
+        }
+
+        public HabitDto getCachedHabit(String habitId) {
+            return (HabitDto) redis.opsForValue().get("habit:" + habitId);
+        }
+
+        // Счётчик streak (атомарная операция)
+        public long incrementStreak(String userId, String habitId) {
+            String key = "streak:" + userId + ":" + habitId;
+            return redis.opsForValue().increment(key);
+        }
+
+        // Хранение сессии пользователя
+        public void saveSession(String sessionId, UserSession session, Duration ttl) {
+            redis.opsForValue().set("session:" + sessionId, session, ttl);
+        }
+
+        // Очередь задач (List)
+        public void pushNotification(String userId, NotificationDto notification) {
+            redis.opsForList().leftPush("notifications:" + userId, notification);
+        }
+
+        public NotificationDto popNotification(String userId) {
+            return (NotificationDto) redis.opsForList().rightPop("notifications:" + userId);
+        }
+
+        // Уникальные просмотры (Set)
+        public void trackView(String habitId, String userId) {
+            redis.opsForSet().add("views:" + habitId, userId);
+        }
+
+        public long uniqueViewCount(String habitId) {
+            return redis.opsForSet().size("views:" + habitId);
+        }
+
+        // Топ привычек по streak (Sorted Set)
+        public void updateLeaderboard(String userId, double streak) {
+            redis.opsForZSet().add("leaderboard", userId, streak);
+        }
+
+        public Set<Object> getTopUsers(int count) {
+            return redis.opsForZSet().reverseRange("leaderboard", 0, count - 1);
+        }
     }
+    ```
 
-    // Счётчик streak (атомарная операция)
-    public long incrementStreak(String userId, String habitId) {
-        String key = "streak:" + userId + ":" + habitId;
-        return redis.opsForValue().increment(key);
-    }
+    | Тип | Команды | Применение |
+    |---|---|---|
+    | **String** | `GET`, `SET`, `INCR`, `EXPIRE` | Кэш, счётчики, сессии |
+    | **List** | `LPUSH`, `RPOP`, `LRANGE` | Очереди, история, лента |
+    | **Set** | `SADD`, `SMEMBERS`, `SINTER` | Уникальные элементы, теги |
+    | **Sorted Set** | `ZADD`, `ZRANGE`, `ZRANK` | Лидерборды, приоритеты |
+    | **Hash** | `HSET`, `HGET`, `HGETALL` | Объекты с полями |
+    | **Stream** | `XADD`, `XREAD` | Event sourcing, логи |
 
-    // Хранение сессии пользователя
-    public void saveSession(String sessionId, UserSession session, Duration ttl) {
-        redis.opsForValue().set("session:" + sessionId, session, ttl);
-    }
+    **Когда выбирать:**
 
-    // Очередь задач (List)
-    public void pushNotification(String userId, NotificationDto notification) {
-        redis.opsForList().leftPush("notifications:" + userId, notification);
-    }
+    - Кэширование (самый частый кейс).
+    - Сессии пользователей.
+    - Rate limiting (счётчик запросов с TTL).
+    - Очереди задач.
+    - Pub/Sub (уведомления в реальном времени).
+    - Лидерборды и рейтинги.
 
-    public NotificationDto popNotification(String userId) {
-        return (NotificationDto) redis.opsForList().rightPop("notifications:" + userId);
-    }
-
-    // Уникальные просмотры (Set)
-    public void trackView(String habitId, String userId) {
-        redis.opsForSet().add("views:" + habitId, userId);
-    }
-
-    public long uniqueViewCount(String habitId) {
-        return redis.opsForSet().size("views:" + habitId);
-    }
-
-    // Топ привычек по streak (Sorted Set)
-    public void updateLeaderboard(String userId, double streak) {
-        redis.opsForZSet().add("leaderboard", userId, streak);
-    }
-
-    public Set<Object> getTopUsers(int count) {
-        return redis.opsForZSet().reverseRange("leaderboard", 0, count - 1);
-    }
-}
-```
-
-| Тип | Команды | Применение |
-|---|---|---|
-| **String** | `GET`, `SET`, `INCR`, `EXPIRE` | Кэш, счётчики, сессии |
-| **List** | `LPUSH`, `RPOP`, `LRANGE` | Очереди, история, лента |
-| **Set** | `SADD`, `SMEMBERS`, `SINTER` | Уникальные элементы, теги |
-| **Sorted Set** | `ZADD`, `ZRANGE`, `ZRANK` | Лидерборды, приоритеты |
-| **Hash** | `HSET`, `HGET`, `HGETALL` | Объекты с полями |
-| **Stream** | `XADD`, `XREAD` | Event sourcing, логи |
-
-**Когда выбирать:**
-
-- Кэширование (самый частый кейс).
-- Сессии пользователей.
-- Rate limiting (счётчик запросов с TTL).
-- Очереди задач.
-- Pub/Sub (уведомления в реальном времени).
-- Лидерборды и рейтинги.
-
-Сравнение Redis с Memcached и Hazelcast и устройство Redis Cluster — в [System Design → Caching](../system-design/system-design.md#caching).
+    Сравнение Redis с Memcached и Hazelcast и устройство Redis Cluster — в [System Design → Caching](../system-design/system-design.md#caching).
 
 !!! warning "Ловушка: поиск не по ключу"
     Key-value хранилище отвечает быстро только на запрос по ключу. Найти «все сессии пользователя из Алматы» без заранее построенного ключа или индекса нельзя — это задача другой БД.
@@ -218,65 +234,69 @@ public class HabitCacheService {
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Wide-column БД вроде Cassandra хранят строки с гибким набором колонок и масштабируются горизонтально почти линейно. Partition key определяет, на какой ноде лежат данные, а clustering key — порядок внутри партиции. Схему проектируют вокруг запросов, и каждый запрос обязан указывать partition key.
+=== "Коротко"
 
-**Суть:** таблицы есть, но схема гибкая — строки в одной таблице могут иметь разные столбцы. Такие БД спроектированы для огромных объёмов данных и горизонтального масштабирования.
+    !!! abstract "Ответ вслух"
+        Wide-column БД вроде Cassandra хранят строки с гибким набором колонок и масштабируются горизонтально почти линейно. Partition key определяет, на какой ноде лежат данные, а clustering key — порядок внутри партиции. Схему проектируют вокруг запросов, и каждый запрос обязан указывать partition key.
 
-**Представители:** Apache Cassandra, HBase, Amazon Keyspaces.
+=== "Подробно"
 
-```sql
--- Cassandra CQL (похож на SQL, но другая семантика)
-CREATE TABLE habit_events (
-    user_id     UUID,
-    habit_id    UUID,
-    event_date  DATE,
-    event_time  TIMESTAMP,
-    completed   BOOLEAN,
-    notes       TEXT,
-    PRIMARY KEY ((user_id, habit_id), event_date, event_time)
-) WITH CLUSTERING ORDER BY (event_date DESC, event_time DESC);
+    **Суть:** таблицы есть, но схема гибкая — строки в одной таблице могут иметь разные столбцы. Такие БД спроектированы для огромных объёмов данных и горизонтального масштабирования.
 
--- Partition key: (user_id, habit_id) — определяет на какой ноде лежат данные
--- Clustering key: event_date, event_time — порядок внутри партиции
+    **Представители:** Apache Cassandra, HBase, Amazon Keyspaces.
 
--- Запрос: ОБЯЗАТЕЛЬНО по partition key
-SELECT * FROM habit_events
-WHERE user_id = ? AND habit_id = ?
-AND event_date >= '2024-01-01';
+    ```sql
+    -- Cassandra CQL (похож на SQL, но другая семантика)
+    CREATE TABLE habit_events (
+        user_id     UUID,
+        habit_id    UUID,
+        event_date  DATE,
+        event_time  TIMESTAMP,
+        completed   BOOLEAN,
+        notes       TEXT,
+        PRIMARY KEY ((user_id, habit_id), event_date, event_time)
+    ) WITH CLUSTERING ORDER BY (event_date DESC, event_time DESC);
 
--- ❌ Так нельзя — нет фильтрации по partition key
-SELECT * FROM habit_events WHERE completed = true;
-```
+    -- Partition key: (user_id, habit_id) — определяет на какой ноде лежат данные
+    -- Clustering key: event_date, event_time — порядок внутри партиции
 
-**Spring Data Cassandra:**
+    -- Запрос: ОБЯЗАТЕЛЬНО по partition key
+    SELECT * FROM habit_events
+    WHERE user_id = ? AND habit_id = ?
+    AND event_date >= '2024-01-01';
 
-```java
-@Table("habit_events")
-public class HabitEvent {
-    @PrimaryKeyColumn(name = "user_id", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
-    private UUID userId;
+    -- ❌ Так нельзя — нет фильтрации по partition key
+    SELECT * FROM habit_events WHERE completed = true;
+    ```
 
-    @PrimaryKeyColumn(name = "habit_id", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
-    private UUID habitId;
+    **Spring Data Cassandra:**
 
-    @PrimaryKeyColumn(name = "event_date", type = PrimaryKeyType.CLUSTERED, ordinal = 0,
-                      ordering = Ordering.DESCENDING)
-    private LocalDate eventDate;
+    ```java
+    @Table("habit_events")
+    public class HabitEvent {
+        @PrimaryKeyColumn(name = "user_id", type = PrimaryKeyType.PARTITIONED, ordinal = 0)
+        private UUID userId;
 
-    @Column private boolean completed;
-    @Column private String notes;
-}
-```
+        @PrimaryKeyColumn(name = "habit_id", type = PrimaryKeyType.PARTITIONED, ordinal = 1)
+        private UUID habitId;
 
-**Главное правило Cassandra:** проектируй схему вокруг запросов, а не вокруг данных. В реляционных БД сначала нормализация, потом запросы; в Cassandra — сначала запросы, потом схема.
+        @PrimaryKeyColumn(name = "event_date", type = PrimaryKeyType.CLUSTERED, ordinal = 0,
+                          ordering = Ordering.DESCENDING)
+        private LocalDate eventDate;
 
-**Когда выбирать:**
+        @Column private boolean completed;
+        @Column private String notes;
+    }
+    ```
 
-- Огромные объёмы данных (терабайты, петабайты).
-- Высокая скорость записи (IoT, логи, метрики, события).
-- Временные ряды (история показателей, события с временной меткой).
-- Нужна линейная горизонтальная масштабируемость.
+    **Главное правило Cassandra:** проектируй схему вокруг запросов, а не вокруг данных. В реляционных БД сначала нормализация, потом запросы; в Cassandra — сначала запросы, потом схема.
+
+    **Когда выбирать:**
+
+    - Огромные объёмы данных (терабайты, петабайты).
+    - Высокая скорость записи (IoT, логи, метрики, события).
+    - Временные ряды (история показателей, события с временной меткой).
+    - Нужна линейная горизонтальная масштабируемость.
 
 !!! warning "Ловушка: чего нет в Cassandra"
     Нет JOIN, нет агрегаций типа `SUM` / `AVG` / `GROUP BY` в традиционном смысле. Нет транзакций через несколько партиций — только lightweight transactions в одной партиции.
@@ -379,7 +399,7 @@ RETURN path, length(path)
 !!! abstract "Ответ вслух"
     CAP-теорема (теорема Брюера) говорит, что распределённая система может гарантировать только два свойства из трёх: согласованность, доступность и устойчивость к разделению сети. Сеть может упасть всегда, поэтому реальный выбор — между CP (HBase, Zookeeper) и AP (Cassandra, CouchDB, DynamoDB). PACELC добавляет, что и без сбоя есть компромисс между задержкой и согласованностью.
 
-Полный разбор CAP и PACELC — в [System Design → CAP-теорема](../system-design/system-design.md#cap-) и [PACELC](../system-design/system-design.md#pacelc). Здесь — где стоят NoSQL-семейства.
+Полный разбор CAP и PACELC — в [System Design → CAP-теорема](../system-design/system-design.md#cap) и [PACELC](../system-design/system-design.md#pacelc). Здесь — где стоят NoSQL-семейства.
 
 ![CAP](../assets/nosql_cap_families.png)
 
@@ -497,7 +517,7 @@ public class HabitTrackerService {
 ```
 
 !!! warning "Ловушка: одной транзакции на все базы нет"
-    `@Transactional` охватывает только PostgreSQL. Если запись в Cassandra упадёт после коммита в Postgres, данные разойдутся — согласованность между хранилищами обеспечивают отдельно (см. [System Design → Transactional Outbox](../system-design/system-design.md#transactional-outbox)).
+    `@Transactional` охватывает только PostgreSQL. Если запись в Cassandra упадёт после коммита в Postgres, данные разойдутся — согласованность между хранилищами обеспечивают отдельно (см. [System Design → Transactional Outbox](../system-design/system-design.md#outbox)).
 
 ??? question "Проверь себя"
     1. Что такое polyglot persistence?
@@ -548,6 +568,7 @@ public class RateLimiter {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **NoSQL vs SQL** | Не замена, а другой инструмент. Гибкая схема, горизонтальное масштабирование, специализация |
@@ -562,3 +583,5 @@ public class RateLimiter {
 | **Cache-Aside** | Читай из кэша → промах → БД → положи в кэш → инвалидируй при обновлении |
 | **Polyglot** | Разные данные в разных БД. PostgreSQL + Redis + Cassandra — нормально |
 | **Rate limiting** | `INCR` + TTL на окно в Redis — общий счётчик для всех инстансов |
+
+<!-- --8<-- [end:cheatsheet] -->

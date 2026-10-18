@@ -1,3 +1,13 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - Spring
+  - Базы данных
+  - Транзакции
+---
+
 # Spring Data JPA и транзакции
 
 Как Spring управляет транзакциями и что Hibernate делает с сущностями: `@Transactional`, propagation, блокировки, N+1, жизненный цикл Entity и кэши. На собесе чаще всего спрашивают, почему транзакция не откатилась, что будет при самовызове, разницу `REQUIRED`, `REQUIRES_NEW` и `NESTED`, оптимистичную и пессимистичную блокировку и проблему N+1.
@@ -634,6 +644,7 @@ public void example() {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **`@Transactional`** | Прокси → `TransactionManager` → соединение из пула → `setAutoCommit(false)` → commit / rollback |
@@ -650,3 +661,5 @@ public void example() {
 | **Dirty Checking** | Persistent-объект: `setName()` без `save()` — `UPDATE` при коммите |
 | **`save()` vs `saveAndFlush()`** | После `save()` ID уже есть (`IDENTITY` — `INSERT` сразу, `SEQUENCE` — `nextval`). `saveAndFlush()` — flush немедленно, но не коммитит |
 | **L1 / L2 Cache** | L1 — транзакция, всегда включён. L2 в Enterprise заменяют на Redis + `@Cacheable` |
+
+<!-- --8<-- [end:cheatsheet] -->

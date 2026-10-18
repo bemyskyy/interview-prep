@@ -1,3 +1,11 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Сети
+  - Безопасность
+---
+
 # Сети и протоколы
 
 Как данные доходят от клиента до сервера: транспорт, HTTP, TLS, DNS и стили API. Чаще всего спрашивают TCP против UDP, эволюцию HTTP от 1.1 до 3, коды 401 и 403, идемпотентность методов, TLS handshake и выбор между REST и gRPC.
@@ -550,60 +558,64 @@ GET    /api/habits?status=ACTIVE&sort=createdAt&page=0&size=20
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    gRPC — RPC-фреймворк от Google поверх HTTP/2, данные сериализуются в бинарный Protocol Buffers (protobuf). Контракт описывается в `.proto`-файле, из которого генерируется клиентский и серверный код на любом языке. Из коробки есть стриминг в обе стороны.
+=== "Коротко"
 
-**Контракт через `.proto`-файл:**
+    !!! abstract "Ответ вслух"
+        gRPC — RPC-фреймворк от Google поверх HTTP/2, данные сериализуются в бинарный Protocol Buffers (protobuf). Контракт описывается в `.proto`-файле, из которого генерируется клиентский и серверный код на любом языке. Из коробки есть стриминг в обе стороны.
 
-```protobuf
-syntax = "proto3";
+=== "Подробно"
 
-package habits;
+    **Контракт через `.proto`-файл:**
 
-service HabitService {
-  rpc GetHabit (GetHabitRequest) returns (HabitResponse);
-  rpc CreateHabit (CreateHabitRequest) returns (HabitResponse);
-  rpc StreamHabits (StreamRequest) returns (stream HabitResponse); // серверный стриминг
-  rpc SyncHabits (stream HabitUpdate) returns (stream HabitResponse); // двусторонний стрим
-}
+    ```protobuf
+    syntax = "proto3";
 
-message GetHabitRequest {
-  int64 id = 1;
-}
+    package habits;
 
-message HabitResponse {
-  int64 id = 1;
-  string name = 2;
-  string status = 3;
-  int64 created_at = 4;
-}
-```
-
-Из `.proto` генерируется клиентский и серверный код на любом языке: Java, Go, Python, Kotlin.
-
-**gRPC в Spring Boot:**
-
-```java
-// Server
-@GrpcService
-public class HabitGrpcService extends HabitServiceGrpc.HabitServiceImplBase {
-
-    @Override
-    public void getHabit(GetHabitRequest request,
-                         StreamObserver<HabitResponse> responseObserver) {
-        HabitDto habit = habitService.findById(request.getId());
-
-        HabitResponse response = HabitResponse.newBuilder()
-            .setId(habit.getId())
-            .setName(habit.getName())
-            .setStatus(habit.getStatus().name())
-            .build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
+    service HabitService {
+      rpc GetHabit (GetHabitRequest) returns (HabitResponse);
+      rpc CreateHabit (CreateHabitRequest) returns (HabitResponse);
+      rpc StreamHabits (StreamRequest) returns (stream HabitResponse); // серверный стриминг
+      rpc SyncHabits (stream HabitUpdate) returns (stream HabitResponse); // двусторонний стрим
     }
-}
-```
+
+    message GetHabitRequest {
+      int64 id = 1;
+    }
+
+    message HabitResponse {
+      int64 id = 1;
+      string name = 2;
+      string status = 3;
+      int64 created_at = 4;
+    }
+    ```
+
+    Из `.proto` генерируется клиентский и серверный код на любом языке: Java, Go, Python, Kotlin.
+
+    **gRPC в Spring Boot:**
+
+    ```java
+    // Server
+    @GrpcService
+    public class HabitGrpcService extends HabitServiceGrpc.HabitServiceImplBase {
+
+        @Override
+        public void getHabit(GetHabitRequest request,
+                             StreamObserver<HabitResponse> responseObserver) {
+            HabitDto habit = habitService.findById(request.getId());
+
+            HabitResponse response = HabitResponse.newBuilder()
+                .setId(habit.getId())
+                .setName(habit.getName())
+                .setStatus(habit.getStatus().name())
+                .build();
+
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+    }
+    ```
 
 !!! warning "Ловушка: gRPC из браузера"
     Браузер не даёт JavaScript нужного gRPC контроля над HTTP/2, поэтому напрямую вызвать gRPC-сервис из браузера нельзя. Нужен grpc-web и прокси перед сервисом. Это одна из причин, почему публичные API делают на REST, а gRPC оставляют для общения сервисов.
@@ -711,6 +723,7 @@ public Flux<HabitDto> streamHabits() {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **OSI и TCP/IP** | 7 уровней против 4; бэкенд живёт на транспортном (TCP/UDP) и прикладном (HTTP, DNS) |
@@ -730,3 +743,5 @@ public Flux<HabitDto> streamHabits() {
 | **gRPC** | HTTP/2 + protobuf, контракт `.proto`, codegen, стриминг; в браузере — через grpc-web |
 | **REST / gRPC / GraphQL** | Наружу / между сервисами / много разных клиентов |
 | **WebSocket vs SSE** | WebSocket — двусторонний через Upgrade. SSE — односторонний поток сервер → клиент |
+
+<!-- --8<-- [end:cheatsheet] -->

@@ -1,3 +1,12 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Spring
+  - Тестирование
+  - Кэширование
+---
+
 # Spring: тестирование и инструменты
 
 Тестирование Spring-приложений, кэширование через `@Cacheable`, мониторинг через Actuator и Micrometer и обзор WebFlux. На собесе чаще всего спрашивают, какой тестовый срез выбрать, чем `@Mock` отличается от `@MockBean`, почему `@Cacheable` не срабатывает и когда WebFlux лучше MVC.
@@ -624,6 +633,7 @@ public class HabitController {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Тест-срезы** | `@WebMvcTest` (контроллеры) / `@DataJpaTest` (репозитории) / `@SpringBootTest` (всё) |
@@ -640,3 +650,5 @@ public class HabitController {
 | **Prometheus** | Scrape `/actuator/prometheus`, тег `application` на всех метриках |
 | **WebFlux** | Неблокирующий I/O. Netty вместо Tomcat. `Mono` / `Flux` вместо объектов |
 | **WebFlux ловушка** | Одна блокирующая операция блокирует весь event loop |
+
+<!-- --8<-- [end:cheatsheet] -->

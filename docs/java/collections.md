@@ -1,3 +1,12 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - Java
+  - Многопоточность
+---
+
 # Collections
 
 Как устроены `List`, `Set`, `Queue` и `Map` в Java и как выбрать коллекцию под задачу. Чаще всего спрашивают устройство `HashMap`, `ArrayList` против `LinkedList`, `Comparable` против `Comparator`, `ConcurrentModificationException` и `ConcurrentHashMap`.
@@ -838,6 +847,7 @@ for (Listener l : listeners) {   // частые обходы без блоки�
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Иерархия** | `Iterable` → `Collection` → `List` / `Set` / `Queue`. `Map` отдельно (Interface Segregation) |
@@ -858,3 +868,5 @@ for (Listener l : listeners) {   // частые обходы без блоки�
 | **`Hashtable` / `Vector`** | `synchronized` на всё; составные операции не атомарны |
 | **`ConcurrentHashMap`** | CAS в пустой бакет, `synchronized` на первом узле; без `null`; `merge` / `computeIfAbsent` |
 | **`CopyOnWriteArrayList`** | Копия массива на каждую запись; read-heavy, write-rare |
+
+<!-- --8<-- [end:cheatsheet] -->

@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Spring
+---
+
 # Spring Web / MVC
 
 Как Spring MVC превращает HTTP-запрос в вызов метода контроллера и обратно: `DispatcherServlet`, обработка исключений, фильтры и интерсепторы, валидация и CORS. На собесе чаще всего спрашивают путь запроса через `DispatcherServlet`, `@RestControllerAdvice` и разницу между Filter и Interceptor.
@@ -146,66 +153,70 @@ return ResponseEntity.badRequest().body(errorDto);       // 400
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Вместо `try-catch` в каждом контроллере пишут один класс с `@RestControllerAdvice` и методами `@ExceptionHandler`. Исключение летит вверх, `DispatcherServlet` передаёт его `HandlerExceptionResolver`, а тот находит подходящий метод-обработчик и превращает исключение в HTTP-ответ.
+=== "Коротко"
 
-Если метод в `@RestController` или `@Service` выбрасывает исключение, ошибка летит вверх. `DispatcherServlet` перехватывает её и передаёт `HandlerExceptionResolver`. Резолвер находит класс с `@RestControllerAdvice` и вызывает нужный метод.
+    !!! abstract "Ответ вслух"
+        Вместо `try-catch` в каждом контроллере пишут один класс с `@RestControllerAdvice` и методами `@ExceptionHandler`. Исключение летит вверх, `DispatcherServlet` передаёт его `HandlerExceptionResolver`, а тот находит подходящий метод-обработчик и превращает исключение в HTTP-ответ.
 
-```java
-@RestControllerAdvice  // @ControllerAdvice + @ResponseBody
-@Slf4j
-public class GlobalExceptionHandler {
+=== "Подробно"
 
-    // Конкретная бизнес-ошибка — логируем на WARN
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
-        log.warn("Пользователь не найден: {}", ex.getMessage());
-        return ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(new ErrorResponse(404, ex.getMessage(), LocalDateTime.now()));
+    Если метод в `@RestController` или `@Service` выбрасывает исключение, ошибка летит вверх. `DispatcherServlet` перехватывает её и передаёт `HandlerExceptionResolver`. Резолвер находит класс с `@RestControllerAdvice` и вызывает нужный метод.
+
+    ```java
+    @RestControllerAdvice  // @ControllerAdvice + @ResponseBody
+    @Slf4j
+    public class GlobalExceptionHandler {
+
+        // Конкретная бизнес-ошибка — логируем на WARN
+        @ExceptionHandler(UserNotFoundException.class)
+        public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
+            log.warn("Пользователь не найден: {}", ex.getMessage());
+            return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(404, ex.getMessage(), LocalDateTime.now()));
+        }
+
+        // Ошибки валидации Bean Validation (@Valid)
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
+            String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(400, message, LocalDateTime.now()));
+        }
+
+        // Fallback для всего непредвиденного — логируем на ERROR со стектрейсом!
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<ErrorResponse> handleAll(Exception ex) {
+            log.error("Внутренняя ошибка сервера", ex);
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse(500, "Внутренняя ошибка. Мы уже чиним.", LocalDateTime.now()));
+        }
     }
+    ```
 
-    // Ошибки валидации Bean Validation (@Valid)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult().getFieldErrors().stream()
-            .map(e -> e.getField() + ": " + e.getDefaultMessage())
-            .collect(Collectors.joining(", "));
-        return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(new ErrorResponse(400, message, LocalDateTime.now()));
+    Вместо `ResponseEntity` HTTP-статус можно задать аннотацией `@ResponseStatus` на методе-обработчике — так короче, если заголовки ответа менять не нужно. Обработчик ловит и checked-исключения, например `InsufficientFundsException` из [Исключения → Свои исключения](../java/exceptions.md#custom-exceptions):
+
+    ```java
+    @RestControllerAdvice
+    public class GlobalExceptionHandler {
+
+        @ExceptionHandler(OrderNotFoundException.class)
+        @ResponseStatus(HttpStatus.NOT_FOUND)
+        public ErrorResponse handleOrderNotFound(OrderNotFoundException ex) {
+            return new ErrorResponse(404, ex.getMessage(), LocalDateTime.now());
+        }
+
+        @ExceptionHandler(InsufficientFundsException.class)
+        @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)
+        public ErrorResponse handleInsufficientFunds(InsufficientFundsException ex) {
+            return new ErrorResponse(402, ex.getMessage(), LocalDateTime.now());
+        }
     }
-
-    // Fallback для всего непредвиденного — логируем на ERROR со стектрейсом!
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAll(Exception ex) {
-        log.error("Внутренняя ошибка сервера", ex);
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(500, "Внутренняя ошибка. Мы уже чиним.", LocalDateTime.now()));
-    }
-}
-```
-
-Вместо `ResponseEntity` HTTP-статус можно задать аннотацией `@ResponseStatus` на методе-обработчике — так короче, если заголовки ответа менять не нужно. Обработчик ловит и checked-исключения, например `InsufficientFundsException` из [Исключения → Свои исключения](../java/exceptions.md#custom-exceptions):
-
-```java
-@RestControllerAdvice
-public class GlobalExceptionHandler {
-
-    @ExceptionHandler(OrderNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleOrderNotFound(OrderNotFoundException ex) {
-        return new ErrorResponse(404, ex.getMessage(), LocalDateTime.now());
-    }
-
-    @ExceptionHandler(InsufficientFundsException.class)
-    @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)
-    public ErrorResponse handleInsufficientFunds(InsufficientFundsException ex) {
-        return new ErrorResponse(402, ex.getMessage(), LocalDateTime.now());
-    }
-}
-```
+    ```
 
 !!! warning "Ловушка: `@ControllerAdvice` вместо `@RestControllerAdvice`"
     `@RestControllerAdvice` = `@ControllerAdvice` + `@ResponseBody`. Без `@ResponseBody` Spring воспримет возвращаемую строку как имя HTML-шаблона, а не как JSON. Для REST API всегда используй `@RestControllerAdvice`.
@@ -373,64 +384,68 @@ public class LoggingFilter extends OncePerRequestFilter { // не Filter нап�
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Реализуют `HandlerInterceptor` и регистрируют через `WebMvcConfigurer.addInterceptors()`. У него три метода: `preHandle` до контроллера (вернул `false` — цепочка прервана), `postHandle` после контроллера до записи ответа и `afterCompletion`, который вызывается всегда, даже при ошибке.
+=== "Коротко"
 
-```java
-@Component
-public class AuthorizationInterceptor implements HandlerInterceptor {
+    !!! abstract "Ответ вслух"
+        Реализуют `HandlerInterceptor` и регистрируют через `WebMvcConfigurer.addInterceptors()`. У него три метода: `preHandle` до контроллера (вернул `false` — цепочка прервана), `postHandle` после контроллера до записи ответа и `afterCompletion`, который вызывается всегда, даже при ошибке.
 
-    @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response,
-                             Object handler) throws Exception { // handler — ссылка на метод контроллера!
+=== "Подробно"
 
-        if (handler instanceof HandlerMethod method) {
-            // Доступ к аннотациям конкретного метода
-            RequiresRole annotation = method.getMethodAnnotation(RequiresRole.class);
-            if (annotation != null) {
-                String userRole = (String) request.getAttribute("userRole");
-                if (!annotation.value().equals(userRole)) {
-                    response.setStatus(HttpStatus.FORBIDDEN.value());
-                    return false; // прерываем цепочку, контроллер не вызывается
+    ```java
+    @Component
+    public class AuthorizationInterceptor implements HandlerInterceptor {
+
+        @Override
+        public boolean preHandle(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 Object handler) throws Exception { // handler — ссылка на метод контроллера!
+
+            if (handler instanceof HandlerMethod method) {
+                // Доступ к аннотациям конкретного метода
+                RequiresRole annotation = method.getMethodAnnotation(RequiresRole.class);
+                if (annotation != null) {
+                    String userRole = (String) request.getAttribute("userRole");
+                    if (!annotation.value().equals(userRole)) {
+                        response.setStatus(HttpStatus.FORBIDDEN.value());
+                        return false; // прерываем цепочку, контроллер не вызывается
+                    }
                 }
             }
+            return true; // пропускаем дальше
         }
-        return true; // пропускаем дальше
+
+        @Override
+        public void postHandle(HttpServletRequest request, HttpServletResponse response,
+                               Object handler, ModelAndView modelAndView) {
+            // Вызывается ПОСЛЕ контроллера, но ДО записи ответа
+            // Можно добавить заголовки к ответу
+        }
+
+        @Override
+        public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
+                                    Object handler, Exception ex) {
+            // Вызывается ВСЕГДА — даже если контроллер или postHandle упали с ошибкой
+            // Подходит для очистки ресурсов, завершения логирования
+        }
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response,
-                           Object handler, ModelAndView modelAndView) {
-        // Вызывается ПОСЛЕ контроллера, но ДО записи ответа
-        // Можно добавить заголовки к ответу
+    // Регистрация:
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            registry.addInterceptor(authorizationInterceptor)
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/auth/**");
+        }
     }
+    ```
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
-                                Object handler, Exception ex) {
-        // Вызывается ВСЕГДА — даже если контроллер или postHandle упали с ошибкой
-        // Подходит для очистки ресурсов, завершения логирования
-    }
-}
+    Где применяется:
 
-// Регистрация:
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorizationInterceptor)
-            .addPathPatterns("/api/**")
-            .excludePathPatterns("/api/auth/**");
-    }
-}
-```
-
-Где применяется:
-
-- Проверка прав доступа к конкретным эндпоинтам (авторизация).
-- Логирование времени выполнения конкретного метода.
-- Обогащение контекста: достать `userId` из токена и положить в `ThreadLocal`.
+    - Проверка прав доступа к конкретным эндпоинтам (авторизация).
+    - Логирование времени выполнения конкретного метода.
+    - Обогащение контекста: достать `userId` из токена и положить в `ThreadLocal`.
 
 !!! warning "Ловушка: очистка в `postHandle`"
     `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда.
@@ -534,6 +549,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **`DispatcherServlet`** | Front Controller. Порядок: `HandlerMapping` → `HandlerAdapter` → Controller → `HttpMessageConverter` |
@@ -549,3 +565,5 @@ public class WebConfig implements WebMvcConfigurer {
 | **Spring Security** | Это цепочка **фильтров** (`FilterChainProxy`), не интерсепторов |
 | **`@Valid`** | Запускает Bean Validation. Ошибки летят как `MethodArgumentNotValidException` |
 | **CORS** | `@CrossOrigin`, `addCorsMappings()` или фильтр Security (предпочтительно при Security) |
+
+<!-- --8<-- [end:cheatsheet] -->

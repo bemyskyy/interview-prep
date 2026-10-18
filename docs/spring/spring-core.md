@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Spring
+---
+
 # Spring Core
 
 Как Spring создаёт объекты, связывает их и оборачивает в прокси: IoC-контейнер, внедрение зависимостей, жизненный цикл и скоупы бинов, AOP. Чаще всего спрашивают разницу IoC и DI, почему внедрение через конструктор лучше, жизненный цикл бина, prototype внутри singleton и почему `@Transactional` не срабатывает при вызове через `this`.
@@ -453,70 +460,74 @@ sequenceDiagram
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Аспект живёт в прокси, а вызов `this.method()` изнутри бина идёт напрямую в оригинальный объект, минуя прокси. Поэтому `@Transactional`, `@Async`, `@Cacheable` и любые другие аспекты на таком вызове не срабатывают. Лечится выносом метода в отдельный бин или self-injection.
+=== "Коротко"
 
-Это самовызов (self-invocation) — классический баг, на котором теряют часы дебага даже опытные разработчики.
+    !!! abstract "Ответ вслух"
+        Аспект живёт в прокси, а вызов `this.method()` изнутри бина идёт напрямую в оригинальный объект, минуя прокси. Поэтому `@Transactional`, `@Async`, `@Cacheable` и любые другие аспекты на таком вызове не срабатывают. Лечится выносом метода в отдельный бин или self-injection.
 
-```java
-@Service
-public class OrderService {
+=== "Подробно"
 
-    public void createOrder() {
-        // ...бизнес-логика...
-        saveToDatabase(); // внутренний вызов!
+    Это самовызов (self-invocation) — классический баг, на котором теряют часы дебага даже опытные разработчики.
+
+    ```java
+    @Service
+    public class OrderService {
+
+        public void createOrder() {
+            // ...бизнес-логика...
+            saveToDatabase(); // внутренний вызов!
+        }
+
+        @Transactional
+        public void saveToDatabase() {
+            // Откроется ли транзакция?
+        }
+    }
+    ```
+
+    Вопрос на собесе: _«Откроется ли транзакция при вызове `saveToDatabase()` изнутри `createOrder()`?»_ Ответ: **нет.**
+
+    ```mermaid
+    sequenceDiagram
+        participant Client as Внешний код
+        participant Proxy as Proxy OrderService
+        participant Target as Оригинальный OrderService
+        Client->>Proxy: createOrder()
+        Note over Proxy: над createOrder() нет аспекта
+        Proxy->>Target: createOrder()
+        Target->>Target: this.saveToDatabase() — мимо прокси
+        Note over Target: транзакция не открыта
+    ```
+
+    Внешний код вызывает `createOrder()` через прокси, и прокси пробрасывает вызов в реальный объект. Дальше `createOrder()` внутри реального объекта вызывает `this.saveToDatabase()` — **напрямую, минуя прокси**. Аспект транзакции не задействован.
+
+    **Как чинить:**
+
+    ```java
+    // Вариант 1 — разнести по разным сервисам (лучший)
+    @Service
+    public class OrderPersistenceService {
+        @Transactional
+        public void saveToDatabase(Order order) { ... }
     }
 
-    @Transactional
-    public void saveToDatabase() {
-        // Откроется ли транзакция?
+    // Вариант 2 — Self-injection (получить свой же Proxy)
+    @Service
+    public class OrderService {
+        @Lazy
+        @Autowired
+        private OrderService self; // Spring заинжектит Proxy, а не this
+
+        public void createOrder() {
+            self.saveToDatabase(); // теперь вызов идёт через Proxy
+        }
+
+        @Transactional
+        public void saveToDatabase() { ... }
     }
-}
-```
+    ```
 
-Вопрос на собесе: _«Откроется ли транзакция при вызове `saveToDatabase()` изнутри `createOrder()`?»_ Ответ: **нет.**
-
-```mermaid
-sequenceDiagram
-    participant Client as Внешний код
-    participant Proxy as Proxy OrderService
-    participant Target as Оригинальный OrderService
-    Client->>Proxy: createOrder()
-    Note over Proxy: над createOrder() нет аспекта
-    Proxy->>Target: createOrder()
-    Target->>Target: this.saveToDatabase() — мимо прокси
-    Note over Target: транзакция не открыта
-```
-
-Внешний код вызывает `createOrder()` через прокси, и прокси пробрасывает вызов в реальный объект. Дальше `createOrder()` внутри реального объекта вызывает `this.saveToDatabase()` — **напрямую, минуя прокси**. Аспект транзакции не задействован.
-
-**Как чинить:**
-
-```java
-// Вариант 1 — разнести по разным сервисам (лучший)
-@Service
-public class OrderPersistenceService {
-    @Transactional
-    public void saveToDatabase(Order order) { ... }
-}
-
-// Вариант 2 — Self-injection (получить свой же Proxy)
-@Service
-public class OrderService {
-    @Lazy
-    @Autowired
-    private OrderService self; // Spring заинжектит Proxy, а не this
-
-    public void createOrder() {
-        self.saveToDatabase(); // теперь вызов идёт через Proxy
-    }
-
-    @Transactional
-    public void saveToDatabase() { ... }
-}
-```
-
-`@Lazy` в варианте 2 разрывает циклическую зависимость при внедрении бина в самого себя. Для транзакций есть и третий способ — программное управление через `TransactionTemplate`; чем самовызов опасен именно для транзакций, разобрано в [Spring Data JPA → Самовызов и транзакции](spring-data-jpa.md#self-invocation-transactions).
+    `@Lazy` в варианте 2 разрывает циклическую зависимость при внедрении бина в самого себя. Для транзакций есть и третий способ — программное управление через `TransactionTemplate`; чем самовызов опасен именно для транзакций, разобрано в [Spring Data JPA → Самовызов и транзакции](spring-data-jpa.md#self-invocation-transactions).
 
 !!! warning "Ловушка: касается любого аспекта, не только транзакций"
     `@Cacheable`, `@Async`, свои аспекты — всё это работает через тот же прокси. `this.findById()` внутри класса с `@Cacheable` минует прокси, и кэш не сработает.
@@ -528,6 +539,7 @@ public class OrderService {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **IoC vs DI** | IoC — принцип (кто управляет созданием). DI — конкретный паттерн реализации IoC |
@@ -540,3 +552,5 @@ public class OrderService {
 | **Prototype в singleton** | Фактически становится синглтоном. Решение: `ObjectProvider`, `@Lookup`, scoped proxy |
 | **JDK Proxy vs CGLIB** | JDK — нужен интерфейс, через рефлексию. CGLIB — наследник класса, не работает с `final`/`private`. Дефолт с Boot 2.0 — CGLIB |
 | **Самовызов** | `this.method()` минует прокси → `@Transactional`, `@Cacheable`, `@Async` не работают. Решение: разные сервисы или self-injection |
+
+<!-- --8<-- [end:cheatsheet] -->

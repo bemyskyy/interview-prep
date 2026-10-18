@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Алгоритмы
+---
+
 # Паттерны задач (LeetCode)
 
 Большинство задач на собесе — вариации одних и тех же паттернов: два указателя, скользящее окно, хэш-таблица, бинарный поиск, DFS и BFS, динамическое программирование, стек. Узнать паттерн важнее, чем выучить конкретные задачи. Теория — Big O, структуры данных, сортировки и графы — в [Алгоритмах и структурах данных](algorithms.md).
@@ -628,60 +635,64 @@ BFS по графу в общем виде — в [Алгоритмы → BFS](a
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Задачу разбивают на подзадачи и сохраняют их результаты, чтобы не пересчитывать. Сверху вниз (top-down) — рекурсия с мемоизацией, снизу вверх (bottom-up) — заполнение таблицы от маленьких подзадач к большим. Сигналы в условии: «максимум или минимум», «количество способов», «подпоследовательность».
+=== "Коротко"
 
-**Fibonacci с мемоизацией (top-down):**
+    !!! abstract "Ответ вслух"
+        Задачу разбивают на подзадачи и сохраняют их результаты, чтобы не пересчитывать. Сверху вниз (top-down) — рекурсия с мемоизацией, снизу вверх (bottom-up) — заполнение таблицы от маленьких подзадач к большим. Сигналы в условии: «максимум или минимум», «количество способов», «подпоследовательность».
 
-```java
-// Классика: Fibonacci с мемоизацией (top-down)
-Map<Integer, Long> memo = new HashMap<>();
+=== "Подробно"
 
-long fib(int n) {
-    if (n <= 1) return n;
-    if (memo.containsKey(n)) return memo.get(n);
-    long result = fib(n - 1) + fib(n - 2);
-    memo.put(n, result);
-    return result;
-}
-```
+    **Fibonacci с мемоизацией (top-down):**
 
-**Fibonacci с табуляцией (bottom-up)** — таблица на O(N) памяти сворачивается до двух переменных, O(1):
+    ```java
+    // Классика: Fibonacci с мемоизацией (top-down)
+    Map<Integer, Long> memo = new HashMap<>();
 
-```java
-// Fibonacci с табуляцией (bottom-up, O(N) память → можно O(1))
-long fibDP(int n) {
-    if (n <= 1) return n;
-    long prev2 = 0, prev1 = 1;
-    for (int i = 2; i <= n; i++) {
-        long curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
+    long fib(int n) {
+        if (n <= 1) return n;
+        if (memo.containsKey(n)) return memo.get(n);
+        long result = fib(n - 1) + fib(n - 2);
+        memo.put(n, result);
+        return result;
     }
-    return prev1;
-}
-```
+    ```
 
-**Задача о рюкзаке (0/1 Knapsack)** — `dp[i][w]` — лучшая стоимость из первых `i` предметов при вместимости `w`:
+    **Fibonacci с табуляцией (bottom-up)** — таблица на O(N) памяти сворачивается до двух переменных, O(1):
 
-```java
-// Задача о рюкзаке (0/1 Knapsack)
-int knapsack(int[] weights, int[] values, int capacity) {
-    int n = weights.length;
-    int[][] dp = new int[n + 1][capacity + 1];
+    ```java
+    // Fibonacci с табуляцией (bottom-up, O(N) память → можно O(1))
+    long fibDP(int n) {
+        if (n <= 1) return n;
+        long prev2 = 0, prev1 = 1;
+        for (int i = 2; i <= n; i++) {
+            long curr = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = curr;
+        }
+        return prev1;
+    }
+    ```
 
-    for (int i = 1; i <= n; i++) {
-        for (int w = 0; w <= capacity; w++) {
-            dp[i][w] = dp[i-1][w]; // не берём предмет i
-            if (weights[i-1] <= w) {
-                dp[i][w] = Math.max(dp[i][w],
-                    dp[i-1][w - weights[i-1]] + values[i-1]); // берём
+    **Задача о рюкзаке (0/1 Knapsack)** — `dp[i][w]` — лучшая стоимость из первых `i` предметов при вместимости `w`:
+
+    ```java
+    // Задача о рюкзаке (0/1 Knapsack)
+    int knapsack(int[] weights, int[] values, int capacity) {
+        int n = weights.length;
+        int[][] dp = new int[n + 1][capacity + 1];
+
+        for (int i = 1; i <= n; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                dp[i][w] = dp[i-1][w]; // не берём предмет i
+                if (weights[i-1] <= w) {
+                    dp[i][w] = Math.max(dp[i][w],
+                        dp[i-1][w - weights[i-1]] + values[i-1]); // берём
+                }
             }
         }
+        return dp[n][capacity];
     }
-    return dp[n][capacity];
-}
-```
+    ```
 
 !!! warning "Ловушка: рекурсия без мемоизации"
     Наивный `fib(n - 1) + fib(n - 2)` без кэша пересчитывает одни и те же подзадачи и работает за O(2^N). Мемоизация сводит это к O(N). Но рекурсия top-down по-прежнему тратит O(N) стека, поэтому для больших N берут bottom-up.
@@ -888,6 +899,7 @@ int[] nextGreaterElement(int[] nums) {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Паттерн | Сигналы в условии и сложность |
 |---|---|
 | **Two Pointers** | Отсортирован, пара/тройка с суммой, разворот, дубликаты на месте → O(N) |
@@ -900,3 +912,5 @@ int[] nextGreaterElement(int[] nums) {
 | **DP** | Максимум/минимум, количество способов, подпоследовательность → зависит от задачи |
 | **Monotonic Stack** | Следующий больший/меньший, гистограмма → O(N) |
 | **Heap / PriorityQueue** | Top-K, k-й наибольший/наименьший, медиана → O(N log K) |
+
+<!-- --8<-- [end:cheatsheet] -->

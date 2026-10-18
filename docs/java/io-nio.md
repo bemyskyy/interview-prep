@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+---
+
 # IO / NIO — работа с файлами
 
 Два поколения API для файлов и потоков данных: классический `java.io` и современный `java.nio.file`. Чаще всего спрашивают разницу между байтовыми и символьными потоками, зачем нужны `Buffered`-классы, чем `Path` и `Files` лучше `File` и как прочитать файл, который не помещается в память.
@@ -526,6 +533,7 @@ try (OutputStream out = Files.newOutputStream(Path.of("app.properties"))) {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Задача | Рекомендуемый способ |
 |---|---|
 | Прочитать небольшой текстовый файл целиком | `Files.readString(path, UTF_8)` |
@@ -544,3 +552,5 @@ try (OutputStream out = Files.newOutputStream(Path.of("app.properties"))) {
 
 !!! tip "Правило большого пальца"
     Если нужна простая операция — `Files.*`. Если нужен контроль над буфером, кодировкой или построчной обработкой — `Files.newBufferedReader` / `Files.newBufferedWriter`. `FileInputStream`/`FileOutputStream` напрямую — только для бинарных данных или совместимости со старым кодом.
+
+<!-- --8<-- [end:cheatsheet] -->
