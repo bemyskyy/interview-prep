@@ -104,6 +104,11 @@ int index = (n - 1) & hash;
 | Паттерны GoF (в том числе Enum Singleton, Strategy, Decorator) | [java/patterns.md](docs/java/patterns.md) |
 | Принципы SOLID | [java/solid.md](docs/java/solid.md) |
 | `@ControllerAdvice`, `@ExceptionHandler` | [spring/spring-mvc.md](docs/spring/spring-mvc.md) |
+| Самовызов прокси (`this.method()` мимо AOP) | [spring/spring-core.md](docs/spring/spring-core.md) |
+| Propagation, блокировки JPA, последствия самовызова для транзакций | [spring/spring-data-jpa.md](docs/spring/spring-data-jpa.md) |
+| `@Cacheable`, Actuator, Micrometer | [spring/spring-tools.md](docs/spring/spring-tools.md) |
+| Аномалии чтения, уровни изоляции, MVCC | [database/sql.md](docs/database/sql.md) |
+| Коммит оффсетов, идемпотентный консьюмер, DLQ в Kafka | [kafka/kafka-reliability.md](docs/kafka/kafka-reliability.md) |
 
 ## Схемы
 

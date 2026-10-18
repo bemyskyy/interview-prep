@@ -1,40 +1,88 @@
-# Spring Data JPA и Транзакции
+# Spring Data JPA и транзакции
 
-## Магия `@Transactional` под капотом
+Как Spring управляет транзакциями и что Hibernate делает с сущностями: `@Transactional`, propagation, блокировки, N+1, жизненный цикл Entity и кэши. На собесе чаще всего спрашивают, почему транзакция не откатилась, что будет при самовызове, разницу `REQUIRED`, `REQUIRES_NEW` и `NESTED`, оптимистичную и пессимистичную блокировку и проблему N+1.
 
-### 1. Что происходит пошагово
+## Как работает `@Transactional` { #transactional }
 
-Мы знаем из Spring Core, что `@Transactional` — это AOP-аспект, реализованный через Proxy (обычно CGLIB). Когда `OrderController` вызывает `habitService.saveHabit()`:
+### Что происходит при вызове `@Transactional`-метода? { #transactional-flow }
 
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `@Transactional` — AOP-аспект, реализованный через прокси (обычно CGLIB). Прокси через `TransactionManager` берёт соединение из пула, выключает auto-commit и вызывает реальный метод. Метод завершился успешно — `commit()`, бросил `RuntimeException` — `rollback()`, после чего соединение возвращается в пул.
+
+Как устроены прокси, разобрано в [Spring Core → AOP и прокси](spring-core.md#aop). Здесь — что прокси делает с транзакцией, когда `OrderController` вызывает `habitService.saveHabit()`:
+
+```mermaid
+sequenceDiagram
+    participant C as OrderController
+    participant P as Proxy HabitService
+    participant TM as TransactionManager
+    participant H as Пул HikariCP
+    participant S as Реальный HabitService
+    participant DB as БД
+    C->>P: saveHabit()
+    P->>TM: начать транзакцию
+    TM->>H: взять Connection
+    TM->>DB: setAutoCommit(false) — транзакция открыта
+    P->>S: saveHabit()
+    S->>DB: INSERT / UPDATE (ещё не зафиксированы)
+    alt метод вернул результат
+        P->>DB: commit() — данные на диске
+    else метод бросил RuntimeException
+        P->>DB: rollback() — данные исчезли
+    end
+    P->>H: вернуть Connection в пул
 ```
-1. Вызов → Proxy (не реальный объект!)
-2. Proxy → TransactionManager → берёт Connection из пула (HikariCP)
-3. connection.setAutoCommit(false)  ← открыта транзакция
-4. Proxy → реальный метод saveHabit() → INSERT/UPDATE улетают в БД (но не зафиксированы)
-5а. Метод вернул результат → connection.commit() → данные на диске
-5б. Метод бросил RuntimeException → connection.rollback() → данные исчезли
-6. Connection → обратно в пул
+
+Вызов приходит не в реальный объект, а в прокси. Всё, что между `setAutoCommit(false)` и `commit()`, — одна транзакция на одном соединении.
+
+!!! warning "Ловушка: соединение занято на всё время метода"
+    Пока метод с `@Transactional` выполняется, он держит соединение из пула. Долгий HTTP-вызов внутри транзакции держит соединение всё это время — при нагрузке пул быстро заканчивается.
+
+??? question "Проверь себя"
+    1. Через какой механизм Spring реализует `@Transactional`?
+    2. Откуда прокси берёт соединение и что с ним делает перед вызовом метода?
+    3. Когда вызывается `commit()`, а когда — `rollback()`?
+
+### При каких исключениях Spring откатывает транзакцию? { #rollback-rules }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    По умолчанию — только при `RuntimeException` и `Error`. Если метод бросит checked-исключение, например `IOException`, Spring закоммитит транзакцию. Чтобы откатывать на любое исключение, пишут `@Transactional(rollbackFor = Exception.class)`.
+
+```java
+// ❌ IOException не откатит транзакцию
+@Transactional
+public void save(Habit habit) throws IOException {
+    habitRepository.save(habit);
+    throw new IOException("упс"); // коммит всё равно произойдёт!
+}
+
+// ✅ Откат на любое исключение
+@Transactional(rollbackFor = Exception.class)
+public void save(Habit habit) throws IOException { ... }
 ```
 
-!!! warning "Главная ловушка: только RuntimeException"
-    По умолчанию Spring делает Rollback **только** при `RuntimeException` (и `Error`). Если метод бросит проверяемое `IOException` или просто `Exception` — Spring **закоммитит** транзакцию!
+Почему в Spring предпочитают unchecked-исключения — в [Исключения → Свои исключения](../java/exceptions.md#custom-exceptions).
 
-    ```java
-    // ❌ IOException не откатит транзакцию
-    @Transactional
-    public void save(Habit habit) throws IOException {
-        habitRepository.save(habit);
-        throw new IOException("упс"); // коммит всё равно произойдёт!
-    }
+!!! warning "Ловушка: checked-исключение коммитит транзакцию"
+    `throws IOException` или `throws Exception` в сигнатуре не делают откат автоматическим. Без `rollbackFor` данные, записанные до исключения, будут зафиксированы.
 
-    // ✅ Сеньоры всегда пишут так
-    @Transactional(rollbackFor = Exception.class)
-    public void save(Habit habit) throws IOException { ... }
-    ```
+??? question "Проверь себя"
+    1. При каких исключениях Spring откатывает транзакцию по умолчанию?
+    2. Что произойдёт с данными, если метод бросит `IOException`?
+    3. Как включить откат для любого исключения?
 
-### 2. Проблема самовызова (Self-invocation)
+### Чем опасен самовызов для транзакций? { #self-invocation-transactions }
 
-Разбирали в Spring Core, но в контексте транзакций это имеет критические бизнес-последствия — данные могут сохраниться кусками.
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    При вызове `this.method()` прокси не участвует, поэтому `@Transactional` на вызываемом методе игнорируется. Для транзакций это значит, что Hibernate работает в режиме auto-commit и данные сохраняются кусками: часть бизнес-процесса записалась, часть упала — и ничего не откатилось.
+
+Сам механизм самовызова и общие способы лечения разобраны в [Spring Core → Самовызов](spring-core.md#self-invocation). Здесь — последствия для данных.
 
 ```java
 @Service
@@ -57,55 +105,15 @@ public class HabitService {
 }
 ```
 
-!!! warning "Вопрос на собесе"
-    _"Откатятся ли данные, если при отправке письма упадёт ошибка?"_
+Вопрос на собесе: _«Откатятся ли данные, если при отправке письма упадёт ошибка?»_
 
-    **Ответ: НЕТ.** Транзакция вообще не откроется. Привычка сохранится в базу, письмо не отправится — бизнес-процесс сломан.
+**Ответ: нет.** Транзакция вообще не откроется: привычка сохранится в базу, письмо не отправится — бизнес-процесс сломан. Контроллер вызывает `createHabitWithNotification()` через прокси, а над этим методом нет `@Transactional`, поэтому прокси просто пробрасывает вызов. Внутри реального объекта `this.saveToDb()` вызывается напрямую, никакого `setAutoCommit(false)` нет.
 
-    **Почему:** Контроллер вызывает `createHabitWithNotification()` через Proxy. Proxy видит — над этим методом нет `@Transactional`, просто пробрасывает вызов в реальный объект. Внутри реального объекта `this.saveToDb()` вызывается напрямую, **минуя Proxy**. Никакого `setAutoCommit(false)` — Hibernate работает в режиме auto-commit.
+**Как лечить:**
 
-### 3. Как лечить Self-invocation
-
-**Способ 1 — Архитектурный (самый правильный):**
-
-```java
-// Разнести по разным сервисам
-@Service
-public class HabitService {
-    private final HabitPersistenceService persistenceService; // инжектируем бин
-
-    public void createHabitWithNotification(Habit habit) {
-        persistenceService.saveToDb(habit); // вызов через Proxy нового сервиса → транзакция откроется
-        sendEmail(habit);
-    }
-}
-
-@Service
-public class HabitPersistenceService {
-    @Transactional
-    public void saveToDb(Habit habit) { ... }
-}
-```
-
-**Способ 2 — Self-injection (костыль, но рабочий):**
-
-```java
-@Service
-public class HabitService {
-    @Autowired @Lazy  // @Lazy разрывает циклическую зависимость при инжекте самого себя
-    private HabitService self;
-
-    public void createHabitWithNotification(Habit habit) {
-        self.saveToDb(habit); // вызов через Proxy → транзакция откроется
-        sendEmail(habit);
-    }
-
-    @Transactional
-    public void saveToDb(Habit habit) { ... }
-}
-```
-
-**Способ 3 — `TransactionTemplate` (программное управление):**
+- **Разнести по разным сервисам** — самый правильный, архитектурный способ: `HabitPersistenceService.saveToDb()` с `@Transactional`, вызов через его прокси.
+- **Self-injection** — рабочий костыль: `@Autowired @Lazy private HabitService self`, вызов `self.saveToDb()`.
+- **`TransactionTemplate`** — программное управление транзакцией, без прокси вовсе:
 
 ```java
 @Service
@@ -122,61 +130,92 @@ public class HabitService {
 }
 ```
 
-## Propagation (Распространение транзакций)
+Код первых двух способов — в [Spring Core → Самовызов](spring-core.md#self-invocation).
 
-### REQUIRED — по умолчанию
+!!! warning "Ловушка: propagation тоже работает только через прокси"
+    Не только «открыть транзакцию», но и `REQUIRES_NEW`, `NESTED`, `rollbackFor` и любые другие настройки `@Transactional` применяет прокси. При вызове через `this` все они игнорируются — примеры ниже, в разделе [Propagation](#propagation).
 
-**Суть:** "Давай вместе". Есть внешняя транзакция — присоединяется к ней. Нет — создаёт новую.
+??? question "Проверь себя"
+    1. Откатится ли сохранение, если `saveToDb()` вызвать через `this`, а потом упадёт отправка письма?
+    2. В каком режиме работает Hibernate, если транзакция не открылась?
+    3. Как `TransactionTemplate` обходит проблему самовызова?
 
-Под капотом: **один Connection** к БД. Один физический `commit()` в конце внешнего метода.
+## Propagation: распространение транзакций { #propagation }
 
-!!! warning "Ловушка: `UnexpectedRollbackException`"
-    Внешний метод вызывает внутренний. Внутренний падает с ошибкой, но внешний оборачивает вызов в `try-catch` и пытается продолжить. Что будет?
+### Как работает `REQUIRED` и откуда берётся `UnexpectedRollbackException`? { #required }
 
-    ```java
-    @Slf4j
-    @Service
-    @RequiredArgsConstructor
-    public class OrderService {
-        private final InventoryService inventoryService; // другой бин → вызов пойдёт через его Proxy
+**Уровень:** Senior
 
-        @Transactional
-        public void outer() {
-            try {
-                inventoryService.inner(); // падает с RuntimeException
-            } catch (Exception e) {
-                log.error("поймал ошибку, продолжаю...");
-            }
-            // пытаемся дойти до конца и закоммитить
+!!! abstract "Ответ вслух"
+    `REQUIRED` — значение по умолчанию: есть внешняя транзакция — присоединяемся, нет — создаём новую. Транзакция одна, на одном соединении. Если внутренний метод упал, прокси помечает общую транзакцию как `rollback-only`, и даже если внешний метод поймал исключение, при попытке коммита Spring бросит `UnexpectedRollbackException`.
+
+**Суть:** «Давай вместе». Под капотом **одно соединение (Connection)** к БД и один физический `commit()` в конце внешнего метода.
+
+Внешний метод вызывает внутренний. Внутренний падает с ошибкой, но внешний оборачивает вызов в `try-catch` и пытается продолжить. Что будет?
+
+```java
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+    private final InventoryService inventoryService; // другой бин → вызов пойдёт через его Proxy
+
+    @Transactional
+    public void outer() {
+        try {
+            inventoryService.inner(); // падает с RuntimeException
+        } catch (Exception e) {
+            log.error("поймал ошибку, продолжаю...");
         }
+        // пытаемся дойти до конца и закоммитить
     }
+}
 
-    @Service
-    public class InventoryService {
+@Service
+public class InventoryService {
 
-        @Transactional // REQUIRED — присоединяется к транзакции outer()
-        public void inner() {
-            throw new RuntimeException("упс");
-        }
+    @Transactional // REQUIRED — присоединяется к транзакции outer()
+    public void inner() {
+        throw new RuntimeException("упс");
     }
-    ```
+}
+```
 
-    **Ответ:** Приложение упадёт с `UnexpectedRollbackException`. Транзакция одна. Proxy `InventoryService` поймал исключение из `inner()` и пометил общую транзакцию флагом `rollback-only`. Внешний поймал ошибку в `catch`, дошёл до конца, попытался сделать `commit()`. Spring видит флаг и говорит: "Кто-то внутри уже забраковал эту транзакцию" — и кидает исключение.
+```mermaid
+sequenceDiagram
+    participant O as OrderService.outer()
+    participant P as Proxy InventoryService
+    participant I as InventoryService.inner()
+    O->>P: inner()
+    P->>I: inner()
+    I-->>P: RuntimeException
+    P->>P: пометить общую транзакцию rollback-only
+    P-->>O: RuntimeException
+    O->>O: catch — продолжаем
+    O->>O: commit() при выходе из outer()
+    Note over O: флаг rollback-only → UnexpectedRollbackException
+```
 
-    **Почему `inner()` вынесен в отдельный бин:** если бы `outer()` и `inner()` лежали в одном классе, вызов `inner()` шёл бы через `this`, **минуя Proxy** (тот же самовызов, что и выше). `@Transactional` над `inner()` был бы проигнорирован, флаг `rollback-only` никто бы не поставил — исключение просто поймалось бы в `catch`, и `outer()` спокойно закоммитился бы. Никакого `UnexpectedRollbackException`.
+**Ответ:** приложение упадёт с `UnexpectedRollbackException`, потому что транзакция одна. Прокси `InventoryService` поймал исключение из `inner()` и пометил общую транзакцию флагом `rollback-only`. Внешний метод поймал ошибку в `catch`, дошёл до конца и попытался сделать `commit()` — Spring видит флаг («кто-то внутри уже забраковал эту транзакцию») и бросает исключение.
 
----
+!!! warning "Ловушка: если `inner()` в том же классе"
+    `inner()` вынесен в отдельный бин не случайно. Если бы `outer()` и `inner()` лежали в одном классе, вызов шёл бы через `this`, **минуя прокси** — это [самовызов](#self-invocation-transactions). `@Transactional` над `inner()` был бы проигнорирован, флаг `rollback-only` никто бы не поставил: исключение просто поймалось бы в `catch`, и `outer()` спокойно закоммитился бы без `UnexpectedRollbackException`.
 
-### REQUIRES_NEW — независимая транзакция
+??? question "Проверь себя"
+    1. Сколько соединений и физических коммитов при `REQUIRED`?
+    2. Почему внешний метод получает `UnexpectedRollbackException`, хотя поймал исключение?
+    3. Что изменится, если `inner()` будет в том же классе, что и `outer()`?
 
-**Суть:** "Я сам по себе". Всегда создаёт новую транзакцию. Внешняя ставится на паузу (suspend).
+### Когда нужен `REQUIRES_NEW`? { #requires-new }
 
-Под капотом: **два Connection** из пула. Первый висит и ждёт, пока внутренний метод работает на втором.
+**Уровень:** Middle
 
-!!! danger "Ловушка для HighLoad: Connection Pool Exhaustion"
-    Если в пуле 10 коннектов и придут 10 одновременных запросов, каждый из которых зависнет во внешней транзакции и попросит второй коннект для REQUIRES_NEW — все 10 запросов будут держать по одному коннекту и ждать второй. Пул мёртв. Дедлок.
+!!! abstract "Ответ вслух"
+    Когда операция должна закоммититься независимо от внешней транзакции — например, запись аудита о попытке перевода, даже если сам перевод откатился. `REQUIRES_NEW` приостанавливает внешнюю транзакцию и открывает новую на втором соединении. Цена — два соединения на один запрос и риск исчерпания пула.
 
-**Бизнес-кейс:** Аудит и логирование операций. Если основной бизнес-процесс (перевод денег) откатился — запись о **попытке** перевода всё равно должна закоммититься.
+**Суть:** «Я сам по себе». Всегда создаёт новую транзакцию, внешняя ставится на паузу (suspend). Под капотом **два соединения** из пула: первое висит и ждёт, пока внутренний метод работает на втором.
+
+**Бизнес-кейс:** аудит и логирование операций. Если основной бизнес-процесс (перевод денег) откатился, запись о **попытке** перевода всё равно должна закоммититься.
 
 ```java
 @Transactional
@@ -191,13 +230,24 @@ public void logAudit(AuditEvent event) {
 }
 ```
 
----
+`logAudit()` должен вызываться через прокси другого бина — иначе это самовызов и `REQUIRES_NEW` будет проигнорирован.
 
-### NESTED — вложенная транзакция
+!!! warning "Ловушка: исчерпание пула соединений (Connection Pool Exhaustion)"
+    В пуле 10 соединений, пришло 10 одновременных запросов. Каждый держит одно соединение во внешней транзакции и просит второе для `REQUIRES_NEW`. Все 10 запросов ждут второе соединение, которого никогда не будет, — пул мёртв, дедлок.
 
-**Суть:** "С тобой, но с подстраховкой". Зависит от внешней (если внешняя откатится — откатится и она), но может откатиться **сама по себе**, не ломая внешнюю.
+??? question "Проверь себя"
+    1. Сколько соединений использует `REQUIRES_NEW`?
+    2. Для какого бизнес-кейса он подходит?
+    3. Как `REQUIRES_NEW` может положить пул соединений?
 
-Под капотом: **один Connection** + `connection.setSavepoint()` перед стартом внутреннего метода. При ошибке — `rollback` только до Savepoint, внешняя транзакция живёт дальше.
+### Чем `NESTED` отличается от `REQUIRES_NEW`? { #nested }
+
+**Уровень:** Senior
+
+!!! abstract "Ответ вслух"
+    `NESTED` работает внутри внешней транзакции на том же соединении, но перед стартом ставит savepoint. Ошибка внутри откатывает только до savepoint, и внешняя транзакция живёт дальше; а если откатится внешняя — откатится и вложенная. `REQUIRES_NEW` же полностью независим и берёт второе соединение.
+
+**Суть:** «С тобой, но с подстраховкой». Под капотом **одно соединение** и `connection.setSavepoint()` перед стартом внутреннего метода. При ошибке — `rollback` только до savepoint.
 
 ```java
 @Slf4j
@@ -231,71 +281,81 @@ public class NotificationService {
 }
 ```
 
-!!! warning "Propagation работает только через Proxy"
-    Savepoint ставит `TransactionInterceptor` в Proxy бина `NotificationService`. Если оставить `sendNotification()` в `OrderService` и вызвать его как `this.sendNotification()`, Proxy не участвует: `NESTED` игнорируется, Savepoint не создаётся, и метод просто выполняется внутри транзакции `processOrder()`. То же касается `REQUIRES_NEW` и любых других настроек `@Transactional`.
-
----
-
-### Сравнительная таблица
-
-| Propagation | Коннектов к БД | Ошибка внутри | Откат внешней → внутренняя |
+| Propagation | Соединений к БД | Ошибка внутри | Откат внешней → внутренняя |
 |---|---|---|---|
-| **REQUIRED** | 1 (общий) | Ломает всю транзакцию | Откатываются обе |
-| **REQUIRES_NEW** | 2 (независимые) | Внешняя выживает (при try-catch) | Не влияет (полная независимость) |
-| **NESTED** | 1 + Savepoint | Внешняя выживает (откат до Savepoint) | Внутренняя тоже откатится |
+| **`REQUIRED`** | 1 (общее) | Ломает всю транзакцию | Откатываются обе |
+| **`REQUIRES_NEW`** | 2 (независимые) | Внешняя выживает (при `try-catch`) | Не влияет (полная независимость) |
+| **`NESTED`** | 1 + savepoint | Внешняя выживает (откат до savepoint) | Внутренняя тоже откатится |
 
-### Остальные типы (для справки)
+!!! warning "Ловушка: `NESTED` через `this` не ставит savepoint"
+    Savepoint ставит `TransactionInterceptor` в прокси бина `NotificationService`. Если оставить `sendNotification()` в `OrderService` и вызвать его как `this.sendNotification()`, прокси не участвует: `NESTED` игнорируется, savepoint не создаётся, и метод просто выполняется внутри транзакции `processOrder()`. То же касается `REQUIRES_NEW` и любых других настроек `@Transactional`.
 
-- **MANDATORY** — ожидает готовую транзакцию. Нет транзакции → исключение.
-- **SUPPORTS** — есть транзакция → работает в ней. Нет → работает без неё (auto-commit).
-- **NOT_SUPPORTED** — приостанавливает текущую транзакцию и работает без неё.
-- **NEVER** — если вызвали в контексте транзакции → исключение.
+??? question "Проверь себя"
+    1. Что делает `NESTED` перед стартом внутреннего метода?
+    2. Что будет с вложенной транзакцией, если откатится внешняя?
+    3. Почему `sendNotification()` вынесен в отдельный бин?
 
-## Isolation (Уровни изоляции)
+### Какие ещё бывают типы propagation? { #other-propagation }
 
-### Три аномалии
+**Уровень:** Junior
 
-**Dirty Read (Грязное чтение)** — транзакция А читает данные, которые транзакция Б изменила, но ещё не закоммитила. Б делает rollback — А работала с "мусором", которого никогда не было в БД.
+!!! abstract "Ответ вслух"
+    Кроме `REQUIRED`, `REQUIRES_NEW` и `NESTED` есть ещё четыре. `MANDATORY` требует готовую транзакцию, `NEVER` — её отсутствие; `SUPPORTS` работает в транзакции, если она есть, а `NOT_SUPPORTED` приостанавливает текущую и работает без неё.
 
-**Non-repeatable Read (Неповторяющееся чтение)** — проблема **одной строки**. А читает баланс (100). Б списывает 50 и коммитит. А снова читает тот же баланс и видит 50. Данные изменились внутри транзакции А.
+- **`MANDATORY`** — ожидает готовую транзакцию. Нет транзакции → исключение.
+- **`SUPPORTS`** — есть транзакция → работает в ней. Нет → работает без неё (auto-commit).
+- **`NOT_SUPPORTED`** — приостанавливает текущую транзакцию и работает без неё.
+- **`NEVER`** — если вызвали в контексте транзакции → исключение.
 
-**Phantom Read (Фантомное чтение)** — проблема **множества строк**. А делает `SELECT * WHERE status = 'NEW'` — находит 5 заказов. Б добавляет новый заказ и коммитит. А повторяет тот же SELECT — находит 6. Появился "фантом".
+!!! warning "Ловушка: `SUPPORTS` не открывает транзакцию"
+    Метод с `SUPPORTS`, вызванный без внешней транзакции, работает в auto-commit: каждый запрос коммитится сам, и откатить их вместе нельзя.
 
-### Уровни изоляции
+??? question "Проверь себя"
+    1. Чем `MANDATORY` отличается от `NEVER`?
+    2. Как ведёт себя `SUPPORTS` без внешней транзакции?
+    3. Что делает `NOT_SUPPORTED` с текущей транзакцией?
 
-| Уровень | Dirty Read | Non-repeatable Read | Phantom Read |
-|---|---|---|---|
-| **READ_UNCOMMITTED** | Допускает | Допускает | Допускает |
-| **READ_COMMITTED** | **Защищает** | Допускает | Допускает |
-| **REPEATABLE_READ** | Защищает | **Защищает** | Допускает |
-| **SERIALIZABLE** | Защищает | Защищает | **Защищает** |
+## Изоляция и блокировки { #isolation-locking }
 
-`Isolation.DEFAULT` в Spring = использовать уровень, настроенный в самой БД.
+### Как задать уровень изоляции в Spring? { #isolation }
 
-### Сеньорские нюансы
+**Уровень:** Middle
 
-**Подвох PostgreSQL:**
+!!! abstract "Ответ вслух"
+    Через атрибут `isolation` у `@Transactional`, например `@Transactional(isolation = Isolation.REPEATABLE_READ)`. Значение по умолчанию `Isolation.DEFAULT` означает «использовать уровень, настроенный в самой БД». На практике жёсткие уровни изоляции поднимают редко, а конкуренцию за строки решают блокировками JPA.
 
-- Postgres не поддерживает `READ_UNCOMMITTED`. Если выставишь — молча работает на `READ_COMMITTED`. Грязного чтения в Postgres не бывает в принципе.
-- В Postgres `REPEATABLE_READ` защищает **и от Phantom Read тоже** — за счёт MVCC (Multi-Version Concurrency Control). Каждая транзакция работает со своим "снимком" БД.
+Аномалии чтения, уровни изоляции, особенности PostgreSQL и цена `SERIALIZABLE` разобраны в [SQL → Уровни изоляции](../database/sql.md#isolation-levels). Здесь — только то, что относится к Spring.
 
-!!! warning "`SERIALIZABLE` — зло для HighLoad"
-    _"Если SERIALIZABLE решает все проблемы, почему бы не ставить его везде?"_
+```java
+@Service
+public class ReportService {
 
-    Потому что это убьёт производительность. Как именно — зависит от БД:
+    @Transactional(isolation = Isolation.REPEATABLE_READ) // явно задать уровень
+    public Report buildMonthlyReport() { ... }
 
-    - **Блокировочная реализация** (MySQL/InnoDB, SQL Server): даже обычные `SELECT` берут разделяемые блокировки, читатели и писатели ждут друг друга. В высоконагруженной системе — колоссальные задержки и дедлоки.
-    - **PostgreSQL (SSI — Serializable Snapshot Isolation):** читатели **не блокируются** — все работают со снимком, как на `REPEATABLE_READ`. Postgres лишь отслеживает зависимости чтение → запись между транзакциями, и если их нельзя выстроить в последовательный порядок, одна транзакция падает с ошибкой сериализации: `could not serialize access due to read/write dependencies among transactions` (SQLSTATE `40001`). Приложение обязано поймать её и **повторить транзакцию целиком**. При высокой конкуренции — лавина откатов и ретраев.
+    @Transactional // isolation = Isolation.DEFAULT — уровень из настроек БД
+    public void saveReport(Report report) { ... }
+}
+```
 
-### Как решают на практике: блокировки на уровне JPA
+Вместо жёстких уровней изоляции в Enterprise чаще используют блокировки Hibernate — [оптимистичную](#optimistic-locking) и [пессимистичную](#pessimistic-locking).
 
-Вместо жёстких уровней изоляции в Enterprise используют блокировки Hibernate.
+!!! warning "Ловушка: `READ_UNCOMMITTED` в PostgreSQL"
+    Spring передаст уровень в БД как есть, но Postgres не поддерживает `READ_UNCOMMITTED` и молча работает на `READ_COMMITTED`. Что именно гарантирует уровень, решает СУБД, а не Spring.
 
-#### Оптимистичная блокировка (Optimistic Locking)
+??? question "Проверь себя"
+    1. Как задать уровень изоляции для метода?
+    2. Что означает `Isolation.DEFAULT`?
+    3. Чем в Enterprise обычно заменяют высокие уровни изоляции?
 
-**Девиз:** "Я верю, что конфликтов не будет. Если возникнут — разберёмся по факту."
+### Как работает оптимистичная блокировка? { #optimistic-locking }
 
-Никаких реальных блокировок на уровне БД. В Entity добавляется поле `@Version`:
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    В Entity добавляют поле `@Version`, и Hibernate дописывает проверку версии в `WHERE` каждого `UPDATE`. Если другая транзакция уже обновила строку, `UPDATE` затронет 0 строк, и Hibernate бросит `OptimisticLockException`. Блокировок в БД нет — подходит, когда конфликты редки, а читают много.
+
+**Девиз:** «Я верю, что конфликтов не будет. Если возникнут — разберёмся по факту». Никаких реальных блокировок на уровне БД.
 
 ```java
 @Entity
@@ -318,15 +378,26 @@ UPDATE habit SET name = 'Бег', version = 2 WHERE id = 1 AND version = 1;
 -- WHERE не найдёт строку → 0 updated rows → OptimisticLockException
 ```
 
-**Когда использовать:** Вероятность коллизий **низкая**, но читают много.
+**Когда использовать:** вероятность коллизий **низкая**, но читают много.
 
-_Пример:_ CRM с календарём записей. Администратор и клиент одновременно бронируют одно окошко. Шанс коллизии мал, но возможен. Блокировать всю строку — замедлить систему. Второй получит `OptimisticLockException`, красиво поймаем и покажем: "Это время только что заняли, выберите другое."
+_Пример:_ CRM с календарём записей. Администратор и клиент одновременно бронируют одно окошко: шанс коллизии мал, но возможен, а блокировать всю строку — замедлить систему. Второй получит `OptimisticLockException`, мы поймаем его и покажем: «Это время только что заняли, выберите другое».
 
-#### Пессимистичная блокировка (Pessimistic Locking)
+!!! warning "Ловушка: исключение нужно обработать"
+    Оптимистичная блокировка не предотвращает конфликт, а обнаруживает его. Если не поймать `OptimisticLockException` и не сделать повтор или понятное сообщение, пользователь получит 500.
 
-**Девиз:** "Никому не доверяю. Пока я работаю с данными — никто не прикоснётся."
+??? question "Проверь себя"
+    1. Что Hibernate добавляет в `UPDATE` при наличии `@Version`?
+    2. Что происходит, если версия уже изменилась?
+    3. В каких сценариях выбирают оптимистичную блокировку?
 
-Реальная физическая блокировка на уровне СУБД:
+### Как работает пессимистичная блокировка? { #pessimistic-locking }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Это реальная блокировка строки в СУБД: `@Lock(PESSIMISTIC_WRITE)` превращается в `SELECT ... FOR UPDATE`, и другие транзакции с `FOR UPDATE` ждут, пока первая не закончит. Выбирают, когда конфликты частые, а цена ошибки высокая — например, списания с одного счёта.
+
+**Девиз:** «Никому не доверяю. Пока я работаю с данными — никто не прикоснётся».
 
 ```java
 public interface HabitRepository extends JpaRepository<Habit, Long> {
@@ -344,9 +415,9 @@ SELECT * FROM habit WHERE id = 1 FOR UPDATE;
 -- Строка заблокирована. Другие транзакции с FOR UPDATE зависнут и будут ждать.
 ```
 
-**Когда использовать:** Вероятность коллизий **высокая**, цена ошибки критична.
+**Когда использовать:** вероятность коллизий **высокая**, цена ошибки критична.
 
-_Пример:_ Банковский перевод. У пользователя 10 000 тенге. Одновременно списываются платёж по кредиту, подписка и перевод другу. Оптимистичная блокировка с бесконечными retry положит платёжный шлюз. `SELECT FOR UPDATE` выстроит транзакции в строгую очередь — каждая работает с актуальным остатком.
+_Пример:_ банковский перевод. У пользователя 10 000 тенге, одновременно списываются платёж по кредиту, подписка и перевод другу. Оптимистичная блокировка с бесконечными повторами положит платёжный шлюз, а `SELECT FOR UPDATE` выстроит транзакции в строгую очередь — каждая работает с актуальным остатком.
 
 | | **Optimistic** | **Pessimistic** |
 |---|---|---|
@@ -356,9 +427,22 @@ _Пример:_ Банковский перевод. У пользователя
 | **Производительность** | Высокая при низкой конкуренции | Деградирует при высокой конкуренции |
 | **Когда** | Читаем много, пишем редко | Конкуренция высокая, цена ошибки критична |
 
-## Hibernate под капотом
+!!! warning "Ловушка: блокировка живёт до конца транзакции"
+    `FOR UPDATE` держит строку до коммита или отката. Если метод с такой выборкой ещё и ходит во внешние сервисы, все конкурирующие транзакции ждут его целиком.
 
-### 1. Проблема N+1
+??? question "Проверь себя"
+    1. Во что превращается `@Lock(PESSIMISTIC_WRITE)`?
+    2. Что происходит с другими транзакциями, которые хотят ту же строку?
+    3. Почему для частых списаний со счёта пессимистичная блокировка лучше оптимистичной?
+
+## Hibernate под капотом { #hibernate }
+
+### Что такое проблема N+1 и как её решить? { #n-plus-one }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Один запрос загружает N родительских сущностей, а потом при обращении к ленивой связи Hibernate делает ещё по запросу на каждую — итого N+1. Лечится `JOIN FETCH` или `@EntityGraph`, которые грузят связь одним запросом, а когда JOIN невозможен — `@BatchSize`, который грузит связи пачками через `IN`.
 
 ```java
 // У Client есть @OneToMany с Appointment (LAZY по умолчанию)
@@ -371,7 +455,7 @@ for (Client client : clients) {
 // Итого: 1 + 10 = 11 запросов. При 1000 клиентах — 1001 запрос. База ляжет.
 ```
 
-**Способ 1 — JOIN FETCH (классика):**
+**Способ 1 — `JOIN FETCH` (классика):**
 
 ```java
 @Repository
@@ -402,24 +486,53 @@ public class Client {
 // Hibernate использует IN (id1, id2, ..., id50) вместо отдельных запросов
 ```
 
-!!! tip "Когда JOIN FETCH не подходит"
-    При нескольких `JOIN FETCH` в одном запросе можно получить декартово произведение (огромный результат). В таком случае `@BatchSize` — правильное решение.
+!!! warning "Ловушка: несколько `JOIN FETCH` в одном запросе"
+    При нескольких `JOIN FETCH` в одном запросе можно получить декартово произведение — огромный результат. В таком случае правильное решение — `@BatchSize`.
 
-### 2. Жизненный цикл Entity
+??? question "Проверь себя"
+    1. Сколько запросов выполнится для 1000 клиентов с ленивой связью?
+    2. Чем `@EntityGraph` отличается от `JOIN FETCH`?
+    3. Когда `@BatchSize` лучше `JOIN FETCH`?
 
+### Какие состояния бывают у Entity? { #entity-lifecycle }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Четыре: transient — Hibernate не знает об объекте; persistent — объект в Persistence Context, и изменения отслеживаются; detached — объект в памяти, но уже не под наблюдением; removed — запланирован к удалению при коммите. Detached-объект возвращают под наблюдение через `merge()`.
+
+```mermaid
+stateDiagram-v2
+    [*] --> TRANSIENT: new Client()
+    TRANSIENT --> PERSISTENT: repository.save()
+    [*] --> PERSISTENT: findById()
+    PERSISTENT --> DETACHED: транзакция завершилась / entityManager.clear()
+    DETACHED --> PERSISTENT: entityManager.merge()
+    PERSISTENT --> REMOVED: repository.delete()
+    REMOVED --> [*]: физическое удаление при коммите
 ```
-new Client()                    → TRANSIENT   (Hibernate не знает об объекте)
-     ↓ repository.save() или findById()
-Persistence Context             → PERSISTENT  (Hibernate следит за изменениями)
-     ↓ транзакция завершилась / entityManager.clear()
-В памяти, но не под наблюдением → DETACHED    (изменения не попадут в БД)
-     ↓ entityManager.merge()
-Persistence Context             → PERSISTENT  (снова под наблюдением)
-     ↓ repository.delete()
-Запланирован к удалению         → REMOVED     (физически удалится при коммите)
-```
 
-**Dirty Checking — главная магия PERSISTENT состояния:**
+| Состояние | Где объект | Что с изменениями |
+|---|---|---|
+| **TRANSIENT** | Только в памяти, Hibernate о нём не знает | Не попадут в БД |
+| **PERSISTENT** | В Persistence Context | Hibernate следит за изменениями |
+| **DETACHED** | В памяти, но не под наблюдением | Не попадут в БД |
+| **REMOVED** | Запланирован к удалению | Строка физически удалится при коммите |
+
+!!! warning "Ловушка: изменения detached-объекта теряются"
+    После конца транзакции объект становится detached. `setName()` на нём ничего не запишет в БД — сначала нужно вернуть его в Persistence Context через `merge()`.
+
+??? question "Проверь себя"
+    1. Как объект переходит из transient в persistent?
+    2. Когда persistent-объект становится detached?
+    3. Как вернуть detached-объект под наблюдение?
+
+### Что такое dirty checking? { #dirty-checking }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Это механизм, которым Hibernate отслеживает изменения persistent-объектов. При коммите он сравнивает текущие поля с сохранённым снимком и сам генерирует `UPDATE` для изменённых сущностей. Поэтому внутри транзакции после `setName()` вызывать `save()` не нужно.
 
 ```java
 @Transactional
@@ -433,7 +546,20 @@ public void updateName(Long id, String newName) {
 }
 ```
 
-### 3. `save()` vs `saveAndFlush()`
+!!! warning "Ловушка: dirty checking работает только в транзакции"
+    Hibernate сравнивает снимки и генерирует `UPDATE` при flush и коммите транзакции. Без `@Transactional` на методе коммита, в котором это произошло бы, нет — изменения полей никуда не попадут.
+
+??? question "Проверь себя"
+    1. Нужно ли вызывать `save()` после изменения persistent-объекта?
+    2. Когда Hibernate генерирует `UPDATE` при dirty checking?
+    3. Почему без транзакции dirty checking не сработает?
+
+### Чем `save()` отличается от `saveAndFlush()`? { #save-vs-saveandflush }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `save()` делает сущность persistent, но SQL может отложить до flush или коммита. `saveAndFlush()` сразу отправляет все накопленные `INSERT` и `UPDATE` в БД, но транзакцию не коммитит. ID есть уже после `save()`: при `IDENTITY` Hibernate выполняет `INSERT` сразу, при `SEQUENCE` берёт ID из `nextval`.
 
 ```java
 @Transactional
@@ -453,7 +579,7 @@ public void example() {
 }
 ```
 
-**Почему ID есть сразу после `save()`:** `persist()` обязан сделать сущность `PERSISTENT`, а Persistence Context хранит объекты по ID. Значит, ID нужен немедленно:
+**Почему ID есть сразу после `save()`:** `persist()` обязан сделать сущность persistent, а Persistence Context хранит объекты по ID. Значит, ID нужен немедленно:
 
 - **`GenerationType.IDENTITY`** (автоинкремент, `BIGSERIAL`) — ID знает только БД, поэтому Hibernate выполняет `INSERT` прямо внутри `save()`, не дожидаясь flush. Побочный эффект: JDBC-батчинг вставок для таких сущностей не работает.
 - **`GenerationType.SEQUENCE`** — Hibernate делает `SELECT nextval(...)` (с `allocationSize` — один раз на пачку ID) и присваивает ID объекту. `INSERT` остаётся в очереди до flush, поэтому вставки можно батчить.
@@ -465,7 +591,20 @@ public void example() {
     - На таблице висят триггеры, которые должны отработать немедленно.
     - Дальше код ходит в БД в обход Hibernate (`JdbcTemplate`, хранимая процедура) и должен увидеть изменения.
 
-### 4. Кэш 1-го и 2-го уровня
+!!! warning "Ловушка: flush — не commit"
+    После `saveAndFlush()` данные уже в БД, но транзакция открыта. Если метод упадёт ниже, будет rollback, и данные исчезнут.
+
+??? question "Проверь себя"
+    1. Почему ID доступен сразу после `save()`?
+    2. Почему с `IDENTITY` не работает JDBC-батчинг вставок?
+    3. В каких случаях действительно нужен `saveAndFlush()`?
+
+### Чем кэш первого уровня отличается от второго? { #hibernate-cache }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Кэш первого уровня (L1) — это Persistence Context: он живёт в рамках одной транзакции, включён всегда и не отключается. Кэш второго уровня (L2) общий для всего приложения, по умолчанию выключен и требует внешнего провайдера. В микросервисах L2 используют редко — вместо него распределённый кэш через `@Cacheable`.
 
 | | **L1 (Persistence Context)** | **L2 (Second-level Cache)** |
 |---|---|---|
@@ -483,28 +622,31 @@ public void example() {
 }
 ```
 
-!!! note "L2 Cache в современных проектах"
-    Встроенный L2-кэш Hibernate крайне редко используют в Enterprise-архитектуре. При нескольких инстансах микросервиса инвалидация кэша становится кошмаром. Вместо него — **Redis** через `@Cacheable` в Spring: прозрачный распределённый кэш, независимый от ORM.
+Встроенный L2-кэш Hibernate крайне редко используют в Enterprise-архитектуре. Вместо него — **Redis** через `@Cacheable` в Spring: прозрачный распределённый кэш, независимый от ORM. Как настроить `@Cacheable`, разобрано в [Инструменты → Кэширование](spring-tools.md#cacheable), а стратегии кэширования — в [System Design → Caching](../system-design/system-design.md#caching).
 
-    ```java
-    @Cacheable(value = "clients", key = "#id")
-    public Client findById(Long id) {
-        return clientRepository.findById(id).orElseThrow();
-    }
-    ```
+!!! warning "Ловушка: L2-кэш при нескольких инстансах"
+    При нескольких инстансах микросервиса у каждого свой L2-кэш, и инвалидация между ними становится отдельной большой проблемой. Поэтому в распределённых системах кэш выносят наружу — в Redis.
 
-## Итоговая шпаргалка
+??? question "Проверь себя"
+    1. Можно ли отключить кэш первого уровня?
+    2. Почему второй `findById(1L)` в той же транзакции не идёт в БД?
+    3. Почему в микросервисах L2 заменяют на Redis?
 
-| **Тема** | **Запомнить** |
+## Шпаргалка { #cheatsheet }
+
+| Тема | Запомнить |
 |---|---|
-| **`@Transactional` rollback** | По умолчанию только на `RuntimeException`. Для всего — `rollbackFor = Exception.class` |
-| **Self-invocation** | `this.method()` минует Proxy → транзакция не откроется. Решение: разные сервисы |
-| **REQUIRED** | 1 коннект, общая транзакция. Ошибка внутри → `UnexpectedRollbackException` |
-| **REQUIRES_NEW** | 2 коннекта, независимые транзакции. Риск дедлока пула |
-| **NESTED** | 1 коннект + Savepoint. Внутренняя откатывается независимо |
-| **Optimistic Lock** | `@Version` поле, без блокировки БД. Для низкой конкуренции |
+| **`@Transactional`** | Прокси → `TransactionManager` → соединение из пула → `setAutoCommit(false)` → commit / rollback |
+| **Rollback** | По умолчанию только на `RuntimeException` и `Error`. Для всего — `rollbackFor = Exception.class` |
+| **Самовызов** | `this.method()` минует прокси → транзакция не откроется, данные сохраняются кусками. Решение: разные сервисы или `TransactionTemplate` |
+| **`REQUIRED`** | 1 соединение, общая транзакция. Ошибка внутри + `catch` снаружи → `UnexpectedRollbackException` |
+| **`REQUIRES_NEW`** | 2 соединения, независимые транзакции. Риск исчерпания пула |
+| **`NESTED`** | 1 соединение + savepoint. Внутренняя откатывается независимо |
+| **Isolation** | `@Transactional(isolation = ...)`, `DEFAULT` — уровень БД. Теория — в [SQL](../database/sql.md#isolation-levels) |
+| **Optimistic Lock** | Поле `@Version`, без блокировки БД. Для низкой конкуренции |
 | **Pessimistic Lock** | `SELECT FOR UPDATE`, физическая блокировка. Для критичных операций |
-| **N+1** | JOIN FETCH → @EntityGraph → @BatchSize |
-| **Dirty Checking** | PERSISTENT объект: `setName()` без `save()` — UPDATE при коммите |
-| **save() vs saveAndFlush()** | После `save()` ID уже есть (IDENTITY — INSERT сразу, SEQUENCE — `nextval`). `saveAndFlush()` — flush немедленно, но не коммитит |
-| **L2 Cache** | В Enterprise заменяют на Redis + `@Cacheable` |
+| **N+1** | `JOIN FETCH` → `@EntityGraph` → `@BatchSize` |
+| **Состояния Entity** | Transient → Persistent → Detached / Removed; `merge()` возвращает detached |
+| **Dirty Checking** | Persistent-объект: `setName()` без `save()` — `UPDATE` при коммите |
+| **`save()` vs `saveAndFlush()`** | После `save()` ID уже есть (`IDENTITY` — `INSERT` сразу, `SEQUENCE` — `nextval`). `saveAndFlush()` — flush немедленно, но не коммитит |
+| **L1 / L2 Cache** | L1 — транзакция, всегда включён. L2 в Enterprise заменяют на Redis + `@Cacheable` |
