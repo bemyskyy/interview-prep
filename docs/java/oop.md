@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+---
+
 # ООП (Object-Oriented Programming)
 
 Четыре принципа ООП, интерфейсы и абстрактные классы, перегрузка и переопределение, композиция против наследования, связность и зацепление. Чаще всего спрашивают, чем интерфейс отличается от абстрактного класса после Java 8, почему «композиция лучше наследования» и что входит в сигнатуру метода.
@@ -478,77 +485,81 @@ class DogFactory extends AnimalFactory {
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Наследник зависит не только от сигнатур родителя, но и от деталей их реализации. Классический пример из Effective Java: счётчик добавлений в `extends HashSet` насчитает 6 вместо 3, потому что `HashSet.addAll()` внутри вызывает переопределённый `add()`. Решение — композиция и делегирование: класс содержит `Set`, а не является им.
+=== "Коротко"
 
-Для начала зафиксируем понятия:
+    !!! abstract "Ответ вслух"
+        Наследник зависит не только от сигнатур родителя, но и от деталей их реализации. Классический пример из Effective Java: счётчик добавлений в `extends HashSet` насчитает 6 вместо 3, потому что `HashSet.addAll()` внутри вызывает переопределённый `add()`. Решение — композиция и делегирование: класс содержит `Set`, а не является им.
 
-- **Наследование (inheritance)** — отношение **«IS-A» (ЯВЛЯЕТСЯ)**. `Dog` _является_ `Animal`.
-- **Композиция (composition)** — отношение **«HAS-A» (СОДЕРЖИТ)**. `Car` _содержит_ `Engine`.
+=== "Подробно"
 
-Наследование реализаций (`extends` от обычного класса) — самая сильная связь (tight coupling) в ООП. Джошуа Блох предупреждает: **наследование нарушает инкапсуляцию**. Подкласс зависит не только от сигнатур методов родителя, но и от **деталей их реализации**.
+    Для начала зафиксируем понятия:
 
-**Классический пример из Effective Java:** нужна коллекция, которая считает, сколько элементов в неё когда-либо добавляли. Делаем `extends HashSet<T>`, заводим поле `count` и переопределяем `add()` и `addAll()`:
+    - **Наследование (inheritance)** — отношение **«IS-A» (ЯВЛЯЕТСЯ)**. `Dog` _является_ `Animal`.
+    - **Композиция (composition)** — отношение **«HAS-A» (СОДЕРЖИТ)**. `Car` _содержит_ `Engine`.
 
-```java
-public class CountingSet<T> extends HashSet<T> {
-    private int count = 0;
+    Наследование реализаций (`extends` от обычного класса) — самая сильная связь (tight coupling) в ООП. Джошуа Блох предупреждает: **наследование нарушает инкапсуляцию**. Подкласс зависит не только от сигнатур методов родителя, но и от **деталей их реализации**.
 
-    @Override
-    public boolean add(T e) {
-        count++;
-        return super.add(e);
+    **Классический пример из Effective Java:** нужна коллекция, которая считает, сколько элементов в неё когда-либо добавляли. Делаем `extends HashSet<T>`, заводим поле `count` и переопределяем `add()` и `addAll()`:
+
+    ```java
+    public class CountingSet<T> extends HashSet<T> {
+        private int count = 0;
+
+        @Override
+        public boolean add(T e) {
+            count++;
+            return super.add(e);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends T> c) {
+            count += c.size();
+            return super.addAll(c);
+        }
+
+        public int getCount() { return count; }
     }
 
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
-        count += c.size();
-        return super.addAll(c);
+    CountingSet<String> set = new CountingSet<>();
+    set.addAll(List.of("A", "B", "C"));
+    System.out.println(set.getCount()); // 6, а не 3!
+    ```
+
+    _Что произошло?_ Внутри `HashSet` метод `addAll` реализован через цикл вызовов `add`. Наш `addAll` прибавил 3, затем вызвал `super.addAll()`, а тот трижды вызвал наш же переопределённый `add`.
+
+    Логика сломана, хотя всё сделано «по правилам», — а если разработчики JDK поменяют реализацию `HashSet`, код сломается снова. Это и есть **fragile base class (хрупкий базовый класс)**.
+
+    #### Решение: композиция и делегирование { #delegation }
+
+    Вместо того чтобы _быть_ `HashSet`-ом, класс _содержит_ его. Это паттерн делегирования (delegation), на нём же часто строится [Декоратор](patterns.md#decorator).
+
+    ```java
+    public class CountingSet<T> {
+        // 1. Композиция: прячем реальный Set внутри
+        private final Set<T> innerSet = new HashSet<>();
+        private int count = 0;
+
+        // 2. Своя логика
+        public boolean add(T e) {
+            count++;
+            return innerSet.add(e); // 3. Делегирование
+        }
+
+        public boolean addAll(Collection<? extends T> c) {
+            count += c.size();
+            return innerSet.addAll(c); // 3. Делегирование
+        }
+
+        public int getCount() {
+            return count;
+        }
     }
+    ```
 
-    public int getCount() { return count; }
-}
+    - **Композиция:** поле `innerSet` — класс состоит из других объектов.
+    - **Делегирование (delegation):** класс не делает работу сам, а перепоручает вызов внутреннему объекту: `innerSet.add()`.
 
-CountingSet<String> set = new CountingSet<>();
-set.addAll(List.of("A", "B", "C"));
-System.out.println(set.getCount()); // 6, а не 3!
-```
-
-_Что произошло?_ Внутри `HashSet` метод `addAll` реализован через цикл вызовов `add`. Наш `addAll` прибавил 3, затем вызвал `super.addAll()`, а тот трижды вызвал наш же переопределённый `add`.
-
-Логика сломана, хотя всё сделано «по правилам», — а если разработчики JDK поменяют реализацию `HashSet`, код сломается снова. Это и есть **fragile base class (хрупкий базовый класс)**.
-
-#### Решение: композиция и делегирование { #delegation }
-
-Вместо того чтобы _быть_ `HashSet`-ом, класс _содержит_ его. Это паттерн делегирования (delegation), на нём же часто строится [Декоратор](patterns.md#decorator).
-
-```java
-public class CountingSet<T> {
-    // 1. Композиция: прячем реальный Set внутри
-    private final Set<T> innerSet = new HashSet<>();
-    private int count = 0;
-
-    // 2. Своя логика
-    public boolean add(T e) {
-        count++;
-        return innerSet.add(e); // 3. Делегирование
-    }
-
-    public boolean addAll(Collection<? extends T> c) {
-        count += c.size();
-        return innerSet.addAll(c); // 3. Делегирование
-    }
-
-    public int getCount() {
-        return count;
-    }
-}
-```
-
-- **Композиция:** поле `innerSet` — класс состоит из других объектов.
-- **Делегирование (delegation):** класс не делает работу сам, а перепоручает вызов внутреннему объекту: `innerSet.add()`.
-
-Теперь класс не зависит от того, как устроен `HashSet` внутри: инкапсуляция сохранена полностью.
+    Теперь класс не зависит от того, как устроен `HashSet` внутри: инкапсуляция сохранена полностью.
 
 !!! warning "Ловушка: «я же ничего не нарушил»"
     Переопределённые методы родителя могут вызываться из его же других методов — это деталь реализации, которой нет в контракте. Наследуясь от класса, который не задокументирован для наследования, ты привязываешься к его внутренностям.
@@ -689,6 +700,7 @@ flowchart LR
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **ООП** | Объекты объединяют данные и логику; цель — управлять сложностью |
@@ -702,3 +714,5 @@ flowchart LR
 | **Ковариантность** | При override можно сузить возвращаемый тип до подтипа |
 | **Fragile base class** | `addAll` в `HashSet` вызывает `add` → счётчик 6 вместо 3; лечится композицией |
 | **Cohesion / Coupling** | Высокая связность внутри (SRP), слабое зацепление снаружи (DIP) |
+
+<!-- --8<-- [end:cheatsheet] -->

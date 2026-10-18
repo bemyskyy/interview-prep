@@ -1,3 +1,11 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+  - Архитектура
+---
+
 # Паттерны проектирования
 
 Проверенные решения типовых задач проектирования по классификации GoF (Gang of Four): порождающие, структурные и поведенческие. На собесах просят не только объяснить паттерн, но и написать код — чаще всего Singleton, Builder, Factory Method, Decorator, Strategy и Observer.
@@ -109,70 +117,74 @@ Singleton.INSTANCE.doWork();
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Builder собирает объект с большим количеством параметров по шагам, через читаемый fluent API, вместо конструктора на десять аргументов. Обязательные поля передаются в конструктор билдера, опциональные — методами с дефолтами, а `build()` проверяет данные и создаёт неизменяемый объект. В реальном коде его генерирует Lombok `@Builder`.
+=== "Коротко"
 
-**Проблема:** у объекта много параметров. Конструктор на 10 аргументов нечитаем и хрупок.
+    !!! abstract "Ответ вслух"
+        Builder собирает объект с большим количеством параметров по шагам, через читаемый fluent API, вместо конструктора на десять аргументов. Обязательные поля передаются в конструктор билдера, опциональные — методами с дефолтами, а `build()` проверяет данные и создаёт неизменяемый объект. В реальном коде его генерирует Lombok `@Builder`.
 
-```java
-// ❌ Telescoping constructor — нечитаемо
-User user = new User("Alice", "alice@mail.com", 25, "Moscow", true, false, null, 100);
-// Что такое true, false, null и 100? Непонятно без IDE.
-```
+=== "Подробно"
 
-```java
-// ✅ Builder — читаемо, безопасно, расширяемо
-public class User {
-    private final String name;
-    private final String email;
-    private final int age;
-    private final String city;
-    private final boolean active;
+    **Проблема:** у объекта много параметров. Конструктор на 10 аргументов нечитаем и хрупок.
 
-    private User(Builder builder) {
-        this.name   = builder.name;
-        this.email  = builder.email;
-        this.age    = builder.age;
-        this.city   = builder.city;
-        this.active = builder.active;
-    }
+    ```java
+    // ❌ Telescoping constructor — нечитаемо
+    User user = new User("Alice", "alice@mail.com", 25, "Moscow", true, false, null, 100);
+    // Что такое true, false, null и 100? Непонятно без IDE.
+    ```
 
-    public static class Builder {
-        // Обязательные поля
+    ```java
+    // ✅ Builder — читаемо, безопасно, расширяемо
+    public class User {
         private final String name;
         private final String email;
-        // Опциональные с дефолтами
-        private int age = 0;
-        private String city = "";
-        private boolean active = true;
+        private final int age;
+        private final String city;
+        private final boolean active;
 
-        public Builder(String name, String email) {
-            this.name  = name;
-            this.email = email;
+        private User(Builder builder) {
+            this.name   = builder.name;
+            this.email  = builder.email;
+            this.age    = builder.age;
+            this.city   = builder.city;
+            this.active = builder.active;
         }
 
-        public Builder age(int age)       { this.age = age; return this; }
-        public Builder city(String city)  { this.city = city; return this; }
-        public Builder active(boolean a)  { this.active = a; return this; }
+        public static class Builder {
+            // Обязательные поля
+            private final String name;
+            private final String email;
+            // Опциональные с дефолтами
+            private int age = 0;
+            private String city = "";
+            private boolean active = true;
 
-        public User build() {
-            // Валидация перед созданием
-            if (name == null || name.isBlank()) throw new IllegalStateException("Name required");
-            return new User(this);
+            public Builder(String name, String email) {
+                this.name  = name;
+                this.email = email;
+            }
+
+            public Builder age(int age)       { this.age = age; return this; }
+            public Builder city(String city)  { this.city = city; return this; }
+            public Builder active(boolean a)  { this.active = a; return this; }
+
+            public User build() {
+                // Валидация перед созданием
+                if (name == null || name.isBlank()) throw new IllegalStateException("Name required");
+                return new User(this);
+            }
         }
     }
-}
 
-// Использование — читается как предложение
-User user = new User.Builder("Alice", "alice@mail.com")
-    .age(25)
-    .city("Moscow")
-    .active(true)
-    .build();
-```
+    // Использование — читается как предложение
+    User user = new User.Builder("Alice", "alice@mail.com")
+        .age(25)
+        .city("Moscow")
+        .active(true)
+        .build();
+    ```
 
-!!! note "Lombok и Builder"
-    В реальном коде используй `@Builder` от Lombok — он генерирует всё автоматически. Но на собесе без Lombok умей написать руками. Для простых DTO вместо Builder подойдёт `record` (Java 16+) — см. [Современная Java → record](modern-java.md#records).
+    !!! note "Lombok и Builder"
+        В реальном коде используй `@Builder` от Lombok — он генерирует всё автоматически. Но на собесе без Lombok умей написать руками. Для простых DTO вместо Builder подойдёт `record` (Java 16+) — см. [Современная Java → record](modern-java.md#records).
 
 !!! warning "Ловушка: валидация не в `build()`"
     Если проверять данные в сеттерах билдера, объект можно собрать, просто не вызвав нужный метод. Обязательные поля передавай в конструктор билдера, а согласованность всех полей проверяй в `build()` — там видна вся картина.
@@ -186,107 +198,111 @@ User user = new User.Builder("Alice", "alice@mail.com")
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Simple Factory — один статический метод со `switch`, который выбирает класс по параметру; это идиома, а не паттерн GoF. Factory Method — базовый класс объявляет абстрактный фабричный метод, а какой объект создать, решает подкласс, переопределяя его. Новый тип продукта в Factory Method добавляется новым подклассом, без правки старого кода.
+=== "Коротко"
 
-**Проблема:** нужно создавать объекты, не привязываясь к конкретным классам.
+    !!! abstract "Ответ вслух"
+        Simple Factory — один статический метод со `switch`, который выбирает класс по параметру; это идиома, а не паттерн GoF. Factory Method — базовый класс объявляет абстрактный фабричный метод, а какой объект создать, решает подкласс, переопределяя его. Новый тип продукта в Factory Method добавляется новым подклассом, без правки старого кода.
 
-#### Simple Factory — «просто фабрика» { #simple-factory }
+=== "Подробно"
 
-То, что чаще всего показывают под видом Factory Method, на самом деле **Simple Factory**: один статический метод со `switch`, который выбирает класс по параметру. Это полезная идиома, но не паттерн GoF.
+    **Проблема:** нужно создавать объекты, не привязываясь к конкретным классам.
 
-```java
-// Абстрактный продукт
-public interface Notification {
-    void send(String message);
-}
+    #### Simple Factory — «просто фабрика» { #simple-factory }
 
-// Конкретные продукты
-public class EmailNotification implements Notification {
-    private final String email;
-    public EmailNotification(String email) { this.email = email; }
+    То, что чаще всего показывают под видом Factory Method, на самом деле **Simple Factory**: один статический метод со `switch`, который выбирает класс по параметру. Это полезная идиома, но не паттерн GoF.
 
-    @Override
-    public void send(String message) {
-        System.out.println("Email → " + email + ": " + message);
+    ```java
+    // Абстрактный продукт
+    public interface Notification {
+        void send(String message);
     }
-}
 
-public class SmsNotification implements Notification {
-    private final String phone;
-    public SmsNotification(String phone) { this.phone = phone; }
+    // Конкретные продукты
+    public class EmailNotification implements Notification {
+        private final String email;
+        public EmailNotification(String email) { this.email = email; }
 
-    @Override
-    public void send(String message) {
-        System.out.println("SMS → " + phone + ": " + message);
+        @Override
+        public void send(String message) {
+            System.out.println("Email → " + email + ": " + message);
+        }
     }
-}
 
-// Simple Factory — централизованное место создания
-public class NotificationFactory {
-    public static Notification create(String type, String contact) {
-        return switch (type) {
-            case "EMAIL" -> new EmailNotification(contact);
-            case "SMS"   -> new SmsNotification(contact);
-            default      -> throw new IllegalArgumentException("Unknown type: " + type);
-        };
+    public class SmsNotification implements Notification {
+        private final String phone;
+        public SmsNotification(String phone) { this.phone = phone; }
+
+        @Override
+        public void send(String message) {
+            System.out.println("SMS → " + phone + ": " + message);
+        }
     }
-}
 
-// Клиентский код не знает о конкретных классах
-Notification n = NotificationFactory.create("EMAIL", "user@mail.com");
-n.send("Ваш заказ подтверждён");
-```
-
-#### Factory Method (GoF) — настоящий фабричный метод { #gof-factory-method }
-
-**Суть:** базовый класс (Creator) содержит общий алгоритм и объявляет абстрактный **фабричный метод**. Какой именно объект создать — решает **подкласс**, переопределяя этот метод. Продукты (`Notification`, `EmailNotification`, `SmsNotification`) — те же, что выше.
-
-```java
-// Creator: общий алгоритм + абстрактный фабричный метод
-public abstract class NotificationService {
-
-    // Фабричный метод — КАКОЙ объект создать, решает подкласс
-    protected abstract Notification createNotification(String contact);
-
-    // Общая логика работает с любым продуктом через интерфейс
-    public void notifyUser(String contact, String message) {
-        Notification n = createNotification(contact);
-        n.send(message);
+    // Simple Factory — централизованное место создания
+    public class NotificationFactory {
+        public static Notification create(String type, String contact) {
+            return switch (type) {
+                case "EMAIL" -> new EmailNotification(contact);
+                case "SMS"   -> new SmsNotification(contact);
+                default      -> throw new IllegalArgumentException("Unknown type: " + type);
+            };
+        }
     }
-}
 
-// Конкретные создатели переопределяют только фабричный метод
-public class EmailNotificationService extends NotificationService {
-    @Override
-    protected Notification createNotification(String contact) {
-        return new EmailNotification(contact);
+    // Клиентский код не знает о конкретных классах
+    Notification n = NotificationFactory.create("EMAIL", "user@mail.com");
+    n.send("Ваш заказ подтверждён");
+    ```
+
+    #### Factory Method (GoF) — настоящий фабричный метод { #gof-factory-method }
+
+    **Суть:** базовый класс (Creator) содержит общий алгоритм и объявляет абстрактный **фабричный метод**. Какой именно объект создать — решает **подкласс**, переопределяя этот метод. Продукты (`Notification`, `EmailNotification`, `SmsNotification`) — те же, что выше.
+
+    ```java
+    // Creator: общий алгоритм + абстрактный фабричный метод
+    public abstract class NotificationService {
+
+        // Фабричный метод — КАКОЙ объект создать, решает подкласс
+        protected abstract Notification createNotification(String contact);
+
+        // Общая логика работает с любым продуктом через интерфейс
+        public void notifyUser(String contact, String message) {
+            Notification n = createNotification(contact);
+            n.send(message);
+        }
     }
-}
 
-public class SmsNotificationService extends NotificationService {
-    @Override
-    protected Notification createNotification(String contact) {
-        return new SmsNotification(contact);
+    // Конкретные создатели переопределяют только фабричный метод
+    public class EmailNotificationService extends NotificationService {
+        @Override
+        protected Notification createNotification(String contact) {
+            return new EmailNotification(contact);
+        }
     }
-}
 
-// Клиент работает с абстрактным создателем
-NotificationService service = new EmailNotificationService();
-service.notifyUser("user@mail.com", "Ваш заказ подтверждён");
-```
+    public class SmsNotificationService extends NotificationService {
+        @Override
+        protected Notification createNotification(String contact) {
+            return new SmsNotification(contact);
+        }
+    }
 
-| | **Simple Factory** | **Factory Method (GoF)** |
-|---|---|---|
-| **Кто выбирает класс** | Один статический метод по параметру (`switch`) | Подкласс, переопределяя фабричный метод |
-| **Механизм** | Условная логика | Наследование и полиморфизм |
-| **Новый тип продукта** | Правим `switch` — нарушаем [OCP](solid.md#ocp) | Добавляем новый подкласс — старый код не трогаем |
-| **Паттерн GoF?** | Нет, идиома | Да |
+    // Клиент работает с абстрактным создателем
+    NotificationService service = new EmailNotificationService();
+    service.notifyUser("user@mail.com", "Ваш заказ подтверждён");
+    ```
 
-Пример из JDK: `Collection.iterator()` — фабричный метод. `ArrayList`, `HashSet`, `ArrayDeque` переопределяют его и возвращают каждый свой `Iterator`, а код, написанный против `Collection`, об этом не знает.
+    | | **Simple Factory** | **Factory Method (GoF)** |
+    |---|---|---|
+    | **Кто выбирает класс** | Один статический метод по параметру (`switch`) | Подкласс, переопределяя фабричный метод |
+    | **Механизм** | Условная логика | Наследование и полиморфизм |
+    | **Новый тип продукта** | Правим `switch` — нарушаем [OCP](solid.md#ocp) | Добавляем новый подкласс — старый код не трогаем |
+    | **Паттерн GoF?** | Нет, идиома | Да |
 
-!!! note "Factory Method vs Abstract Factory"
-    **Factory Method** — один фабричный метод, создаёт один тип объекта. **Abstract Factory** — семейство связанных объектов: например, фабрика UI-элементов создаёт либо `WindowsButton` и `WindowsCheckbox`, либо `MacButton` и `MacCheckbox`. На собесах чаще спрашивают Factory Method.
+    Пример из JDK: `Collection.iterator()` — фабричный метод. `ArrayList`, `HashSet`, `ArrayDeque` переопределяют его и возвращают каждый свой `Iterator`, а код, написанный против `Collection`, об этом не знает.
+
+    !!! note "Factory Method vs Abstract Factory"
+        **Factory Method** — один фабричный метод, создаёт один тип объекта. **Abstract Factory** — семейство связанных объектов: например, фабрика UI-элементов создаёт либо `WindowsButton` и `WindowsCheckbox`, либо `MacButton` и `MacCheckbox`. На собесах чаще спрашивают Factory Method.
 
 !!! warning "Ловушка: Simple Factory ≠ Factory Method"
     Если на просьбу «напиши Factory Method» показать статический метод со `switch`, это Simple Factory. Ключевое слово для настоящего Factory Method — **подкласс решает**, какой объект создать.
@@ -304,71 +320,75 @@ service.notifyUser("user@mail.com", "Ваш заказ подтверждён");
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Decorator добавляет объекту поведение во время работы программы, оборачивая его в объект того же интерфейса. Каждая обёртка делегирует вызов внутреннему объекту и добавляет своё. Классический пример — `java.io`: `BufferedInputStream` и `GZIPInputStream` оборачивают `FileInputStream`.
+=== "Коротко"
 
-**Проблема:** нужно добавить объекту новое поведение, не меняя его класс и не плодя наследников.
+    !!! abstract "Ответ вслух"
+        Decorator добавляет объекту поведение во время работы программы, оборачивая его в объект того же интерфейса. Каждая обёртка делегирует вызов внутреннему объекту и добавляет своё. Классический пример — `java.io`: `BufferedInputStream` и `GZIPInputStream` оборачивают `FileInputStream`.
 
-Классический пример — Java I/O, подробно в [IO / NIO → Декоратор в java.io](io-nio.md#io-decorator):
+=== "Подробно"
 
-```java
-// Вся система I/O в Java — это декораторы
-InputStream base      = new FileInputStream("file.txt");     // базовый компонент
-InputStream buffered  = new BufferedInputStream(base);       // декоратор: буферизация
-InputStream gzipped   = new GZIPInputStream(buffered);       // декоратор: распаковка
-```
+    **Проблема:** нужно добавить объекту новое поведение, не меняя его класс и не плодя наследников.
 
-Реализуем сами:
+    Классический пример — Java I/O, подробно в [IO / NIO → Декоратор в java.io](io-nio.md#io-decorator):
 
-```java
-// Базовый интерфейс
-public interface Coffee {
-    String getDescription();
-    double getCost();
-}
+    ```java
+    // Вся система I/O в Java — это декораторы
+    InputStream base      = new FileInputStream("file.txt");     // базовый компонент
+    InputStream buffered  = new BufferedInputStream(base);       // декоратор: буферизация
+    InputStream gzipped   = new GZIPInputStream(buffered);       // декоратор: распаковка
+    ```
 
-// Базовая реализация
-public class SimpleCoffee implements Coffee {
-    @Override public String getDescription() { return "Coffee"; }
-    @Override public double getCost()        { return 1.0; }
-}
+    Реализуем сами:
 
-// Абстрактный декоратор — держит ссылку на декорируемый объект
-public abstract class CoffeeDecorator implements Coffee {
-    protected final Coffee coffee;
-    public CoffeeDecorator(Coffee coffee) { this.coffee = coffee; }
-}
+    ```java
+    // Базовый интерфейс
+    public interface Coffee {
+        String getDescription();
+        double getCost();
+    }
 
-// Конкретные декораторы
-public class MilkDecorator extends CoffeeDecorator {
-    public MilkDecorator(Coffee coffee) { super(coffee); }
+    // Базовая реализация
+    public class SimpleCoffee implements Coffee {
+        @Override public String getDescription() { return "Coffee"; }
+        @Override public double getCost()        { return 1.0; }
+    }
 
-    @Override public String getDescription() { return coffee.getDescription() + ", Milk"; }
-    @Override public double getCost()        { return coffee.getCost() + 0.5; }
-}
+    // Абстрактный декоратор — держит ссылку на декорируемый объект
+    public abstract class CoffeeDecorator implements Coffee {
+        protected final Coffee coffee;
+        public CoffeeDecorator(Coffee coffee) { this.coffee = coffee; }
+    }
 
-public class SugarDecorator extends CoffeeDecorator {
-    public SugarDecorator(Coffee coffee) { super(coffee); }
+    // Конкретные декораторы
+    public class MilkDecorator extends CoffeeDecorator {
+        public MilkDecorator(Coffee coffee) { super(coffee); }
 
-    @Override public String getDescription() { return coffee.getDescription() + ", Sugar"; }
-    @Override public double getCost()        { return coffee.getCost() + 0.25; }
-}
+        @Override public String getDescription() { return coffee.getDescription() + ", Milk"; }
+        @Override public double getCost()        { return coffee.getCost() + 0.5; }
+    }
 
-// Использование — оборачиваем слой за слоем
-Coffee order = new SugarDecorator(new MilkDecorator(new SimpleCoffee()));
-System.out.println(order.getDescription()); // Coffee, Milk, Sugar
-System.out.println(order.getCost());        // 1.75
-```
+    public class SugarDecorator extends CoffeeDecorator {
+        public SugarDecorator(Coffee coffee) { super(coffee); }
 
-```mermaid
-flowchart LR
-    C["Клиент"] -- "getCost()" --> S["SugarDecorator<br/>+0.25"]
-    S -- "getCost()" --> M["MilkDecorator<br/>+0.5"]
-    M -- "getCost()" --> B["SimpleCoffee<br/>1.0"]
-```
+        @Override public String getDescription() { return coffee.getDescription() + ", Sugar"; }
+        @Override public double getCost()        { return coffee.getCost() + 0.25; }
+    }
 
-!!! tip "Decorator vs наследование"
-    Наследование — статическое (на этапе компиляции). Декоратор — динамическое (в рантайме): объект можно обернуть любым числом декораторов в любом порядке. Это реализация принципа [OCP](solid.md#ocp).
+    // Использование — оборачиваем слой за слоем
+    Coffee order = new SugarDecorator(new MilkDecorator(new SimpleCoffee()));
+    System.out.println(order.getDescription()); // Coffee, Milk, Sugar
+    System.out.println(order.getCost());        // 1.75
+    ```
+
+    ```mermaid
+    flowchart LR
+        C["Клиент"] -- "getCost()" --> S["SugarDecorator<br/>+0.25"]
+        S -- "getCost()" --> M["MilkDecorator<br/>+0.5"]
+        M -- "getCost()" --> B["SimpleCoffee<br/>1.0"]
+    ```
+
+    !!! tip "Decorator vs наследование"
+        Наследование — статическое (на этапе компиляции). Декоратор — динамическое (в рантайме): объект можно обернуть любым числом декораторов в любом порядке. Это реализация принципа [OCP](solid.md#ocp).
 
 !!! warning "Ловушка: порядок обёрток важен"
     Декораторы применяются снаружи внутрь, и порядок меняет результат. `new GZIPInputStream(new BufferedInputStream(file))` и `new BufferedInputStream(new GZIPInputStream(file))` работают по-разному: в первом случае буферизируются сжатые байты, во втором — уже распакованные.
@@ -386,66 +406,70 @@ flowchart LR
 
 **Уровень:** Junior
 
-!!! abstract "Ответ вслух"
-    Strategy выносит взаимозаменяемые алгоритмы в отдельные классы с общим интерфейсом, а контекст получает нужный алгоритм снаружи и может сменить его на лету. Если интерфейс функциональный, стратегию передают лямбдой. В JDK это, например, `Comparator`.
+=== "Коротко"
 
-**Проблема:** нужно менять алгоритм в зависимости от ситуации, не меняя клиентский код.
+    !!! abstract "Ответ вслух"
+        Strategy выносит взаимозаменяемые алгоритмы в отдельные классы с общим интерфейсом, а контекст получает нужный алгоритм снаружи и может сменить его на лету. Если интерфейс функциональный, стратегию передают лямбдой. В JDK это, например, `Comparator`.
 
-```java
-// Интерфейс стратегии
-@FunctionalInterface
-public interface SortStrategy {
-    void sort(int[] array);
-}
+=== "Подробно"
 
-// Конкретные стратегии
-public class BubbleSort implements SortStrategy {
-    @Override
-    public void sort(int[] array) {
-        // O(n²) — для маленьких массивов
-        System.out.println("Bubble sort...");
-    }
-}
+    **Проблема:** нужно менять алгоритм в зависимости от ситуации, не меняя клиентский код.
 
-public class QuickSort implements SortStrategy {
-    @Override
-    public void sort(int[] array) {
-        // O(n log n) — для больших массивов
-        System.out.println("Quick sort...");
-    }
-}
-
-// Контекст использует стратегию
-public class Sorter {
-    private SortStrategy strategy;
-
-    public Sorter(SortStrategy strategy) {
-        this.strategy = strategy;
+    ```java
+    // Интерфейс стратегии
+    @FunctionalInterface
+    public interface SortStrategy {
+        void sort(int[] array);
     }
 
-    // Можно менять стратегию на лету
-    public void setStrategy(SortStrategy strategy) {
-        this.strategy = strategy;
+    // Конкретные стратегии
+    public class BubbleSort implements SortStrategy {
+        @Override
+        public void sort(int[] array) {
+            // O(n²) — для маленьких массивов
+            System.out.println("Bubble sort...");
+        }
     }
 
-    public void sort(int[] array) {
-        strategy.sort(array);
+    public class QuickSort implements SortStrategy {
+        @Override
+        public void sort(int[] array) {
+            // O(n log n) — для больших массивов
+            System.out.println("Quick sort...");
+        }
     }
-}
 
-// Использование
-Sorter sorter = new Sorter(new BubbleSort());
-sorter.sort(smallArray);
+    // Контекст использует стратегию
+    public class Sorter {
+        private SortStrategy strategy;
 
-sorter.setStrategy(new QuickSort());
-sorter.sort(largeArray);
+        public Sorter(SortStrategy strategy) {
+            this.strategy = strategy;
+        }
 
-// С Java 8 — стратегии как лямбды (раз это @FunctionalInterface)
-sorter.setStrategy(array -> Arrays.sort(array));
-```
+        // Можно менять стратегию на лету
+        public void setStrategy(SortStrategy strategy) {
+            this.strategy = strategy;
+        }
 
-!!! note "Strategy везде"
-    `Comparator` (см. [Коллекции → Comparator](collections.md#comparable-comparator)), `Runnable` и `DiscountStrategy` из [SOLID → OCP](solid.md#ocp) — всё это Strategy. Паттерн пронизывает всю Java-экосистему.
+        public void sort(int[] array) {
+            strategy.sort(array);
+        }
+    }
+
+    // Использование
+    Sorter sorter = new Sorter(new BubbleSort());
+    sorter.sort(smallArray);
+
+    sorter.setStrategy(new QuickSort());
+    sorter.sort(largeArray);
+
+    // С Java 8 — стратегии как лямбды (раз это @FunctionalInterface)
+    sorter.setStrategy(array -> Arrays.sort(array));
+    ```
+
+    !!! note "Strategy везде"
+        `Comparator` (см. [Коллекции → Comparator](collections.md#comparable-comparator)), `Runnable` и `DiscountStrategy` из [SOLID → OCP](solid.md#ocp) — всё это Strategy. Паттерн пронизывает всю Java-экосистему.
 
 !!! warning "Ловушка: Strategy против `switch` внутри класса"
     Если алгоритм выбирается `switch`-ем внутри одного класса, каждый новый вариант требует правки этого класса — это нарушение OCP. Признак, что пора выделять стратегии, — несколько веток с разной логикой, которые растут со временем.
@@ -459,88 +483,92 @@ sorter.setStrategy(array -> Arrays.sort(array));
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Observer — подписка на события: субъект хранит список наблюдателей и уведомляет всех, когда что-то происходит, не зная, кто они. Наблюдатели независимы друг от друга, и новых можно добавлять без правки субъекта. В Spring это `ApplicationEvent` и `@EventListener`, на уровне микросервисов — Kafka и RabbitMQ.
+=== "Коротко"
 
-**Проблема:** одно событие должно вызвать реакцию у нескольких независимых объектов.
+    !!! abstract "Ответ вслух"
+        Observer — подписка на события: субъект хранит список наблюдателей и уведомляет всех, когда что-то происходит, не зная, кто они. Наблюдатели независимы друг от друга, и новых можно добавлять без правки субъекта. В Spring это `ApplicationEvent` и `@EventListener`, на уровне микросервисов — Kafka и RabbitMQ.
 
-```java
-// Интерфейс наблюдателя
-public interface OrderObserver {
-    void onOrderPlaced(Order order);
-}
+=== "Подробно"
 
-// Subject — тот, за кем наблюдают
-public class OrderService {
-    private final List<OrderObserver> observers = new ArrayList<>();
+    **Проблема:** одно событие должно вызвать реакцию у нескольких независимых объектов.
 
-    public void addObserver(OrderObserver observer) {
-        observers.add(observer);
+    ```java
+    // Интерфейс наблюдателя
+    public interface OrderObserver {
+        void onOrderPlaced(Order order);
     }
 
-    public void removeObserver(OrderObserver observer) {
-        observers.remove(observer);
+    // Subject — тот, за кем наблюдают
+    public class OrderService {
+        private final List<OrderObserver> observers = new ArrayList<>();
+
+        public void addObserver(OrderObserver observer) {
+            observers.add(observer);
+        }
+
+        public void removeObserver(OrderObserver observer) {
+            observers.remove(observer);
+        }
+
+        public void placeOrder(Order order) {
+            // бизнес-логика
+            order.confirm();
+
+            // уведомляем всех наблюдателей — OrderService не знает, кто они
+            observers.forEach(o -> o.onOrderPlaced(order));
+        }
     }
 
-    public void placeOrder(Order order) {
-        // бизнес-логика
-        order.confirm();
-
-        // уведомляем всех наблюдателей — OrderService не знает, кто они
-        observers.forEach(o -> o.onOrderPlaced(order));
+    // Конкретные наблюдатели — независимые друг от друга
+    public class EmailNotifier implements OrderObserver {
+        @Override
+        public void onOrderPlaced(Order order) {
+            System.out.println("Email: заказ " + order.getId() + " подтверждён");
+        }
     }
-}
 
-// Конкретные наблюдатели — независимые друг от друга
-public class EmailNotifier implements OrderObserver {
-    @Override
-    public void onOrderPlaced(Order order) {
-        System.out.println("Email: заказ " + order.getId() + " подтверждён");
+    public class InventoryUpdater implements OrderObserver {
+        @Override
+        public void onOrderPlaced(Order order) {
+            System.out.println("Резервируем товары для заказа " + order.getId());
+        }
     }
-}
 
-public class InventoryUpdater implements OrderObserver {
-    @Override
-    public void onOrderPlaced(Order order) {
-        System.out.println("Резервируем товары для заказа " + order.getId());
+    public class AnalyticsTracker implements OrderObserver {
+        @Override
+        public void onOrderPlaced(Order order) {
+            System.out.println("Пишем в аналитику: заказ на сумму " + order.getTotal());
+        }
     }
-}
 
-public class AnalyticsTracker implements OrderObserver {
-    @Override
-    public void onOrderPlaced(Order order) {
-        System.out.println("Пишем в аналитику: заказ на сумму " + order.getTotal());
-    }
-}
+    // Сборка
+    OrderService service = new OrderService();
+    service.addObserver(new EmailNotifier());
+    service.addObserver(new InventoryUpdater());
+    service.addObserver(new AnalyticsTracker());
 
-// Сборка
-OrderService service = new OrderService();
-service.addObserver(new EmailNotifier());
-service.addObserver(new InventoryUpdater());
-service.addObserver(new AnalyticsTracker());
+    service.placeOrder(new Order());
+    // Выполнятся все три наблюдателя, при этом они ничего не знают друг о друге
+    ```
 
-service.placeOrder(new Order());
-// Выполнятся все три наблюдателя, при этом они ничего не знают друг о друге
-```
+    ```mermaid
+    sequenceDiagram
+        participant C as Клиент
+        participant S as OrderService
+        participant E as EmailNotifier
+        participant I as InventoryUpdater
+        participant A as AnalyticsTracker
+        C->>S: placeOrder(order)
+        S->>S: order.confirm()
+        S->>E: onOrderPlaced(order)
+        S->>I: onOrderPlaced(order)
+        S->>A: onOrderPlaced(order)
+    ```
 
-```mermaid
-sequenceDiagram
-    participant C as Клиент
-    participant S as OrderService
-    participant E as EmailNotifier
-    participant I as InventoryUpdater
-    participant A as AnalyticsTracker
-    C->>S: placeOrder(order)
-    S->>S: order.confirm()
-    S->>E: onOrderPlaced(order)
-    S->>I: onOrderPlaced(order)
-    S->>A: onOrderPlaced(order)
-```
-
-!!! note "Observer в Java и Spring"
-    - `java.util.EventListener` — маркерный интерфейс слушателей в стандартной библиотеке.
-    - `ApplicationEvent` / `@EventListener` в Spring — Observer из коробки.
-    - Kafka и RabbitMQ — Observer на уровне микросервисов (publisher/subscriber).
+    !!! note "Observer в Java и Spring"
+        - `java.util.EventListener` — маркерный интерфейс слушателей в стандартной библиотеке.
+        - `ApplicationEvent` / `@EventListener` в Spring — Observer из коробки.
+        - Kafka и RabbitMQ — Observer на уровне микросервисов (publisher/subscriber).
 
 !!! warning "Ловушка: синхронные наблюдатели и исключения"
     В примере наблюдатели вызываются по очереди в том же потоке. Если `EmailNotifier` бросит исключение, `InventoryUpdater` и `AnalyticsTracker` не выполнятся, а `placeOrder` упадёт. Наблюдателей изолируют через `try-catch` вокруг каждого вызова или выносят в асинхронную обработку.
@@ -552,6 +580,7 @@ sequenceDiagram
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Singleton** | Double-checked locking с `volatile` или Holder; в Spring бины и так синглтоны |
@@ -561,3 +590,5 @@ sequenceDiagram
 | **Decorator** | Обёртка с тем же интерфейсом добавляет поведение в рантайме; `java.io` |
 | **Strategy** | Интерфейс + реализации + контекст; стратегию можно передать лямбдой; `Comparator` |
 | **Observer** | Субъект уведомляет список наблюдателей; `@EventListener`, Kafka |
+
+<!-- --8<-- [end:cheatsheet] -->

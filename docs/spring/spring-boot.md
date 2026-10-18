@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Spring
+---
+
 # Spring Boot
 
 Что Spring Boot добавляет поверх Spring: автоконфигурацию, стартеры, управление версиями и внешнюю конфигурацию. На собесе чаще всего просят объяснить, как работает `@EnableAutoConfiguration`, чем стартер отличается от автоконфигурации, зачем BOM и в каком порядке читаются настройки.
@@ -364,72 +371,76 @@ public class SmtpEmailSender implements EmailSender { ... }
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    `@Value` подходит для одиночного значения — быстро и просто. Для группы связанных настроек лучше `@ConfigurationProperties`: один типобезопасный класс на префикс, поддержка IDE, валидация через `@Validated` и простое тестирование.
+=== "Коротко"
 
-```yaml
-# application.yml
-app:
-  habits:
-    max-per-user: 50
-    reminder-hour: 9
-    allowed-categories:
-      - HEALTH
-      - PRODUCTIVITY
-      - LEARNING
-```
+    !!! abstract "Ответ вслух"
+        `@Value` подходит для одиночного значения — быстро и просто. Для группы связанных настроек лучше `@ConfigurationProperties`: один типобезопасный класс на префикс, поддержка IDE, валидация через `@Validated` и простое тестирование.
 
-```java
-// ❌ @Value — работает, но многословно и хрупко
-@Service
-public class HabitService {
-    @Value("${app.habits.max-per-user}")
-    private int maxPerUser;
+=== "Подробно"
 
-    @Value("${app.habits.reminder-hour}")
-    private int reminderHour;
-    // И так для каждого свойства...
-}
+    ```yaml
+    # application.yml
+    app:
+      habits:
+        max-per-user: 50
+        reminder-hour: 9
+        allowed-categories:
+          - HEALTH
+          - PRODUCTIVITY
+          - LEARNING
+    ```
 
-// ✅ @ConfigurationProperties — типобезопасно, IDE-поддержка, валидация
-@ConfigurationProperties(prefix = "app.habits")
-@Validated  // включает Bean Validation
-public class HabitProperties {
-    @Min(1) @Max(100)
-    private int maxPerUser = 10;       // дефолтное значение
+    ```java
+    // ❌ @Value — работает, но многословно и хрупко
+    @Service
+    public class HabitService {
+        @Value("${app.habits.max-per-user}")
+        private int maxPerUser;
 
-    @Min(0) @Max(23)
-    private int reminderHour = 8;
-
-    private List<String> allowedCategories = new ArrayList<>();
-
-    // геттеры/сеттеры или record
-}
-
-// Зарегистрировать:
-@SpringBootApplication
-@EnableConfigurationProperties(HabitProperties.class)
-public class App { }
-
-// Использование:
-@Service
-public class HabitService {
-    private final HabitProperties props;
-
-    public HabitService(HabitProperties props) {
-        this.props = props;
+        @Value("${app.habits.reminder-hour}")
+        private int reminderHour;
+        // И так для каждого свойства...
     }
 
-    public void createHabit(Habit habit) {
-        if (habitCount >= props.getMaxPerUser()) {
-            throw new LimitExceededException("Максимум " + props.getMaxPerUser() + " привычек");
+    // ✅ @ConfigurationProperties — типобезопасно, IDE-поддержка, валидация
+    @ConfigurationProperties(prefix = "app.habits")
+    @Validated  // включает Bean Validation
+    public class HabitProperties {
+        @Min(1) @Max(100)
+        private int maxPerUser = 10;       // дефолтное значение
+
+        @Min(0) @Max(23)
+        private int reminderHour = 8;
+
+        private List<String> allowedCategories = new ArrayList<>();
+
+        // геттеры/сеттеры или record
+    }
+
+    // Зарегистрировать:
+    @SpringBootApplication
+    @EnableConfigurationProperties(HabitProperties.class)
+    public class App { }
+
+    // Использование:
+    @Service
+    public class HabitService {
+        private final HabitProperties props;
+
+        public HabitService(HabitProperties props) {
+            this.props = props;
+        }
+
+        public void createHabit(Habit habit) {
+            if (habitCount >= props.getMaxPerUser()) {
+                throw new LimitExceededException("Максимум " + props.getMaxPerUser() + " привычек");
+            }
         }
     }
-}
-```
+    ```
 
-!!! tip "Когда что использовать"
-    `@Value` — для одиночных значений, быстро и просто. `@ConfigurationProperties` — для группы связанных настроек: типобезопасно, поддержка IDE, валидация, легко тестировать.
+    !!! tip "Когда что использовать"
+        `@Value` — для одиночных значений, быстро и просто. `@ConfigurationProperties` — для группы связанных настроек: типобезопасно, поддержка IDE, валидация, легко тестировать.
 
 !!! warning "Ловушка: класс свойств не зарегистрирован"
     Сам по себе `@ConfigurationProperties` бин не создаёт. Класс нужно зарегистрировать — например, через `@EnableConfigurationProperties(HabitProperties.class)`, как в примере выше. Без регистрации внедрить `HabitProperties` не получится.
@@ -441,10 +452,11 @@ public class HabitService {
 
 ## Actuator и мониторинг { #actuator }
 
-`spring-boot-starter-actuator` даёт HTTP-эндпоинты мониторинга из коробки: `/actuator/health`, `/actuator/metrics`, `/actuator/conditions` и другие. Эндпоинты, их настройка, безопасность и метрики Micrometer разобраны в [Инструменты → Actuator и Micrometer](spring-tools.md#actuator-micrometer), а концепции наблюдаемости (метрики, логи, трейсы) — в [System Design → Observability](../system-design/system-design.md#observability).
+`spring-boot-starter-actuator` даёт HTTP-эндпоинты мониторинга из коробки: `/actuator/health`, `/actuator/metrics`, `/actuator/conditions` и другие. Эндпоинты, их настройка, безопасность и метрики Micrometer разобраны в [Инструменты → Actuator и Micrometer](../spring/spring-tools.md#actuator-micrometer), а концепции наблюдаемости (метрики, логи, трейсы) — в [System Design → Observability](../system-design/system-design.md#observability).
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Spring Boot vs Spring** | Boot — оболочка над Spring. Convention over Configuration. Embedded Tomcat |
@@ -457,4 +469,6 @@ public class HabitService {
 | **Приоритет конфигурации** | CLI args > env vars > `application-{profile}.yml` > `application.yml` > дефолты |
 | **Профили** | `application-{profile}.yml`, `@Profile`, `spring.profiles.active` |
 | **`@Value` vs `@ConfigurationProperties`** | Value — одиночное значение. ConfigurationProperties — группа настроек с валидацией |
-| **Actuator** | Мониторинг из коробки — подробно в [Инструментах](spring-tools.md#actuator-micrometer) |
+| **Actuator** | Мониторинг из коробки — подробно в [Инструментах](../spring/spring-tools.md#actuator-micrometer) |
+
+<!-- --8<-- [end:cheatsheet] -->

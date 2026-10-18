@@ -22,6 +22,11 @@ theme:
 
   icon:
     repo: fontawesome/brands/github
+    tag:
+      default: material/tag-outline
+      junior: material/signal-cellular-1
+      middle: material/signal-cellular-2
+      senior: material/signal-cellular-3
 
   features:
     # Навигация верхнего уровня — вкладки (Java, Spring, БД...)
@@ -41,7 +46,14 @@ theme:
     - content.code.copy         # кнопка "Копировать"
     - content.code.annotate     # аннотации к коду
 
+    # Вкладки «Коротко / Подробно» переключаются синхронно на всех страницах
+    - content.tabs.link
+
+    # Контент
+    - content.tooltips          # подсказки глоссария (abbr) в стиле темы
+
 markdown_extensions:
+  - abbr                        # термины глоссария с подсказкой при наведении
   - admonition
   - toc:
       permalink: true
@@ -64,6 +76,13 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.snippets:
+      # Пути в --8<-- считаются от корня репозитория: docs/java/jvm.md:cheatsheet
+      base_path:
+        - !relative $config_dir
+      check_paths: true         # несуществующий файл или секция — ошибка сборки
+      auto_append:
+        - includes/abbreviations.md
   - tables
   - attr_list
   - md_in_html
@@ -71,12 +90,57 @@ markdown_extensions:
 plugins:
   - search:
       lang: ru
+  - tags:
+      # Словарь тегов закрыт: опечатка в теге роняет сборку
+      tags_allowed:
+        # Уровень
+        - Junior
+        - Middle
+        - Senior
+        # Тема
+        - Java
+        - Spring
+        - Базы данных
+        - Kafka
+        - Алгоритмы
+        - Сети
+        - System Design
+        - Архитектура
+        - DevOps
+        # Сквозные темы
+        - Многопоточность
+        - Транзакции
+        - Кэширование
+        - Микросервисы
+        - Безопасность
+        - Тестирование
+        - Подготовка
+
+# Проверяет, что страницы раздела «Подготовка» не устарели (см. README)
+hooks:
+  - scripts/prep_pages.py
+
+# Иконки тегов уровня (theme.icon.tag)
+extra:
+  tags:
+    Junior: junior
+    Middle: middle
+    Senior: senior
+
+# includes/ лежит вне docs/ — следим за ним в mkdocs serve
+watch:
+  - includes
 
 validation:
   anchors: warn
 
 nav:
   - Старт: index.md
+
+  - Подготовка:
+      - За час до собеса: prep/last-hour.md
+      - Вопросы собеса: prep/questions.md
+      - Теги: prep/tags.md
 
   - Язык Java:
       - Платформа и память:

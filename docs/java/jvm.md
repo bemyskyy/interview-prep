@@ -1,3 +1,11 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - Java
+---
+
 # JVM и память
 
 Как Java-код превращается в работающую программу, где JVM хранит данные и как работает сборщик мусора. Чаще всего спрашивают разницу JVM/JRE/JDK, Stack против Heap, поколения GC, Metaspace и что делать при `OutOfMemoryError`.
@@ -487,6 +495,7 @@ flowchart TD
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **JVM / JRE / JDK** | JVM выполняет байт-код; JRE = JVM + библиотеки; JDK = JRE + `javac` и утилиты |
@@ -500,3 +509,5 @@ flowchart TD
 | **Статика и String Pool** | В куче: пул — с Java 7, статические поля — с Java 8 |
 | **OOM** | `Error`, а не `Exception`; виды: heap space, GC overhead, Metaspace, native thread |
 | **Расследование OOM** | `-XX:+HeapDumpOnOutOfMemoryError` → Eclipse MAT → чинить код → и только потом `-Xmx` |
+
+<!-- --8<-- [end:cheatsheet] -->

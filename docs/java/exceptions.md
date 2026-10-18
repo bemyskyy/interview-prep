@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+---
+
 # Исключения (Exceptions)
 
 Иерархия исключений, checked против unchecked, `try-catch-finally`, `try-with-resources`, свои исключения и антипаттерны. Чаще всего спрашивают разницу между checked и unchecked, когда не выполняется `finally` и почему в Spring принято бросать `RuntimeException`.
@@ -355,6 +362,7 @@ void wrap(Path path) {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Иерархия** | `Throwable` → `Error` (не трогаем) и `Exception` (обрабатываем) |
@@ -368,3 +376,5 @@ void wrap(Path path) {
 | **Свои исключения** | Доменный смысл и контекст; в Spring — unchecked |
 | **Антипаттерны** | Пустой `catch`, лог + проброс, ловля `Exception` без причины, потерянный `cause` |
 | **Spring** | `@RestControllerAdvice` и `@ExceptionHandler` — в [Spring MVC](../spring/spring-mvc.md#exception-handling) |
+
+<!-- --8<-- [end:cheatsheet] -->

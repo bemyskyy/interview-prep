@@ -1,3 +1,10 @@
+---
+tags:
+  - Middle
+  - Kafka
+  - Микросервисы
+---
+
 # Kafka: гарантии доставки и надёжность
 
 Как не потерять и не задвоить сообщения: `acks` продюсера, репликация и ISR, семантики доставки, коммит оффсетов, идемпотентность консьюмера и Dead Letter Queue. Это вопросы уровня Middle и Senior, на которых проверяют понимание потери данных.
@@ -133,7 +140,7 @@ sequenceDiagram
 | **At-least-once** | После обработки | Нет | Возможны | Стандарт (+ идемпотентность) |
 | **Exactly-once** | Транзакция | Нет | Нет | Только внутри Kafka |
 
-Те же семантики в общем виде, для любых брокеров, и приём с idempotency key для API — в [System Design → Idempotent Consumer](../system-design/system-design.md#idempotent-consumer).
+Те же семантики в общем виде, для любых брокеров, и приём с idempotency key для API — в [System Design → Idempotent Consumer](../system-design/system-design.md#delivery-guarantees).
 
 !!! warning "Ловушка: at-least-once без идемпотентности"
     At-least-once означает, что дубли **будут** рано или поздно. Если обработка не идемпотентна, повторное сообщение об оплате спишет деньги дважды.
@@ -168,62 +175,66 @@ Exactly-once работает **только внутри Kafka** через т�
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    При `enable.auto.commit=true` фоновый поток коммитит оффсеты каждые 5 секунд, не зная, обработал ли код сообщение. Если сервис упал после коммита, но до сохранения в БД, сообщение потеряно навсегда. Для бизнес-данных выключают авто-коммит, ставят `ack-mode: MANUAL` и вызывают `ack.acknowledge()` только после успешного сохранения.
+=== "Коротко"
 
-```yaml
-# ❌ Опасная настройка для бизнес-критичных приложений
-spring:
-  kafka:
-    consumer:
-      enable-auto-commit: true   # коммит каждые 5 секунд в фоне
-```
+    !!! abstract "Ответ вслух"
+        При `enable.auto.commit=true` фоновый поток коммитит оффсеты каждые 5 секунд, не зная, обработал ли код сообщение. Если сервис упал после коммита, но до сохранения в БД, сообщение потеряно навсегда. Для бизнес-данных выключают авто-коммит, ставят `ack-mode: MANUAL` и вызывают `ack.acknowledge()` только после успешного сохранения.
 
-Как авто-коммит теряет оплату:
+=== "Подробно"
 
-```mermaid
-sequenceDiagram
-    participant C as Консьюмер
-    participant BG as Фоновый поток авто-коммита
-    participant K as Kafka
-    participant DB as БД
-    C->>K: poll() — сообщение об оплате
-    BG->>K: через 5 с: commit offset
-    C->>DB: сохранить оплату
-    DB-->>C: исключение — оплата не сохранена
-    Note over C,K: оффсет уже закоммичен → при рестарте сообщение не придёт, оплата потеряна
-```
+    ```yaml
+    # ❌ Опасная настройка для бизнес-критичных приложений
+    spring:
+      kafka:
+        consumer:
+          enable-auto-commit: true   # коммит каждые 5 секунд в фоне
+    ```
 
-**Ручной коммит после сохранения в БД:**
+    Как авто-коммит теряет оплату:
 
-```yaml
-# ✅ Правильная настройка
-spring:
-  kafka:
-    consumer:
-      enable-auto-commit: false
-    listener:
-      ack-mode: MANUAL          # коммитим вручную через Acknowledgment
-```
+    ```mermaid
+    sequenceDiagram
+        participant C as Консьюмер
+        participant BG as Фоновый поток авто-коммита
+        participant K as Kafka
+        participant DB as БД
+        C->>K: poll() — сообщение об оплате
+        BG->>K: через 5 с: commit offset
+        C->>DB: сохранить оплату
+        DB-->>C: исключение — оплата не сохранена
+        Note over C,K: оффсет уже закоммичен → при рестарте сообщение не придёт, оплата потеряна
+    ```
 
-```java
-@KafkaListener(topics = "payments", groupId = "payment-processor")
-public void consume(PaymentEvent event, Acknowledgment ack) {
-    // 1. Сначала обрабатываем и сохраняем в БД
-    paymentService.processPayment(event);
+    **Ручной коммит после сохранения в БД:**
 
-    // 2. Только ПОСЛЕ успешного сохранения — коммитим оффсет
-    ack.acknowledge();
+    ```yaml
+    # ✅ Правильная настройка
+    spring:
+      kafka:
+        consumer:
+          enable-auto-commit: false
+        listener:
+          ack-mode: MANUAL          # коммитим вручную через Acknowledgment
+    ```
 
-    // Если processPayment() упал — ack не вызовется →
-    // при рестарте сообщение придёт снова → At-least-once
-}
-```
+    ```java
+    @KafkaListener(topics = "payments", groupId = "payment-processor")
+    public void consume(PaymentEvent event, Acknowledgment ack) {
+        // 1. Сначала обрабатываем и сохраняем в БД
+        paymentService.processPayment(event);
 
-Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Экосистема → Spring Kafka](../spring/spring-ecosystem.md#kafka-listener).
+        // 2. Только ПОСЛЕ успешного сохранения — коммитим оффсет
+        ack.acknowledge();
 
-!!! tip "`MANUAL` vs `MANUAL_IMMEDIATE`"
-    `MANUAL` — коммит ставится в очередь и выполняется при следующем `poll()`. `MANUAL_IMMEDIATE` — коммит выполняется немедленно в потоке слушателя. Для большинства случаев `MANUAL` эффективнее: он батчит коммиты.
+        // Если processPayment() упал — ack не вызовется →
+        // при рестарте сообщение придёт снова → At-least-once
+    }
+    ```
+
+    Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Экосистема → Spring Kafka](../spring/spring-ecosystem.md#kafka-listener).
+
+    !!! tip "`MANUAL` vs `MANUAL_IMMEDIATE`"
+        `MANUAL` — коммит ставится в очередь и выполняется при следующем `poll()`. `MANUAL_IMMEDIATE` — коммит выполняется немедленно в потоке слушателя. Для большинства случаев `MANUAL` эффективнее: он батчит коммиты.
 
 !!! warning "Ловушка: авто-коммит в платёжном сервисе"
     Авто-коммит не знает, сохранил ли твой код данные. Для любых бизнес-критичных сообщений он превращает падение сервиса в тихую потерю данных.
@@ -291,61 +302,65 @@ public void consume(PaymentEvent event, Acknowledgment ack) {
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Ядовитое сообщение (poison pill) — например, битый JSON — падает при каждой обработке, оффсет не коммитится, и вся партиция встаёт. Решение — несколько повторов с растущей паузой, а затем перекладывание сообщения в отдельный топик `.DLT` (Dead Letter Queue), после чего основной поток идёт дальше. В Spring Kafka это `DefaultErrorHandler` с `DeadLetterPublishingRecoverer`.
+=== "Коротко"
 
-**Проблема poison pill.** Консьюмер читает партицию, приходит сообщение со сломанным JSON. `@KafkaListener` падает с `NullPointerException`, оффсет не коммитится.
+    !!! abstract "Ответ вслух"
+        Ядовитое сообщение (poison pill) — например, битый JSON — падает при каждой обработке, оффсет не коммитится, и вся партиция встаёт. Решение — несколько повторов с растущей паузой, а затем перекладывание сообщения в отдельный топик `.DLT` (Dead Letter Queue), после чего основной поток идёт дальше. В Spring Kafka это `DefaultErrorHandler` с `DeadLetterPublishingRecoverer`.
 
-При следующем `poll()` — то же сообщение, снова NPE, бесконечный цикл. Вся партиция заблокирована одним битым сообщением (head-of-line blocking).
+=== "Подробно"
 
-**Решение: retry + DLQ.**
+    **Проблема poison pill.** Консьюмер читает партицию, приходит сообщение со сломанным JSON. `@KafkaListener` падает с `NullPointerException`, оффсет не коммитится.
 
-```java
-@Configuration
-public class KafkaErrorHandlerConfig {
+    При следующем `poll()` — то же сообщение, снова NPE, бесконечный цикл. Вся партиция заблокирована одним битым сообщением (head-of-line blocking).
 
-    @Bean
-    public DefaultErrorHandler errorHandler(KafkaTemplate<String, Object> template) {
-        // Recoverer: после исчерпания retry перекладывает в топик .DLT
-        var recoverer = new DeadLetterPublishingRecoverer(template,
-            (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()));
-        // Вариант: партиция -1 — номер не задаётся, партицию в .DLT выберет продюсер
-        // (record, ex) -> new TopicPartition(record.topic() + ".DLT", -1)
+    **Решение: retry + DLQ.**
 
-        // Backoff: 3 попытки с интервалом 1с/2с/4с
-        var backOff = new ExponentialBackOffWithMaxRetries(3);
-        backOff.setInitialInterval(1000L);
-        backOff.setMultiplier(2.0);
-        // То же через Spring Core: new ExponentialBackOff(1000L, 2.0) + backOff.setMaxAttempts(3)
+    ```java
+    @Configuration
+    public class KafkaErrorHandlerConfig {
 
-        var handler = new DefaultErrorHandler(recoverer, backOff);
+        @Bean
+        public DefaultErrorHandler errorHandler(KafkaTemplate<String, Object> template) {
+            // Recoverer: после исчерпания retry перекладывает в топик .DLT
+            var recoverer = new DeadLetterPublishingRecoverer(template,
+                (record, ex) -> new TopicPartition(record.topic() + ".DLT", record.partition()));
+            // Вариант: партиция -1 — номер не задаётся, партицию в .DLT выберет продюсер
+            // (record, ex) -> new TopicPartition(record.topic() + ".DLT", -1)
 
-        // Некоторые исключения бессмысленно ретраить — сразу в DLQ
-        handler.addNotRetryableExceptions(
-            JsonParseException.class,           // битый JSON не починится retry
-            IllegalArgumentException.class
-        );
+            // Backoff: 3 попытки с интервалом 1с/2с/4с
+            var backOff = new ExponentialBackOffWithMaxRetries(3);
+            backOff.setInitialInterval(1000L);
+            backOff.setMultiplier(2.0);
+            // То же через Spring Core: new ExponentialBackOff(1000L, 2.0) + backOff.setMaxAttempts(3)
 
-        return handler;
+            var handler = new DefaultErrorHandler(recoverer, backOff);
+
+            // Некоторые исключения бессмысленно ретраить — сразу в DLQ
+            handler.addNotRetryableExceptions(
+                JsonParseException.class,           // битый JSON не починится retry
+                IllegalArgumentException.class
+            );
+
+            return handler;
+        }
     }
-}
-```
+    ```
 
-```mermaid
-flowchart TD
-    A["@KafkaListener упал с исключением"] --> B{"Исключение non-retryable?"}
-    B -- да --> D["DeadLetterPublishingRecoverer: сообщение → payments.DLT"]
-    B -- нет --> C["Retry: 3 попытки с backoff 1с / 2с / 4с — вдруг БД просто моргнула"]
-    C -- успех --> OK["Обработано"]
-    C -- попытки исчерпаны --> D
-    D --> E["Оффсет в основном топике коммитится → партиция работает дальше"]
-    E --> F["Битые сообщения в .DLT разбирают разработчики или отдельный сервис; по ним настроены алерты в Grafana"]
-```
+    ```mermaid
+    flowchart TD
+        A["@KafkaListener упал с исключением"] --> B{"Исключение non-retryable?"}
+        B -- да --> D["DeadLetterPublishingRecoverer: сообщение → payments.DLT"]
+        B -- нет --> C["Retry: 3 попытки с backoff 1с / 2с / 4с — вдруг БД просто моргнула"]
+        C -- успех --> OK["Обработано"]
+        C -- попытки исчерпаны --> D
+        D --> E["Оффсет в основном топике коммитится → партиция работает дальше"]
+        E --> F["Битые сообщения в .DLT разбирают разработчики или отдельный сервис; по ним настроены алерты в Grafana"]
+    ```
 
-Общая идея DLQ для любых брокеров — в [System Design → DLQ](../system-design/system-design.md#dead-letter-queue-dlq).
+    Общая идея DLQ для любых брокеров — в [System Design → DLQ](../system-design/system-design.md#message-queues).
 
-!!! tip "Retryable vs non-retryable"
-    Временные ошибки (БД недоступна, таймаут сети) ретраить есть смысл. Постоянные (битый JSON, невалидные данные) ретраить бессмысленно — они не починятся. `addNotRetryableExceptions` отправляет постоянные ошибки в DLQ сразу, не тратя попытки.
+    !!! tip "Retryable vs non-retryable"
+        Временные ошибки (БД недоступна, таймаут сети) ретраить есть смысл. Постоянные (битый JSON, невалидные данные) ретраить бессмысленно — они не починятся. `addNotRetryableExceptions` отправляет постоянные ошибки в DLQ сразу, не тратя попытки.
 
 !!! warning "Ловушка: партиций в `.DLT` меньше, чем в основном топике"
     С `record.partition()` сообщение из партиции 5 уйдёт в партицию 5 топика `.DLT`. Если у `.DLT` меньше партиций, публикация упадёт — поэтому либо создают `.DLT` с тем же числом партиций, либо передают `-1` и дают продюсеру выбрать партицию.
@@ -357,6 +372,7 @@ flowchart TD
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **`acks=0`** | Не ждёт ответа. Максимум скорости, максимум потерь |
@@ -371,3 +387,5 @@ flowchart TD
 | **Manual ack** | `ack.acknowledge()` только после сохранения в БД. `MANUAL` батчит коммиты |
 | **Идемпотентность** | UNIQUE constraint надёжнее проверки `existsById` (нет race condition) |
 | **Poison Pill / DLQ** | Retry с backoff → топик `.DLT`. Non-retryable — сразу в DLQ |
+
+<!-- --8<-- [end:cheatsheet] -->

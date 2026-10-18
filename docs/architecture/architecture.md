@@ -1,3 +1,12 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - Архитектура
+  - Микросервисы
+---
+
 # Архитектура приложения (DDD, Hexagonal, CQRS)
 
 Как устроить код одного сервиса так, чтобы бизнес-логика не тонула в инфраструктуре: DDD, гексагональная архитектура, CQRS и Event Sourcing. На собесе спрашивают, что такое Bounded Context и Aggregate, чем Rich Domain Model лучше анемичной, как устроены порты и адаптеры и какой подвох у CQRS.
@@ -422,6 +431,7 @@ flowchart LR
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Ubiquitous Language** | Бизнес-термин = класс = таблица. Код читается как спецификация |
@@ -439,3 +449,5 @@ flowchart LR
 | **Eventual Consistency** | Write и Read модели рассинхронизированы на доли секунды — главный подвох CQRS |
 | **Event Sourcing** | История событий (append-only), состояние = replay. 100% аудит, машина времени |
 | **Snapshot / Upcasting** | Snapshot — против медленного replay. Upcasting — против версий событий |
+
+<!-- --8<-- [end:cheatsheet] -->

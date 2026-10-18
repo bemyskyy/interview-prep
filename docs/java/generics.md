@@ -1,3 +1,11 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - Java
+---
+
 # Generics (Дженерики)
 
 Зачем нужны дженерики, как работает стирание типов, wildcards и PECS, ограничения типов и запреты компилятора, raw types и heap pollution. Чаще всего спрашивают, что такое type erasure, чем `? extends` отличается от `? super`, и почему нельзя написать `new T()`.
@@ -354,89 +362,93 @@ Integer i = Utils.max(10, 42);             // T = Integer
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Все запреты растут из стирания типов: нельзя `new T()`, нельзя создать массив `new T[]` или `new List<String>[]`, нельзя использовать примитивы вроде `List<int>` и нельзя объявить статическое поле типа `T`. В рантайме конкретного `T` просто нет.
+=== "Коротко"
 
-Интервьюеры любят давать куски кода и спрашивать: _"Скомпилируется ли это? Если нет — почему?"_
+    !!! abstract "Ответ вслух"
+        Все запреты растут из стирания типов: нельзя `new T()`, нельзя создать массив `new T[]` или `new List<String>[]`, нельзя использовать примитивы вроде `List<int>` и нельзя объявить статическое поле типа `T`. В рантайме конкретного `T` просто нет.
 
-#### Нельзя создать экземпляр `new T()` { #no-new-t }
+=== "Подробно"
 
-```java
-public class Box<T> {
-    public T create() {
-        return new T(); // ❌ ОШИБКА КОМПИЛЯЦИИ
+    Интервьюеры любят давать куски кода и спрашивать: _"Скомпилируется ли это? Если нет — почему?"_
+
+    #### Нельзя создать экземпляр `new T()` { #no-new-t }
+
+    ```java
+    public class Box<T> {
+        public T create() {
+            return new T(); // ❌ ОШИБКА КОМПИЛЯЦИИ
+        }
     }
-}
-```
+    ```
 
-**Почему:** после стирания `T` превращается в `Object`, и компилятор не знает, какой конструктор вызывать. А если у конкретного `T` нет конструктора без аргументов?
+    **Почему:** после стирания `T` превращается в `Object`, и компилятор не знает, какой конструктор вызывать. А если у конкретного `T` нет конструктора без аргументов?
 
-**Решение — `Supplier` или рефлексия:**
+    **Решение — `Supplier` или рефлексия:**
 
-```java
-public static <T> T create(Supplier<T> supplier) {
-    return supplier.get(); // ✅
-}
+    ```java
+    public static <T> T create(Supplier<T> supplier) {
+        return supplier.get(); // ✅
+    }
 
-// Использование:
-String empty = create(String::new);              // ""
-List<String> list = create(ArrayList::new);      // пустой ArrayList
-```
+    // Использование:
+    String empty = create(String::new);              // ""
+    List<String> list = create(ArrayList::new);      // пустой ArrayList
+    ```
 
-#### Нельзя создать массив generic-типа { #no-generic-arrays }
+    #### Нельзя создать массив generic-типа { #no-generic-arrays }
 
-```java
-static <T> void arrays() {
-    T[] arr = new T[10];                       // ❌ ошибка компиляции
-    List<String>[] lists = new List<String>[10]; // ❌ ошибка компиляции
-}
-```
+    ```java
+    static <T> void arrays() {
+        T[] arr = new T[10];                       // ❌ ошибка компиляции
+        List<String>[] lists = new List<String>[10]; // ❌ ошибка компиляции
+    }
+    ```
 
-**Почему:** массивы в Java проверяют тип элементов в рантайме (они **ковариантны**: `String[]` — это `Object[]`). Но в рантайме `T` уже стёрт до `Object`, и JVM не смогла бы проверить, что в массив кладут нужный тип.
+    **Почему:** массивы в Java проверяют тип элементов в рантайме (они **ковариантны**: `String[]` — это `Object[]`). Но в рантайме `T` уже стёрт до `Object`, и JVM не смогла бы проверить, что в массив кладут нужный тип.
 
-**Решение:**
+    **Решение:**
 
-```java
-@SuppressWarnings("unchecked")
-static <T> T[] newArray(int size) {
-    return (T[]) new Object[size];               // обходной путь через каст
-}
+    ```java
+    @SuppressWarnings("unchecked")
+    static <T> T[] newArray(int size) {
+        return (T[]) new Object[size];               // обходной путь через каст
+    }
 
-@SuppressWarnings("unchecked")
-static <T> T[] newArray(Class<T> clazz, int size) {
-    return (T[]) Array.newInstance(clazz, size); // через рефлексию — настоящий массив нужного типа
-}
+    @SuppressWarnings("unchecked")
+    static <T> T[] newArray(Class<T> clazz, int size) {
+        return (T[]) Array.newInstance(clazz, size); // через рефлексию — настоящий массив нужного типа
+    }
 
-@SuppressWarnings("unchecked")
-List<String>[] lists = new List[10];             // сырой тип: компилируется, но с unchecked-предупреждением
-```
+    @SuppressWarnings("unchecked")
+    List<String>[] lists = new List[10];             // сырой тип: компилируется, но с unchecked-предупреждением
+    ```
 
-#### Нельзя использовать примитивы { #no-primitives }
+    #### Нельзя использовать примитивы { #no-primitives }
 
-```java
-List<int> numbers = new ArrayList<>();    // ❌ ошибка компиляции
-List<double> prices = new ArrayList<>();  // ❌ ошибка компиляции
-```
+    ```java
+    List<int> numbers = new ArrayList<>();    // ❌ ошибка компиляции
+    List<double> prices = new ArrayList<>();  // ❌ ошибка компиляции
+    ```
 
-**Почему:** после стирания параметр превращается в `Object`, а примитивы (`int`, `double`) не объекты и не наследуют `Object`. JVM не может положить `int` туда, где ожидается ссылка.
+    **Почему:** после стирания параметр превращается в `Object`, а примитивы (`int`, `double`) не объекты и не наследуют `Object`. JVM не может положить `int` туда, где ожидается ссылка.
 
-**Решение — классы-обёртки:**
+    **Решение — классы-обёртки:**
 
-```java
-List<Integer> numbers = new ArrayList<>(); // ✅ автоупаковка сделает остальное
-```
+    ```java
+    List<Integer> numbers = new ArrayList<>(); // ✅ автоупаковка сделает остальное
+    ```
 
-Именно поэтому существуют `Integer`, `Double`, `Long` и другие обёртки — они позволяют примитивам жить в дженерик-коллекциях. Подробнее — в [Основы языка → автоупаковка](basics.md#autoboxing).
+    Именно поэтому существуют `Integer`, `Double`, `Long` и другие обёртки — они позволяют примитивам жить в дженерик-коллекциях. Подробнее — в [Основы языка → автоупаковка](basics.md#autoboxing).
 
-#### Нельзя делать статические поля типа `T` { #no-static-t }
+    #### Нельзя делать статические поля типа `T` { #no-static-t }
 
-```java
-public class Holder<T> {
-    private static T instance; // ❌ ошибка компиляции
-}
-```
+    ```java
+    public class Holder<T> {
+        private static T instance; // ❌ ошибка компиляции
+    }
+    ```
 
-**Почему:** статическое поле одно на весь класс, а `Holder<String>` и `Holder<Integer>` — один и тот же класс в байт-коде. Какой тип должен быть у `instance` — `String` или `Integer`? Противоречие нерешаемо.
+    **Почему:** статическое поле одно на весь класс, а `Holder<String>` и `Holder<Integer>` — один и тот же класс в байт-коде. Какой тип должен быть у `instance` — `String` или `Integer`? Противоречие нерешаемо.
 
 !!! warning "Ловушка: `(T[]) new Object[size]` наружу"
     Каст `(T[]) new Object[size]` безопасен, только пока массив не уходит за пределы класса. Если вернуть его вызывающему коду, который ждёт `String[]`, получишь `ClassCastException`: на самом деле это `Object[]`. Для массива нужного типа используй `Array.newInstance(clazz, size)`.
@@ -551,6 +563,7 @@ public static <T> List<T> listOf(T... elements) {
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Зачем дженерики** | Проверка типов при компиляции, без ручных кастов |
@@ -565,3 +578,5 @@ public static <T> List<T> listOf(T... elements) {
 | **Raw types** | Дженерик без `<T>` отключает проверку типов — красный флаг на ревью |
 | **Heap pollution** | Дженерик-переменная ссылается на несовместимый объект → `ClassCastException` при чтении |
 | **`@SafeVarargs`** | Только если varargs-массив не уходит наружу; только `static`, `final`, `private` |
+
+<!-- --8<-- [end:cheatsheet] -->

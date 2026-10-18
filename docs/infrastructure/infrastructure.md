@@ -1,3 +1,13 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Senior
+  - DevOps
+  - Микросервисы
+  - Базы данных
+---
+
 # Инфраструктура (DevOps)
 
 Как Java-приложение упаковывается, доставляется и запускается в проде: Docker и Compose, CI/CD, миграции БД и Kubernetes. На собесе спрашивают, чем контейнер отличается от виртуальной машины, как написать хороший Dockerfile, что будет с данными в volume, какие бывают стратегии деплоя и как Flyway не даёт пяти инстансам подраться за миграцию.
@@ -620,6 +630,7 @@ API Gateway (например, Spring Cloud Gateway) разобран в [System
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Docker** | Приложение + среда в одном образе — «на моей машине работало» больше не аргумент |
@@ -646,3 +657,5 @@ API Gateway (например, Spring Cloud Gateway) разобран в [System
 | **Kubernetes** | Deployments, Services и Ingress, ConfigMaps и Secrets |
 | **Observability** | Logs (что) + Metrics (сколько) + Traces (где) — в [System Design](../system-design/system-design.md#observability) |
 | **Reverse proxy** | Балансировка, SSL termination, кэш статики |
+
+<!-- --8<-- [end:cheatsheet] -->

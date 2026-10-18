@@ -1,3 +1,10 @@
+---
+tags:
+  - Junior
+  - Middle
+  - Java
+---
+
 # Основы языка
 
 Типы данных, передача параметров, автоупаковка, контракт `equals()`/`hashCode()`, `final`, `static`, порядок инициализации, `enum` и модификаторы доступа. Чаще всего спрашивают про Integer Cache, «Java передаёт по ссылке или по значению?», `equals()` без `hashCode()` и порядок инициализации родителя и наследника.
@@ -168,72 +175,76 @@ int a2 = num.intValue();            // что делает компилятор
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    Если `a.equals(b)`, то у них обязан совпадать `hashCode()`; обратное не обязательно — это коллизия. `hashCode()` должен быть стабильным, пока не менялись поля из `equals()`. Если переопределить `equals()` без `hashCode()`, хэш-коллекции сломаются: равные объекты окажутся в разных бакетах.
+=== "Коротко"
 
-В классе `Object` уже есть оба метода. По умолчанию `equals()` работает как `==` (сравнивает ссылки), а `hashCode()` возвращает число, не связанное с полями объекта. Для бизнес-логики нужно сравнивать объекты по содержимому — поэтому методы переопределяют, и тут вступает в силу жёсткий контракт.
+    !!! abstract "Ответ вслух"
+        Если `a.equals(b)`, то у них обязан совпадать `hashCode()`; обратное не обязательно — это коллизия. `hashCode()` должен быть стабильным, пока не менялись поля из `equals()`. Если переопределить `equals()` без `hashCode()`, хэш-коллекции сломаются: равные объекты окажутся в разных бакетах.
 
-#### Четыре правила контракта { #contract-rules }
+=== "Подробно"
 
-1. **Согласованность с `equals`:** если `a.equals(b) == true`, хэш-коды **обязаны** совпадать (`a.hashCode() == b.hashCode()`).
-2. **Коллизии допустимы:** если `a.hashCode() == b.hashCode()`, объекты **не обязательно** равны по `equals()`. Это называется _коллизией_.
-3. **Оптимизация:** если `a.hashCode() != b.hashCode()`, объекты **гарантированно не равны** по `equals()`.
-4. **Стабильность:** повторный вызов `hashCode()` на одном объекте возвращает одно и то же число, пока не менялись поля, участвующие в `equals()`.
+    В классе `Object` уже есть оба метода. По умолчанию `equals()` работает как `==` (сравнивает ссылки), а `hashCode()` возвращает число, не связанное с полями объекта. Для бизнес-логики нужно сравнивать объекты по содержимому — поэтому методы переопределяют, и тут вступает в силу жёсткий контракт.
 
-#### Зачем нужен контракт { #why-contract }
+    #### Четыре правила контракта { #contract-rules }
 
-Интервьюер спросит: _"Что будет, если я переопределю `equals`, но забуду `hashCode`?"_ Ответ упирается в устройство `HashMap` и `HashSet`. Хэш-таблица сначала по `hashCode()` выбирает бакет, а потом внутри бакета сравнивает ключи через `equals()` — подробно в [Коллекции → Как HashMap устроена внутри](collections.md#hashmap-internals).
+    1. **Согласованность с `equals`:** если `a.equals(b) == true`, хэш-коды **обязаны** совпадать (`a.hashCode() == b.hashCode()`).
+    2. **Коллизии допустимы:** если `a.hashCode() == b.hashCode()`, объекты **не обязательно** равны по `equals()`. Это называется _коллизией_.
+    3. **Оптимизация:** если `a.hashCode() != b.hashCode()`, объекты **гарантированно не равны** по `equals()`.
+    4. **Стабильность:** повторный вызов `hashCode()` на одном объекте возвращает одно и то же число, пока не менялись поля, участвующие в `equals()`.
 
-#### Цена ошибки { #contract-cost }
+    #### Зачем нужен контракт { #why-contract }
 
-**Пример с `HashSet`:** есть класс `Habit`. Создаём два объекта с одинаковым названием и добавляем в `HashSet`:
+    Интервьюер спросит: _"Что будет, если я переопределю `equals`, но забуду `hashCode`?"_ Ответ упирается в устройство `HashMap` и `HashSet`. Хэш-таблица сначала по `hashCode()` выбирает бакет, а потом внутри бакета сравнивает ключи через `equals()` — подробно в [Коллекции → Как HashMap устроена внутри](collections.md#hashmap-internals).
 
-```java
-Habit h1 = new Habit("Бег");
-Habit h2 = new Habit("Бег");
-set.add(h1);
-set.add(h2);
-```
+    #### Цена ошибки { #contract-cost }
 
-- **Если НЕ переопределил `equals()` и `hashCode()`:** `HashSet` посчитает хэши по умолчанию — у двух разных объектов они почти наверняка разные — и положит объекты в разные бакеты. В `Set` окажется **два логически одинаковых объекта**: контракт уникальности нарушен.
-- **Если ПЕРЕОПРЕДЕЛИЛ:** `HashSet` вычислит одинаковый хэш-код (строка «Бег» одинаковая), сравнит объекты через `equals()`, и `add()` вернёт `false`. Дубликат не добавится.
+    **Пример с `HashSet`:** есть класс `Habit`. Создаём два объекта с одинаковым названием и добавляем в `HashSet`:
 
-**Сценарий 1: забыли `hashCode` (разные хэш-коды у равных объектов).** Ты создал двух пользователей с одинаковыми ID, именем и почтой — по `equals()` они равны. Кладёшь первого ключом в `HashMap`, а достать данные пытаешься по второму: хэш у второго другой, `HashMap` ищет **в другом бакете** и возвращает `null`.
+    ```java
+    Habit h1 = new Habit("Бег");
+    Habit h2 = new Habit("Бег");
+    set.add(h1);
+    set.add(h2);
+    ```
 
-Повторные `put()` с «равными» ключами копят дубликаты, и мапа растёт — это прямой путь к утечке памяти.
+    - **Если НЕ переопределил `equals()` и `hashCode()`:** `HashSet` посчитает хэши по умолчанию — у двух разных объектов они почти наверняка разные — и положит объекты в разные бакеты. В `Set` окажется **два логически одинаковых объекта**: контракт уникальности нарушен.
+    - **Если ПЕРЕОПРЕДЕЛИЛ:** `HashSet` вычислит одинаковый хэш-код (строка «Бег» одинаковая), сравнит объекты через `equals()`, и `add()` вернёт `false`. Дубликат не добавится.
 
-**Сценарий 2: плохой `hashCode` (например, всегда возвращает 1).** Контракт формально не нарушен, но все объекты попадают в один бакет. `HashMap` вырождается в длинную цепочку, и поиск падает с O(1) до O(n). С ростом данных сервис начинает тормозить.
+    **Сценарий 1: забыли `hashCode` (разные хэш-коды у равных объектов).** Ты создал двух пользователей с одинаковыми ID, именем и почтой — по `equals()` они равны. Кладёшь первого ключом в `HashMap`, а достать данные пытаешься по второму: хэш у второго другой, `HashMap` ищет **в другом бакете** и возвращает `null`.
 
-```java
-public final class User {
-    private final Long id;
-    private final String email;
+    Повторные `put()` с «равными» ключами копят дубликаты, и мапа растёт — это прямой путь к утечке памяти.
 
-    public User(Long id, String email) {
-        this.id = id;
-        this.email = email;
+    **Сценарий 2: плохой `hashCode` (например, всегда возвращает 1).** Контракт формально не нарушен, но все объекты попадают в один бакет. `HashMap` вырождается в длинную цепочку, и поиск падает с O(1) до O(n). С ростом данных сервис начинает тормозить.
+
+    ```java
+    public final class User {
+        private final Long id;
+        private final String email;
+
+        public User(Long id, String email) {
+            this.id = id;
+            this.email = email;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof User other)) return false;
+            return Objects.equals(id, other.id) && Objects.equals(email, other.email);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, email); // те же поля, что и в equals()
+        }
     }
+    ```
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User other)) return false;
-        return Objects.equals(id, other.id) && Objects.equals(email, other.email);
-    }
+    !!! tip "Золотое правило"
+        Если объект планируется использовать в качестве ключа в `Map` или элемента в `Set`, переопределение `equals()` и `hashCode()` **обязательно**.
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email); // те же поля, что и в equals()
-    }
-}
-```
-
-!!! tip "Золотое правило"
-    Если объект планируется использовать в качестве ключа в `Map` или элемента в `Set`, переопределение `equals()` и `hashCode()` **обязательно**.
-
-- **Не пиши руками:** генерируй методы через IDE (IntelliJ IDEA) или Lombok (`@EqualsAndHashCode`).
-- **Используй неизменяемые поля:** хэш-код считается только по полям из `equals`, и желательно, чтобы они были `final`.
-- **Современный подход:** с Java 16 есть `record` — там `equals()` и `hashCode()` генерируются по всем компонентам на уровне языка, см. [Современная Java → record](modern-java.md#records).
+    - **Не пиши руками:** генерируй методы через IDE (IntelliJ IDEA) или Lombok (`@EqualsAndHashCode`).
+    - **Используй неизменяемые поля:** хэш-код считается только по полям из `equals`, и желательно, чтобы они были `final`.
+    - **Современный подход:** с Java 16 есть `record` — там `equals()` и `hashCode()` генерируются по всем компонентам на уровне языка, см. [Современная Java → record](modern-java.md#records).
 
 !!! warning "Ловушка: изменили поле после добавления в `HashSet`"
     Если поменять поле, участвующее в `hashCode()`, _после_ того как объект положили в `HashSet` или ключом в `HashMap`, его хэш изменится. Коллекция будет искать объект в другом бакете, и достать или удалить его больше не получится.
@@ -450,93 +461,97 @@ public void calculate() {
 
 **Уровень:** Middle
 
-!!! abstract "Ответ вслух"
-    `enum` — синтаксический сахар: компилятор делает из него `final`-класс, наследника `java.lang.Enum`, с `public static final` константами и приватным конструктором. Поэтому `enum` не может ничего наследовать, но может реализовывать интерфейсы, иметь поля, методы и свою реализацию метода у каждой константы. `values()` и `valueOf()` генерирует компилятор.
+=== "Коротко"
 
-Главное на собесе: **`enum` — синтаксический сахар**. На уровне JVM «перечислений» нет, есть обычные классы. Когда ты пишешь:
+    !!! abstract "Ответ вслух"
+        `enum` — синтаксический сахар: компилятор делает из него `final`-класс, наследника `java.lang.Enum`, с `public static final` константами и приватным конструктором. Поэтому `enum` не может ничего наследовать, но может реализовывать интерфейсы, иметь поля, методы и свою реализацию метода у каждой константы. `values()` и `valueOf()` генерирует компилятор.
 
-```java
-public enum Status {
-    NEW, IN_PROGRESS, DONE
-}
-```
+=== "Подробно"
 
-компилятор превращает это примерно в следующее:
+    Главное на собесе: **`enum` — синтаксический сахар**. На уровне JVM «перечислений» нет, есть обычные классы. Когда ты пишешь:
 
-```java
-public final class Status extends java.lang.Enum<Status> {
-    public static final Status NEW = new Status("NEW", 0);
-    public static final Status IN_PROGRESS = new Status("IN_PROGRESS", 1);
-    public static final Status DONE = new Status("DONE", 2);
-
-    private Status(String name, int ordinal) {
-        super(name, ordinal);
+    ```java
+    public enum Status {
+        NEW, IN_PROGRESS, DONE
     }
-    // ... скрытые методы компилятора ...
-}
-```
+    ```
 
-_Этот код — иллюстрация: руками наследоваться от `java.lang.Enum` компилятор не разрешит._ Из него вытекают все правила и каверзные вопросы.
+    компилятор превращает это примерно в следующее:
 
-#### Ограничения { #enum-restrictions }
+    ```java
+    public final class Status extends java.lang.Enum<Status> {
+        public static final Status NEW = new Status("NEW", 0);
+        public static final Status IN_PROGRESS = new Status("IN_PROGRESS", 1);
+        public static final Status DONE = new Status("DONE", 2);
 
-- **Наследование запрещено:** `enum` уже неявно наследует `java.lang.Enum`, а множественного наследования классов в Java нет.
-- **Интерфейсы разрешены:** реализовывать (`implements`) можно сколько угодно интерфейсов — так разные перечисления связывают общим контрактом.
-- **Конструктор всегда `private`:** создать экземпляр через `new` нельзя. Константы создаются один раз при инициализации класса.
-
-#### Откуда берутся методы { #enum-methods }
-
-`name()` (имя константы) и `ordinal()` (порядковый номер с 0) приходят из `java.lang.Enum`. А вот `values()` и `valueOf(String)` в классе `Enum` **нет** — их генерирует компилятор:
-
-- `values()` — массив всех констант.
-- `valueOf("NEW")` — константа по точному имени; если не нашлась — `IllegalArgumentException`.
-
-#### Что ещё умеет `enum` { #enum-features }
-
-**Состояние и поведение.** Это полноценный класс: можно добавлять поля, конструкторы и методы.
-
-```java
-public enum ErrorCode {
-    NOT_FOUND(404, "Ресурс не найден"),
-    SERVER_ERROR(500, "Ошибка сервера");
-
-    private final int code;
-    private final String message;
-
-    ErrorCode(int code, String message) { // конструктор неявно private
-        this.code = code;
-        this.message = message;
+        private Status(String name, int ordinal) {
+            super(name, ordinal);
+        }
+        // ... скрытые методы компилятора ...
     }
+    ```
 
-    public int getCode() { return code; }
-    public String getMessage() { return message; }
-}
-```
+    _Этот код — иллюстрация: руками наследоваться от `java.lang.Enum` компилятор не разрешит._ Из него вытекают все правила и каверзные вопросы.
 
-**Свой метод у каждой константы (паттерн Стратегия / Состояние).** Каждая константа может реализовать абстрактный метод по-своему — это избавляет от простыней `switch` и `if-else`.
+    #### Ограничения { #enum-restrictions }
 
-```java
-public enum Operation {
-    PLUS {
-        public int apply(int x, int y) { return x + y; }
-    },
-    MINUS {
-        public int apply(int x, int y) { return x - y; }
-    };
+    - **Наследование запрещено:** `enum` уже неявно наследует `java.lang.Enum`, а множественного наследования классов в Java нет.
+    - **Интерфейсы разрешены:** реализовывать (`implements`) можно сколько угодно интерфейсов — так разные перечисления связывают общим контрактом.
+    - **Конструктор всегда `private`:** создать экземпляр через `new` нельзя. Константы создаются один раз при инициализации класса.
 
-    public abstract int apply(int x, int y); // абстрактный метод внутри enum
-}
-```
+    #### Откуда берутся методы { #enum-methods }
 
-**Singleton.** `enum` из одного элемента — самый надёжный способ написать Singleton в Java; почему — в [Паттерны → Enum Singleton](patterns.md#enum-singleton).
+    `name()` (имя константы) и `ordinal()` (порядковый номер с 0) приходят из `java.lang.Enum`. А вот `values()` и `valueOf(String)` в классе `Enum` **нет** — их генерирует компилятор:
 
-**`EnumSet` и `EnumMap`.** Для набора констант или констант-ключей используй их вместо `HashSet` и `HashMap`. `EnumSet` хранит набор как битовый вектор, `EnumMap` — как массив по `ordinal()`: никаких хэшей, бакетов и коллизий, минимум памяти.
+    - `values()` — массив всех констант.
+    - `valueOf("NEW")` — константа по точному имени; если не нашлась — `IllegalArgumentException`.
 
-```java
-EnumSet<Status> active = EnumSet.of(Status.NEW, Status.IN_PROGRESS);
-EnumMap<Status, Integer> counts = new EnumMap<>(Status.class);
-counts.put(Status.DONE, 42);
-```
+    #### Что ещё умеет `enum` { #enum-features }
+
+    **Состояние и поведение.** Это полноценный класс: можно добавлять поля, конструкторы и методы.
+
+    ```java
+    public enum ErrorCode {
+        NOT_FOUND(404, "Ресурс не найден"),
+        SERVER_ERROR(500, "Ошибка сервера");
+
+        private final int code;
+        private final String message;
+
+        ErrorCode(int code, String message) { // конструктор неявно private
+            this.code = code;
+            this.message = message;
+        }
+
+        public int getCode() { return code; }
+        public String getMessage() { return message; }
+    }
+    ```
+
+    **Свой метод у каждой константы (паттерн Стратегия / Состояние).** Каждая константа может реализовать абстрактный метод по-своему — это избавляет от простыней `switch` и `if-else`.
+
+    ```java
+    public enum Operation {
+        PLUS {
+            public int apply(int x, int y) { return x + y; }
+        },
+        MINUS {
+            public int apply(int x, int y) { return x - y; }
+        };
+
+        public abstract int apply(int x, int y); // абстрактный метод внутри enum
+    }
+    ```
+
+    **Singleton.** `enum` из одного элемента — самый надёжный способ написать Singleton в Java; почему — в [Паттерны → Enum Singleton](patterns.md#enum-singleton).
+
+    **`EnumSet` и `EnumMap`.** Для набора констант или констант-ключей используй их вместо `HashSet` и `HashMap`. `EnumSet` хранит набор как битовый вектор, `EnumMap` — как массив по `ordinal()`: никаких хэшей, бакетов и коллизий, минимум памяти.
+
+    ```java
+    EnumSet<Status> active = EnumSet.of(Status.NEW, Status.IN_PROGRESS);
+    EnumMap<Status, Integer> counts = new EnumMap<>(Status.class);
+    counts.put(Status.DONE, 42);
+    ```
 
 !!! warning "Ловушка: `valueOf()` с неизвестным именем"
     `Status.valueOf("new")` бросит `IllegalArgumentException`: поиск идёт по точному имени с учётом регистра. Данные извне (из запроса, из файла) перед `valueOf()` нужно проверять.
@@ -619,6 +634,7 @@ counts.put(Status.DONE, 42);
 
 ## Шпаргалка { #cheatsheet }
 
+<!-- --8<-- [start:cheatsheet] -->
 | Тема | Запомнить |
 |---|---|
 | **Примитивы** | 8 типов, хранят значение, не бывают `null`; ссылочные хранят адрес объекта в куче |
@@ -632,3 +648,5 @@ counts.put(Status.DONE, 42);
 | **Значения по умолчанию** | У полей и элементов массивов — нули, `false`, `null`; у локальных переменных — нет |
 | **`enum`** | `final`-класс, наследник `Enum`; `values()` и `valueOf()` от компилятора; `EnumSet` / `EnumMap`; не храни `ordinal()` |
 | **Модификаторы доступа** | `private` → `default` → `protected` → `public`; `protected` из другого пакета — только через наследование |
+
+<!-- --8<-- [end:cheatsheet] -->
