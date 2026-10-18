@@ -1,43 +1,80 @@
 # Spring Web / MVC
 
-## DispatcherServlet — Front Controller
+Как Spring MVC превращает HTTP-запрос в вызов метода контроллера и обратно: `DispatcherServlet`, обработка исключений, фильтры и интерсепторы, валидация и CORS. На собесе чаще всего спрашивают путь запроса через `DispatcherServlet`, `@RestControllerAdvice` и разницу между Filter и Interceptor.
 
-**Паттерн:** Front Controller. `DispatcherServlet` перехватывает 100% входящих HTTP-запросов и работает как регулировщик, раздавая задачи другим компонентам.
+## Путь запроса { #request-flow }
 
-### Пошаговый Request Flow
+### Как `DispatcherServlet` обрабатывает запрос? { #dispatcherservlet }
 
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `DispatcherServlet` — Front Controller: он принимает все HTTP-запросы и раздаёт работу другим компонентам. `HandlerMapping` находит метод контроллера и цепочку интерсепторов, `HandlerAdapter` разбирает запрос и вызывает метод, а `HttpMessageConverter` (Jackson) сериализует результат в JSON.
+
+**Паттерн:** Front Controller. `DispatcherServlet` перехватывает 100% входящих HTTP-запросов и работает как регулировщик.
+
+```mermaid
+sequenceDiagram
+    participant C as Клиент
+    participant T as Tomcat
+    participant DS as DispatcherServlet
+    participant HM as HandlerMapping
+    participant HA as HandlerAdapter
+    participant RC as RestController
+    participant MC as HttpMessageConverter
+    C->>T: HTTP-запрос
+    T->>DS: передаёт запрос
+    DS->>HM: кто обрабатывает /api/users?
+    HM-->>DS: метод контроллера + Interceptors
+    DS->>HA: вызвать метод
+    HA->>HA: парсит JSON, подставляет @RequestBody / @PathVariable
+    HA->>RC: вызов метода
+    RC-->>HA: Java-объект
+    HA->>MC: сериализовать
+    MC-->>C: JSON в теле ответа
 ```
-Клиент
-  ↓ HTTP-запрос
-Tomcat
-  ↓
-DispatcherServlet
-  ↓ "Кто обрабатывает /api/users?"
-HandlerMapping         → возвращает метод контроллера + список Interceptors
-  ↓
-HandlerAdapter         → парсит JSON, подставляет @RequestBody/@PathVariable, вызывает метод
-  ↓
-@RestController        → бизнес-логика, вызов сервисов, обращение к БД
-  ↓ Java-объект
-HttpMessageConverter   → сериализует в JSON (Jackson), пишет в тело ответа
-  ↓
-Клиент получает JSON
-```
 
-**Подробнее по шагам:**
+По шагам:
 
-1. **Tomcat → DispatcherServlet** — веб-сервер принимает сырой HTTP-запрос и передаёт главному сервлету.
-2. **DispatcherServlet → HandlerMapping** — "Какой метод контроллера должен обработать этот URL?" HandlerMapping сверяется с реестром аннотаций (`@GetMapping`, `@PostMapping`) и возвращает метод + цепочку Interceptors.
-3. **DispatcherServlet → HandlerAdapter** — сервлет не умеет вызывать методы напрямую. Адаптер извлекает данные из запроса, парсит JSON, подставляет аргументы и запускает метод.
+1. **Tomcat → `DispatcherServlet`** — веб-сервер принимает сырой HTTP-запрос и передаёт главному сервлету.
+2. **`DispatcherServlet` → `HandlerMapping`** — «Какой метод контроллера должен обработать этот URL?» `HandlerMapping` сверяется с реестром аннотаций (`@GetMapping`, `@PostMapping`) и возвращает метод и цепочку интерсепторов (Interceptors).
+3. **`DispatcherServlet` → `HandlerAdapter`** — сервлет не умеет вызывать методы напрямую. Адаптер извлекает данные из запроса, парсит JSON, подставляет аргументы и запускает метод.
 4. **Выполнение в `@RestController`** — твой код: сервисы, БД. Метод возвращает Java-объект.
-5. **HttpMessageConverter** — Jackson сериализует объект в JSON, пишет в тело ответа.
+5. **`HttpMessageConverter`** — Jackson сериализует объект в JSON и пишет в тело ответа.
 
-!!! tip "Вопрос на засыпку"
-    _"Зачем нужен `HandlerAdapter`, если можно просто вызвать метод через рефлексию?"_
+!!! warning "Ловушка: Spring Security не в этой цепочке"
+    Всё, что на схеме, происходит внутри `DispatcherServlet`. Spring Security срабатывает раньше — в цепочке фильтров сервлет-контейнера (см. [Filter vs Interceptor](#filter-vs-interceptor)).
 
-    Чтобы отвязать `DispatcherServlet` от конкретных реализаций контроллеров. Контроллеры можно писать через аннотации или через старые интерфейсы из ранних версий Spring. Адаптер скрывает эту разницу — DispatcherServlet работает с единым интерфейсом адаптера.
+??? question "Проверь себя"
+    1. Какой паттерн реализует `DispatcherServlet`?
+    2. Что возвращает `HandlerMapping`?
+    3. Кто превращает Java-объект в JSON?
 
-### Ключевые аннотации контроллера
+### Зачем нужен `HandlerAdapter`? { #handler-adapter }
+
+**Уровень:** Senior
+
+!!! abstract "Ответ вслух"
+    Чтобы отвязать `DispatcherServlet` от конкретных реализаций контроллеров. Контроллеры можно писать через аннотации или через старые интерфейсы ранних версий Spring, а адаптер скрывает эту разницу: `DispatcherServlet` работает с единым интерфейсом адаптера.
+
+Вопрос на засыпку: _«Зачем нужен `HandlerAdapter`, если можно просто вызвать метод через рефлексию?»_
+
+Контроллер может быть аннотированным классом с `@GetMapping` или реализацией старых интерфейсов из ранних версий Spring. Если бы `DispatcherServlet` вызывал их сам, ему пришлось бы знать про каждый вариант. Это паттерн Adapter: единый интерфейс снаружи, своя реализация вызова внутри.
+
+!!! warning "Ловушка: «адаптер нужен только для рефлексии»"
+    Рефлексивный вызов метода — лишь часть работы. Адаптер ещё разбирает аргументы (`@RequestBody`, `@PathVariable`) и обрабатывает возвращаемое значение, и делает это по-разному для разных типов контроллеров.
+
+??? question "Проверь себя"
+    1. От чего `HandlerAdapter` отвязывает `DispatcherServlet`?
+    2. Какие виды контроллеров он скрывает?
+    3. Что кроме вызова метода делает адаптер?
+
+### Какие аннотации извлекают данные из запроса? { #controller-annotations }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    `@PathVariable` берёт значение из пути URL, `@RequestParam` — из query-параметров, `@RequestBody` — из тела запроса (JSON), `@RequestHeader` — из заголовка, `@CookieValue` — из cookie. `@RestController` — это `@Controller` плюс `@ResponseBody` на каждом методе.
 
 ```java
 @RestController               // @Controller + @ResponseBody на каждом методе
@@ -62,7 +99,22 @@ public class HabitController {
 }
 ```
 
-### `ResponseEntity` — полный контроль над ответом
+Пример намеренно собирает все аннотации в одном месте — в реальном коде у метода одна аннотация маппинга.
+
+!!! warning "Ловушка: `@Controller` без `@ResponseBody`"
+    Если пометить класс `@Controller`, а не `@RestController`, возвращённая строка будет воспринята как имя HTML-шаблона, а не как тело ответа.
+
+??? question "Проверь себя"
+    1. Чем `@PathVariable` отличается от `@RequestParam`?
+    2. Откуда берёт данные `@RequestBody`?
+    3. Из чего состоит `@RestController`?
+
+### Как управлять статусом и заголовками ответа? { #response-entity }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Через `ResponseEntity`: в нём явно задаются статус, заголовки и тело. Для частых случаев есть фабричные методы — `ok()`, `noContent()`, `notFound()`, `badRequest()`.
 
 ```java
 // Явно задаём статус, заголовки и тело
@@ -78,11 +130,26 @@ return ResponseEntity.notFound().build();                // 404
 return ResponseEntity.badRequest().body(errorDto);       // 400
 ```
 
+Если заголовки менять не нужно, статус можно задать короче — аннотацией `@ResponseStatus` (пример — в [обработке исключений](#controller-advice)).
+
+!!! warning "Ловушка: 201 без `Location`"
+    При создании ресурса принято возвращать `201 Created` и заголовок `Location` с адресом нового ресурса. Голый `ok(dto)` вернёт `200`, и клиент не узнает, где лежит созданный объект.
+
+??? question "Проверь себя"
+    1. Как вернуть `201` с заголовком `Location`?
+    2. Какой фабричный метод возвращает `204`?
+    3. Когда вместо `ResponseEntity` хватит `@ResponseStatus`?
+
 ## Обработка исключений { #exception-handling }
 
-Вместо `try-catch` в каждом контроллере — централизованный обработчик.
+### Как централизованно обработать исключения? { #controller-advice }
 
-**Как работает:** Если метод в `@RestController` или `@Service` выбрасывает исключение — ошибка летит вверх. `DispatcherServlet` перехватывает её и передаёт `HandlerExceptionResolver`. Резолвер находит класс с `@RestControllerAdvice` и вызывает нужный метод.
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Вместо `try-catch` в каждом контроллере пишут один класс с `@RestControllerAdvice` и методами `@ExceptionHandler`. Исключение летит вверх, `DispatcherServlet` передаёт его `HandlerExceptionResolver`, а тот находит подходящий метод-обработчик и превращает исключение в HTTP-ответ.
+
+Если метод в `@RestController` или `@Service` выбрасывает исключение, ошибка летит вверх. `DispatcherServlet` перехватывает её и передаёт `HandlerExceptionResolver`. Резолвер находит класс с `@RestControllerAdvice` и вызывает нужный метод.
 
 ```java
 @RestControllerAdvice  // @ControllerAdvice + @ResponseBody
@@ -140,13 +207,23 @@ public class GlobalExceptionHandler {
 }
 ```
 
-### Сеньорские нюансы
+!!! warning "Ловушка: `@ControllerAdvice` вместо `@RestControllerAdvice`"
+    `@RestControllerAdvice` = `@ControllerAdvice` + `@ResponseBody`. Без `@ResponseBody` Spring воспримет возвращаемую строку как имя HTML-шаблона, а не как JSON. Для REST API всегда используй `@RestControllerAdvice`.
 
-**`@RestControllerAdvice` vs `@ControllerAdvice`:**
+!!! warning "Ловушка: fallback без стектрейса"
+    В обработчике `Exception.class` логируй исключение целиком — `log.error("...", ex)` — на уровне ERROR. Иначе непредвиденная ошибка превратится в безликий 500 без следов в логах.
 
-`@RestControllerAdvice` = `@ControllerAdvice` + `@ResponseBody`. Без `@ResponseBody` Spring воспримет возвращаемую строку как имя HTML-шаблона, а не как JSON. Для REST API всегда используй `@RestControllerAdvice`.
+??? question "Проверь себя"
+    1. Кто передаёт исключение в `@RestControllerAdvice`?
+    2. Чем `@RestControllerAdvice` отличается от `@ControllerAdvice`?
+    3. Как задать HTTP-статус без `ResponseEntity`?
 
-**Маршрутизация ошибок — по наиболее точному классу:**
+### Как Spring выбирает обработчик исключения? { #handler-resolution }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    По наиболее точному классу исключения в иерархии. Если есть обработчик для `UserNotFoundException`, он победит обработчик для `Exception`. Порядок методов в классе роли не играет.
 
 ```java
 // Упала UserNotFoundException → первый метод (точное совпадение)
@@ -154,7 +231,20 @@ public class GlobalExceptionHandler {
 // Порядок методов в классе не важен — важна иерархия классов исключений
 ```
 
-**Spring Boot 3 и RFC 7807 — `ProblemDetail`:**
+!!! warning "Ловушка: «сработает первый метод в классе»"
+    Spring не перебирает обработчики сверху вниз, как `catch`-блоки. Он ищет ближайший по иерархии класс исключения, поэтому fallback на `Exception.class` можно объявить где угодно.
+
+??? question "Проверь себя"
+    1. Какой обработчик сработает для `UserNotFoundException`, если есть ещё `Exception.class`?
+    2. Куда попадёт `NullPointerException`?
+    3. Важен ли порядок методов в классе?
+
+### Что такое `ProblemDetail`? { #problem-detail }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Это поддержка стандарта RFC 7807 в Spring Boot 3: единый формат тела ошибки с полями `type`, `title`, `status`, `detail`, `instance`. Вместо самописного `ErrorResponse` обработчик возвращает `ProblemDetail`, и все микросервисы отвечают об ошибках одинаково.
 
 ```java
 // ✅ Вместо самописного ErrorResponse — стандарт RFC 7807
@@ -171,35 +261,65 @@ public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
 // Стандартизирует ответы всех микросервисов без написания велосипедов
 ```
 
-## Фильтры (Filters) vs Перехватчики (Interceptors)
+!!! warning "Ловушка: свой формат ошибок в каждом сервисе"
+    Если каждый сервис придумывает свой `ErrorResponse`, клиенту приходится разбирать N форматов. `ProblemDetail` решает это стандартом, а свои поля добавляются через `setProperty()`.
 
-**Главное отличие одной фразой:** `Filter` — охранник на входе в здание (уровень Tomcat/Servlet). `Interceptor` — секретарь перед дверью конкретного кабинета (уровень Spring MVC).
+??? question "Проверь себя"
+    1. Какой RFC реализует `ProblemDetail`?
+    2. Какие поля у него есть из коробки?
+    3. Как добавить своё поле в ответ?
 
-### Поток обработки
+## Фильтры и интерсепторы { #filters-interceptors }
 
+### Чем Filter отличается от Interceptor? { #filter-vs-interceptor }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Filter — механизм Servlet API: срабатывает до `DispatcherServlet` и видит только сырой HTTP-запрос. Interceptor — механизм Spring MVC: работает внутри `DispatcherServlet` и знает, какой метод контроллера будет вызван. Filter — охранник на входе в здание, Interceptor — секретарь перед дверью конкретного кабинета.
+
+```mermaid
+sequenceDiagram
+    participant C as Клиент
+    participant F as Filter chain (Servlet API)
+    participant DS as DispatcherServlet
+    participant I as Interceptor (Spring MVC)
+    participant RC as RestController
+    C->>F: запрос
+    F->>DS: chain.doFilter()
+    DS->>I: preHandle()
+    I->>RC: вызов метода
+    RC-->>I: результат
+    I->>I: postHandle()
+    I->>I: afterCompletion() — всегда, даже при ошибке
+    I-->>DS: ответ
+    DS-->>F: ответ
+    F-->>C: ответ (фильтры на выходе)
 ```
-Клиент
-  ↓
-[Filter chain]  ← уровень Servlet API, до Spring
-  ↓
-DispatcherServlet
-  ↓
-[Interceptor.preHandle]  ← уровень Spring MVC
-  ↓
-@RestController (твой код)
-  ↓
-[Interceptor.postHandle]
-  ↓
-DispatcherServlet
-  ↓
-[Interceptor.afterCompletion]  ← вызывается всегда, даже при ошибке
-  ↓
-[Filter chain]  ← на выходе
-  ↓
-Клиент
-```
 
-### Filter (Фильтр) — уровень Servlet API
+| | **Filter** | **Interceptor** |
+|---|---|---|
+| **Чей механизм** | Servlet API (Jakarta EE) | Spring Web MVC |
+| **Когда срабатывает** | До `DispatcherServlet` | Внутри `DispatcherServlet` |
+| **Что видит** | Сырой HTTP-запрос | HTTP-запрос + метод контроллера (`handler`) |
+| **Доступ к Spring-бинам** | Да (если `@Component`) | Да (Spring-компонент) |
+| **Применение** | Security, CORS, GZIP, глобальный лог | Авторизация, бизнес-логика маршрутов, аудит |
+| **Базовый класс** | `OncePerRequestFilter` | `HandlerInterceptor` |
+
+!!! warning "Ловушка: Spring Security — это фильтры"
+    Частая ошибка — говорить, что Spring Security работает на интерсепторах. **Это не так.** Spring Security — `FilterChainProxy`, цепочка именно **фильтров**: он должен отбить злоумышленника ещё до того, как начнёт работу `DispatcherServlet`. Подробно — в [Экосистема → Spring Security](spring-ecosystem.md#security-filter-chain).
+
+??? question "Проверь себя"
+    1. Какой из механизмов срабатывает раньше и почему?
+    2. Что видит Interceptor такого, чего не видит Filter?
+    3. На чём построен Spring Security?
+
+### Как написать фильтр? { #filter }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Наследуются от `OncePerRequestFilter` и реализуют `doFilterInternal`: код до `chain.doFilter()` выполняется на входе, после — на выходе. Фильтры используют для глобальной аутентификации, CORS, логирования и сжатия.
 
 ```java
 @Component
@@ -232,14 +352,29 @@ public class LoggingFilter extends OncePerRequestFilter { // не Filter нап�
 }
 ```
 
-**Где применяется:**
+Где применяется:
 
-- Глобальная аутентификация (Spring Security — это цепочка именно фильтров)
-- Настройка CORS-заголовков
-- Глобальное логирование (IP, URL, время ответа)
-- Сжатие GZIP
+- Глобальная аутентификация (Spring Security — это цепочка именно фильтров).
+- Настройка CORS-заголовков.
+- Глобальное логирование (IP, URL, время ответа).
+- Сжатие GZIP.
 
-### Interceptor (Перехватчик) — уровень Spring MVC
+Почему `OncePerRequestFilter`, а не `Filter`: голый интерфейс `Filter` может вызываться несколько раз за один HTTP-цикл — например, при внутреннем `forward` или обработке ошибок контейнером. `OncePerRequestFilter` гарантирует, что логика выполнится строго один раз.
+
+!!! warning "Ловушка: исчезнувшее тело запроса"
+    `InputStream` HTTP-запроса можно прочитать только **один раз**. Если фильтр прочитает тело для логирования, до контроллера дойдёт пустой запрос, и Spring бросит `HttpMessageNotReadableException`. Решение — обернуть запрос в `ContentCachingRequestWrapper`: он буферизирует тело в память и позволяет читать его многократно.
+
+??? question "Проверь себя"
+    1. Почему фильтр наследуют от `OncePerRequestFilter`?
+    2. Что будет, если прочитать тело запроса в фильтре?
+    3. Для каких задач обычно пишут фильтры?
+
+### Как написать интерсептор? { #interceptor }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Реализуют `HandlerInterceptor` и регистрируют через `WebMvcConfigurer.addInterceptors()`. У него три метода: `preHandle` до контроллера (вернул `false` — цепочка прервана), `postHandle` после контроллера до записи ответа и `afterCompletion`, который вызывается всегда, даже при ошибке.
 
 ```java
 @Component
@@ -275,7 +410,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) {
         // Вызывается ВСЕГДА — даже если контроллер или postHandle упали с ошибкой
-        // Идеально для очистки ресурсов, завершения логирования
+        // Подходит для очистки ресурсов, завершения логирования
     }
 }
 
@@ -291,37 +426,28 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
-**Где применяется:**
+Где применяется:
 
-- Проверка прав доступа к конкретным эндпоинтам (авторизация)
-- Логирование времени выполнения конкретного метода
-- Обогащение контекста (достать userId из токена и положить в `ThreadLocal`)
+- Проверка прав доступа к конкретным эндпоинтам (авторизация).
+- Логирование времени выполнения конкретного метода.
+- Обогащение контекста: достать `userId` из токена и положить в `ThreadLocal`.
 
-### Сравнительная таблица
+!!! warning "Ловушка: очистка в `postHandle`"
+    `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда.
 
-| | **Filter** | **Interceptor** |
-|---|---|---|
-| **Чей механизм** | Servlet API (Jakarta EE) | Spring Web MVC |
-| **Когда срабатывает** | До `DispatcherServlet` | Внутри `DispatcherServlet` |
-| **Что видит** | Сырой HTTP-запрос | HTTP-запрос + метод контроллера (`handler`) |
-| **Доступ к Spring-бинам** | Да (если `@Component`) | Да (Spring-компонент) |
-| **Применение** | Security, CORS, GZIP, глобальный лог | Авторизация, бизнес-логика маршрутов, аудит |
-| **Базовый класс** | `OncePerRequestFilter` | `HandlerInterceptor` |
+??? question "Проверь себя"
+    1. Что произойдёт, если `preHandle` вернёт `false`?
+    2. Чем `postHandle` отличается от `afterCompletion`?
+    3. Как зарегистрировать интерсептор только для `/api/**`?
 
-### Сеньорские нюансы
+## Валидация и CORS { #validation-cors }
 
-!!! warning "Ловушка: исчезнувшее тело запроса"
-    `InputStream` HTTP-запроса можно прочитать только **один раз**. Если фильтр прочитает тело для логирования — до контроллера дойдёт пустой запрос, Spring бросит `HttpMessageNotReadableException`.
+### Как работает `@Valid`? { #valid }
 
-    **Решение:** Обернуть запрос в `ContentCachingRequestWrapper`. Он буферизирует тело в память и позволяет читать его многократно.
+**Уровень:** Junior
 
-!!! note "Почему `OncePerRequestFilter`, а не `Filter`?"
-    Голый интерфейс `Filter` может вызываться несколько раз за один HTTP-цикл (например, при внутреннем `forward` или обработке ошибок контейнером). `OncePerRequestFilter` гарантирует, что логика выполнится строго один раз.
-
-!!! tip "Где живёт Spring Security?"
-    Частая ошибка джунов — говорить, что Spring Security работает на интерцепторах. **Это не так.** Spring Security — это `FilterChainProxy`, цепочка именно **фильтров**. Он должен отбить злоумышленника ещё до того, как тяжеловесный `DispatcherServlet` начнёт свою работу.
-
-## Валидация (`@Valid` и Bean Validation)
+!!! abstract "Ответ вслух"
+    `@Valid` перед параметром контроллера запускает Bean Validation по аннотациям DTO — `@NotBlank`, `@Size`, `@Email` и другим. Если проверка не прошла, метод не вызывается, а Spring бросает `MethodArgumentNotValidException`, которую ловит `@RestControllerAdvice`. Для проверки параметров сервиса на класс вешают `@Validated`.
 
 ```java
 // DTO с ограничениями
@@ -357,7 +483,22 @@ public class HabitService {
 }
 ```
 
-## CORS — Cross-Origin Resource Sharing
+Как превратить ошибки валидации в ответ `400` — в [обработке исключений](#controller-advice).
+
+!!! warning "Ловушка: аннотации на DTO без `@Valid`"
+    `@NotBlank` и `@Size` на полях DTO сами ничего не проверяют. Без `@Valid` у параметра контроллера (или `@Validated` на классе сервиса) валидация не запустится.
+
+??? question "Проверь себя"
+    1. Какое исключение бросает Spring при ошибке валидации тела запроса?
+    2. Что нужно, чтобы валидировать параметры метода сервиса?
+    3. Что будет, если забыть `@Valid`?
+
+### Как настроить CORS? { #cors }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Три способа: `@CrossOrigin` на контроллере, глобально через `WebMvcConfigurer.addCorsMappings()` или через фильтр Spring Security. Глобальная настройка предпочтительнее аннотаций, а при подключённом Security лучше настраивать CORS в нём — фильтр срабатывает раньше `DispatcherServlet`.
 
 ```java
 // Вариант 1 — аннотация на контроллере
@@ -383,17 +524,28 @@ public class WebConfig implements WebMvcConfigurer {
 // Предпочтительно, так как фильтр срабатывает раньше DispatcherServlet
 ```
 
-## Итоговая шпаргалка
+!!! warning "Ловушка: CORS в MVC при подключённом Security"
+    Если Security подключён, preflight-запрос сначала проходит его фильтры. CORS, настроенный только в `WebMvcConfigurer`, сработает уже внутри `DispatcherServlet` — поэтому при Security его настраивают в фильтре.
 
-| **Тема** | **Запомнить** |
+??? question "Проверь себя"
+    1. Назови три способа настроить CORS.
+    2. Что делает `maxAge(3600)`?
+    3. Почему при Spring Security CORS настраивают в его фильтре?
+
+## Шпаргалка { #cheatsheet }
+
+| Тема | Запомнить |
 |---|---|
-| **DispatcherServlet** | Front Controller. Порядок: HandlerMapping → HandlerAdapter → Controller → HttpMessageConverter |
-| **HandlerAdapter** | Скрывает разницу между реализациями контроллеров. Парсит аргументы и вызывает метод |
-| **`@RestControllerAdvice`** | Централизованная обработка ошибок. Лучше `@ControllerAdvice` для REST |
-| **Иерархия исключений** | Spring выбирает обработчик по наиболее точному классу исключения |
-| **RFC 7807 / `ProblemDetail`** | Spring Boot 3+ стандарт для структуры ошибок |
-| **Filter vs Interceptor** | Filter — до DispatcherServlet (Servlet API). Interceptor — внутри (Spring MVC) |
+| **`DispatcherServlet`** | Front Controller. Порядок: `HandlerMapping` → `HandlerAdapter` → Controller → `HttpMessageConverter` |
+| **`HandlerAdapter`** | Скрывает разницу между реализациями контроллеров. Парсит аргументы и вызывает метод |
+| **Аннотации запроса** | `@PathVariable` — путь, `@RequestParam` — query, `@RequestBody` — тело, `@RequestHeader`, `@CookieValue` |
+| **`ResponseEntity`** | Статус, заголовки и тело. Короче — `@ResponseStatus` |
+| **`@RestControllerAdvice`** | Централизованная обработка ошибок. Для REST лучше, чем `@ControllerAdvice` |
+| **Выбор обработчика** | Spring выбирает обработчик по наиболее точному классу исключения |
+| **RFC 7807 / `ProblemDetail`** | Стандарт структуры ошибок в Spring Boot 3+ |
+| **Filter vs Interceptor** | Filter — до `DispatcherServlet` (Servlet API). Interceptor — внутри (Spring MVC) |
 | **`OncePerRequestFilter`** | Всегда наследоваться от него, не от голого `Filter` |
-| **Ловушка InputStream** | Тело запроса читается один раз. Для логирования — `ContentCachingRequestWrapper` |
-| **Spring Security** | Это цепочка **фильтров** (FilterChainProxy), не интерцепторов |
+| **Ловушка `InputStream`** | Тело запроса читается один раз. Для логирования — `ContentCachingRequestWrapper` |
+| **Spring Security** | Это цепочка **фильтров** (`FilterChainProxy`), не интерсепторов |
 | **`@Valid`** | Запускает Bean Validation. Ошибки летят как `MethodArgumentNotValidException` |
+| **CORS** | `@CrossOrigin`, `addCorsMappings()` или фильтр Security (предпочтительно при Security) |

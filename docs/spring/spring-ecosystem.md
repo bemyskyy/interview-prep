@@ -1,30 +1,45 @@
-# Spring: Экосистема и Архитектура
+# Spring: экосистема и архитектура
 
-## Spring Security
+Spring Security, Spring Kafka и место Spring в гексагональной архитектуре. На собесе чаще всего спрашивают, как устроена цепочка фильтров Security, как работает JWT и почему его нельзя отозвать, как настроить `@KafkaListener` и куда ставить `@Transactional`, если домен не знает про Spring.
 
-### Главная концепция: цепочка фильтров
+## Spring Security { #security }
 
-Spring Security — не монолитный блок, а **`SecurityFilterChain`**: цепочка фильтров, каждый из которых выполняет одну задачу. Один проверяет CORS, второй ищет JWT-токен, третий проверяет права, четвёртый обрабатывает ошибки.
+### Как устроен Spring Security? { #security-filter-chain }
 
-```
-Запрос
-  ↓
-CorsFilter               → проверка CORS-заголовков
-  ↓
-SecurityContextPersistenceFilter → восстановление контекста (для сессий)
-  ↓
-UsernamePasswordAuthenticationFilter → логин/пароль
-  ↓
-[Твой JwtAuthenticationFilter]  → валидация JWT-токена
-  ↓
-ExceptionTranslationFilter      → перехват 401/403
-  ↓
-AuthorizationFilter             → проверка прав (@PreAuthorize, .hasRole())
-  ↓
-DispatcherServlet → @RestController
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Spring Security — не монолитный блок, а `SecurityFilterChain`: цепочка сервлет-фильтров, каждый из которых решает одну задачу. Один проверяет CORS, другой ищет JWT-токен, третий проверяет права, четвёртый превращает ошибки в 401 и 403. Всё это происходит до `DispatcherServlet`.
+
+```mermaid
+flowchart TD
+    R["Запрос"] --> A["CorsFilter — проверка CORS-заголовков"]
+    A --> B["SecurityContextPersistenceFilter — восстановление контекста (для сессий)"]
+    B --> C["UsernamePasswordAuthenticationFilter — логин / пароль"]
+    C --> D["Твой JwtAuthenticationFilter — валидация JWT-токена"]
+    D --> E["ExceptionTranslationFilter — перехват 401 / 403"]
+    E --> F["AuthorizationFilter — проверка прав (@PreAuthorize, hasRole())"]
+    F --> G["DispatcherServlet → @RestController"]
 ```
 
-### 1. Аутентификация — "Кто ты?"
+Почему фильтры, а не интерсепторы, и чем они отличаются, — в [Spring MVC → Filter vs Interceptor](spring-mvc.md#filter-vs-interceptor).
+
+!!! warning "Ловушка: «Security работает на интерсепторах»"
+    Нет: Spring Security — это `FilterChainProxy` и цепочка **фильтров**. Он отбивает запрос ещё до того, как `DispatcherServlet` начнёт работу.
+
+??? question "Проверь себя"
+    1. Что такое `SecurityFilterChain`?
+    2. Какой фильтр превращает ошибки безопасности в 401 и 403?
+    3. Срабатывает Security до или после `DispatcherServlet`?
+
+### Как проходит аутентификация? { #authentication }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Фильтр создаёт черновик `Authentication` с логином и паролем и передаёт его `AuthenticationManager`. Тот опрашивает `AuthenticationProvider`-ы: провайдер грузит пользователя через `UserDetailsService` и сверяет пароль через `PasswordEncoder`. Подтверждённый `Authentication` с ролями кладётся в `SecurityContextHolder` — `ThreadLocal`-хранилище текущего потока.
+
+Аутентификация отвечает на вопрос «Кто ты?».
 
 ```java
 // Пользователь прислал логин и пароль:
@@ -61,7 +76,7 @@ public class CustomAuthProvider implements AuthenticationProvider {
 }
 ```
 
-**Успех:** подтверждённый `Authentication` кладётся в **`SecurityContextHolder`** — `ThreadLocal`-хранилище, доступное из любой точки приложения в текущем потоке.
+При успехе подтверждённый `Authentication` кладётся в **`SecurityContextHolder`** — `ThreadLocal`-хранилище, доступное из любой точки приложения в текущем потоке.
 
 ```java
 // Получить текущего пользователя из любого места кода
@@ -71,7 +86,20 @@ String username = auth.getName();
 Collection<? extends GrantedAuthority> roles = auth.getAuthorities();
 ```
 
-### 2. Авторизация — "Что тебе можно?"
+!!! warning "Ловушка: `SecurityContextHolder` привязан к потоку"
+    Это `ThreadLocal`, поэтому в другом потоке контекста нет. Как это ломает `@Async` и `CompletableFuture`, — в [теме про асинхронность](#security-context-async).
+
+??? question "Проверь себя"
+    1. Кто сверяет пароль при аутентификации?
+    2. Что делает `UserDetailsService`?
+    3. Где хранится подтверждённый `Authentication`?
+
+### Как настроить авторизацию? { #authorization }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Авторизация отвечает на вопрос «Что тебе можно?». Правила по URL задают в бине `SecurityFilterChain` через `authorizeHttpRequests`, а правила на уровне метода — через `@PreAuthorize` после `@EnableMethodSecurity`. Нет аутентификации — 401 Unauthorized, нет прав — 403 Forbidden.
 
 ```java
 @Configuration
@@ -113,12 +141,25 @@ public class AdminController {
 }
 ```
 
-**При отказе:**
+При отказе:
 
-- Нет аутентификации → `AuthenticationException` → **401 Unauthorized**
-- Нет прав → `AccessDeniedException` → **403 Forbidden**
+- Нет аутентификации → `AuthenticationException` → **401 Unauthorized**.
+- Нет прав → `AccessDeniedException` → **403 Forbidden**.
 
-### 3. JWT-интеграция — Stateless REST API
+!!! warning "Ловушка: 401 и 403 путают"
+    401 значит «я не знаю, кто ты» — нет или невалиден токен. 403 значит «я знаю, кто ты, но тебе нельзя» — не хватает роли.
+
+??? question "Проверь себя"
+    1. Что включает `@EnableMethodSecurity`?
+    2. Как открыть `/api/auth/**` для всех?
+    3. Когда возвращается 401, а когда 403?
+
+### Как встроить JWT в Spring Security? { #jwt-filter }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Пишут свой фильтр на базе `OncePerRequestFilter` и ставят его перед `UsernamePasswordAuthenticationFilter`. Фильтр достаёт токен из заголовка `Authorization: Bearer`, проверяет подпись и срок, берёт имя и роли из claims без похода в БД и кладёт собранный `Authentication` в `SecurityContextHolder`.
 
 ```java
 @Component
@@ -166,52 +207,87 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 }
 ```
 
-### Сеньорские нюансы
+Это stateless-подход для REST API: сервер не хранит сессию, всё нужное лежит в самом токене.
 
-!!! warning "Потеря SecurityContext в асинхронных потоках"
-    `SecurityContextHolder` использует `ThreadLocal` — данные привязаны к потоку Tomcat. Новый поток из `@Async` или `CompletableFuture` ничего о нём не знает → `getAuthentication()` вернёт `null`.
+!!! warning "Ловушка: невалидный токен — не повод отвечать здесь"
+    При отсутствии или невалидности токена фильтр не пишет ответ сам, а просто передаёт запрос дальше без `Authentication`. Отказ (401) сформирует `ExceptionTranslationFilter`, когда `AuthorizationFilter` увидит неаутентифицированный запрос к защищённому URL.
 
-    ```java
-    // ❌ Контекст потеряется
-    CompletableFuture.runAsync(() -> {
-        SecurityContextHolder.getContext().getAuthentication(); // null!
-    });
+??? question "Проверь себя"
+    1. Перед каким фильтром ставят JWT-фильтр?
+    2. Почему JWT-фильтру не нужно ходить в БД?
+    3. Что фильтр делает, если токена нет?
 
-    // ✅ DelegatingSecurityContextExecutor прокидывает контекст в дочерние потоки
-    @Bean
-    public Executor securityAwareExecutor() {
-        return new DelegatingSecurityContextExecutorService(
-            Executors.newFixedThreadPool(10)
-        );
-    }
-    ```
+### Почему теряется `SecurityContext` в асинхронном коде? { #security-context-async }
 
-!!! warning "Главный минус JWT: невозможность инвалидации"
-    _"Как реализовать Logout если мы используем JWT?"_
+**Уровень:** Senior
 
-    Напрямую инвалидировать JWT нельзя — он валидируется математически, без обращения к БД.
+!!! abstract "Ответ вслух"
+    `SecurityContextHolder` хранит данные в `ThreadLocal`, привязанном к потоку Tomcat. Новый поток из `@Async` или `CompletableFuture` про него ничего не знает, и `getAuthentication()` вернёт `null`. Решение — обернуть пул потоков в `DelegatingSecurityContextExecutorService`, который переносит контекст в дочерние потоки.
 
-    **Решение для продакшена:**
+```java
+// ❌ Контекст потеряется
+CompletableFuture.runAsync(() -> {
+    SecurityContextHolder.getContext().getAuthentication(); // null!
+});
 
-    - **Short-lived Access Token (5-15 мин)** + **Long-lived Refresh Token** в БД/Redis.
-    - При логауте — удаляем Refresh Token из хранилища. Access Token сам протухнет.
-    - В критичных системах (финтех) — **Blacklist в Redis**: JWT-фильтр проверяет при каждом запросе, не отозван ли токен.
+// ✅ DelegatingSecurityContextExecutor прокидывает контекст в дочерние потоки
+@Bean
+public Executor securityAwareExecutor() {
+    return new DelegatingSecurityContextExecutorService(
+        Executors.newFixedThreadPool(10)
+    );
+}
+```
 
-    ```java
-    // JWT-фильтр с проверкой blacklist
-    if (redisBlacklist.contains(token)) {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        return;
-    }
-    ```
+!!! warning "Ловушка: `runAsync` без своего executor"
+    `CompletableFuture.runAsync()` без второго аргумента выполняет задачу в общем `ForkJoinPool`, а не в твоём обёрнутом пуле. Чтобы контекст перенёсся, executor нужно передать явно.
 
----
+??? question "Проверь себя"
+    1. Почему в `@Async`-методе `getAuthentication()` возвращает `null`?
+    2. Как перенести контекст безопасности в дочерний поток?
+    3. Где по умолчанию выполняется `CompletableFuture.runAsync()`?
 
-## Spring Kafka под капотом
+### Как сделать logout, если используется JWT? { #jwt-logout }
 
-### 1. Как работает `@KafkaListener`
+**Уровень:** Senior
 
-`@KafkaListener` — это обёртка над бесконечным `while(true) { consumer.poll(...) }`. Spring сканирует бины, находит аннотацию и просит `ConcurrentKafkaListenerContainerFactory` создать рабочий поток (или несколько, если `concurrency > 1`).
+!!! abstract "Ответ вслух"
+    Напрямую инвалидировать JWT нельзя: он проверяется математически, без обращения к хранилищу. Поэтому делают короткоживущий access token на 5–15 минут и долгоживущий refresh token в БД или Redis; при логауте удаляют refresh token, а access сам истекает. В критичных системах добавляют blacklist отозванных токенов в Redis.
+
+Вопрос на собесе: _«Как реализовать logout, если мы используем JWT?»_
+
+- **Short-lived Access Token (5–15 мин)** + **Long-lived Refresh Token** в БД/Redis.
+- При логауте удаляем refresh token из хранилища. Access token сам истечёт.
+- В критичных системах (финтех) — **blacklist в Redis**: JWT-фильтр при каждом запросе проверяет, не отозван ли токен.
+
+```java
+// JWT-фильтр с проверкой blacklist
+if (redisBlacklist.contains(token)) {
+    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    return;
+}
+```
+
+!!! warning "Ловушка: долгоживущий access token"
+    Главный минус JWT — его нельзя отозвать. Чем дольше живёт access token, тем дольше украденный или «разлогиненный» токен остаётся рабочим.
+
+??? question "Проверь себя"
+    1. Почему JWT нельзя инвалидировать напрямую?
+    2. Что удаляют при логауте в схеме access + refresh?
+    3. Зачем нужен blacklist в Redis и какова его цена?
+
+## Spring Kafka { #spring-kafka }
+
+Физика Kafka, группы потребителей и гарантии доставки разобраны в разделе Kafka: [брокер](../kafka/kafka.md), [Consumer и Producer](../kafka/kafka-consumer-producer.md), [надёжность](../kafka/kafka-reliability.md). Здесь — только настройка `@KafkaListener` в Spring.
+
+### Как работает `@KafkaListener`? { #kafka-listener }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `@KafkaListener` — обёртка над бесконечным циклом `consumer.poll()`. Spring находит аннотацию на бине и просит `ConcurrentKafkaListenerContainerFactory` создать контейнер с рабочими потоками; параметр `concurrency` задаёт число потоков-консьюмеров. Метод получает уже десериализованное сообщение и, при ручном коммите, объект `Acknowledgment`.
+
+`@KafkaListener` — это `while (true) { consumer.poll(...) }`, который пишет за тебя Spring. Он сканирует бины, находит аннотацию и просит `ConcurrentKafkaListenerContainerFactory` создать рабочий поток (или несколько, если `concurrency > 1`).
 
 ```java
 @Component
@@ -234,14 +310,20 @@ public class HabitEventConsumer {
 }
 ```
 
-### 2. Автоматический vs Ручной коммит оффсетов
+!!! warning "Ловушка: `concurrency` больше числа партиций"
+    Одну партицию в группе читает только один консьюмер. Если `concurrency = 3`, а у топика 2 партиции, третий поток будет простаивать (см. [Consumer Groups](../kafka/kafka-consumer-producer.md)).
 
-**Оффсет** — указатель на то, какие сообщения уже обработаны.
+??? question "Проверь себя"
+    1. Что скрывается за `@KafkaListener`?
+    2. Что задаёт параметр `concurrency`?
+    3. Когда в листенере вызывают `ack.acknowledge()`?
 
-!!! danger "Автоматический коммит — зло для бизнес-логики"
-    `enable.auto.commit = true`: каждые 5 секунд фоновый поток сам коммитит оффсеты.
+### Как настроить коммит оффсетов и обработку ошибок листенера? { #listener-config }
 
-    Ты вычитал сообщение об оплате, но сервис упал с ошибкой и не сохранил данные в БД. Фоновый поток уже успел закоммитить оффсет. Сообщение потеряно навсегда. Бизнес в ярости.
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Для бизнес-данных выключают авто-коммит (`enable-auto-commit: false`) и ставят `ack-mode: MANUAL`, чтобы оффсет коммитился вызовом `ack.acknowledge()` только после успешной обработки. Ошибки листенера обрабатывает бин `DefaultErrorHandler`: повторы с backoff, а затем перекладывание в DLQ. Долгую работу из потока листенера выносят, чтобы не превысить `max.poll.interval.ms`.
 
 ```yaml
 # application.yml — правильная настройка
@@ -254,94 +336,55 @@ spring:
       ack-mode: MANUAL  # коммитим только вручную через ack.acknowledge()
 ```
 
-**Гарантия At-Least-Once:** если сервис упадёт до `ack.acknowledge()` — при рестарте это же сообщение придёт снова.
+Где разобрано подробно:
 
-### 3. Dead Letter Queue (DLQ) — обработка "ядовитых" сообщений
+- **Почему авто-коммит теряет сообщения**, чем `MANUAL` отличается от `MANUAL_IMMEDIATE` и что даёт at-least-once — в [Гарантии доставки → Управление оффсетами](../kafka/kafka-reliability.md#offset-commit).
+- **Идемпотентность консьюмера** — дубли при at-least-once неизбежны — в [Гарантии доставки → Идемпотентность](../kafka/kafka-reliability.md#idempotent-consumer).
+- **Retry и DLQ** через `DefaultErrorHandler` и `DeadLetterPublishingRecoverer` — в [Гарантии доставки → DLQ](../kafka/kafka-reliability.md#dlq).
+- **`max.poll.interval.ms` и ребаланс** при зависшем листенере — в [Consumer и Producer → Два пульса](../kafka/kafka-consumer-producer.md#heartbeats).
 
-**Проблема Poison Pill:** пришёл битый JSON. Парсер падает, коммита нет, при следующем `poll()` — то же сообщение, снова падает. Вся партиция заблокирована (Head-of-line blocking).
+!!! warning "Ловушка: долгая синхронная работа в листенере"
+    Если листенер завис на внешнем вызове дольше `max.poll.interval.ms` (по умолчанию 5 минут), брокер сочтёт консьюмер мёртвым и запустит ребаланс. Долгие задачи выносят в отдельный пул потоков и ставят таймауты на внешние вызовы.
 
-```java
-@Configuration
-public class KafkaErrorHandlerConfig {
+??? question "Проверь себя"
+    1. Какие две настройки включают ручной коммит в Spring Kafka?
+    2. Какой бин отвечает за повторы и DLQ?
+    3. Что будет, если листенер обрабатывает сообщение дольше `max.poll.interval.ms`?
 
-    @Bean
-    public DefaultErrorHandler errorHandler(KafkaTemplate<String, Object> kafkaTemplate) {
-        // 1. Recoverer: перекладывает битое сообщение в топик с суффиксом .DLT
-        DeadLetterPublishingRecoverer recoverer =
-            new DeadLetterPublishingRecoverer(kafkaTemplate,
-                (record, ex) -> new TopicPartition(record.topic() + ".DLT", -1));
+## Spring в гексагональной архитектуре { #spring-ddd }
 
-        // 2. Backoff: 3 попытки с интервалом 1 сек → если всё равно падает → DLQ
-        ExponentialBackOff backOff = new ExponentialBackOff(1000L, 2.0);
-        backOff.setMaxAttempts(3);
+Концепции DDD и гексагональной архитектуры (порты, адаптеры, направление зависимостей) разобраны в [Архитектура → Гексагональная архитектура](../architecture/architecture.md#ports-and-adapters). Здесь — где в такой архитектуре ставить аннотации Spring и JPA.
 
-        return new DefaultErrorHandler(recoverer, backOff);
-    }
-}
+### В каких слоях живут аннотации Spring? { #where-annotations }
 
-// Алгоритм:
-// 1. Spring ловит ошибку из листенера
-// 2. Делает retry с backoff (3 раза × 1/2/4 сек)
-// 3. Если все попытки исчерпаны → сообщение → habit-created.DLT
-// 4. Оффсет в основном топике коммитится → основной поток идёт дальше
-// 5. Битое сообщение разбирают разработчики вручную или отдельным сервисом
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Только во внешнем слое — инфраструктуре. Домен и use cases — чистая Java без `@Entity`, `@Service` и `@Autowired`, порты — обычные Java-интерфейсы. Spring живёт в адаптерах (`@RestController`, `@KafkaListener`, реализации репозиториев с `@Component`) и в `@Configuration`, которая собирает чистые классы ядра через `@Bean`.
+
+В классической слоистой архитектуре (`Controller → Service → Repository`) бизнес-логика в `@Service` знает про Spring, JPA и конкретные реализации. При смене БД правим сервисы, при тестировании поднимаем контекст. В гексагоне аннотации уходят наружу:
+
+```mermaid
+flowchart TB
+    subgraph INF["Infrastructure — здесь живёт Spring"]
+        DA["Driving Adapters: @RestController, @KafkaListener"]
+        DRA["Driven Adapters: JpaRepository, KafkaTemplate"]
+        CFG["@Configuration: сборка ядра через @Bean"]
+        subgraph APP["Application — Use Cases и Ports, без Spring"]
+            IP["Incoming Ports: интерфейсы Use Case"]
+            OP["Outgoing Ports: интерфейсы Repository"]
+            subgraph DOM["Domain — чистая Java"]
+                D["Entity, Value Objects, Domain Services"]
+            end
+        end
+    end
+    DA --> IP
+    IP --> D
+    D --> OP
+    DRA -. реализует .-> OP
 ```
 
-### Сеньорские нюансы
-
-!!! warning "Блокировка Listener-потока и Heartbeat-таймаут"
-    _"Ты вычитал сообщение и пошёл по REST в другой микросервис. Тот завис на 10 минут. Что произойдёт?"_
-
-    Параметр `max.poll.interval.ms` (по умолчанию 5 мин). Если листенер завис и не вызывает следующий `poll()` — брокер решает, что сервис умер, и запускает **Rebalance**: передаёт партицию другому инстансу.
-
-    **Правило:** в листенере нельзя делать долгие синхронные операции без контроля таймаутов. Долгие задачи → отдельный пул потоков, не блокируй листенер.
-
-!!! tip "At-Least-Once + Идемпотентность = надёжная система"
-    При ручном коммите одно сообщение может прийти дважды (сохранили в БД, но упали до `ack()`).
-
-    **Решение:** идемпотентная обработка через уникальный бизнес-ID.
-
-    ```java
-    @Transactional
-    public void processPayment(PaymentEvent event) {
-        // Проверяем — не обрабатывали ли мы уже эту транзакцию?
-        if (processedEventRepository.existsById(event.getTransactionId())) {
-            log.info("Дубликат транзакции {}, пропускаем", event.getTransactionId());
-            return; // ack будет вызван в листенере
-        }
-        paymentService.debit(event);
-        processedEventRepository.save(new ProcessedEvent(event.getTransactionId()));
-    }
-    ```
-
----
-
-## Spring в условиях DDD (Гексагональная архитектура)
-
-### Проблема классической слоистой архитектуры
-
-В классической слоистой архитектуре (`Controller → Service → Repository`) бизнес-логика в `@Service` знает про Spring, JPA, конкретные реализации. При смене БД — правим сервисы. При тестировании — поднимаем контекст. Бизнес тонет в технологиях.
-
-### Гексагон: структура
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  Infrastructure (Spring, JPA, Kafka, REST)               │
-│  ┌──────────────────────────────────────────────────┐   │
-│  │  Application (Use Cases, Ports)                   │   │
-│  │  ┌─────────────────────────────────────────────┐ │   │
-│  │  │  Domain (чистая Java, бизнес-логика)         │ │   │
-│  │  │  Entity, Value Objects, Domain Services      │ │   │
-│  │  └─────────────────────────────────────────────┘ │   │
-│  │  Incoming Ports (Use Case интерфейсы)             │   │
-│  │  Outgoing Ports (Repository интерфейсы)           │   │
-│  └──────────────────────────────────────────────────┘   │
-│  Driving Adapters: @RestController, @KafkaListener        │
-│  Driven Adapters: JpaRepository, KafkaTemplate           │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 1. Domain — чистая Java, ноль Spring
+**Domain — ноль Spring.** Богатая доменная модель защищает инварианты бизнес-методами (почему анемичная модель — антипаттерн, разобрано в [Архитектура → Aggregates и Entities](../architecture/architecture.md#3-aggregates-entities)):
 
 ```java
 // ❌ Анемичная модель (антипаттерн)
@@ -377,7 +420,7 @@ public class Booking {
 }
 ```
 
-### 2. Ports — контракты без реализации
+**Ports — контракты без реализации**, обычные Java-интерфейсы:
 
 ```java
 // Incoming Port — что умеет система (Use Case)
@@ -401,7 +444,7 @@ public interface NotificationPort {
 }
 ```
 
-### 3. Application — Use Cases (бизнес-логика)
+**Application — Use Cases**, тоже без Spring:
 
 ```java
 // Чистый Java-класс, реализует Use Case
@@ -432,7 +475,20 @@ public class CreateBookingService implements CreateBookingUseCase {
 }
 ```
 
-### 4. Infrastructure — адаптеры (здесь живёт Spring)
+!!! warning "Ловушка: `JpaRepository` как порт"
+    Если outgoing port — это `JpaRepository`, ядро снова зависит от Spring Data и JPA. Порт — свой интерфейс, а `JpaRepository` используется только внутри адаптера.
+
+??? question "Проверь себя"
+    1. В каких слоях нет аннотаций Spring?
+    2. Чем outgoing port отличается от `JpaRepository`?
+    3. Почему `CreateBookingService` не помечен `@Service`?
+
+### Как адаптеры и конфигурация связывают ядро со Spring? { #adapters-config }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Входящий адаптер — `@RestController` — зависит от интерфейса use case, а не от сервиса. Исходящий адаптер — `@Component`, реализующий доменный порт через стандартный `JpaRepository` и маппинг в JPA Entity. Чистые классы ядра Spring создаёт через `@Bean` в `@Configuration` и сам подставляет адаптеры в их конструкторы.
 
 ```java
 // Driving Adapter — входящий (REST)
@@ -486,7 +542,7 @@ public class BookingJpaEntity {
 }
 ```
 
-### 5. Конфигурация — склеиваем всё через Spring
+Конфигурация склеивает всё через Spring:
 
 ```java
 @Configuration
@@ -507,51 +563,83 @@ public class DomainConfig {
 }
 ```
 
-### Где ставить `@Transactional`?
+!!! warning "Ловушка: контроллер зависит от реализации"
+    Если `BookingController` внедряет `CreateBookingService`, а не `CreateBookingUseCase`, адаптер привязан к конкретному классу ядра. Зависимость должна идти на порт — тогда реализацию можно заменить или задекорировать.
 
-!!! tip "Главный холивар DDD + Spring"
-    В ядре нет Spring. Но транзакции — это бизнес-требование. Куда вешать `@Transactional`?
+??? question "Проверь себя"
+    1. От чего зависит `BookingController`?
+    2. Как `JpaBookingRepository` связан с доменным портом?
+    3. Как Spring создаёт `CreateBookingService`, если на нём нет `@Service`?
 
-    **Подход 1 — Пуристский:** Создать Decorator-обёртку на инфраструктурном слое:
+### Где ставить `@Transactional`, если в ядре нет Spring? { #transactional-ddd }
 
-    ```java
-    @Component
-    @Primary
-    public class TransactionalCreateBookingUseCase implements CreateBookingUseCase {
-        private final CreateBookingService delegate; // чистый сервис
+**Уровень:** Senior
 
-        @Override
-        @Transactional  // транзакция на обёртке, не в ядре
-        public Booking createBooking(CreateBookingCommand command) {
-            return delegate.createBooking(command);
-        }
+!!! abstract "Ответ вслух"
+    Есть два подхода. Пуристский — декоратор на инфраструктурном слое: класс-обёртка реализует тот же use case, помечен `@Transactional` и делегирует чистому сервису. Прагматичный — `jakarta.transaction.Transactional` из стандарта JTA прямо в use case: транзакции — часть бизнес-требований, а зависимость от JTA некритична.
+
+Вопрос: в ядре нет Spring, но транзакции — бизнес-требование. Куда вешать `@Transactional`?
+
+**Подход 1 — пуристский.** Создать обёртку-[декоратор](../java/patterns.md#decorator) на инфраструктурном слое:
+
+```java
+@Component
+@Primary
+public class TransactionalCreateBookingUseCase implements CreateBookingUseCase {
+    private final CreateBookingService delegate; // чистый сервис
+
+    @Override
+    @Transactional  // транзакция на обёртке, не в ядре
+    public Booking createBooking(CreateBookingCommand command) {
+        return delegate.createBooking(command);
     }
-    ```
+}
+```
 
-    **Подход 2 — Прагматичный (принятый в индустрии):** Использовать `jakarta.transaction.Transactional` (стандарт JTA, не Spring-специфичный импорт; до Spring Boot 3 / Jakarta EE 9 пакет назывался `javax.transaction`) прямо в Use Case. Это допустимый компромисс — транзакции реально являются частью бизнес-требований (ACID), и завязка на JTA-стандарт некритична.
+**Подход 2 — прагматичный (принятый в индустрии).** Использовать `jakarta.transaction.Transactional` прямо в use case. Это стандарт JTA, не Spring-специфичный импорт; до Spring Boot 3 / Jakarta EE 9 пакет назывался `javax.transaction`. Компромисс допустим: транзакции реально являются частью бизнес-требований (ACID), и завязка на JTA-стандарт некритична.
 
-### Сеньорские нюансы
+!!! warning "Ловушка: `@Primary` у декоратора"
+    Декоратор и чистый сервис реализуют один интерфейс. Без `@Primary` (или квалификатора) Spring не поймёт, какой бин внедрять в контроллер, и упадёт с ошибкой неоднозначности.
 
-!!! note "Проблема двойных сущностей"
-    _"Зачем маппить `Booking` → `BookingJpaEntity` → `Booking`? Это же дублирование!"_
+??? question "Проверь себя"
+    1. Как работает пуристский подход с декоратором?
+    2. Почему `jakarta.transaction.Transactional` считается допустимым компромиссом?
+    3. Как назывался пакет JTA до Spring Boot 3?
 
-    **Ответ:** Это цена изоляции. JPA Entity требует пустого конструктора, геттеров/сеттеров, аннотаций связей — она оптимизирована под структуру таблиц. Domain Model оптимизирована под бизнес-правила: может не иметь сеттеров вообще, структура не совпадает с таблицами.
+### Зачем маппить доменную модель в отдельную JPA Entity? { #double-entities }
 
-    В простых CRUD-приложениях — это оверхед. В сложных доменах — это спасает от превращения в "Big Ball of Mud" (большой ком грязи).
+**Уровень:** Senior
 
-## Итоговая шпаргалка
+!!! abstract "Ответ вслух"
+    Это цена изоляции: JPA Entity оптимизирована под таблицы — пустой конструктор, геттеры и сеттеры, аннотации связей, а доменная модель — под бизнес-правила и может вообще не иметь сеттеров. В простом CRUD двойные сущности — лишний оверхед, в сложном домене они защищают от «большого кома грязи».
 
-| **Тема** | **Запомнить** |
+Вопрос: _«Зачем маппить `Booking` → `BookingJpaEntity` → `Booking`? Это же дублирование!»_
+
+JPA Entity требует пустого конструктора, геттеров/сеттеров и аннотаций связей — она оптимизирована под структуру таблиц. Domain Model оптимизирована под бизнес-правила: может не иметь сеттеров вообще, а её структура не обязана совпадать с таблицами.
+
+!!! warning "Ловушка: двойные сущности в простом CRUD"
+    В простых CRUD-приложениях маппинг — чистый оверхед. Он окупается в сложных доменах, где спасает от превращения кода в Big Ball of Mud («большой ком грязи»).
+
+??? question "Проверь себя"
+    1. Чем JPA Entity отличается от доменной модели по требованиям?
+    2. Когда двойные сущности оправданы?
+    3. Когда они лишние?
+
+## Шпаргалка { #cheatsheet }
+
+| Тема | Запомнить |
 |---|---|
-| **SecurityFilterChain** | Цепочка фильтров. Security — это фильтры, не интерцепторы |
-| **SecurityContextHolder** | ThreadLocal. В `@Async` — нужен `DelegatingSecurityContextExecutor` |
-| **JWT Logout** | Инвалидировать нельзя. Решение: короткий Access Token + Refresh Token в Redis |
-| **`@KafkaListener`** | Обёртка над `consumer.poll()`. `concurrency` = количество потоков |
-| **Ручной коммит** | `AckMode.MANUAL` + `ack.acknowledge()` после успешной обработки |
-| **Poison Pill / DLQ** | `DefaultErrorHandler` + retry с backoff → `DeadLetterPublishingRecoverer` |
-| **At-Least-Once** | Дубликаты возможны → идемпотентность через уникальный бизнес-ID |
-| **`max.poll.interval.ms`** | 5 мин по умолчанию. Долгая обработка → Rebalance → не блокируй поток |
+| **`SecurityFilterChain`** | Цепочка фильтров. Security — это фильтры, не интерсепторы |
+| **Аутентификация** | `AuthenticationManager` → `AuthenticationProvider` → `UserDetailsService` + `PasswordEncoder` |
+| **`SecurityContextHolder`** | `ThreadLocal`. В `@Async` нужен `DelegatingSecurityContextExecutor` |
+| **401 vs 403** | 401 — не аутентифицирован, 403 — нет прав |
+| **JWT-фильтр** | `OncePerRequestFilter` перед `UsernamePasswordAuthenticationFilter`, claims без похода в БД |
+| **JWT Logout** | Инвалидировать нельзя. Решение: короткий access token + refresh token в Redis, blacklist |
+| **`@KafkaListener`** | Обёртка над `consumer.poll()`. `concurrency` — количество потоков |
+| **Ручной коммит** | `enable-auto-commit: false` + `ack-mode: MANUAL` + `ack.acknowledge()` после обработки |
+| **Ошибки листенера** | `DefaultErrorHandler`: retry с backoff → DLQ. Подробно — в [Kafka](../kafka/kafka-reliability.md#dlq) |
+| **`max.poll.interval.ms`** | 5 мин по умолчанию. Долгая обработка → ребаланс → не блокируй поток листенера |
 | **DDD: Domain** | Чистая Java. Никаких `@Entity`, `@Service`. Богатая модель с бизнес-методами |
-| **DDD: Ports** | Incoming — Use Cases (что умеем). Outgoing — Repository и внешние сервисы |
+| **DDD: Ports** | Incoming — use cases (что умеем). Outgoing — repository и внешние сервисы |
 | **DDD: Adapters** | Driving (REST/Kafka) → Driven (JPA/HTTP-клиент). Здесь живёт Spring |
-| **`@Transactional` в DDD** | Декоратор (пуристы) или `jakarta.transaction.Transactional` в Use Case (прагматики) |
+| **`@Transactional` в DDD** | Декоратор (пуристы) или `jakarta.transaction.Transactional` в use case (прагматики) |

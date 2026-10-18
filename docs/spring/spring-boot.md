@@ -1,45 +1,76 @@
 # Spring Boot
 
-## Зачем Spring Boot, если есть Spring?
+Что Spring Boot добавляет поверх Spring: автоконфигурацию, стартеры, управление версиями и внешнюю конфигурацию. На собесе чаще всего просят объяснить, как работает `@EnableAutoConfiguration`, чем стартер отличается от автоконфигурации, зачем BOM и в каком порядке читаются настройки.
 
-Чтобы понять ценность Spring Boot, нужно вспомнить, как страдали раньше (во времена чистого Spring Framework):
+## Зачем нужен Spring Boot { #why-boot }
 
-1. **Ад конфигураций:** Огромные XML-файлы или Java-классы `@Configuration` только чтобы подружить Spring с базой данных — создать `DataSource`, `TransactionManager`, настроить Hibernate.
-2. **Ад зависимостей:** Самостоятельная сборка зоопарка версий библиотек, которые совместимы друг с другом.
-3. **Ад деплоя:** Сборка в `.war`, перенос на внешний Tomcat/WildFly, молитвы при запуске.
+### Зачем Spring Boot, если есть Spring? { #boot-vs-spring }
 
-**Spring Boot — это не новый фреймворк.** Это умная оболочка над тем же Spring Core. Его философия — **Convention over Configuration**: _"В 90% случаев всем нужны одинаковые настройки. Я сделаю всё по умолчанию. Вмешивайся только когда хочешь что-то изменить."_
+**Уровень:** Junior
 
-Плюс — **Embedded Servers (встроенные серверы)**. Tomcat работает _внутри_ твоего `.jar`. Просто `java -jar app.jar` — и приложение поднимает себя само.
+!!! abstract "Ответ вслух"
+    Spring Boot — не новый фреймворк, а оболочка над Spring Core по принципу Convention over Configuration: разумные настройки по умолчанию, вмешиваешься только когда нужно. Он убирает ручную конфигурацию инфраструктуры, подбор совместимых версий библиотек и деплой на внешний сервер — Tomcat встроен прямо в `.jar`.
 
-## Автоконфигурация (Auto-configuration)
+Без Spring Boot (на чистом Spring Framework) было три проблемы:
 
-### `@SpringBootApplication` — что внутри
+1. **Конфигурация:** огромные XML-файлы или Java-классы `@Configuration` только чтобы подружить Spring с базой данных — создать `DataSource`, `TransactionManager`, настроить Hibernate.
+2. **Зависимости:** самостоятельный подбор версий библиотек, совместимых друг с другом.
+3. **Деплой:** сборка в `.war`, перенос на внешний Tomcat/WildFly и ручной запуск.
 
-Это аннотация-композит. Под ней прячутся три:
+**Spring Boot — это не новый фреймворк,** а оболочка над тем же Spring Core. Его философия — **Convention over Configuration**: _«В 90% случаев всем нужны одинаковые настройки. Я сделаю всё по умолчанию. Вмешивайся, только когда хочешь что-то изменить»_.
+
+Плюс — **встроенные серверы (embedded servers)**. Tomcat работает _внутри_ твоего `.jar`: `java -jar app.jar` — и приложение поднимает себя само.
+
+!!! warning "Ловушка: «Spring Boot заменяет Spring»"
+    Boot не заменяет Spring Core: IoC, DI, AOP и жизненный цикл бинов те же самые (см. [Spring Core](spring-core.md)). Boot только создаёт бины и настройки за тебя.
+
+??? question "Проверь себя"
+    1. Какие три проблемы чистого Spring решает Spring Boot?
+    2. Что значит Convention over Configuration?
+    3. Как запускается приложение со встроенным Tomcat?
+
+## Автоконфигурация { #auto-configuration }
+
+### Что внутри `@SpringBootApplication`? { #springbootapplication }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Это аннотация-композит из трёх: `@SpringBootConfiguration` (класс — конфигурация), `@ComponentScan` (сканировать компоненты в текущем пакете и ниже) и `@EnableAutoConfiguration` (включить автоконфигурацию).
 
 ```java
 @SpringBootConfiguration    // этот класс — конфигурация
 @ComponentScan              // сканировать @Service, @Component в текущем пакете
-@EnableAutoConfiguration    // ← Святой Грааль магии Spring Boot
+@EnableAutoConfiguration    // главное: включает автоконфигурацию Spring Boot
 ```
 
-### Как работает `@EnableAutoConfiguration`
+`@SpringBootConfiguration` — специализация `@Configuration`, поэтому в шпаргалках часто пишут «`@Configuration` + `@ComponentScan` + `@EnableAutoConfiguration`».
 
-Ты добавил в `pom.xml` зависимость Kafka. Не написал ни строчки кода — а Spring уже создал `KafkaTemplate`. Как?
+!!! warning "Ловушка: пакет главного класса"
+    `@ComponentScan` без параметров сканирует пакет класса с `@SpringBootApplication`. Компоненты в соседнем пакете, не вложенном в него, Spring не найдёт.
 
-**Шаг 1. Чтение "книги рецептов"**
+??? question "Проверь себя"
+    1. Из каких трёх аннотаций состоит `@SpringBootApplication`?
+    2. Какая из них включает автоконфигурацию?
+    3. Где `@ComponentScan` ищет компоненты по умолчанию?
 
-При старте Spring Boot читает специальные файлы внутри JAR-архивов стартеров:
+### Как работает автоконфигурация? { #how-autoconfig }
 
-- **До Spring Boot 2.7:** `META-INF/spring.factories` — огромный текстовый файл со списком конфигурационных классов.
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    При старте Spring Boot читает из стартеров файл `AutoConfiguration.imports` со списком конфигурационных классов. Каждая конфигурация защищена условиями `@Conditional`: нужный класс есть в classpath, в properties есть настройки, а разработчик ещё не создал свой бин (`@ConditionalOnMissingBean`). Только при выполнении условий бины создаются.
+
+Ты добавил в `pom.xml` зависимость Kafka и не написал ни строчки кода — а Spring уже создал `KafkaTemplate`. Как?
+
+**Шаг 1. Чтение списка конфигураций.** При старте Spring Boot читает специальные файлы внутри JAR-архивов стартеров:
+
+- **До Spring Boot 2.7:** `META-INF/spring.factories` — большой текстовый файл со списком конфигурационных классов.
 - **Spring Boot 2.7+ и 3.x:** `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` — современный формат, список классов построчно.
 
 Spring Boot берёт этот список и пытается загрузить все конфигурации в память.
 
-**Шаг 2. Условные аннотации (`@Conditional`) — самое гениальное**
-
-Spring Boot не создаёт бины бездумно. Каждая автоконфигурация защищена условиями. Он смотрит в `classpath` и задаёт вопросы:
+**Шаг 2. Условные аннотации (`@Conditional`).** Spring Boot не создаёт бины бездумно — каждая автоконфигурация защищена условиями. Он смотрит в classpath и задаёт вопросы:
 
 ```java
 @ConditionalOnClass(KafkaTemplate.class)
@@ -57,10 +88,35 @@ Spring Boot не создаёт бины бездумно. Каждая авто
 // Не создал → создаём дефолтный за него.
 ```
 
-!!! tip "Как отвечать на собесе"
-    "Автоконфигурация работает за счёт сканирования `classpath` и аннотаций `@Conditional`. Spring Boot находит файл `AutoConfiguration.imports`, берёт список конфигураций и применяет их только если выполняются условия: нужная библиотека есть в classpath (`@ConditionalOnClass`), в properties прописаны настройки, и разработчик ещё не создал свой бин (`@ConditionalOnMissingBean`)."
+```mermaid
+flowchart TD
+    A["Старт приложения"] --> B["Чтение AutoConfiguration.imports из стартеров"]
+    B --> C{"@ConditionalOnClass: класс есть в classpath?"}
+    C -- нет --> X["Конфигурация пропущена"]
+    C -- да --> D{"@ConditionalOnProperty: настройки заданы?"}
+    D -- нет --> X
+    D -- да --> E{"@ConditionalOnMissingBean: свой бин уже есть?"}
+    E -- да --> Y["Используется бин разработчика"]
+    E -- нет --> Z["Создаётся бин по умолчанию"]
+```
 
-### Как отключить или переопределить автоконфигурацию
+!!! tip "Как отвечать на собесе"
+    «Автоконфигурация работает за счёт сканирования classpath и аннотаций `@Conditional`. Spring Boot находит файл `AutoConfiguration.imports`, берёт список конфигураций и применяет их, только если выполняются условия: нужная библиотека есть в classpath (`@ConditionalOnClass`), в properties прописаны настройки, и разработчик ещё не создал свой бин (`@ConditionalOnMissingBean`).»
+
+!!! warning "Ловушка: `spring.factories` в Spring Boot 3"
+    С Spring Boot 2.7 список автоконфигураций читается из `AutoConfiguration.imports`. Ответ «Boot читает `spring.factories`» верен только для версий до 2.7.
+
+??? question "Проверь себя"
+    1. Из какого файла Spring Boot 3 читает список автоконфигураций?
+    2. Какие три условия проверяются для `KafkaTemplate`?
+    3. Почему `@ConditionalOnMissingBean` — самая важная аннотация для собеса?
+
+### Как отключить или переопределить автоконфигурацию? { #override-autoconfig }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Отключить — через `exclude` в `@SpringBootApplication` или свойство `spring.autoconfigure.exclude`. Переопределить — просто объявить свой бин: `@ConditionalOnMissingBean` увидит его и не создаст дефолтный. Что именно применилось и почему, показывает Conditions Evaluation Report (`--debug`) или `/actuator/conditions`.
 
 ```java
 // Отключить конкретную автоконфигурацию
@@ -84,7 +140,7 @@ public class MyKafkaConfig {
 }
 ```
 
-### Как посмотреть, что именно сконфигурировал Spring Boot
+Как посмотреть, что именно сконфигурировал Spring Boot:
 
 ```bash
 # Запустить с флагом — в логах будет полный отчёт:
@@ -95,17 +151,24 @@ java -jar app.jar --debug
 # GET /actuator/conditions
 ```
 
-## Управление зависимостями (Starters и BOM)
+!!! warning "Ловушка: «почему мой бин не создался?»"
+    Если автоконфигурация молча не сработала, не гадай — открой Conditions Evaluation Report. В нём для каждой конфигурации написано, какое условие не выполнилось.
 
-### Что такое Dependency Hell
+??? question "Проверь себя"
+    1. Как отключить `DataSourceAutoConfiguration`?
+    2. Как заменить дефолтный `KafkaTemplate` своим?
+    3. Где посмотреть, какие автоконфигурации применились?
 
-Во времена чистого Spring для простого веб-приложения нужно было вручную добавлять 30-40 зависимостей: `spring-core`, `spring-web`, `spring-webmvc`, `spring-context`, `jackson-core`, `jackson-databind`, Tomcat, `slf4j`, `logback`...
+## Зависимости: стартеры и BOM { #dependencies }
 
-И указывать каждую версию руками. Взял `spring-webmvc` 4.3 и `jackson-databind` 2.2 — получи `ClassNotFoundException` при запуске. Два дня на подбор совместимых версий — до первого "Hello World".
+### Что такое стартер? { #starters }
 
-### Лекарство №1: Стартеры
+**Уровень:** Junior
 
-**Стартер** — это пустой JAR без Java-кода. Просто заранее собранный `pom.xml`, группирующий библиотеки для конкретной задачи.
+!!! abstract "Ответ вслух"
+    Стартер — пустой JAR без Java-кода: заранее собранный `pom.xml`, который транзитивно подтягивает набор библиотек для одной задачи. Одна зависимость `spring-boot-starter-web` вместо 15 приносит Spring MVC, Tomcat, Jackson и Validation.
+
+**Dependency Hell.** Во времена чистого Spring для простого веб-приложения нужно было вручную добавлять 30–40 зависимостей: `spring-core`, `spring-web`, `spring-webmvc`, `spring-context`, `jackson-core`, `jackson-databind`, Tomcat, `slf4j`, `logback`... И указывать каждую версию руками: взял `spring-webmvc` 4.3 и `jackson-databind` 2.2 — получи `ClassNotFoundException` при запуске.
 
 ```xml
 <!-- Одна строчка вместо 15 -->
@@ -122,9 +185,7 @@ java -jar app.jar --debug
 <!-- Транзитивно подтягивает: Hibernate, Spring Data, HikariCP, Transaction Manager -->
 ```
 
-Стартеры смещают фокус с _технологий_ на _возможности_. Не "мне нужен Tomcat и Jackson", а "я хочу писать REST API".
-
-**Популярные стартеры:**
+Стартеры смещают фокус с _технологий_ на _возможности_: не «мне нужен Tomcat и Jackson», а «я хочу писать REST API».
 
 | Стартер | Что даёт |
 |---|---|
@@ -136,13 +197,24 @@ java -jar app.jar --debug
 | `spring-boot-starter-validation` | Bean Validation (Hibernate Validator) |
 | `spring-boot-starter-cache` | Абстракция кэширования |
 
-### Лекарство №2: BOM (Bill of Materials)
+!!! warning "Ловушка: в стартере нет кода"
+    Стартер ничего не настраивает и бинов не создаёт — он только приносит JAR-файлы. Бины создаёт автоконфигурация (см. [разницу](#starter-vs-autoconfig)).
 
-Интервьюер спросит: _"Стартер подтянул библиотеки. Но как гарантируется, что их версии не конфликтуют? Почему мы не пишем `<version>` в зависимостях?"_
+??? question "Проверь себя"
+    1. Что лежит внутри стартера?
+    2. Что транзитивно подтягивает `spring-boot-starter-web`?
+    3. Что такое Dependency Hell?
 
-Ответ — **BOM (Bill of Materials)**.
+### Почему в зависимостях Spring Boot не пишут `<version>`? { #bom }
 
-Под капотом любого Spring Boot проекта спрятан файл `spring-boot-dependencies`. Команда Spring тестирует тысячи библиотек в разных комбинациях и прописывает идеальные совместимые версии:
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Версии берутся из BOM (Bill of Materials) — `spring-boot-dependencies`, который подключается через `spring-boot-starter-parent`. Команда Spring тестирует библиотеки в разных комбинациях и прописывает в BOM совместимые версии. Maven или Gradle подставляют их сами.
+
+Интервьюер спросит: _«Стартер подтянул библиотеки. Но как гарантируется, что их версии не конфликтуют? Почему мы не пишем `<version>`?»_ Ответ — **BOM (Bill of Materials)**.
+
+Под капотом любого Spring Boot-проекта есть `spring-boot-dependencies`. Команда Spring тестирует тысячи библиотек в разных комбинациях и прописывает совместимые версии:
 
 ```xml
 <!-- В твоём pom.xml -->
@@ -160,14 +232,27 @@ java -jar app.jar --debug
 </dependency>
 ```
 
-Maven/Gradle идут в BOM, смотрят версию Spring Boot, автоматически подставляют совместимые версии всех зависимостей.
+Maven/Gradle идут в BOM, смотрят версию Spring Boot и подставляют совместимые версии всех зависимостей.
 
 !!! tip "Итог"
-    Dependency Hell побеждён тем, что процесс подбора и тестирования версий делегирован команде инженеров Spring. Твой проект всегда использует гарантированно совместимый набор.
+    Dependency Hell побеждён тем, что подбор и тестирование версий делегированы команде Spring. Проект всегда использует проверенный совместимый набор.
 
-### Стартер vs Автоконфигурация — граница ответственности
+!!! warning "Ловушка: своя версия поверх BOM"
+    Если явно указать `<version>` у управляемой зависимости, она перебьёт версию из BOM, и гарантия совместимости пропадёт. Делай так, только когда точно знаешь зачем.
 
-Джуны часто путают эти два понятия. Показать разницу — это признак понимания архитектуры.
+??? question "Проверь себя"
+    1. Что такое BOM и как он называется в Spring Boot?
+    2. Как BOM подключается в `pom.xml`?
+    3. Почему не нужно писать `<version>` у стартеров?
+
+### Чем стартер отличается от автоконфигурации? { #starter-vs-autoconfig }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Стартер работает на этапе сборки и приносит в проект JAR-файлы библиотек. Автоконфигурация работает на этапе запуска и создаёт бины на основе этих библиотек. Стартер приносит байты, автоконфигурация превращает их в объекты.
+
+Эти понятия часто путают, а разница между ними показывает понимание архитектуры Boot.
 
 | | **Starter** | **Auto-configuration** |
 |---|---|---|
@@ -175,23 +260,49 @@ Maven/Gradle идут в BOM, смотрят версию Spring Boot, авто�
 | **Когда работает** | Этап сборки (Maven / Gradle) | Этап запуска (Spring Context) |
 | **Пример** | Скачивает Kafka-клиент | Видит Kafka-клиент и создаёт `KafkaTemplate` |
 
-Они работают в тандеме: Стартер приносит байты, Автоконфигурация оживляет их в объекты.
+Они работают в паре: стартер приносит байты, автоконфигурация превращает их в объекты.
 
-## application.properties / application.yml
+!!! warning "Ловушка: «стартер создаёт `KafkaTemplate`»"
+    Нет: `KafkaTemplate` создаёт автоконфигурация, когда видит класс Kafka-клиента в classpath. Стартер только положил этот класс туда.
 
-### Форматы и приоритеты
+??? question "Проверь себя"
+    1. На каком этапе работает стартер, а на каком — автоконфигурация?
+    2. Кто создаёт `KafkaTemplate`?
+    3. Как они связаны между собой?
 
-Spring Boot читает конфигурацию из множества источников. Порядок приоритетов (выше = важнее):
+## Конфигурация приложения { #configuration }
 
-```
-1. Аргументы командной строки           java -jar app.jar --server.port=9090
-2. Переменные окружения (OS)            SERVER_PORT=9090
-3. application-{profile}.yml            application-prod.yml
-4. application.yml / application.properties
-5. Дефолтные значения из автоконфигурации
-```
+### В каком порядке Spring Boot читает настройки? { #config-priority }
 
-### Профили (`@Profile` и `spring.profiles.active`)
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Источников много, и более специфичный перебивает общий. Аргументы командной строки важнее переменных окружения, те важнее `application-{profile}.yml`, тот важнее общего `application.yml`, а в самом низу — значения по умолчанию из автоконфигурации.
+
+Порядок приоритетов (выше — важнее):
+
+| Приоритет | Источник | Пример |
+|---|---|---|
+| 1 | Аргументы командной строки | `java -jar app.jar --server.port=9090` |
+| 2 | Переменные окружения (OS) | `SERVER_PORT=9090` |
+| 3 | `application-{profile}.yml` | `application-prod.yml` |
+| 4 | `application.yml` / `application.properties` | — |
+| 5 | Дефолтные значения из автоконфигурации | — |
+
+!!! warning "Ловушка: переменная окружения перебивает yml"
+    `SERVER_PORT=9090` в окружении контейнера победит `server.port` из `application-prod.yml`. Если настройка «не применяется», первым делом проверь переменные окружения и аргументы запуска.
+
+??? question "Проверь себя"
+    1. Что важнее: переменная окружения или `application.yml`?
+    2. Какой источник имеет наивысший приоритет?
+    3. Где в этом списке значения по умолчанию из автоконфигурации?
+
+### Как работают профили? { #profiles }
+
+**Уровень:** Junior
+
+!!! abstract "Ответ вслух"
+    Профиль — именованный набор настроек и бинов для окружения: `dev`, `prod`. Настройки кладут в `application-{profile}.yml` или в документ с `spring.config.activate.on-profile`, а бины помечают `@Profile`. Активный профиль задают через `spring.profiles.active` — аргументом или переменной окружения.
 
 ```yaml
 # application.yml — общие настройки
@@ -241,7 +352,20 @@ public class MockEmailSender implements EmailSender {
 public class SmtpEmailSender implements EmailSender { ... }
 ```
 
-### `@Value` и `@ConfigurationProperties`
+!!! warning "Ловушка: ни один профиль не активен"
+    Если профиль не задан, бины с `@Profile("dev")` и `@Profile("prod")` не создадутся оба. Сервис, которому нужен `EmailSender`, упадёт на старте с ошибкой «бин не найден».
+
+??? question "Проверь себя"
+    1. Как активировать профиль `prod` при запуске?
+    2. Как сделать бин, который создаётся только в `dev`?
+    3. Где хранить настройки конкретного профиля?
+
+### `@Value` или `@ConfigurationProperties`? { #value-vs-configprops }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    `@Value` подходит для одиночного значения — быстро и просто. Для группы связанных настроек лучше `@ConfigurationProperties`: один типобезопасный класс на префикс, поддержка IDE, валидация через `@Validated` и простое тестирование.
 
 ```yaml
 # application.yml
@@ -307,50 +431,30 @@ public class HabitService {
 !!! tip "Когда что использовать"
     `@Value` — для одиночных значений, быстро и просто. `@ConfigurationProperties` — для группы связанных настроек: типобезопасно, поддержка IDE, валидация, легко тестировать.
 
-## Actuator — мониторинг из коробки
+!!! warning "Ловушка: класс свойств не зарегистрирован"
+    Сам по себе `@ConfigurationProperties` бин не создаёт. Класс нужно зарегистрировать — например, через `@EnableConfigurationProperties(HabitProperties.class)`, как в примере выше. Без регистрации внедрить `HabitProperties` не получится.
 
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-actuator</artifactId>
-</dependency>
-```
+??? question "Проверь себя"
+    1. Когда достаточно `@Value`?
+    2. Какие плюсы у `@ConfigurationProperties`?
+    3. Как включить валидацию для класса свойств?
 
-```yaml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,conditions,loggers
-  endpoint:
-    health:
-      show-details: when-authorized
-```
+## Actuator и мониторинг { #actuator }
 
-**Полезные эндпоинты:**
+`spring-boot-starter-actuator` даёт HTTP-эндпоинты мониторинга из коробки: `/actuator/health`, `/actuator/metrics`, `/actuator/conditions` и другие. Эндпоинты, их настройка, безопасность и метрики Micrometer разобраны в [Инструменты → Actuator и Micrometer](spring-tools.md#actuator-micrometer), а концепции наблюдаемости (метрики, логи, трейсы) — в [System Design → Observability](../system-design/system-design.md#observability).
 
-| Эндпоинт | Что показывает |
-|---|---|
-| `GET /actuator/health` | Состояние приложения и его зависимостей (БД, Kafka, Redis) |
-| `GET /actuator/info` | Информация о приложении (версия, git-коммит) |
-| `GET /actuator/metrics` | Метрики: JVM, HTTP-запросы, пул соединений |
-| `GET /actuator/conditions` | Полный отчёт об автоконфигурации (что сработало и почему) |
-| `GET /actuator/loggers` | Уровни логирования. `POST` — изменить в рантайме без перезапуска |
-| `GET /actuator/env` | Все properties и переменные окружения |
+## Шпаргалка { #cheatsheet }
 
-!!! warning "Безопасность Actuator"
-    В продакшене никогда не открывай все эндпоинты публично. Минимум — настрой Spring Security так, чтобы `/actuator/**` был доступен только для внутренней сети или роли `ADMIN`. `env` и `conditions` могут раскрыть пароли и структуру приложения.
-
-## Итоговая шпаргалка
-
-| **Тема** | **Запомнить** |
+| Тема | Запомнить |
 |---|---|
 | **Spring Boot vs Spring** | Boot — оболочка над Spring. Convention over Configuration. Embedded Tomcat |
 | **`@SpringBootApplication`** | Композит из `@Configuration` + `@ComponentScan` + `@EnableAutoConfiguration` |
 | **Автоконфигурация** | Читает `AutoConfiguration.imports` → применяет через `@Conditional` → `@ConditionalOnMissingBean` позволяет переопределить |
+| **Отладка автоконфигурации** | `--debug` или `/actuator/conditions` — Conditions Evaluation Report |
 | **Стартер** | Пустой JAR — только зависимости. Работает на этапе сборки |
 | **BOM** | Spring тестирует совместимые версии и прописывает их. Мы версии не указываем |
-| **Стартер vs Автоконфигурация** | Стартер приносит байты, автоконфигурация оживляет их в объекты |
-| **Приоритет конфигурации** | CLI args > env vars > application-{profile}.yml > application.yml |
+| **Стартер vs Автоконфигурация** | Стартер приносит байты, автоконфигурация превращает их в объекты |
+| **Приоритет конфигурации** | CLI args > env vars > `application-{profile}.yml` > `application.yml` > дефолты |
+| **Профили** | `application-{profile}.yml`, `@Profile`, `spring.profiles.active` |
 | **`@Value` vs `@ConfigurationProperties`** | Value — одиночное значение. ConfigurationProperties — группа настроек с валидацией |
-| **Actuator** | Мониторинг из коробки. В проде закрыть Spring Security |
+| **Actuator** | Мониторинг из коробки — подробно в [Инструментах](spring-tools.md#actuator-micrometer) |

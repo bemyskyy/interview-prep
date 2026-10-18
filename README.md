@@ -13,7 +13,7 @@
 | Раздел | Темы |
 |---|---|
 | **Java** | JVM и память, основы языка, строки, современная Java, многопоточность, ООП, коллекции, исключения, дженерики, Stream API, IO/NIO, SOLID, паттерны |
-| **Spring** | Core (IoC/DI/AOP), Spring Boot, MVC/REST, Data JPA, Security, тестирование |
+| **Spring** | Core (IoC/DI/AOP), Spring Boot, MVC/REST, Data JPA и транзакции, Security, Spring Kafka, тестирование, кэширование, Actuator и Micrometer, WebFlux |
 | **Данные** | SQL, ACID, MVCC, индексы, оконные функции, NoSQL, CAP-теорема, Redis, Cassandra |
 | **Kafka** | Партиции, оффсеты, consumer groups, rebalancing, ISR, acks, семантики доставки, DLQ |
 | **Computer Science** | Алгоритмы, Big O, структуры данных, сортировки, графы, паттерны LeetCode, сети (HTTP/TCP/TLS/gRPC) |
