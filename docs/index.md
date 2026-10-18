@@ -1,15 +1,75 @@
-# Подготовка к техническому собеседованию
+---
+hide:
+  - navigation
+  - toc
+---
 
-База знаний для backend-разработчика на Java: язык, Spring, базы данных, Kafka, алгоритмы, сети, системный дизайн и архитектура. Каждая тема — вопрос, как его задают на собесе, короткий ответ вслух и разбор с кодом: **почему** это работает именно так.
+<div class="ip-hero" markdown>
 
-## Как пользоваться базой { #how-to-use }
+<div class="ip-hero__intro" markdown>
 
-- **Темы.** Заголовок темы — вопрос с собеса. Под ним метка уровня, блок «Ответ вслух» на 2–3 предложения, разбор с кодом, ловушки и свёрнутый блок «Проверь себя».
-- **Коротко / Подробно.** В длинных темах ответ и разбор разнесены по вкладкам. Выбор вкладки запоминается и действует на всех страницах.
-- **Глоссарий.** Наведи курсор на сокращение вроде JMM, MVCC или ISR — появится расшифровка.
-- **Поиск** понимает русский и ищет по всем страницам: `volatile`, `PECS`, `N+1`, `Circuit Breaker`.
-- **Теги** под заголовком страницы показывают уровень и тему. [Все теги](prep/tags.md) собирают страницы по уровню или сквозной теме, например «Транзакции».
-- **Повторение.** [Вопросы собеса](prep/questions.md) — все вопросы базы списком для самопроверки. [За час до собеса](prep/last-hour.md) — все шпаргалки на одной странице.
+# Подготовка к собеседованию на Java backend { #start }
+
+<p class="ip-hero__lead" markdown>Язык, Spring, базы данных, Kafka, алгоритмы, сети и системный дизайн. Каждая тема — вопрос, как его задают на собесе, короткий ответ вслух и разбор с кодом: **почему** это работает именно так.</p>
+
+<p class="ip-hero__actions" markdown>[Начать с основ Java](java/basics.md){ .md-button .md-button--primary } [Все разделы](#sections){ .md-button }</p>
+
+</div>
+
+<div class="ip-hero__quiz" markdown>
+
+<p class="ip-hero__label">Вопрос с собеседования: что выведет код?</p>
+
+```java
+Integer a = 127, b = 127;
+Integer c = 128, d = 128;
+
+System.out.println(a == b);
+System.out.println(c == d);
+```
+
+??? question "Ответ"
+    `true`, затем `false`. При автоупаковке компилятор вызывает `Integer.valueOf()`, а он отдаёт готовые объекты из кэша для значений от -128 до 127. `a` и `b` ссылаются на один объект из кэша, `c` и `d` — на два разных, а `==` сравнивает ссылки. Обёртки сравнивай через `equals()`. Подробнее — в [ловушках автоупаковки](java/basics.md#autoboxing-traps).
+
+</div>
+
+</div>
+
+## Разделы { #sections }
+
+<div class="ip-sections" markdown>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">13 страниц</span></p>
+<p class="ip-section__topics" markdown>JVM и память, многопоточность, коллекции, ООП, дженерики, Stream API, SOLID, паттерны</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Spring](spring/spring-core.md) <span class="ip-section__count">6 страниц</span></p>
+<p class="ip-section__topics" markdown>IoC и DI, AOP, Spring Boot, MVC и REST, Data JPA и транзакции, Security, тестирование</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Данные](database/sql.md) <span class="ip-section__count">2 страницы</span></p>
+<p class="ip-section__topics" markdown>ACID, уровни изоляции, MVCC, индексы, оконные функции, NoSQL, Redis, Cassandra</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Kafka](kafka/kafka.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__topics" markdown>Партиции, оффсеты, consumer groups, ребаланс, ISR, `acks`, exactly-once, DLQ</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны LeetCode, TCP, HTTP, TLS, gRPC</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Проектирование](system-design/system-design.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__topics" markdown>Масштабирование, кэши, очереди, CAP, Saga, микросервисы, DDD, CQRS, Docker, Kubernetes</p>
+</div>
+
+</div>
 
 ## Маршрут подготовки { #route }
 
@@ -55,20 +115,5 @@
     6. **Интервью по System Design.** [Методология](system-design/system-design.md#methodology) → [Разбор кейсов](system-design/system-design.md#cases).
     7. **Эксплуатация.** [Миграции без простоя](infrastructure/infrastructure.md#zero-downtime) → [Стратегии деплоя](infrastructure/infrastructure.md#deploy-strategies) → [Kubernetes](infrastructure/infrastructure.md#kubernetes).
 
-!!! tip "Перед звонком"
-    За день до собеса не пытайся прочитать всё. Открой [За час до собеса](prep/last-hour.md) и пройди шпаргалки своего стека, а непонятные строки добери по ссылке на полный разбор.
-
-## Что внутри { #contents }
-
-| Раздел | Темы |
-|---|---|
-| **Язык Java** | JVM и память, многопоточность, основы языка, строки, ООП, коллекции, исключения, дженерики, Stream API, IO / NIO, SOLID, паттерны |
-| **Spring** | IoC, DI, AOP, Spring Boot, MVC и REST, Data JPA и транзакции, Security, Spring Kafka, тестирование, кэширование, WebFlux |
-| **Данные** | ACID, уровни изоляции, MVCC, индексы, оконные функции, четыре семейства NoSQL, Redis, Cassandra |
-| **Kafka** | Партиции, оффсеты, consumer groups, ребаланс, ISR, `acks`, семантики доставки, DLQ |
-| **Computer Science** | Big O, структуры данных, сортировки, графы, паттерны LeetCode, TCP, HTTP, TLS, DNS, REST и gRPC |
-| **Проектирование** | Масштабирование, кэширование, очереди, CAP, Saga, микросервисы, DDD, CQRS, Docker, CI/CD, Kubernetes |
-
-## Вклад в проект { #contributing }
-
-База открыта для дополнений. Нашёл ошибку, знаешь тему глубже или завалили вопросом, которого здесь нет, — присылай pull request или открой [issue](https://github.com/bemyskyy/interview-prep/issues). Как добавить страницу — в [README](https://github.com/bemyskyy/interview-prep#readme).
+!!! tip "За день до собеседования"
+    Не пытайся прочитать всё. Открой [За час до собеса](prep/last-hour.md) — там шпаргалки всех тем на одной странице. Пройди шпаргалки своего стека, а непонятные строки добери по ссылке на полный разбор. Для самопроверки — [все вопросы базы](prep/questions.md) списком.
