@@ -143,6 +143,7 @@ plugins:
         spring/spring-ecosystem.md: spring/spring-security.md
         spring/spring-tools.md: spring/spring-testing.md
         system-design/system-design.md: system-design/interview.md
+        architecture/architecture.md: architecture/ddd.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -238,7 +239,7 @@ nav:
       - Распределённые данные: system-design/distributed-data.md
 
   - Архитектура:
-      - DDD, микросервисы, CQRS: architecture/architecture.md
+      - DDD, CQRS и Event Sourcing: architecture/ddd.md
       - Слоистая и гексагональная архитектура: architecture/hexagonal.md
       - Микросервисы и отказоустойчивость: architecture/microservices.md
       - Распределённые транзакции: architecture/distributed-transactions.md

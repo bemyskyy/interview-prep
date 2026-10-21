@@ -484,24 +484,23 @@ tags:
 
 ## Архитектура { #architecture }
 
-### DDD, микросервисы, CQRS { #architecture }
+### DDD, CQRS и Event Sourcing { #ddd }
 
-- [Что такое Ubiquitous Language?](../architecture/architecture.md#ubiquitous-language) — *Junior*
-- [Что такое Bounded Context?](../architecture/architecture.md#bounded-context) — *Middle*
-- [Как связываются контексты?](../architecture/architecture.md#context-mapping) — *Senior*
-- [Что такое Entity и Aggregate?](../architecture/architecture.md#aggregate) — *Middle*
-- [Где должна жить бизнес-логика?](../architecture/architecture.md#rich-domain-model) — *Middle*
-- [Что такое Value Object?](../architecture/architecture.md#value-object) — *Junior*
-- [Что такое доменные события?](../architecture/architecture.md#domain-events) — *Middle*
-- [Чем плоха классическая слоистая архитектура?](../architecture/architecture.md#layered) — *Middle*
-- [Как устроена гексагональная архитектура?](../architecture/architecture.md#hexagonal) — *Middle*
-- [Layered или Hexagonal?](../architecture/architecture.md#layered-vs-hexagonal) — *Middle*
-- [Что такое модульный монолит?](../architecture/architecture.md#modular-monolith) — *Middle*
-- [Что такое CQRS?](../architecture/architecture.md#cqrs) — *Senior*
-- [Что такое Event Sourcing?](../architecture/architecture.md#event-sourcing) — *Senior*
+- [Что такое Ubiquitous Language?](../architecture/ddd.md#ubiquitous-language) — *Junior*
+- [Что такое Bounded Context?](../architecture/ddd.md#bounded-context) — *Middle*
+- [Как связываются контексты?](../architecture/ddd.md#context-mapping) — *Senior*
+- [Что такое Entity и Aggregate?](../architecture/ddd.md#aggregate) — *Middle*
+- [Где должна жить бизнес-логика?](../architecture/ddd.md#rich-domain-model) — *Middle*
+- [Что такое Value Object?](../architecture/ddd.md#value-object) — *Junior*
+- [Что такое доменные события?](../architecture/ddd.md#domain-events) — *Middle*
+- [Что такое CQRS?](../architecture/ddd.md#cqrs) — *Senior*
+- [Что такое Event Sourcing?](../architecture/ddd.md#event-sourcing) — *Senior*
 
 ### Слоистая и гексагональная архитектура { #hexagonal }
 
+- [Чем плоха классическая слоистая архитектура?](../architecture/hexagonal.md#layered) — *Middle*
+- [Как устроена гексагональная архитектура?](../architecture/hexagonal.md#hexagonal) — *Middle*
+- [Layered или Hexagonal?](../architecture/hexagonal.md#layered-vs-hexagonal) — *Middle*
 - [В каких слоях живут аннотации Spring?](../architecture/hexagonal.md#where-annotations) — *Middle*
 - [Как адаптеры и конфигурация связывают ядро со Spring?](../architecture/hexagonal.md#adapters-config) — *Middle*
 - [Где ставить `@Transactional`, если в ядре нет Spring?](../architecture/hexagonal.md#transactional-ddd) — *Senior*
@@ -510,6 +509,7 @@ tags:
 ### Микросервисы и отказоустойчивость { #microservices }
 
 - [Монолит или микросервисы?](../architecture/microservices.md#monolith-vs-microservices) — *Middle*
+- [Что такое модульный монолит?](../architecture/microservices.md#modular-monolith) — *Middle*
 - [Синхронно или асинхронно?](../architecture/microservices.md#sync-async) — *Junior*
 - [Зачем нужны API Gateway, BFF и Service Discovery?](../architecture/microservices.md#api-gateway) — *Middle*
 - [Как работает rate limiting?](../architecture/microservices.md#rate-limiting) — *Middle*

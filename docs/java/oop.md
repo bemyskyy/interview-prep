@@ -680,7 +680,7 @@ class MySQLOrderRepository implements OrderRepository { public void save(Order o
 - **Микросервисы и high cohesion:** один сервис отвечает строго за один бизнес-домен (Domain-Driven Design): отдельно `Payment`, `Inventory` и `Shipping`. Если смешать оплаты и доставку в одном сервисе, получится «распределённый монолит» с низкой связностью.
 - **Микросервисы и low coupling:** сервисы не лезут в базы данных друг друга — это жёсткое зацепление через БД. Они общаются через асинхронные события (Kafka, RabbitMQ) или чёткие REST/gRPC-контракты. Если сервис оплат упал, сервис заказов не должен падать следом.
 
-Подробно про микросервисы — в [Архитектура → DDD и микросервисы](../architecture/architecture.md).
+Подробно про микросервисы — в [Архитектура → DDD и микросервисы](../architecture/ddd.md).
 
 ```mermaid
 flowchart LR

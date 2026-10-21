@@ -75,7 +75,7 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Архитектура](architecture/architecture.md) <span class="ip-section__count">4 страницы</span></p>
+<p class="ip-section__head" markdown>[Архитектура](architecture/ddd.md) <span class="ip-section__count">4 страницы</span></p>
 <p class="ip-section__topics" markdown>DDD, гексагональная архитектура, CQRS и Event Sourcing, микросервисы, circuit breaker, Saga и Outbox</p>
 </div>
 
@@ -132,7 +132,7 @@ System.out.println(c == d);
     2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/transactions.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/transactions.md#serializable) → [Lost update и write skew](database/locking.md#write-anomalies) → [Блокировки JPA](database/locking.md#row-locking).
     3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction).
     4. **Распределённые системы.** [Распределённые данные](system-design/distributed-data.md): репликация, CAP, консенсус → [Распределённые транзакции](architecture/distributed-transactions.md): Saga, Outbox → [Микросервисы](architecture/microservices.md#microservices).
-    5. **Архитектура.** [DDD](architecture/architecture.md#ddd) → [Архитектурные стили](architecture/architecture.md#styles) → [CQRS и Event Sourcing](architecture/architecture.md#cqrs-es) → [DDD в Spring-приложении](architecture/hexagonal.md#spring-ddd).
+    5. **Архитектура.** [DDD](architecture/ddd.md#ddd) → [Слоистая и гексагональная архитектура](architecture/hexagonal.md#styles) → [CQRS и Event Sourcing](architecture/ddd.md#cqrs-es) → [DDD в Spring-приложении](architecture/hexagonal.md#spring-ddd).
     6. **Интервью по System Design.** [Методология](system-design/interview.md#methodology) → [Разбор кейсов](system-design/interview.md#cases).
     7. **Эксплуатация.** [Миграции без простоя](infrastructure/infrastructure.md#zero-downtime) → [Стратегии деплоя](infrastructure/infrastructure.md#deploy-strategies) → [Kubernetes](infrastructure/infrastructure.md#kubernetes).
 

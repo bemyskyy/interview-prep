@@ -288,11 +288,11 @@ tags:
 
 ## Архитектура { #architecture }
 
-### DDD, микросервисы, CQRS { #architecture }
+### DDD, CQRS и Event Sourcing { #ddd }
 
-[Полный разбор →](../architecture/architecture.md)
+[Полный разбор →](../architecture/ddd.md)
 
---8<-- "docs/architecture/architecture.md:cheatsheet"
+--8<-- "docs/architecture/ddd.md:cheatsheet"
 
 ### Слоистая и гексагональная архитектура { #hexagonal }
 
