@@ -1,6 +1,6 @@
 # Стиль страниц
 
-Правила для всех страниц в `docs/`. Эталон по тону и плотности — «конспект»: [multithreading.md](docs/java/multithreading.md) и [system-design.md](docs/system-design/system-design.md). Пример страницы, целиком собранной по этим правилам, — [collections.md](docs/java/collections.md).
+Правила для всех страниц в `docs/`. Эталон по тону и плотности — «конспект»: [concurrency/jmm.md](docs/concurrency/jmm.md) и [system-design/building-blocks.md](docs/system-design/building-blocks.md). Пример страницы, целиком собранной по этим правилам, — [collections.md](docs/java/collections.md).
 
 ## Структура страницы
 
@@ -119,28 +119,46 @@ int index = (n - 1) & hash;
 Ссылайся на конкретный якорь. Если заголовок на русском, дай ему явный id через `attr_list`, иначе якорь сгенерируется нечитаемым или пустым:
 
 ```markdown
-## Итераторы и потокобезопасные коллекции { #concurrent-collections }
+## Итераторы { #iterators }
 
-Разобраны в [Коллекции → Потокобезопасные коллекции](collections.md#concurrent-collections).
+Коллекции для многопоточного кода — в [Потокобезопасные коллекции → ConcurrentHashMap](../concurrency/concurrent-collections.md#concurrenthashmap).
 ```
 
 | Тема | Дом |
 |---|---|
-| JVM, GC, Stack и Heap, Metaspace, `OutOfMemoryError` | [java/jvm.md](docs/java/jvm.md) |
 | Контракт `equals()` и `hashCode()`, `enum`, `static`, порядок инициализации | [java/basics.md](docs/java/basics.md) |
 | `String`, `StringBuilder`, String Pool | [java/strings.md](docs/java/strings.md) |
 | `var`, `record`, `switch`, pattern matching, `sealed` | [java/modern-java.md](docs/java/modern-java.md) |
-| Коллекции, включая потокобезопасные | [java/collections.md](docs/java/collections.md) |
 | `finally`, `try-with-resources` | [java/exceptions.md](docs/java/exceptions.md) |
-| Потоки, JMM, синхронизаторы, executors | [java/multithreading.md](docs/java/multithreading.md) |
-| Паттерны GoF (в том числе Enum Singleton, Strategy, Decorator) | [java/patterns.md](docs/java/patterns.md) |
-| Принципы SOLID | [java/solid.md](docs/java/solid.md) |
-| `@ControllerAdvice`, `@ExceptionHandler` | [spring/spring-mvc.md](docs/spring/spring-mvc.md) |
+| `List`, `Set`, `Queue`, `ArrayDeque`, `PriorityQueue`, `ConcurrentModificationException` | [java/collections.md](docs/java/collections.md) |
+| `HashMap`, `LinkedHashMap`, `TreeMap`: бакеты, коллизии, расширение | [java/hashmap.md](docs/java/hashmap.md) |
+| Функциональные интерфейсы, лямбды, `Optional` | [java/functional.md](docs/java/functional.md) |
+| JVM, GC, Stack и Heap, Metaspace, `OutOfMemoryError` | [java/jvm.md](docs/java/jvm.md) |
+| Потоки, их состояния и остановка, `ThreadLocal` | [concurrency/threads.md](docs/concurrency/threads.md) |
+| `synchronized`, `wait`/`notify`, `ReentrantLock`, синхронизаторы, AQS | [concurrency/locks.md](docs/concurrency/locks.md) |
+| JMM, happens-before, `volatile`, атомики, CAS, false sharing | [concurrency/jmm.md](docs/concurrency/jmm.md) |
+| Пулы потоков, `ForkJoinPool`, `CompletableFuture` | [concurrency/executors.md](docs/concurrency/executors.md) |
+| Потокобезопасные коллекции и `BlockingQueue` | [concurrency/concurrent-collections.md](docs/concurrency/concurrent-collections.md) |
+| Композиция против наследования, cohesion и coupling | [design/composition.md](docs/design/composition.md) |
+| Принципы SOLID | [design/solid.md](docs/design/solid.md) |
+| Паттерны GoF (в том числе Enum Singleton, Strategy, Decorator) | [design/creational-patterns.md](docs/design/creational-patterns.md), [design/structural-patterns.md](docs/design/structural-patterns.md), [design/behavioral-patterns.md](docs/design/behavioral-patterns.md) |
 | Самовызов прокси (`this.method()` мимо AOP) | [spring/spring-core.md](docs/spring/spring-core.md) |
-| Propagation, блокировки JPA, последствия самовызова для транзакций | [spring/spring-data-jpa.md](docs/spring/spring-data-jpa.md) |
-| `@Cacheable`, Actuator, Micrometer | [spring/spring-tools.md](docs/spring/spring-tools.md) |
-| Аномалии чтения, уровни изоляции, MVCC | [database/sql.md](docs/database/sql.md) |
+| `@ControllerAdvice`, `@ExceptionHandler`, WebFlux | [spring/spring-mvc.md](docs/spring/spring-mvc.md) |
+| `@Transactional`, propagation, последствия самовызова для транзакций | [spring/spring-transactions.md](docs/spring/spring-transactions.md) |
+| `@Cacheable`, ручной Cache-Aside на Redis | [spring/spring-caching.md](docs/spring/spring-caching.md) |
+| Actuator, Micrometer | [spring/spring-actuator.md](docs/spring/spring-actuator.md) |
+| Сессии и JWT, `SecurityContext` | [spring/spring-security.md](docs/spring/spring-security.md) |
+| Аномалии чтения, уровни изоляции, MVCC | [database/transactions.md](docs/database/transactions.md) |
+| Lost update, write skew, оптимистичная и пессимистичная блокировки (`@Version`, `@Lock`) | [database/locking.md](docs/database/locking.md) |
+| SQL или NoSQL, кластер Redis, polyglot persistence | [database/nosql.md](docs/database/nosql.md) |
 | Коммит оффсетов, идемпотентный консьюмер, DLQ в Kafka | [kafka/kafka-reliability.md](docs/kafka/kafka-reliability.md) |
+| Стратегии кэширования, cache stampede, очереди сообщений | [system-design/building-blocks.md](docs/system-design/building-blocks.md) |
+| Репликация, шардирование, CAP, PACELC, консенсус | [system-design/distributed-data.md](docs/system-design/distributed-data.md) |
+| Rate limiting, circuit breaker, retry | [architecture/microservices.md](docs/architecture/microservices.md) |
+| Гарантии доставки в общем виде, 2PC, Saga, Outbox | [architecture/distributed-transactions.md](docs/architecture/distributed-transactions.md) |
+| Пробы liveness и readiness, sidecar | [infrastructure/kubernetes.md](docs/infrastructure/kubernetes.md) |
+| Метрики, логи, трейсы | [infrastructure/observability.md](docs/infrastructure/observability.md) |
+| Красно-чёрное дерево | [algorithms/algorithms.md](docs/algorithms/algorithms.md) |
 
 ## Схемы
 
@@ -172,7 +190,7 @@ stateDiagram-v2
 <!-- --8<-- [end:cheatsheet] -->
 ```
 
-Шпаргалку показывают и на другой странице, поэтому ссылки в ней пиши от корня `docs/` через `../`: `[Инструменты](../spring/spring-tools.md#cacheable)`, а не `spring-tools.md#cacheable` и не `#cacheable`.
+Шпаргалку показывают и на другой странице, поэтому ссылки в ней пиши от корня `docs/` через `../`: `[Кэширование](../spring/spring-caching.md#cacheable)`, а не `spring-caching.md#cacheable` и не `#cacheable`.
 
 ## Теги
 
