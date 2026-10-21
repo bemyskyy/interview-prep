@@ -182,6 +182,7 @@ nav:
           - Исключения: java/exceptions.md
           - Дженерики: java/generics.md
           - Stream API: java/streams.md
+          - Лямбды и Optional: java/functional.md
           - IO / NIO: java/io-nio.md
       - Дизайн кода:
           - SOLID: java/solid.md

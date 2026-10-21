@@ -76,6 +76,12 @@ tags:
 
 --8<-- "docs/java/streams.md:cheatsheet"
 
+### Лямбды и Optional { #functional }
+
+[Полный разбор →](../java/functional.md)
+
+--8<-- "docs/java/functional.md:cheatsheet"
+
 ### IO / NIO { #io-nio }
 
 [Полный разбор →](../java/io-nio.md)

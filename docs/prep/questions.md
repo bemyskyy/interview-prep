@@ -140,13 +140,16 @@ tags:
 - [Чем опасен `toMap`?](../java/streams.md#to-map) — *Middle*
 - [Как группировать элементы?](../java/streams.md#grouping) — *Middle*
 - [Как склеить строки из стрима?](../java/streams.md#joining) — *Junior*
-- [Что такое `Optional` и как его создать?](../java/streams.md#optional-basics) — *Junior*
-- [Чем `orElse` отличается от `orElseGet`?](../java/streams.md#orelse) — *Middle*
-- [Как правильно работать с `Optional`?](../java/streams.md#optional-chains) — *Middle*
-- [Что такое функциональный интерфейс?](../java/streams.md#functional-interfaces) — *Junior*
-- [Что такое ссылки на методы?](../java/streams.md#method-references) — *Junior*
-- [Почему лямбда требует effectively final?](../java/streams.md#effectively-final) — *Middle*
 - [Как решать типовые задачи на стримы?](../java/streams.md#stream-tasks) — *Middle*
+
+### Лямбды и Optional { #functional }
+
+- [Что такое функциональный интерфейс?](../java/functional.md#functional-interfaces) — *Junior*
+- [Что такое ссылки на методы?](../java/functional.md#method-references) — *Junior*
+- [Почему лямбда требует effectively final?](../java/functional.md#effectively-final) — *Middle*
+- [Что такое `Optional` и как его создать?](../java/functional.md#optional-basics) — *Junior*
+- [Чем `orElse` отличается от `orElseGet`?](../java/functional.md#orelse) — *Middle*
+- [Как правильно работать с `Optional`?](../java/functional.md#optional-chains) — *Middle*
 
 ### IO / NIO { #io-nio }
 

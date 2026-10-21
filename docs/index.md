@@ -40,7 +40,7 @@ System.out.println(c == d);
 <div class="ip-sections" markdown>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">13 страниц</span></p>
+<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">14 страниц</span></p>
 <p class="ip-section__topics" markdown>JVM и память, коллекции, ООП, дженерики, Stream API, SOLID, паттерны</p>
 </div>
 
@@ -85,7 +85,7 @@ System.out.println(c == d);
     Цель — уверенно объяснить, что это, зачем и как этим пользоваться.
 
     1. **Язык.** [Основы языка](java/basics.md) → [Строки](java/strings.md) → [ООП](java/oop.md) → [Исключения](java/exceptions.md).
-    2. **Коллекции и стримы.** [Коллекции](java/collections.md) → [HashMap](java/hashmap.md) → [Дженерики: основы](java/generics.md#basics) → [Stream API](java/streams.md) → [Современная Java](java/modern-java.md).
+    2. **Коллекции и стримы.** [Коллекции](java/collections.md) → [HashMap](java/hashmap.md) → [Дженерики: основы](java/generics.md#basics) → [Stream API](java/streams.md) → [Лямбды и Optional](java/functional.md) → [Современная Java](java/modern-java.md).
     3. **Платформа.** [JVM: платформа](java/jvm.md#platform) → [Сборка мусора](java/jvm.md#gc) → [Stack и Heap](java/jvm.md#memory) → [Потоки](concurrency/threads.md) и [`synchronized`](concurrency/locks.md#monitors).
     4. **Базы данных.** [ACID](database/sql.md#acid) → [SQL-запросы](database/sql.md#queries) → [Индексы](database/sql.md#indexes).
     5. **Spring.** [Core: IoC и DI](spring/spring-core.md) → [Spring Boot](spring/spring-boot.md) → [MVC / REST](spring/spring-mvc.md) → [Data JPA: `@Transactional`](spring/spring-data-jpa.md#transactional).
