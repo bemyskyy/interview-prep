@@ -459,7 +459,7 @@ tags:
 - [REST, gRPC или GraphQL?](../networks/networks.md#rest-vs-grpc) — *Middle*
 - [Когда нужен WebSocket и чем он отличается от SSE?](../networks/networks.md#websocket) — *Middle*
 
-## Проектирование { #design }
+## Проектирование { #projecting }
 
 ### Масштабирование систем { #system-design }
 

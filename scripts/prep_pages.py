@@ -34,12 +34,19 @@ SKIP_SECTIONS = {"Старт", "Подготовка"}
 
 # id разделов на сгенерированных страницах
 SECTION_IDS = {
-    "Язык Java": "java",
+    "Java": "java",
+    "Многопоточность": "concurrency",
+    "Дизайн кода": "design",
     "Spring": "spring",
     "Данные": "data",
     "Kafka": "kafka",
+    "System Design": "system-design",
+    "Архитектура": "architecture",
+    "Инфраструктура": "infrastructure",
     "Computer Science": "cs",
-    "Проектирование": "design",
+    # Разделы старой навигации — до переезда их страниц
+    "Язык Java": "java",
+    "Проектирование": "projecting",
 }
 
 # id страниц — имя файла; переопределения на случай совпадения с id раздела

@@ -186,7 +186,7 @@ tags:
 
 --8<-- "docs/networks/networks.md:cheatsheet"
 
-## Проектирование { #design }
+## Проектирование { #projecting }
 
 ### Масштабирование систем { #system-design }
 
