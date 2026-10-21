@@ -259,4 +259,5 @@ nav:
           - "Задачи: массивы и строки": algorithms/leetcode-patterns.md
           - "Задачи: деревья, графы, ДП": algorithms/leetcode-trees-dp.md
       - Сети:
-          - HTTP, TCP, REST, gRPC: networks/networks.md
+          - TCP/IP, HTTP и TLS: networks/networks.md
+          - REST, gRPC и WebSocket: networks/api-styles.md

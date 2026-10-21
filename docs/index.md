@@ -85,7 +85,7 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">5 страниц</span></p>
+<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">6 страниц</span></p>
 <p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны LeetCode, TCP, HTTP, TLS, gRPC</p>
 </div>
 
@@ -105,7 +105,7 @@ System.out.println(c == d);
     3. **Платформа.** [JVM: платформа](java/jvm.md#platform) → [Сборка мусора](java/jvm.md#gc) → [Stack и Heap](java/jvm.md#memory) → [Потоки](concurrency/threads.md) и [`synchronized`](concurrency/locks.md#monitors).
     4. **Базы данных.** [ACID](database/transactions.md#acid) → [SQL-запросы](database/sql.md#queries) → [Индексы](database/sql.md#indexes).
     5. **Spring.** [Core: IoC и DI](spring/spring-core.md) → [Spring Boot](spring/spring-boot.md) → [MVC / REST](spring/spring-mvc.md) → [Транзакции: `@Transactional`](spring/spring-transactions.md#transactional).
-    6. **Сети.** [TCP и UDP](networks/networks.md#tcp-udp) → [HTTP](networks/networks.md#http) → [REST](networks/networks.md#rest).
+    6. **Сети.** [TCP и UDP](networks/networks.md#tcp-udp) → [HTTP](networks/networks.md#http) → [REST](networks/api-styles.md#rest).
     7. **Алгоритмы.** [Big O](algorithms/algorithms.md#big-o) → [Структуры данных](algorithms/algorithms.md#data-structures) → [Подход к задаче](algorithms/leetcode-patterns.md#approach) → [Two Pointers](algorithms/leetcode-patterns.md#two-pointers) и [HashMap в задачах](algorithms/leetcode-patterns.md#hashmap).
     8. **Окружение.** [Docker](infrastructure/docker.md#docker) → [Docker Compose](infrastructure/docker.md#compose).
 
@@ -120,7 +120,7 @@ System.out.println(c == d);
     3. **Spring изнутри.** [Жизненный цикл бина и AOP](spring/spring-core.md#bean-lifecycle) → [Propagation](spring/spring-transactions.md#propagation) → [Блокировки](database/locking.md) → [Hibernate и N+1](spring/spring-data-jpa.md#hibernate) → [Тестирование](spring/spring-testing.md) → [Кэширование](spring/spring-caching.md) → [Actuator и Micrometer](spring/spring-actuator.md) → [Spring Security](spring/spring-security.md) → [Kafka в Spring](kafka/spring-kafka.md).
     4. **Базы данных.** [Изоляция транзакций](database/transactions.md#isolation) → [MVCC](database/transactions.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
     5. **Kafka.** [Физика брокера](kafka/kafka.md) → [Consumer и Producer](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).
-    6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/networks.md#grpc) → [WebSocket и SSE](networks/networks.md#websocket).
+    6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/api-styles.md#grpc) → [WebSocket и SSE](networks/api-styles.md#websocket).
     7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/cicd.md#cicd) → [Миграции БД](infrastructure/cicd.md#migrations).
     8. **Алгоритмы.** Все паттерны из [задач на массивы и строки](algorithms/leetcode-patterns.md) и [на деревья, графы и ДП](algorithms/leetcode-trees-dp.md), включая [динамическое программирование](algorithms/leetcode-trees-dp.md#dp) → [Графы](algorithms/sorting-graphs.md#graphs).
 

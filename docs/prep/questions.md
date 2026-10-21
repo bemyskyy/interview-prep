@@ -617,7 +617,7 @@ tags:
 - [Как набрать сумму минимальным числом монет (Coin Change)?](../algorithms/leetcode-trees-dp.md#coin-change) — *Middle*
 - [Как найти наибольшую общую подпоследовательность (LCS)?](../algorithms/leetcode-trees-dp.md#lcs) — *Middle*
 
-### HTTP, TCP, REST, gRPC { #networks }
+### TCP/IP, HTTP и TLS { #networks }
 
 - [На каких уровнях живут протоколы, которыми ты пользуешься?](../networks/networks.md#osi-tcpip) — *Junior*
 - [Чем TCP отличается от UDP?](../networks/networks.md#tcp-vs-udp) — *Junior*
@@ -633,7 +633,10 @@ tags:
 - [Что происходит, когда вводишь URL в браузере?](../networks/networks.md#url-flow) — *Junior*
 - [Как имя превращается в IP?](../networks/networks.md#dns-resolution) — *Junior*
 - [Какие бывают DNS-записи?](../networks/networks.md#dns-records) — *Junior*
-- [Что такое REST?](../networks/networks.md#rest) — *Junior*
-- [Как устроен gRPC?](../networks/networks.md#grpc) — *Middle*
-- [REST, gRPC или GraphQL?](../networks/networks.md#rest-vs-grpc) — *Middle*
-- [Когда нужен WebSocket и чем он отличается от SSE?](../networks/networks.md#websocket) — *Middle*
+
+### REST, gRPC и WebSocket { #api-styles }
+
+- [Что такое REST?](../networks/api-styles.md#rest) — *Junior*
+- [Как устроен gRPC?](../networks/api-styles.md#grpc) — *Middle*
+- [REST, gRPC или GraphQL?](../networks/api-styles.md#rest-vs-grpc) — *Middle*
+- [Когда нужен WebSocket и чем он отличается от SSE?](../networks/api-styles.md#websocket) — *Middle*

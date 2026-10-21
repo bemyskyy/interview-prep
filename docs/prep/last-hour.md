@@ -370,8 +370,14 @@ tags:
 
 --8<-- "docs/algorithms/leetcode-trees-dp.md:cheatsheet"
 
-### HTTP, TCP, REST, gRPC { #networks }
+### TCP/IP, HTTP и TLS { #networks }
 
 [Полный разбор →](../networks/networks.md)
 
 --8<-- "docs/networks/networks.md:cheatsheet"
+
+### REST, gRPC и WebSocket { #api-styles }
+
+[Полный разбор →](../networks/api-styles.md)
+
+--8<-- "docs/networks/api-styles.md:cheatsheet"
