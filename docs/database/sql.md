@@ -34,7 +34,7 @@ CREATE UNIQUE INDEX idx_users_email_unique ON users(email);
 CREATE INDEX idx_active_habits ON habits(user_id) WHERE status = 'ACTIVE';
 ```
 
-Расплата за индекс — место на диске и замедление записи (см. [System Design → SQL vs NoSQL](../system-design/system-design.md#sql-vs-nosql)).
+Расплата за индекс — место на диске и замедление записи: каждый `INSERT` или `UPDATE` обновляет и индекс.
 
 !!! warning "Ловушка: порядок колонок в составном индексе"
     Индекс `(user_id, status)` помогает запросам по `user_id` и по `user_id + status`, а запросу только по `status` — как правило, нет: B-Tree отсортирован сначала по первой колонке.

@@ -196,7 +196,7 @@ public void example() {
 }
 ```
 
-Встроенный L2-кэш Hibernate крайне редко используют в Enterprise-архитектуре. Вместо него — **Redis** через `@Cacheable` в Spring: прозрачный распределённый кэш, независимый от ORM. Как настроить `@Cacheable`, разобрано в [Кэширование → `@Cacheable`](spring-caching.md#cacheable), а стратегии кэширования — в [System Design → Caching](../system-design/system-design.md#caching).
+Встроенный L2-кэш Hibernate крайне редко используют в Enterprise-архитектуре. Вместо него — **Redis** через `@Cacheable` в Spring: прозрачный распределённый кэш, независимый от ORM. Как настроить `@Cacheable`, разобрано в [Кэширование → `@Cacheable`](spring-caching.md#cacheable), а стратегии кэширования — в [System Design → Caching](../system-design/building-blocks.md#caching).
 
 !!! warning "Ловушка: L2-кэш при нескольких инстансах"
     При нескольких инстансах микросервиса у каждого свой L2-кэш, и инвалидация между ними становится отдельной большой проблемой. Поэтому в распределённых системах кэш выносят наружу — в Redis.

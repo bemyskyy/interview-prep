@@ -7,7 +7,7 @@ tags:
 
 # Вопросы собеса
 
-Все 442 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 440 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
 ## Язык Java { #java }
@@ -309,6 +309,7 @@ tags:
 - [Как устроен Spring Security?](../spring/spring-security.md#security-filter-chain) — *Middle*
 - [Как проходит аутентификация?](../spring/spring-security.md#authentication) — *Middle*
 - [Как настроить авторизацию?](../spring/spring-security.md#authorization) — *Junior*
+- [Как учитывать безопасность в дизайне?](../spring/spring-security.md#sessions-vs-jwt) — *Middle*
 - [Как встроить JWT в Spring Security?](../spring/spring-security.md#jwt-filter) — *Middle*
 - [Почему теряется `SecurityContext` в асинхронном коде?](../spring/spring-security.md#security-context-async) — *Senior*
 - [Как сделать logout, если используется JWT?](../spring/spring-security.md#jwt-logout) — *Senior*
@@ -391,6 +392,7 @@ tags:
 - [Зачем NoSQL, если есть SQL?](../database/nosql.md#nosql-vs-sql) — *Junior*
 - [Что такое документная БД?](../database/nosql.md#document-store) — *Junior*
 - [Что такое key-value хранилище?](../database/nosql.md#key-value) — *Junior*
+- [Redis, Memcached или Hazelcast?](../database/nosql.md#redis-cluster) — *Senior*
 - [Как устроены wide-column БД?](../database/nosql.md#wide-column) — *Middle*
 - [Когда нужна графовая БД?](../database/nosql.md#graph) — *Middle*
 - [Как сравнить четыре семейства?](../database/nosql.md#comparison) — *Middle*
@@ -442,6 +444,44 @@ tags:
 - [Как работает `@KafkaListener`?](../kafka/spring-kafka.md#kafka-listener) — *Middle*
 - [Как настроить коммит оффсетов и обработку ошибок листенера?](../kafka/spring-kafka.md#listener-config) — *Middle*
 
+## System Design { #system-design }
+
+### Интервью и оценка нагрузки { #interview }
+
+- [Какими метриками описывают систему?](../system-design/interview.md#metrics) — *Junior*
+- [Как оценить нагрузку «на салфетке»?](../system-design/interview.md#estimation) — *Middle*
+- [Как масштабировать сервис?](../system-design/interview.md#scaling) — *Junior*
+- [Как проходить интервью по system design?](../system-design/interview.md#methodology) — *Middle*
+- [Как спроектировать URL shortener?](../system-design/interview.md#url-shortener) — *Senior*
+- [Ради чего спрашивают классические задачи?](../system-design/interview.md#classic-tasks) — *Middle*
+- [Почему Round Robin убивает один сервер?](../system-design/interview.md#case-round-robin) — *Middle*
+- [Что убило базу в 10:10, если Redis-узел сгорел в 10:05?](../system-design/interview.md#case-stampede) — *Senior*
+- [Нужно ли шардировать таблицу на 100M строк?](../system-design/interview.md#case-sharding) — *Middle*
+- [Что делать сервису «Избранное», когда перерубили кабель между ДЦ?](../system-design/interview.md#case-partition) — *Senior*
+- [Почему письма теряются, дублируются и блокируют очередь?](../system-design/interview.md#case-emails) — *Senior*
+
+### Строительные блоки { #building-blocks }
+
+- [Чем L4-балансировщик отличается от L7?](../system-design/building-blocks.md#l4-l7) — *Middle*
+- [Какие есть алгоритмы балансировки?](../system-design/building-blocks.md#lb-algorithms) — *Middle*
+- [Почему sticky sessions — антипаттерн?](../system-design/building-blocks.md#sticky-sessions) — *Junior*
+- [Где и как кэшировать?](../system-design/building-blocks.md#caching) — *Middle*
+- [Как кэш вытесняет и инвалидирует данные?](../system-design/building-blocks.md#eviction) — *Junior*
+- [Что такое cache stampede и как его лечить?](../system-design/building-blocks.md#cache-stampede) — *Senior*
+- [Зачем нужны очереди сообщений?](../system-design/building-blocks.md#message-queues) — *Junior*
+- [Что даёт CDN?](../system-design/building-blocks.md#cdn) — *Junior*
+
+### Распределённые данные { #distributed-data }
+
+- [Как масштабировать БД репликацией?](../system-design/distributed-data.md#replication) — *Middle*
+- [Чем партиционирование отличается от шардирования?](../system-design/distributed-data.md#partitioning) — *Middle*
+- [Как шардировать и выбрать shard key?](../system-design/distributed-data.md#sharding) — *Senior*
+- [Что такое consistent hashing?](../system-design/distributed-data.md#consistent-hashing) — *Senior*
+- [Что утверждает CAP-теорема?](../system-design/distributed-data.md#cap) — *Middle*
+- [Что добавляет PACELC?](../system-design/distributed-data.md#pacelc) — *Senior*
+- [Какие бывают модели согласованности?](../system-design/distributed-data.md#consistency-models) — *Senior*
+- [Как узлы договариваются: Raft и Paxos?](../system-design/distributed-data.md#consensus) — *Senior*
+
 ## Архитектура { #architecture }
 
 ### DDD, микросервисы, CQRS { #architecture }
@@ -466,6 +506,60 @@ tags:
 - [Как адаптеры и конфигурация связывают ядро со Spring?](../architecture/hexagonal.md#adapters-config) — *Middle*
 - [Где ставить `@Transactional`, если в ядре нет Spring?](../architecture/hexagonal.md#transactional-ddd) — *Senior*
 - [Зачем маппить доменную модель в отдельную JPA Entity?](../architecture/hexagonal.md#double-entities) — *Senior*
+
+### Микросервисы и отказоустойчивость { #microservices }
+
+- [Монолит или микросервисы?](../architecture/microservices.md#monolith-vs-microservices) — *Middle*
+- [Синхронно или асинхронно?](../architecture/microservices.md#sync-async) — *Junior*
+- [Зачем нужны API Gateway, BFF и Service Discovery?](../architecture/microservices.md#api-gateway) — *Middle*
+- [Как работает rate limiting?](../architecture/microservices.md#rate-limiting) — *Middle*
+- [Зачем нужны timeout и retry с backoff?](../architecture/microservices.md#timeout-retry) — *Middle*
+- [Как работает circuit breaker?](../architecture/microservices.md#circuit-breaker) — *Middle*
+- [Что такое bulkhead и graceful degradation?](../architecture/microservices.md#bulkhead) — *Middle*
+
+### Распределённые транзакции { #distributed-transactions }
+
+- [Какие бывают гарантии доставки и при чём тут идемпотентность?](../architecture/distributed-transactions.md#delivery-guarantees) — *Middle*
+- [Почему 2PC почти не используют в микросервисах?](../architecture/distributed-transactions.md#two-phase-commit) — *Senior*
+- [Как работает Saga?](../architecture/distributed-transactions.md#saga) — *Senior*
+- [Что такое Transactional Outbox?](../architecture/distributed-transactions.md#outbox) — *Senior*
+
+## Инфраструктура { #infrastructure }
+
+### Docker, CI/CD, K8s { #infrastructure }
+
+- [Какую проблему решает Docker?](../infrastructure/infrastructure.md#why-docker) — *Junior*
+- [Чем контейнер отличается от виртуальной машины?](../infrastructure/infrastructure.md#container-vs-vm) — *Junior*
+- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/infrastructure.md#image-container) — *Junior*
+- [На чём держится изоляция контейнера?](../infrastructure/infrastructure.md#namespaces-cgroups) — *Middle*
+- [Как написать хороший Dockerfile для Java?](../infrastructure/infrastructure.md#dockerfile) — *Middle*
+- [Какой базовый образ выбрать?](../infrastructure/infrastructure.md#base-images) — *Middle*
+- [Почему контейнер нельзя запускать под root?](../infrastructure/infrastructure.md#non-root) — *Junior*
+- [Как сервисы в Compose находят друг друга?](../infrastructure/infrastructure.md#compose-dns) — *Junior*
+- [Как дождаться готовности базы при старте?](../infrastructure/infrastructure.md#healthcheck) — *Junior*
+- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/infrastructure.md#compose-profiles) — *Junior*
+- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/infrastructure.md#kraft) — *Middle*
+- [Какие сети бывают в Docker?](../infrastructure/infrastructure.md#docker-networks) — *Middle*
+- [Как Docker хранит данные?](../infrastructure/infrastructure.md#volumes) — *Middle*
+- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/infrastructure.md#ci-cd) — *Junior*
+- [Из каких стадий состоит Java-пайплайн?](../infrastructure/infrastructure.md#pipeline) — *Middle*
+- [Какие есть стратегии деплоя?](../infrastructure/infrastructure.md#deploy-strategies) — *Middle*
+- [Зачем нужны Flyway и Liquibase?](../infrastructure/infrastructure.md#flyway) — *Junior*
+- [Как запускать миграции в CI/CD?](../infrastructure/infrastructure.md#migrations-cicd) — *Middle*
+- [Что будет, если изменить уже применённую миграцию?](../infrastructure/infrastructure.md#flyway-checksum) — *Middle*
+- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/infrastructure.md#flyway-lock) — *Senior*
+- [Как мигрировать схему без простоя?](../infrastructure/infrastructure.md#zero-downtime) — *Senior*
+- [Что даёт Kubernetes?](../infrastructure/infrastructure.md#k8s-basics) — *Junior*
+- [Зачем нужен reverse proxy?](../infrastructure/infrastructure.md#reverse-proxy) — *Junior*
+
+### Kubernetes { #kubernetes }
+
+- [Чем liveness отличается от readiness?](../infrastructure/kubernetes.md#health-checks) — *Junior*
+- [Что такое sidecar?](../infrastructure/kubernetes.md#sidecar) — *Middle*
+
+### Observability { #observability }
+
+- [Что такое observability?](../infrastructure/observability.md#observability) — *Middle*
 
 ## Computer Science { #cs }
 
@@ -534,79 +628,3 @@ tags:
 - [Как устроен gRPC?](../networks/networks.md#grpc) — *Middle*
 - [REST, gRPC или GraphQL?](../networks/networks.md#rest-vs-grpc) — *Middle*
 - [Когда нужен WebSocket и чем он отличается от SSE?](../networks/networks.md#websocket) — *Middle*
-
-## Проектирование { #projecting }
-
-### Масштабирование систем { #system-design }
-
-- [Синхронно или асинхронно?](../system-design/system-design.md#sync-async) — *Junior*
-- [Какими метриками описывают систему?](../system-design/system-design.md#metrics) — *Junior*
-- [Как оценить нагрузку «на салфетке»?](../system-design/system-design.md#estimation) — *Middle*
-- [Чем L4-балансировщик отличается от L7?](../system-design/system-design.md#l4-l7) — *Middle*
-- [Какие есть алгоритмы балансировки?](../system-design/system-design.md#lb-algorithms) — *Middle*
-- [Почему sticky sessions — антипаттерн?](../system-design/system-design.md#sticky-sessions) — *Junior*
-- [Где и как кэшировать?](../system-design/system-design.md#caching) — *Middle*
-- [Как кэш вытесняет и инвалидирует данные?](../system-design/system-design.md#eviction) — *Junior*
-- [Что такое cache stampede и как его лечить?](../system-design/system-design.md#cache-stampede) — *Senior*
-- [Redis, Memcached или Hazelcast?](../system-design/system-design.md#redis-hazelcast) — *Senior*
-- [SQL или NoSQL?](../system-design/system-design.md#sql-vs-nosql) — *Junior*
-- [Как масштабировать БД репликацией?](../system-design/system-design.md#replication) — *Middle*
-- [Чем партиционирование отличается от шардирования?](../system-design/system-design.md#partitioning) — *Middle*
-- [Как шардировать и выбрать shard key?](../system-design/system-design.md#sharding) — *Senior*
-- [Что такое consistent hashing?](../system-design/system-design.md#consistent-hashing) — *Senior*
-- [Зачем нужны очереди сообщений?](../system-design/system-design.md#message-queues) — *Junior*
-- [Что даёт CDN?](../system-design/system-design.md#cdn) — *Junior*
-- [Что утверждает CAP-теорема?](../system-design/system-design.md#cap) — *Middle*
-- [Что добавляет PACELC?](../system-design/system-design.md#pacelc) — *Senior*
-- [Какие бывают модели согласованности?](../system-design/system-design.md#consistency-models) — *Senior*
-- [Как узлы договариваются: Raft и Paxos?](../system-design/system-design.md#consensus) — *Senior*
-- [Какие бывают гарантии доставки и при чём тут идемпотентность?](../system-design/system-design.md#delivery-guarantees) — *Middle*
-- [Почему 2PC почти не используют в микросервисах?](../system-design/system-design.md#two-phase-commit) — *Senior*
-- [Как работает Saga?](../system-design/system-design.md#saga) — *Senior*
-- [Что такое Transactional Outbox?](../system-design/system-design.md#outbox) — *Senior*
-- [Монолит или микросервисы?](../system-design/system-design.md#monolith-vs-microservices) — *Middle*
-- [Зачем нужны API Gateway, BFF и Service Discovery?](../system-design/system-design.md#api-gateway) — *Middle*
-- [Как работает rate limiting?](../system-design/system-design.md#rate-limiting) — *Middle*
-- [Зачем нужны timeout и retry с backoff?](../system-design/system-design.md#timeout-retry) — *Middle*
-- [Как работает circuit breaker?](../system-design/system-design.md#circuit-breaker) — *Middle*
-- [Что такое bulkhead и graceful degradation?](../system-design/system-design.md#bulkhead) — *Middle*
-- [Что такое observability?](../system-design/system-design.md#observability) — *Middle*
-- [Чем liveness отличается от readiness?](../system-design/system-design.md#health-checks) — *Junior*
-- [Что такое sidecar?](../system-design/system-design.md#sidecar) — *Middle*
-- [Как масштабировать сервис?](../system-design/system-design.md#scaling) — *Junior*
-- [Какие хранилища нужны, кроме основной БД?](../system-design/system-design.md#polyglot-persistence) — *Middle*
-- [Как учитывать безопасность в дизайне?](../system-design/system-design.md#security) — *Middle*
-- [Как проходить интервью по system design?](../system-design/system-design.md#methodology) — *Middle*
-- [Как спроектировать URL shortener?](../system-design/system-design.md#url-shortener) — *Senior*
-- [Ради чего спрашивают классические задачи?](../system-design/system-design.md#classic-tasks) — *Middle*
-- [Почему Round Robin убивает один сервер?](../system-design/system-design.md#case-round-robin) — *Middle*
-- [Что убило базу в 10:10, если Redis-узел сгорел в 10:05?](../system-design/system-design.md#case-stampede) — *Senior*
-- [Нужно ли шардировать таблицу на 100M строк?](../system-design/system-design.md#case-sharding) — *Middle*
-- [Что делать сервису «Избранное», когда перерубили кабель между ДЦ?](../system-design/system-design.md#case-partition) — *Senior*
-- [Почему письма теряются, дублируются и блокируют очередь?](../system-design/system-design.md#case-emails) — *Senior*
-
-### Docker, CI/CD, K8s { #infrastructure }
-
-- [Какую проблему решает Docker?](../infrastructure/infrastructure.md#why-docker) — *Junior*
-- [Чем контейнер отличается от виртуальной машины?](../infrastructure/infrastructure.md#container-vs-vm) — *Junior*
-- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/infrastructure.md#image-container) — *Junior*
-- [На чём держится изоляция контейнера?](../infrastructure/infrastructure.md#namespaces-cgroups) — *Middle*
-- [Как написать хороший Dockerfile для Java?](../infrastructure/infrastructure.md#dockerfile) — *Middle*
-- [Какой базовый образ выбрать?](../infrastructure/infrastructure.md#base-images) — *Middle*
-- [Почему контейнер нельзя запускать под root?](../infrastructure/infrastructure.md#non-root) — *Junior*
-- [Как сервисы в Compose находят друг друга?](../infrastructure/infrastructure.md#compose-dns) — *Junior*
-- [Как дождаться готовности базы при старте?](../infrastructure/infrastructure.md#healthcheck) — *Junior*
-- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/infrastructure.md#compose-profiles) — *Junior*
-- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/infrastructure.md#kraft) — *Middle*
-- [Какие сети бывают в Docker?](../infrastructure/infrastructure.md#docker-networks) — *Middle*
-- [Как Docker хранит данные?](../infrastructure/infrastructure.md#volumes) — *Middle*
-- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/infrastructure.md#ci-cd) — *Junior*
-- [Из каких стадий состоит Java-пайплайн?](../infrastructure/infrastructure.md#pipeline) — *Middle*
-- [Какие есть стратегии деплоя?](../infrastructure/infrastructure.md#deploy-strategies) — *Middle*
-- [Зачем нужны Flyway и Liquibase?](../infrastructure/infrastructure.md#flyway) — *Junior*
-- [Как запускать миграции в CI/CD?](../infrastructure/infrastructure.md#migrations-cicd) — *Middle*
-- [Что будет, если изменить уже применённую миграцию?](../infrastructure/infrastructure.md#flyway-checksum) — *Middle*
-- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/infrastructure.md#flyway-lock) — *Senior*
-- [Как мигрировать схему без простоя?](../infrastructure/infrastructure.md#zero-downtime) — *Senior*
-- [Что даёт Kubernetes?](../infrastructure/infrastructure.md#k8s-basics) — *Junior*
-- [Зачем нужен reverse proxy?](../infrastructure/infrastructure.md#reverse-proxy) — *Junior*

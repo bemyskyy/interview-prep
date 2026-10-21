@@ -142,6 +142,7 @@ plugins:
         java/patterns.md: design/creational-patterns.md
         spring/spring-ecosystem.md: spring/spring-security.md
         spring/spring-tools.md: spring/spring-testing.md
+        system-design/system-design.md: system-design/interview.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -231,9 +232,21 @@ nav:
       - Гарантии доставки: kafka/kafka-reliability.md
       - Kafka в Spring: kafka/spring-kafka.md
 
+  - System Design:
+      - Интервью и оценка нагрузки: system-design/interview.md
+      - Строительные блоки: system-design/building-blocks.md
+      - Распределённые данные: system-design/distributed-data.md
+
   - Архитектура:
       - DDD, микросервисы, CQRS: architecture/architecture.md
       - Слоистая и гексагональная архитектура: architecture/hexagonal.md
+      - Микросервисы и отказоустойчивость: architecture/microservices.md
+      - Распределённые транзакции: architecture/distributed-transactions.md
+
+  - Инфраструктура:
+      - Docker, CI/CD, K8s: infrastructure/infrastructure.md
+      - Kubernetes: infrastructure/kubernetes.md
+      - Observability: infrastructure/observability.md
 
   - Computer Science:
       - Алгоритмы:
@@ -241,9 +254,3 @@ nav:
           - Паттерны задач (LeetCode): algorithms/leetcode-patterns.md
       - Сети:
           - HTTP, TCP, REST, gRPC: networks/networks.md
-
-  - Проектирование:
-      - Системы:
-          - Масштабирование систем: system-design/system-design.md
-      - Инфраструктура:
-          - Docker, CI/CD, K8s: infrastructure/infrastructure.md

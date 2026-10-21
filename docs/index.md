@@ -70,8 +70,18 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Архитектура](architecture/architecture.md) <span class="ip-section__count">2 страницы</span></p>
-<p class="ip-section__topics" markdown>DDD, слоистая и гексагональная архитектура, CQRS и Event Sourcing, Spring в гексагональной архитектуре</p>
+<p class="ip-section__head" markdown>[System Design](system-design/interview.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__topics" markdown>Оценка нагрузки, балансировка, кэши, очереди, CDN, репликация и шардирование, CAP, консенсус, разбор кейсов</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Архитектура](architecture/architecture.md) <span class="ip-section__count">4 страницы</span></p>
+<p class="ip-section__topics" markdown>DDD, гексагональная архитектура, CQRS и Event Sourcing, микросервисы, circuit breaker, Saga и Outbox</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Инфраструктура](infrastructure/infrastructure.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__topics" markdown>Docker и Compose, CI/CD, миграции БД, Kubernetes, пробы и sidecar, observability</p>
 </div>
 
 <div class="ip-section" markdown>
@@ -79,10 +89,6 @@ System.out.println(c == d);
 <p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны LeetCode, TCP, HTTP, TLS, gRPC</p>
 </div>
 
-<div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Проектирование](system-design/system-design.md) <span class="ip-section__count">2 страницы</span></p>
-<p class="ip-section__topics" markdown>Масштабирование, кэши, очереди, CAP, Saga, микросервисы, DDD, CQRS, Docker, Kubernetes</p>
-</div>
 
 </div>
 
@@ -115,7 +121,7 @@ System.out.println(c == d);
     4. **Базы данных.** [Изоляция транзакций](database/transactions.md#isolation) → [MVCC](database/transactions.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
     5. **Kafka.** [Физика брокера](kafka/kafka.md) → [Consumer и Producer](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).
     6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/networks.md#grpc) → [WebSocket и SSE](networks/networks.md#websocket).
-    7. **Основы System Design.** [Строительные блоки](system-design/system-design.md#building-blocks) → [Надёжность и эксплуатация](system-design/system-design.md#reliability) → [CI/CD](infrastructure/infrastructure.md#cicd) → [Миграции БД](infrastructure/infrastructure.md#migrations).
+    7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/infrastructure.md#cicd) → [Миграции БД](infrastructure/infrastructure.md#migrations).
     8. **Алгоритмы.** Все паттерны из [Паттернов задач](algorithms/leetcode-patterns.md), включая [динамическое программирование](algorithms/leetcode-patterns.md#dp) → [Графы](algorithms/algorithms.md#graphs).
 
 === "Senior"
@@ -125,9 +131,9 @@ System.out.println(c == d);
     1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → Многопоточность под капотом: [CAS](concurrency/jmm.md#cas-aba), [AQS](concurrency/locks.md#aqs), [false sharing](concurrency/jmm.md#false-sharing) → [Виртуальные потоки](concurrency/virtual-threads.md#loom).
     2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/transactions.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/transactions.md#serializable) → [Lost update и write skew](database/locking.md#write-anomalies) → [Блокировки JPA](database/locking.md#row-locking).
     3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction).
-    4. **Распределённые системы.** [Теория распределённых систем](system-design/system-design.md#distributed): CAP, консенсус, Saga, Outbox → [Микросервисы](system-design/system-design.md#microservices).
+    4. **Распределённые системы.** [Распределённые данные](system-design/distributed-data.md): репликация, CAP, консенсус → [Распределённые транзакции](architecture/distributed-transactions.md): Saga, Outbox → [Микросервисы](architecture/microservices.md#microservices).
     5. **Архитектура.** [DDD](architecture/architecture.md#ddd) → [Архитектурные стили](architecture/architecture.md#styles) → [CQRS и Event Sourcing](architecture/architecture.md#cqrs-es) → [DDD в Spring-приложении](architecture/hexagonal.md#spring-ddd).
-    6. **Интервью по System Design.** [Методология](system-design/system-design.md#methodology) → [Разбор кейсов](system-design/system-design.md#cases).
+    6. **Интервью по System Design.** [Методология](system-design/interview.md#methodology) → [Разбор кейсов](system-design/interview.md#cases).
     7. **Эксплуатация.** [Миграции без простоя](infrastructure/infrastructure.md#zero-downtime) → [Стратегии деплоя](infrastructure/infrastructure.md#deploy-strategies) → [Kubernetes](infrastructure/infrastructure.md#kubernetes).
 
 !!! tip "За день до собеседования"

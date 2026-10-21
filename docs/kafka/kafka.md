@@ -37,7 +37,7 @@ tags:
 | **Перечитать** | Невозможно | Отмотать оффсет назад |
 | **Где логика** | В брокере | В консьюмере |
 
-Общий обзор брокеров сообщений и моделей point-to-point и pub/sub — в [System Design → Message Queues](../system-design/system-design.md#message-queues).
+Общий обзор брокеров сообщений и моделей point-to-point и pub/sub — в [System Design → Message Queues](../system-design/building-blocks.md#message-queues).
 
 !!! warning "Ловушка: «Kafka удаляет прочитанное»"
     Прочтение не влияет на хранение. Сообщение лежит до истечения retention, даже если его уже прочитали все группы консьюмеров.

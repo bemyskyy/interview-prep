@@ -10,7 +10,7 @@ tags:
 
 ## Actuator и Micrometer { #actuator-micrometer }
 
-Концепции наблюдаемости — метрики, логи, трейсы, золотые сигналы, health checks — разобраны в [System Design → Observability](../system-design/system-design.md#observability). Здесь — инструменты Spring.
+Концепции наблюдаемости — метрики, логи, трейсы, золотые сигналы, health checks — разобраны в [System Design → Observability](../infrastructure/observability.md#observability). Здесь — инструменты Spring.
 
 ### Что даёт Actuator и как его защитить? { #actuator }
 

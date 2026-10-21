@@ -11,7 +11,7 @@ tags:
 
 ## Кэширование { #caching }
 
-Стратегии кэширования (Cache-Aside, Write-Through, Write-Behind), вытеснение и Cache Stampede разобраны в [System Design → Caching](../system-design/system-design.md#caching). Здесь — Spring-абстракция кэша.
+Стратегии кэширования (Cache-Aside, Write-Through, Write-Behind), вытеснение и Cache Stampede разобраны в [System Design → Caching](../system-design/building-blocks.md#caching). Здесь — Spring-абстракция кэша.
 
 ### Как работает `@Cacheable`? { #cacheable }
 

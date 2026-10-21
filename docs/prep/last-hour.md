@@ -266,6 +266,26 @@ tags:
 
 --8<-- "docs/kafka/spring-kafka.md:cheatsheet"
 
+## System Design { #system-design }
+
+### Интервью и оценка нагрузки { #interview }
+
+[Полный разбор →](../system-design/interview.md)
+
+--8<-- "docs/system-design/interview.md:cheatsheet"
+
+### Строительные блоки { #building-blocks }
+
+[Полный разбор →](../system-design/building-blocks.md)
+
+--8<-- "docs/system-design/building-blocks.md:cheatsheet"
+
+### Распределённые данные { #distributed-data }
+
+[Полный разбор →](../system-design/distributed-data.md)
+
+--8<-- "docs/system-design/distributed-data.md:cheatsheet"
+
 ## Архитектура { #architecture }
 
 ### DDD, микросервисы, CQRS { #architecture }
@@ -279,6 +299,38 @@ tags:
 [Полный разбор →](../architecture/hexagonal.md)
 
 --8<-- "docs/architecture/hexagonal.md:cheatsheet"
+
+### Микросервисы и отказоустойчивость { #microservices }
+
+[Полный разбор →](../architecture/microservices.md)
+
+--8<-- "docs/architecture/microservices.md:cheatsheet"
+
+### Распределённые транзакции { #distributed-transactions }
+
+[Полный разбор →](../architecture/distributed-transactions.md)
+
+--8<-- "docs/architecture/distributed-transactions.md:cheatsheet"
+
+## Инфраструктура { #infrastructure }
+
+### Docker, CI/CD, K8s { #infrastructure }
+
+[Полный разбор →](../infrastructure/infrastructure.md)
+
+--8<-- "docs/infrastructure/infrastructure.md:cheatsheet"
+
+### Kubernetes { #kubernetes }
+
+[Полный разбор →](../infrastructure/kubernetes.md)
+
+--8<-- "docs/infrastructure/kubernetes.md:cheatsheet"
+
+### Observability { #observability }
+
+[Полный разбор →](../infrastructure/observability.md)
+
+--8<-- "docs/infrastructure/observability.md:cheatsheet"
 
 ## Computer Science { #cs }
 
@@ -299,17 +351,3 @@ tags:
 [Полный разбор →](../networks/networks.md)
 
 --8<-- "docs/networks/networks.md:cheatsheet"
-
-## Проектирование { #projecting }
-
-### Масштабирование систем { #system-design }
-
-[Полный разбор →](../system-design/system-design.md)
-
---8<-- "docs/system-design/system-design.md:cheatsheet"
-
-### Docker, CI/CD, K8s { #infrastructure }
-
-[Полный разбор →](../infrastructure/infrastructure.md)
-
---8<-- "docs/infrastructure/infrastructure.md:cheatsheet"

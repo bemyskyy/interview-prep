@@ -285,7 +285,7 @@ services:
 !!! abstract "Ответ вслух"
     Через режим KRaft (Kafka Raft): Kafka сама хранит метаданные кластера через консенсус Raft, отдельный ZooKeeper не нужен. Это на один контейнер меньше, меньше RAM и старт примерно вдвое быстрее. С Kafka 3.3 ZooKeeper deprecated.
 
-Если рассказываешь, как поднимаешь ZooKeeper для Kafka, это звучит устаревше. KRaft убирает отдельный кластер ZooKeeper: метаданные живут в самой Kafka. Как Raft договаривается о данных, разобрано в [System Design → Консенсус](../system-design/system-design.md#consensus).
+Если рассказываешь, как поднимаешь ZooKeeper для Kafka, это звучит устаревше. KRaft убирает отдельный кластер ZooKeeper: метаданные живут в самой Kafka. Как Raft договаривается о данных, разобрано в [System Design → Консенсус](../system-design/distributed-data.md#consensus).
 
 !!! warning "Ловушка: настраивать новый кластер с ZooKeeper"
     Для нового кластера ZooKeeper — лишний контейнер и лишняя точка отказа. Конфигурацию с ZooKeeper стоит знать для поддержки старых кластеров, а новые поднимают в KRaft.
@@ -595,7 +595,7 @@ flowchart LR
 - **Services & Ingress** — как внешний трафик маршрутизируется внутрь кластера и балансируется между инстансами.
 - **ConfigMaps & Secrets** — логины, пароли и переменные окружения прокидываются извне, без хардкода в `application.yml`.
 
-Как K8s решает, жив ли под и готов ли он к трафику, разобрано в [System Design → Liveness и readiness](../system-design/system-design.md#health-checks).
+Как K8s решает, жив ли под и готов ли он к трафику, разобрано в [System Design → Liveness и readiness](kubernetes.md#health-checks).
 
 !!! warning "Ловушка: Rolling Update без readiness probe"
     Kubernetes ждёт готовности нового пода по readiness probe. Если её нет, под считается готовым сразу после старта контейнера, и трафик пойдёт на приложение, которое ещё не подняло Spring-контекст. Пользователи получат ошибки во время каждого деплоя.
@@ -607,7 +607,7 @@ flowchart LR
 
 ## Observability { #observability }
 
-Метрики, логи и трейсы, централизованное логирование (ELK/EFK) и проброс `traceId` через MDC разобраны в [System Design → Observability](../system-design/system-design.md#observability). Сбор метрик в Spring Boot через Actuator и Micrometer — в [Actuator и Micrometer](../spring/spring-actuator.md).
+Метрики, логи и трейсы, централизованное логирование (ELK/EFK) и проброс `traceId` через MDC разобраны в [System Design → Observability](observability.md#observability). Сбор метрик в Spring Boot через Actuator и Micrometer — в [Actuator и Micrometer](../spring/spring-actuator.md).
 
 ## Reverse proxy и API Gateway { #proxy-gateway }
 
@@ -618,7 +618,7 @@ flowchart LR
 !!! abstract "Ответ вслух"
     Reverse proxy — Nginx или HAProxy — стоит перед приложениями и принимает запросы от клиентов. Он балансирует нагрузку, терминирует SSL — HTTPS снаружи, HTTP внутри защищённого контура — и кэширует статику. API Gateway делает похожую работу на уровне микросервисов: проверяет JWT, ограничивает частоту запросов и маршрутизирует.
 
-API Gateway (например, Spring Cloud Gateway) разобран в [System Design → API Gateway, BFF и Service Discovery](../system-design/system-design.md#api-gateway). Балансировка на L4 и L7 — в [System Design → L4 и L7](../system-design/system-design.md#l4-l7).
+API Gateway (например, Spring Cloud Gateway) разобран в [System Design → API Gateway, BFF и Service Discovery](../architecture/microservices.md#api-gateway). Балансировка на L4 и L7 — в [System Design → L4 и L7](../system-design/building-blocks.md#l4-l7).
 
 !!! warning "Ловушка: HTTP внутри контура «и так безопасно»"
     SSL termination на прокси означает, что за ним трафик идёт в открытом виде. Это допустимо только внутри действительно защищённого контура. Если сеть между прокси и приложениями общая с чужими сервисами, шифруют и внутренний трафик.
@@ -655,7 +655,7 @@ API Gateway (например, Spring Cloud Gateway) разобран в [System
 | **Flyway лок** | На PostgreSQL — advisory lock, 5 инстансов не подерутся за миграцию |
 | **Zero-downtime миграции** | Переименование колонки — в 3 релиза, не сразу |
 | **Kubernetes** | Deployments, Services и Ingress, ConfigMaps и Secrets |
-| **Observability** | Logs (что) + Metrics (сколько) + Traces (где) — в [System Design](../system-design/system-design.md#observability) |
+| **Observability** | Logs (что) + Metrics (сколько) + Traces (где) — в [System Design](../infrastructure/observability.md#observability) |
 | **Reverse proxy** | Балансировка, SSL termination, кэш статики |
 
 <!-- --8<-- [end:cheatsheet] -->
