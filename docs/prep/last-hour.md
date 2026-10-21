@@ -52,6 +52,12 @@ tags:
 
 --8<-- "docs/java/collections.md:cheatsheet"
 
+### HashMap { #hashmap }
+
+[Полный разбор →](../java/hashmap.md)
+
+--8<-- "docs/java/hashmap.md:cheatsheet"
+
 ### Исключения { #exceptions }
 
 [Полный разбор →](../java/exceptions.md)

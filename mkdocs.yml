@@ -178,6 +178,7 @@ nav:
           - Современная Java: java/modern-java.md
           - ООП: java/oop.md
           - Коллекции: java/collections.md
+          - HashMap: java/hashmap.md
           - Исключения: java/exceptions.md
           - Дженерики: java/generics.md
           - Stream API: java/streams.md

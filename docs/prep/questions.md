@@ -85,21 +85,21 @@ tags:
 - [Как устроен `LinkedList`?](../java/collections.md#linkedlist) — *Junior*
 - [Что быстрее для вставки в середину: `ArrayList` или `LinkedList`?](../java/collections.md#insert-middle) — *Middle*
 - [Почему `LinkedList` проигрывает даже при равной асимптотике?](../java/collections.md#cache-locality) — *Senior*
-- [Как `HashMap` устроена внутри?](../java/collections.md#hashmap-internals) — *Junior*
-- [Как `HashMap` находит бакет по ключу?](../java/collections.md#bucket-index) — *Middle*
-- [Что происходит при коллизии?](../java/collections.md#collisions) — *Middle*
-- [Когда `HashMap` расширяется?](../java/collections.md#rehashing) — *Middle*
-- [Зачем в Java 8 бакеты превращаются в деревья?](../java/collections.md#treeify) — *Senior*
-- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/collections.md#map-choice) — *Junior*
 - [Как `HashSet` обеспечивает уникальность?](../java/collections.md#hashset) — *Junior*
 - [Как `TreeSet` сортирует элементы?](../java/collections.md#treeset) — *Junior*
 - [`Comparable` или `Comparator`?](../java/collections.md#comparable-comparator) — *Junior*
 - [Почему `Stack` устарел и чем его заменить?](../java/collections.md#stack-arraydeque) — *Junior*
 - [Как работает `PriorityQueue`?](../java/collections.md#priorityqueue) — *Middle*
 - [Откуда берётся `ConcurrentModificationException`?](../java/collections.md#cme) — *Middle*
-- [Чем плохи `Hashtable` и `Vector`?](../java/collections.md#hashtable-vector) — *Junior*
-- [Как `ConcurrentHashMap` обходится почти без блокировок?](../java/collections.md#concurrenthashmap) — *Senior*
-- [Когда нужен `CopyOnWriteArrayList`?](../java/collections.md#copyonwritearraylist) — *Middle*
+
+### HashMap { #hashmap }
+
+- [Как `HashMap` устроена внутри?](../java/hashmap.md#hashmap-internals) — *Junior*
+- [Как `HashMap` находит бакет по ключу?](../java/hashmap.md#bucket-index) — *Middle*
+- [Что происходит при коллизии?](../java/hashmap.md#collisions) — *Middle*
+- [Когда `HashMap` расширяется?](../java/hashmap.md#rehashing) — *Middle*
+- [Зачем в Java 8 бакеты превращаются в деревья?](../java/hashmap.md#treeify) — *Senior*
+- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/hashmap.md#map-choice) — *Junior*
 
 ### Исключения { #exceptions }
 
@@ -233,6 +233,9 @@ tags:
 
 ### Потокобезопасные коллекции { #concurrent-collections }
 
+- [Чем плохи `Hashtable` и `Vector`?](../concurrency/concurrent-collections.md#hashtable-vector) — *Junior*
+- [Как `ConcurrentHashMap` обходится почти без блокировок?](../concurrency/concurrent-collections.md#concurrenthashmap) — *Senior*
+- [Когда нужен `CopyOnWriteArrayList`?](../concurrency/concurrent-collections.md#copyonwritearraylist) — *Middle*
 
 ### Виртуальные потоки { #virtual-threads }
 
