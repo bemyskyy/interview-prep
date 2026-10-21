@@ -80,7 +80,7 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Инфраструктура](infrastructure/infrastructure.md) <span class="ip-section__count">3 страницы</span></p>
+<p class="ip-section__head" markdown>[Инфраструктура](infrastructure/docker.md) <span class="ip-section__count">4 страницы</span></p>
 <p class="ip-section__topics" markdown>Docker и Compose, CI/CD, миграции БД, Kubernetes, пробы и sidecar, observability</p>
 </div>
 
@@ -107,7 +107,7 @@ System.out.println(c == d);
     5. **Spring.** [Core: IoC и DI](spring/spring-core.md) → [Spring Boot](spring/spring-boot.md) → [MVC / REST](spring/spring-mvc.md) → [Транзакции: `@Transactional`](spring/spring-transactions.md#transactional).
     6. **Сети.** [TCP и UDP](networks/networks.md#tcp-udp) → [HTTP](networks/networks.md#http) → [REST](networks/networks.md#rest).
     7. **Алгоритмы.** [Big O](algorithms/algorithms.md#big-o) → [Структуры данных](algorithms/algorithms.md#data-structures) → [Подход к задаче](algorithms/leetcode-patterns.md#approach) → [Two Pointers](algorithms/leetcode-patterns.md#two-pointers) и [HashMap в задачах](algorithms/leetcode-patterns.md#hashmap).
-    8. **Окружение.** [Docker](infrastructure/infrastructure.md#docker) → [Docker Compose](infrastructure/infrastructure.md#compose).
+    8. **Окружение.** [Docker](infrastructure/docker.md#docker) → [Docker Compose](infrastructure/docker.md#compose).
 
     Для самопроверки ищи в [Вопросах собеса](prep/questions.md) пометку *Junior*.
 
@@ -121,7 +121,7 @@ System.out.println(c == d);
     4. **Базы данных.** [Изоляция транзакций](database/transactions.md#isolation) → [MVCC](database/transactions.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
     5. **Kafka.** [Физика брокера](kafka/kafka.md) → [Consumer и Producer](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).
     6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/networks.md#grpc) → [WebSocket и SSE](networks/networks.md#websocket).
-    7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/infrastructure.md#cicd) → [Миграции БД](infrastructure/infrastructure.md#migrations).
+    7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/cicd.md#cicd) → [Миграции БД](infrastructure/cicd.md#migrations).
     8. **Алгоритмы.** Все паттерны из [Паттернов задач](algorithms/leetcode-patterns.md), включая [динамическое программирование](algorithms/leetcode-patterns.md#dp) → [Графы](algorithms/algorithms.md#graphs).
 
 === "Senior"
@@ -134,7 +134,7 @@ System.out.println(c == d);
     4. **Распределённые системы.** [Распределённые данные](system-design/distributed-data.md): репликация, CAP, консенсус → [Распределённые транзакции](architecture/distributed-transactions.md): Saga, Outbox → [Микросервисы](architecture/microservices.md#microservices).
     5. **Архитектура.** [DDD](architecture/ddd.md#ddd) → [Слоистая и гексагональная архитектура](architecture/hexagonal.md#styles) → [CQRS и Event Sourcing](architecture/ddd.md#cqrs-es) → [DDD в Spring-приложении](architecture/hexagonal.md#spring-ddd).
     6. **Интервью по System Design.** [Методология](system-design/interview.md#methodology) → [Разбор кейсов](system-design/interview.md#cases).
-    7. **Эксплуатация.** [Миграции без простоя](infrastructure/infrastructure.md#zero-downtime) → [Стратегии деплоя](infrastructure/infrastructure.md#deploy-strategies) → [Kubernetes](infrastructure/infrastructure.md#kubernetes).
+    7. **Эксплуатация.** [Миграции без простоя](infrastructure/cicd.md#zero-downtime) → [Стратегии деплоя](infrastructure/cicd.md#deploy-strategies) → [Kubernetes](infrastructure/kubernetes.md#kubernetes).
 
 !!! tip "За день до собеседования"
     Не пытайся прочитать всё. Открой [За час до собеса](prep/last-hour.md) — там шпаргалки всех тем на одной странице. Пройди шпаргалки своего стека, а непонятные строки добери по ссылке на полный разбор. Для самопроверки — [все вопросы базы](prep/questions.md) списком.

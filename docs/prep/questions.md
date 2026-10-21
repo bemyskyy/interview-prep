@@ -526,36 +526,39 @@ tags:
 
 ## Инфраструктура { #infrastructure }
 
-### Docker, CI/CD, K8s { #infrastructure }
+### Docker и Compose { #docker }
 
-- [Какую проблему решает Docker?](../infrastructure/infrastructure.md#why-docker) — *Junior*
-- [Чем контейнер отличается от виртуальной машины?](../infrastructure/infrastructure.md#container-vs-vm) — *Junior*
-- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/infrastructure.md#image-container) — *Junior*
-- [На чём держится изоляция контейнера?](../infrastructure/infrastructure.md#namespaces-cgroups) — *Middle*
-- [Как написать хороший Dockerfile для Java?](../infrastructure/infrastructure.md#dockerfile) — *Middle*
-- [Какой базовый образ выбрать?](../infrastructure/infrastructure.md#base-images) — *Middle*
-- [Почему контейнер нельзя запускать под root?](../infrastructure/infrastructure.md#non-root) — *Junior*
-- [Как сервисы в Compose находят друг друга?](../infrastructure/infrastructure.md#compose-dns) — *Junior*
-- [Как дождаться готовности базы при старте?](../infrastructure/infrastructure.md#healthcheck) — *Junior*
-- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/infrastructure.md#compose-profiles) — *Junior*
-- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/infrastructure.md#kraft) — *Middle*
-- [Какие сети бывают в Docker?](../infrastructure/infrastructure.md#docker-networks) — *Middle*
-- [Как Docker хранит данные?](../infrastructure/infrastructure.md#volumes) — *Middle*
-- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/infrastructure.md#ci-cd) — *Junior*
-- [Из каких стадий состоит Java-пайплайн?](../infrastructure/infrastructure.md#pipeline) — *Middle*
-- [Какие есть стратегии деплоя?](../infrastructure/infrastructure.md#deploy-strategies) — *Middle*
-- [Зачем нужны Flyway и Liquibase?](../infrastructure/infrastructure.md#flyway) — *Junior*
-- [Как запускать миграции в CI/CD?](../infrastructure/infrastructure.md#migrations-cicd) — *Middle*
-- [Что будет, если изменить уже применённую миграцию?](../infrastructure/infrastructure.md#flyway-checksum) — *Middle*
-- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/infrastructure.md#flyway-lock) — *Senior*
-- [Как мигрировать схему без простоя?](../infrastructure/infrastructure.md#zero-downtime) — *Senior*
-- [Что даёт Kubernetes?](../infrastructure/infrastructure.md#k8s-basics) — *Junior*
-- [Зачем нужен reverse proxy?](../infrastructure/infrastructure.md#reverse-proxy) — *Junior*
+- [Какую проблему решает Docker?](../infrastructure/docker.md#why-docker) — *Junior*
+- [Чем контейнер отличается от виртуальной машины?](../infrastructure/docker.md#container-vs-vm) — *Junior*
+- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/docker.md#image-container) — *Junior*
+- [На чём держится изоляция контейнера?](../infrastructure/docker.md#namespaces-cgroups) — *Middle*
+- [Как написать хороший Dockerfile для Java?](../infrastructure/docker.md#dockerfile) — *Middle*
+- [Какой базовый образ выбрать?](../infrastructure/docker.md#base-images) — *Middle*
+- [Почему контейнер нельзя запускать под root?](../infrastructure/docker.md#non-root) — *Junior*
+- [Как сервисы в Compose находят друг друга?](../infrastructure/docker.md#compose-dns) — *Junior*
+- [Как дождаться готовности базы при старте?](../infrastructure/docker.md#healthcheck) — *Junior*
+- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/docker.md#compose-profiles) — *Junior*
+- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/docker.md#kraft) — *Middle*
+- [Какие сети бывают в Docker?](../infrastructure/docker.md#docker-networks) — *Middle*
+- [Как Docker хранит данные?](../infrastructure/docker.md#volumes) — *Middle*
+
+### CI/CD и миграции БД { #cicd }
+
+- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/cicd.md#ci-cd) — *Junior*
+- [Из каких стадий состоит Java-пайплайн?](../infrastructure/cicd.md#pipeline) — *Middle*
+- [Какие есть стратегии деплоя?](../infrastructure/cicd.md#deploy-strategies) — *Middle*
+- [Зачем нужны Flyway и Liquibase?](../infrastructure/cicd.md#flyway) — *Junior*
+- [Как запускать миграции в CI/CD?](../infrastructure/cicd.md#migrations-cicd) — *Middle*
+- [Что будет, если изменить уже применённую миграцию?](../infrastructure/cicd.md#flyway-checksum) — *Middle*
+- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/cicd.md#flyway-lock) — *Senior*
+- [Как мигрировать схему без простоя?](../infrastructure/cicd.md#zero-downtime) — *Senior*
 
 ### Kubernetes { #kubernetes }
 
+- [Что даёт Kubernetes?](../infrastructure/kubernetes.md#k8s-basics) — *Junior*
 - [Чем liveness отличается от readiness?](../infrastructure/kubernetes.md#health-checks) — *Junior*
 - [Что такое sidecar?](../infrastructure/kubernetes.md#sidecar) — *Middle*
+- [Зачем нужен reverse proxy?](../infrastructure/kubernetes.md#reverse-proxy) — *Junior*
 
 ### Observability { #observability }
 

@@ -320,11 +320,17 @@ tags:
 
 ## Инфраструктура { #infrastructure }
 
-### Docker, CI/CD, K8s { #infrastructure }
+### Docker и Compose { #docker }
 
-[Полный разбор →](../infrastructure/infrastructure.md)
+[Полный разбор →](../infrastructure/docker.md)
 
---8<-- "docs/infrastructure/infrastructure.md:cheatsheet"
+--8<-- "docs/infrastructure/docker.md:cheatsheet"
+
+### CI/CD и миграции БД { #cicd }
+
+[Полный разбор →](../infrastructure/cicd.md)
+
+--8<-- "docs/infrastructure/cicd.md:cheatsheet"
 
 ### Kubernetes { #kubernetes }
 

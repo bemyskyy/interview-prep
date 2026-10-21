@@ -144,6 +144,7 @@ plugins:
         spring/spring-tools.md: spring/spring-testing.md
         system-design/system-design.md: system-design/interview.md
         architecture/architecture.md: architecture/ddd.md
+        infrastructure/infrastructure.md: infrastructure/docker.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -246,7 +247,8 @@ nav:
       - Распределённые транзакции: architecture/distributed-transactions.md
 
   - Инфраструктура:
-      - Docker, CI/CD, K8s: infrastructure/infrastructure.md
+      - Docker и Compose: infrastructure/docker.md
+      - CI/CD и миграции БД: infrastructure/cicd.md
       - Kubernetes: infrastructure/kubernetes.md
       - Observability: infrastructure/observability.md
 
