@@ -566,7 +566,7 @@ tags:
 
 ## Computer Science { #cs }
 
-### Теория (Big O, структуры, сортировки) { #algorithms }
+### Big O и структуры данных { #algorithms }
 
 - [Что такое Big O?](../algorithms/algorithms.md#big-o-basics) — *Junior*
 - [Как упрощать Big O?](../algorithms/algorithms.md#simplification) — *Junior*
@@ -578,15 +578,18 @@ tags:
 - [Как устроено BST и как обходить дерево?](../algorithms/algorithms.md#tree-traversal) — *Junior*
 - [Как обойти дерево по уровням?](../algorithms/algorithms.md#tree-bfs) — *Junior*
 - [Что такое красно-чёрное дерево?](../algorithms/algorithms.md#red-black-tree) — *Middle*
-- [Какие сортировки нужно знать?](../algorithms/algorithms.md#sorting-overview) — *Middle*
-- [Как работает Merge Sort?](../algorithms/algorithms.md#merge-sort) — *Middle*
-- [Как работает Quick Sort?](../algorithms/algorithms.md#quick-sort) — *Middle*
-- [Как хранить граф?](../algorithms/algorithms.md#graph-representation) — *Junior*
-- [Как найти кратчайший путь в невзвешенном графе?](../algorithms/algorithms.md#graph-bfs) — *Middle*
-- [Как работает DFS?](../algorithms/algorithms.md#graph-dfs) — *Middle*
-- [Как работает алгоритм Дейкстры?](../algorithms/algorithms.md#dijkstra) — *Senior*
 - [Какая сложность у операций основных структур?](../algorithms/algorithms.md#structures-complexity) — *Junior*
 - [Какую сложность у основных алгоритмов назвать сразу?](../algorithms/algorithms.md#algorithms-complexity) — *Junior*
+
+### Сортировки и графы { #sorting-graphs }
+
+- [Какие сортировки нужно знать?](../algorithms/sorting-graphs.md#sorting-overview) — *Middle*
+- [Как работает Merge Sort?](../algorithms/sorting-graphs.md#merge-sort) — *Middle*
+- [Как работает Quick Sort?](../algorithms/sorting-graphs.md#quick-sort) — *Middle*
+- [Как хранить граф?](../algorithms/sorting-graphs.md#graph-representation) — *Junior*
+- [Как найти кратчайший путь в невзвешенном графе?](../algorithms/sorting-graphs.md#graph-bfs) — *Middle*
+- [Как работает DFS?](../algorithms/sorting-graphs.md#graph-dfs) — *Middle*
+- [Как работает алгоритм Дейкстры?](../algorithms/sorting-graphs.md#dijkstra) — *Senior*
 
 ### Паттерны задач (LeetCode) { #leetcode-patterns }
 

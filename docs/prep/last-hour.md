@@ -346,11 +346,17 @@ tags:
 
 ## Computer Science { #cs }
 
-### Теория (Big O, структуры, сортировки) { #algorithms }
+### Big O и структуры данных { #algorithms }
 
 [Полный разбор →](../algorithms/algorithms.md)
 
 --8<-- "docs/algorithms/algorithms.md:cheatsheet"
+
+### Сортировки и графы { #sorting-graphs }
+
+[Полный разбор →](../algorithms/sorting-graphs.md)
+
+--8<-- "docs/algorithms/sorting-graphs.md:cheatsheet"
 
 ### Паттерны задач (LeetCode) { #leetcode-patterns }
 

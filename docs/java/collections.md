@@ -377,7 +377,7 @@ Comparator<Habit> complex = Comparator.comparingInt(Habit::getPriority)
 - **FIFO (First In, First Out)** — классическая **очередь** (`Queue`). Кто первым встал в очередь в кассу, того первым и обслужат.
     - _Где применяется:_ обработка потока задач, брокеры сообщений, поиск в ширину (BFS).
 - **LIFO (Last In, First Out)** — **стек** (stack). Стопка тарелок: берёшь ту, которую положил последней.
-    - _Где применяется:_ стек вызовов в JVM, отмена операций (Ctrl+Z), поиск в глубину (DFS).
+    - _Где применяется:_ стек вызовов в JVM, отмена операций (Ctrl+Z), поиск в глубину (DFS), проверка скобочных последовательностей.
 
 Почему не `java.util.Stack`:
 
@@ -389,6 +389,7 @@ Comparator<Habit> complex = Comparator.comparingInt(Habit::getPriority)
 ```java
 Deque<String> stack = new ArrayDeque<>();
 stack.push("A");      // добавить на вершину (LIFO)
+stack.peek();         // посмотреть вершину, не снимая
 stack.pop();          // взять с вершины
 
 Queue<String> queue = new ArrayDeque<>();
@@ -422,7 +423,7 @@ queue.poll();         // взять из головы
 
 **Под капотом** — **двоичная min-куча**, физически хранящаяся в массиве.
 
-- Приоритет определяется так же, как в `TreeSet`, — через `Comparable` или `Comparator` в конструкторе.
+- Приоритет определяется так же, как в `TreeSet`, — через `Comparable` или `Comparator` в конструкторе. Max-кучу получают компаратором `Comparator.reverseOrder()`.
 - **Сложность:** `peek()` (посмотреть минимум) — O(1). `poll()` и `offer()` — O(log n) из-за перестройки кучи.
 
 ```java
