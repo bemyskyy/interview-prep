@@ -12,6 +12,8 @@ edit_uri: edit/main/docs/
 theme:
   name: material
   language: ru
+  # Переопределения шаблонов: mermaid из репозитория (overrides/main.html)
+  custom_dir: overrides
 
   # Шрифты подключены локально в stylesheets/extra.css, без Google Fonts
   font: false
