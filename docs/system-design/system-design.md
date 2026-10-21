@@ -207,7 +207,7 @@ sequenceDiagram
     end
 ```
 
-Cache-Aside в Spring делается аннотацией `@Cacheable` — настройка и подводные камни разобраны в [Spring: Инструменты](../spring/spring-tools.md). Тот же паттерн на Redis — в [NoSQL](../database/nosql.md).
+Cache-Aside в Spring делается аннотацией `@Cacheable` — настройка и подводные камни разобраны в [Кэширование в Spring](../spring/spring-caching.md#cacheable). Тот же паттерн на Redis — в [NoSQL](../database/nosql.md).
 
 !!! warning "Ловушка: Write-Behind для важных данных"
     Если кэш сгорит до сброса в БД, данные потеряны. Write-Behind годится для того, что не жалко потерять, — счётчиков, лайков, просмотров. Деньги и заказы так не пишут.
@@ -963,7 +963,7 @@ public BonusResult fallbackBonus(Long userId, Throwable t) {
 - **Logs** — что произошло, текстовые записи событий. В распределённой системе логи **структурированные** (JSON) и централизованные: ELK/EFK (Elasticsearch + Logstash или Fluentd + Kibana) или Loki. Иначе логи 30 сервисов бесполезны.
 - **Traces** — где именно: путь запроса через сервисы. **Trace id** протаскивается через все вызовы, а каждый участок — span с таймингом; OpenTelemetry, Jaeger, Zipkin. Отвечает на вопрос «запрос прошёл 8 сервисов — где затык?».
 
-Чтобы найти все логи одного запроса через 5 микросервисов, `traceId` кладут в MDC логгера — он попадает в каждую строку лога. Метрики в Spring Boot собирает Micrometer через Actuator — это разобрано в [Spring: Инструменты](../spring/spring-tools.md).
+Чтобы найти все логи одного запроса через 5 микросервисов, `traceId` кладут в MDC логгера — он попадает в каждую строку лога. Метрики в Spring Boot собирает Micrometer через Actuator — это разобрано в [Actuator и Micrometer](../spring/spring-actuator.md).
 
 !!! warning "Ловушка: алерт на каждую мелочь"
     Если алертить по каждому всплеску CPU, дежурные привыкают игнорировать уведомления (alert fatigue) и пропускают настоящий сбой. Алерты строят по симптомам для пользователя — **четырём золотым сигналам Google SRE**: latency, traffic, errors, saturation. Мониторинг этих четырёх покрывает большинство проблем.

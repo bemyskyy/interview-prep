@@ -172,7 +172,7 @@ tags:
 
 --8<-- "docs/spring/spring-boot.md:cheatsheet"
 
-### Spring MVC / REST { #spring-mvc }
+### Spring MVC и WebFlux { #spring-mvc }
 
 [Полный разбор →](../spring/spring-mvc.md)
 
@@ -196,11 +196,23 @@ tags:
 
 --8<-- "docs/spring/spring-data-jpa.md:cheatsheet"
 
-### Тестирование и инструменты { #spring-tools }
+### Кэширование { #spring-caching }
 
-[Полный разбор →](../spring/spring-tools.md)
+[Полный разбор →](../spring/spring-caching.md)
 
---8<-- "docs/spring/spring-tools.md:cheatsheet"
+--8<-- "docs/spring/spring-caching.md:cheatsheet"
+
+### Тестирование { #spring-testing }
+
+[Полный разбор →](../spring/spring-testing.md)
+
+--8<-- "docs/spring/spring-testing.md:cheatsheet"
+
+### Actuator и Micrometer { #spring-actuator }
+
+[Полный разбор →](../spring/spring-actuator.md)
+
+--8<-- "docs/spring/spring-actuator.md:cheatsheet"
 
 ## Данные { #data }
 

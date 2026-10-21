@@ -405,7 +405,7 @@ flowchart LR
 ```
 
 - **Build** — Runner скачивает код и выполняет `mvn clean compile`. Кэш `~/.m2`: если `pom.xml` не менялся, зависимости берутся из кэша за секунду.
-- **Test** — `mvn test` (unit) + `mvn verify` (интеграционные с Testcontainers, см. [Spring: Инструменты](../spring/spring-tools.md)).
+- **Test** — `mvn test` (unit) + `mvn verify` (интеграционные с Testcontainers, см. [Spring: Testcontainers](../spring/spring-testing.md#testcontainers)).
 - **Build Image** — собирается Docker-образ, тегируется (`v1.2.42` или хэш коммита) и отправляется в Registry (Nexus, Harbor, GitLab Registry).
 - **Deploy** — Runner подключается к кластеру (K8s API или SSH) и обновляет образ.
 
@@ -607,7 +607,7 @@ flowchart LR
 
 ## Observability { #observability }
 
-Метрики, логи и трейсы, централизованное логирование (ELK/EFK) и проброс `traceId` через MDC разобраны в [System Design → Observability](../system-design/system-design.md#observability). Сбор метрик в Spring Boot через Actuator и Micrometer — в [Spring: Инструменты](../spring/spring-tools.md).
+Метрики, логи и трейсы, централизованное логирование (ELK/EFK) и проброс `traceId` через MDC разобраны в [System Design → Observability](../system-design/system-design.md#observability). Сбор метрик в Spring Boot через Actuator и Micrometer — в [Actuator и Micrometer](../spring/spring-actuator.md).
 
 ## Reverse proxy и API Gateway { #proxy-gateway }
 

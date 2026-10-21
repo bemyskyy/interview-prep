@@ -711,7 +711,7 @@ public Flux<HabitDto> streamHabits() {
 }
 ```
 
-Реактивный стек, на котором работает `Flux`, разобран в [Spring: Инструменты](../spring/spring-tools.md).
+Реактивный стек, на котором работает `Flux`, разобран в [Spring MVC и WebFlux → WebFlux](../spring/spring-mvc.md#webflux).
 
 !!! warning "Ловушка: `setAllowedOrigins("*")` в проде"
     Звёздочка разрешает подключаться к WebSocket со страниц любого домена. Для примера это удобно, но в проде перечисляют конкретные домены фронтенда.

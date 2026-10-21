@@ -286,7 +286,7 @@ tags:
 - [Как работают профили?](../spring/spring-boot.md#profiles) — *Junior*
 - [`@Value` или `@ConfigurationProperties`?](../spring/spring-boot.md#value-vs-configprops) — *Middle*
 
-### Spring MVC / REST { #spring-mvc }
+### Spring MVC и WebFlux { #spring-mvc }
 
 - [Как `DispatcherServlet` обрабатывает запрос?](../spring/spring-mvc.md#dispatcherservlet) — *Middle*
 - [Зачем нужен `HandlerAdapter`?](../spring/spring-mvc.md#handler-adapter) — *Senior*
@@ -300,6 +300,9 @@ tags:
 - [Как написать интерсептор?](../spring/spring-mvc.md#interceptor) — *Middle*
 - [Как работает `@Valid`?](../spring/spring-mvc.md#valid) — *Junior*
 - [Как настроить CORS?](../spring/spring-mvc.md#cors) — *Junior*
+- [Зачем нужен реактивный подход?](../spring/spring-mvc.md#why-reactive) — *Middle*
+- [Что такое `Mono` и `Flux`?](../spring/spring-mvc.md#mono-flux) — *Middle*
+- [Когда выбирать WebFlux, а когда MVC?](../spring/spring-mvc.md#webflux-vs-mvc) — *Senior*
 
 ### Spring Security { #spring-security }
 
@@ -329,22 +332,25 @@ tags:
 - [Чем `save()` отличается от `saveAndFlush()`?](../spring/spring-data-jpa.md#save-vs-saveandflush) — *Middle*
 - [Чем кэш первого уровня отличается от второго?](../spring/spring-data-jpa.md#hibernate-cache) — *Middle*
 
-### Тестирование и инструменты { #spring-tools }
+### Кэширование { #spring-caching }
 
-- [Какой тестовый срез выбрать?](../spring/spring-tools.md#test-slices) — *Junior*
-- [Как написать юнит-тест без Spring?](../spring/spring-tools.md#unit-tests) — *Junior*
-- [Как протестировать контроллер без БД?](../spring/spring-tools.md#webmvctest) — *Middle*
-- [Как протестировать репозиторий?](../spring/spring-tools.md#datajpatest) — *Middle*
-- [Зачем нужны Testcontainers?](../spring/spring-tools.md#testcontainers) — *Middle*
-- [Как работает `@Cacheable`?](../spring/spring-tools.md#cacheable) — *Junior*
-- [Как настроить Redis-кэш с TTL?](../spring/spring-tools.md#redis-cache-config) — *Middle*
-- [Чем `condition` отличается от `unless`?](../spring/spring-tools.md#condition-vs-unless) — *Middle*
-- [Что даёт Actuator и как его защитить?](../spring/spring-tools.md#actuator) — *Junior*
-- [Как писать свои метрики в Micrometer?](../spring/spring-tools.md#micrometer) — *Middle*
-- [Как подключить Prometheus и Grafana?](../spring/spring-tools.md#prometheus) — *Middle*
-- [Зачем нужен реактивный подход?](../spring/spring-tools.md#why-reactive) — *Middle*
-- [Что такое `Mono` и `Flux`?](../spring/spring-tools.md#mono-flux) — *Middle*
-- [Когда выбирать WebFlux, а когда MVC?](../spring/spring-tools.md#webflux-vs-mvc) — *Senior*
+- [Как работает `@Cacheable`?](../spring/spring-caching.md#cacheable) — *Junior*
+- [Как настроить Redis-кэш с TTL?](../spring/spring-caching.md#redis-cache-config) — *Middle*
+- [Чем `condition` отличается от `unless`?](../spring/spring-caching.md#condition-vs-unless) — *Middle*
+
+### Тестирование { #spring-testing }
+
+- [Какой тестовый срез выбрать?](../spring/spring-testing.md#test-slices) — *Junior*
+- [Как написать юнит-тест без Spring?](../spring/spring-testing.md#unit-tests) — *Junior*
+- [Как протестировать контроллер без БД?](../spring/spring-testing.md#webmvctest) — *Middle*
+- [Как протестировать репозиторий?](../spring/spring-testing.md#datajpatest) — *Middle*
+- [Зачем нужны Testcontainers?](../spring/spring-testing.md#testcontainers) — *Middle*
+
+### Actuator и Micrometer { #spring-actuator }
+
+- [Что даёт Actuator и как его защитить?](../spring/spring-actuator.md#actuator) — *Junior*
+- [Как писать свои метрики в Micrometer?](../spring/spring-actuator.md#micrometer) — *Middle*
+- [Как подключить Prometheus и Grafana?](../spring/spring-actuator.md#prometheus) — *Middle*
 
 ## Данные { #data }
 

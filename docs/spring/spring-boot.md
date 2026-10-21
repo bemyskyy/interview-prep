@@ -450,10 +450,6 @@ public class SmtpEmailSender implements EmailSender { ... }
     2. Какие плюсы у `@ConfigurationProperties`?
     3. Как включить валидацию для класса свойств?
 
-## Actuator и мониторинг { #actuator }
-
-`spring-boot-starter-actuator` даёт HTTP-эндпоинты мониторинга из коробки: `/actuator/health`, `/actuator/metrics`, `/actuator/conditions` и другие. Эндпоинты, их настройка, безопасность и метрики Micrometer разобраны в [Инструменты → Actuator и Micrometer](../spring/spring-tools.md#actuator-micrometer), а концепции наблюдаемости (метрики, логи, трейсы) — в [System Design → Observability](../system-design/system-design.md#observability).
-
 ## Шпаргалка { #cheatsheet }
 
 <!-- --8<-- [start:cheatsheet] -->
@@ -469,6 +465,5 @@ public class SmtpEmailSender implements EmailSender { ... }
 | **Приоритет конфигурации** | CLI args > env vars > `application-{profile}.yml` > `application.yml` > дефолты |
 | **Профили** | `application-{profile}.yml`, `@Profile`, `spring.profiles.active` |
 | **`@Value` vs `@ConfigurationProperties`** | Value — одиночное значение. ConfigurationProperties — группа настроек с валидацией |
-| **Actuator** | Мониторинг из коробки — подробно в [Инструментах](../spring/spring-tools.md#actuator-micrometer) |
 
 <!-- --8<-- [end:cheatsheet] -->

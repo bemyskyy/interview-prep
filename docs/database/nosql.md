@@ -437,7 +437,7 @@ flowchart TD
 !!! abstract "Ответ вслух"
     Сначала ищем значение в Redis; при промахе идём в основную БД, кладём результат в кэш и отдаём. При обновлении данных запись в кэше инвалидируем. В Spring это же делает `@Cacheable`, но ручная реализация показывает, что происходит внутри.
 
-Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [System Design → Caching](../system-design/system-design.md#caching), декларативный вариант через `@Cacheable` — в [Инструменты → Кэширование](../spring/spring-tools.md#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](#key-value).
+Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [System Design → Caching](../system-design/system-design.md#caching), декларативный вариант через `@Cacheable` — в [Кэширование → `@Cacheable`](../spring/spring-caching.md#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](#key-value).
 
 ```java
 @Service
