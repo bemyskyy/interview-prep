@@ -345,7 +345,7 @@ worker.interrupt(); // «стучимся» к потоку
     }
     ```
 
-    На Spring Boot 4.0.8 `@Async`-метод, который печатает `MDC.get("requestId")`, без этого бина выводит `task-1: requestId=null`, с ним — `task-1: requestId=req-42`. Для логов и трейсинга в Spring 6.1+ есть готовый `ContextPropagatingTaskDecorator` (поверх библиотеки Micrometer Context Propagation). Контекст безопасности переносят обёртками Spring Security — см. [`SecurityContext` в асинхронном коде](../spring/spring-ecosystem.md#security-context-async).
+    На Spring Boot 4.0.8 `@Async`-метод, который печатает `MDC.get("requestId")`, без этого бина выводит `task-1: requestId=null`, с ним — `task-1: requestId=req-42`. Для логов и трейсинга в Spring 6.1+ есть готовый `ContextPropagatingTaskDecorator` (поверх библиотеки Micrometer Context Propagation). Контекст безопасности переносят обёртками Spring Security — см. [`SecurityContext` в асинхронном коде](../spring/spring-security.md#security-context-async).
 
     `ThreadLocal` работает и в виртуальных потоках, но копия значения будет у каждого из них, а их бывают миллионы. Для передачи контекста вниз по вызовам в Java 25 есть `ScopedValue` ([JEP 506](https://openjdk.org/jeps/506)): значение неизменяемое и привязано к блоку кода, поэтому забыть его убрать нельзя.
 

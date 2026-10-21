@@ -231,7 +231,7 @@ Exactly-once работает **только внутри Kafka** через т�
     }
     ```
 
-    Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Экосистема → Spring Kafka](../spring/spring-ecosystem.md#kafka-listener).
+    Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Экосистема → Spring Kafka](spring-kafka.md#kafka-listener).
 
     !!! tip "`MANUAL` vs `MANUAL_IMMEDIATE`"
         `MANUAL` — коммит ставится в очередь и выполняется при следующем `poll()`. `MANUAL_IMMEDIATE` — коммит выполняется немедленно в потоке слушателя. Для большинства случаев `MANUAL` эффективнее: он батчит коммиты.

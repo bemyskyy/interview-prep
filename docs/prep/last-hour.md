@@ -178,6 +178,12 @@ tags:
 
 --8<-- "docs/spring/spring-mvc.md:cheatsheet"
 
+### Spring Security { #spring-security }
+
+[Полный разбор →](../spring/spring-security.md)
+
+--8<-- "docs/spring/spring-security.md:cheatsheet"
+
 ### Транзакции в Spring { #spring-transactions }
 
 [Полный разбор →](../spring/spring-transactions.md)
@@ -189,12 +195,6 @@ tags:
 [Полный разбор →](../spring/spring-data-jpa.md)
 
 --8<-- "docs/spring/spring-data-jpa.md:cheatsheet"
-
-### Security, Kafka, DDD { #spring-ecosystem }
-
-[Полный разбор →](../spring/spring-ecosystem.md)
-
---8<-- "docs/spring/spring-ecosystem.md:cheatsheet"
 
 ### Тестирование и инструменты { #spring-tools }
 
@@ -248,6 +248,26 @@ tags:
 
 --8<-- "docs/kafka/kafka-reliability.md:cheatsheet"
 
+### Kafka в Spring { #spring-kafka }
+
+[Полный разбор →](../kafka/spring-kafka.md)
+
+--8<-- "docs/kafka/spring-kafka.md:cheatsheet"
+
+## Архитектура { #architecture }
+
+### DDD, микросервисы, CQRS { #architecture }
+
+[Полный разбор →](../architecture/architecture.md)
+
+--8<-- "docs/architecture/architecture.md:cheatsheet"
+
+### Слоистая и гексагональная архитектура { #hexagonal }
+
+[Полный разбор →](../architecture/hexagonal.md)
+
+--8<-- "docs/architecture/hexagonal.md:cheatsheet"
+
 ## Computer Science { #cs }
 
 ### Теория (Big O, структуры, сортировки) { #algorithms }
@@ -275,12 +295,6 @@ tags:
 [Полный разбор →](../system-design/system-design.md)
 
 --8<-- "docs/system-design/system-design.md:cheatsheet"
-
-### DDD, микросервисы, CQRS { #architecture }
-
-[Полный разбор →](../architecture/architecture.md)
-
---8<-- "docs/architecture/architecture.md:cheatsheet"
 
 ### Docker, CI/CD, K8s { #infrastructure }
 

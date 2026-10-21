@@ -318,7 +318,7 @@ sequenceDiagram
 | **Базовый класс** | `OncePerRequestFilter` | `HandlerInterceptor` |
 
 !!! warning "Ловушка: Spring Security — это фильтры"
-    Частая ошибка — говорить, что Spring Security работает на интерсепторах. **Это не так.** Spring Security — `FilterChainProxy`, цепочка именно **фильтров**: он должен отбить злоумышленника ещё до того, как начнёт работу `DispatcherServlet`. Подробно — в [Экосистема → Spring Security](spring-ecosystem.md#security-filter-chain).
+    Частая ошибка — говорить, что Spring Security работает на интерсепторах. **Это не так.** Spring Security — `FilterChainProxy`, цепочка именно **фильтров**: он должен отбить злоумышленника ещё до того, как начнёт работу `DispatcherServlet`. Подробно — в [Экосистема → Spring Security](spring-security.md#security-filter-chain).
 
 ??? question "Проверь себя"
     1. Какой из механизмов срабатывает раньше и почему?

@@ -301,6 +301,15 @@ tags:
 - [Как работает `@Valid`?](../spring/spring-mvc.md#valid) — *Junior*
 - [Как настроить CORS?](../spring/spring-mvc.md#cors) — *Junior*
 
+### Spring Security { #spring-security }
+
+- [Как устроен Spring Security?](../spring/spring-security.md#security-filter-chain) — *Middle*
+- [Как проходит аутентификация?](../spring/spring-security.md#authentication) — *Middle*
+- [Как настроить авторизацию?](../spring/spring-security.md#authorization) — *Junior*
+- [Как встроить JWT в Spring Security?](../spring/spring-security.md#jwt-filter) — *Middle*
+- [Почему теряется `SecurityContext` в асинхронном коде?](../spring/spring-security.md#security-context-async) — *Senior*
+- [Как сделать logout, если используется JWT?](../spring/spring-security.md#jwt-logout) — *Senior*
+
 ### Транзакции в Spring { #spring-transactions }
 
 - [Что происходит при вызове `@Transactional`-метода?](../spring/spring-transactions.md#transactional-flow) — *Middle*
@@ -319,21 +328,6 @@ tags:
 - [Что такое dirty checking?](../spring/spring-data-jpa.md#dirty-checking) — *Middle*
 - [Чем `save()` отличается от `saveAndFlush()`?](../spring/spring-data-jpa.md#save-vs-saveandflush) — *Middle*
 - [Чем кэш первого уровня отличается от второго?](../spring/spring-data-jpa.md#hibernate-cache) — *Middle*
-
-### Security, Kafka, DDD { #spring-ecosystem }
-
-- [Как устроен Spring Security?](../spring/spring-ecosystem.md#security-filter-chain) — *Middle*
-- [Как проходит аутентификация?](../spring/spring-ecosystem.md#authentication) — *Middle*
-- [Как настроить авторизацию?](../spring/spring-ecosystem.md#authorization) — *Junior*
-- [Как встроить JWT в Spring Security?](../spring/spring-ecosystem.md#jwt-filter) — *Middle*
-- [Почему теряется `SecurityContext` в асинхронном коде?](../spring/spring-ecosystem.md#security-context-async) — *Senior*
-- [Как сделать logout, если используется JWT?](../spring/spring-ecosystem.md#jwt-logout) — *Senior*
-- [Как работает `@KafkaListener`?](../spring/spring-ecosystem.md#kafka-listener) — *Middle*
-- [Как настроить коммит оффсетов и обработку ошибок листенера?](../spring/spring-ecosystem.md#listener-config) — *Middle*
-- [В каких слоях живут аннотации Spring?](../spring/spring-ecosystem.md#where-annotations) — *Middle*
-- [Как адаптеры и конфигурация связывают ядро со Spring?](../spring/spring-ecosystem.md#adapters-config) — *Middle*
-- [Где ставить `@Transactional`, если в ядре нет Spring?](../spring/spring-ecosystem.md#transactional-ddd) — *Senior*
-- [Зачем маппить доменную модель в отдельную JPA Entity?](../spring/spring-ecosystem.md#double-entities) — *Senior*
 
 ### Тестирование и инструменты { #spring-tools }
 
@@ -436,6 +430,36 @@ tags:
 - [Почему авто-коммит опасен и как коммитить вручную?](../kafka/kafka-reliability.md#offset-commit) — *Middle*
 - [Как сделать консьюмер идемпотентным?](../kafka/kafka-reliability.md#idempotent-consumer) — *Middle*
 - [Что делать с «ядовитым» сообщением?](../kafka/kafka-reliability.md#dlq) — *Middle*
+
+### Kafka в Spring { #spring-kafka }
+
+- [Как работает `@KafkaListener`?](../kafka/spring-kafka.md#kafka-listener) — *Middle*
+- [Как настроить коммит оффсетов и обработку ошибок листенера?](../kafka/spring-kafka.md#listener-config) — *Middle*
+
+## Архитектура { #architecture }
+
+### DDD, микросервисы, CQRS { #architecture }
+
+- [Что такое Ubiquitous Language?](../architecture/architecture.md#ubiquitous-language) — *Junior*
+- [Что такое Bounded Context?](../architecture/architecture.md#bounded-context) — *Middle*
+- [Как связываются контексты?](../architecture/architecture.md#context-mapping) — *Senior*
+- [Что такое Entity и Aggregate?](../architecture/architecture.md#aggregate) — *Middle*
+- [Где должна жить бизнес-логика?](../architecture/architecture.md#rich-domain-model) — *Middle*
+- [Что такое Value Object?](../architecture/architecture.md#value-object) — *Junior*
+- [Что такое доменные события?](../architecture/architecture.md#domain-events) — *Middle*
+- [Чем плоха классическая слоистая архитектура?](../architecture/architecture.md#layered) — *Middle*
+- [Как устроена гексагональная архитектура?](../architecture/architecture.md#hexagonal) — *Middle*
+- [Layered или Hexagonal?](../architecture/architecture.md#layered-vs-hexagonal) — *Middle*
+- [Что такое модульный монолит?](../architecture/architecture.md#modular-monolith) — *Middle*
+- [Что такое CQRS?](../architecture/architecture.md#cqrs) — *Senior*
+- [Что такое Event Sourcing?](../architecture/architecture.md#event-sourcing) — *Senior*
+
+### Слоистая и гексагональная архитектура { #hexagonal }
+
+- [В каких слоях живут аннотации Spring?](../architecture/hexagonal.md#where-annotations) — *Middle*
+- [Как адаптеры и конфигурация связывают ядро со Spring?](../architecture/hexagonal.md#adapters-config) — *Middle*
+- [Где ставить `@Transactional`, если в ядре нет Spring?](../architecture/hexagonal.md#transactional-ddd) — *Senior*
+- [Зачем маппить доменную модель в отдельную JPA Entity?](../architecture/hexagonal.md#double-entities) — *Senior*
 
 ## Computer Science { #cs }
 
@@ -554,22 +578,6 @@ tags:
 - [Нужно ли шардировать таблицу на 100M строк?](../system-design/system-design.md#case-sharding) — *Middle*
 - [Что делать сервису «Избранное», когда перерубили кабель между ДЦ?](../system-design/system-design.md#case-partition) — *Senior*
 - [Почему письма теряются, дублируются и блокируют очередь?](../system-design/system-design.md#case-emails) — *Senior*
-
-### DDD, микросервисы, CQRS { #architecture }
-
-- [Что такое Ubiquitous Language?](../architecture/architecture.md#ubiquitous-language) — *Junior*
-- [Что такое Bounded Context?](../architecture/architecture.md#bounded-context) — *Middle*
-- [Как связываются контексты?](../architecture/architecture.md#context-mapping) — *Senior*
-- [Что такое Entity и Aggregate?](../architecture/architecture.md#aggregate) — *Middle*
-- [Где должна жить бизнес-логика?](../architecture/architecture.md#rich-domain-model) — *Middle*
-- [Что такое Value Object?](../architecture/architecture.md#value-object) — *Junior*
-- [Что такое доменные события?](../architecture/architecture.md#domain-events) — *Middle*
-- [Чем плоха классическая слоистая архитектура?](../architecture/architecture.md#layered) — *Middle*
-- [Как устроена гексагональная архитектура?](../architecture/architecture.md#hexagonal) — *Middle*
-- [Layered или Hexagonal?](../architecture/architecture.md#layered-vs-hexagonal) — *Middle*
-- [Что такое модульный монолит?](../architecture/architecture.md#modular-monolith) — *Middle*
-- [Что такое CQRS?](../architecture/architecture.md#cqrs) — *Senior*
-- [Что такое Event Sourcing?](../architecture/architecture.md#event-sourcing) — *Senior*
 
 ### Docker, CI/CD, K8s { #infrastructure }
 

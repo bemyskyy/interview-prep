@@ -140,6 +140,7 @@ plugins:
         java/multithreading.md: concurrency/threads.md
         java/solid.md: design/solid.md
         java/patterns.md: design/creational-patterns.md
+        spring/spring-ecosystem.md: spring/spring-security.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -206,12 +207,13 @@ nav:
       - Ядро:
           - Core (IoC, DI, AOP): spring/spring-core.md
           - Spring Boot: spring/spring-boot.md
-      - Веб и данные:
+      - Веб:
           - Spring MVC / REST: spring/spring-mvc.md
+          - Spring Security: spring/spring-security.md
+      - Работа с БД:
           - Транзакции в Spring: spring/spring-transactions.md
           - Spring Data JPA и Hibernate: spring/spring-data-jpa.md
       - Экосистема:
-          - Security, Kafka, DDD: spring/spring-ecosystem.md
           - Тестирование и инструменты: spring/spring-tools.md
 
   - Данные:
@@ -224,6 +226,11 @@ nav:
       - Физика брокера: kafka/kafka.md
       - Consumer и Producer: kafka/kafka-consumer-producer.md
       - Гарантии доставки: kafka/kafka-reliability.md
+      - Kafka в Spring: kafka/spring-kafka.md
+
+  - Архитектура:
+      - DDD, микросервисы, CQRS: architecture/architecture.md
+      - Слоистая и гексагональная архитектура: architecture/hexagonal.md
 
   - Computer Science:
       - Алгоритмы:
@@ -235,7 +242,5 @@ nav:
   - Проектирование:
       - Системы:
           - Масштабирование систем: system-design/system-design.md
-      - Архитектура приложений:
-          - DDD, микросервисы, CQRS: architecture/architecture.md
       - Инфраструктура:
           - Docker, CI/CD, K8s: infrastructure/infrastructure.md
