@@ -1,0 +1,771 @@
+/*
+ * Оформление сайта поверх Material for MkDocs.
+ *
+ * Цвета — переменные --ip-* для обеих схем, через них заданы переменные
+ * Material (--md-*). Блоки кода в обеих темах — палитра Darcula.
+ * Где цвет Darcula не набирает контраст 4.5:1 (WCAG AA) на фоне блока,
+ * он чуть осветлён без смены оттенка.
+ */
+
+/* ---------- Шрифты: локальные копии @fontsource, cyrillic + latin ---------- */
+
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../assets/fonts/golos-text-cyrillic-400-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../assets/fonts/golos-text-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("../assets/fonts/golos-text-cyrillic-500-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("../assets/fonts/golos-text-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../assets/fonts/golos-text-cyrillic-600-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("../assets/fonts/golos-text-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../assets/fonts/golos-text-cyrillic-700-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../assets/fonts/golos-text-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../assets/fonts/jetbrains-mono-cyrillic-400-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("../assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../assets/fonts/jetbrains-mono-cyrillic-700-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("../assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --md-text-font: "Golos Text";
+  --md-code-font: "JetBrains Mono";
+}
+
+/* ---------- Палитра ---------- */
+
+/* Светлая схема */
+:root,
+[data-md-color-scheme="default"] {
+  --ip-fg: #17202c;
+  --ip-fg-2: #4a5566;
+  --ip-fg-3: #7b8594;
+  --ip-bg: #ffffff;
+  --ip-panel: #f4f5f7;
+  --ip-line: #e3e6ea;
+  --ip-link: #1d5bb8;
+  --ip-link-hover: #164a99;
+
+  /* #b25a00 даёт 4.47:1 на #fdf5ec — на тон темнее, чтобы пройти AA */
+  --ip-trap-fg: #af5800;
+  --ip-trap-bg: #fdf5ec;
+  --ip-tip-fg: #2f7a4f;
+  --ip-tip-bg: #eff7f2;
+  --ip-note-fg: #1d5bb8;
+  --ip-note-bg: #eef3fb;
+  --ip-danger-fg: #b3261e;
+  --ip-danger-bg: #fcefee;
+
+  --ip-inline-code-bg: #eef0f3;
+  --ip-inline-code-fg: #1f3a60;
+
+  /* Darcula на #2b2b2b */
+  --ip-code-bg: #2b2b2b;
+  --ip-code-border: transparent;
+  --ip-code-fg: #a9b7c6;
+  --ip-code-keyword: #cf7f3c;    /* #cc7832 */
+  --ip-code-string: #7b9c68;     /* #6a8759 */
+  --ip-code-number: #6998bc;     /* #6897bb */
+  --ip-code-comment: #929292;    /* #808080 */
+  --ip-code-function: #ffc66d;
+  --ip-code-constant: #a588b5;   /* #9876aa */
+  --ip-code-annotation: #bbb529;
+}
+
+/* Тёмная схема — цвета IntelliJ New UI */
+[data-md-color-scheme="slate"] {
+  --ip-fg: #dfe1e5;
+  --ip-fg-2: #a8adb6;
+  --ip-fg-3: #868b94;
+  --ip-bg: #1e1f22;
+  --ip-panel: #26282c;
+  --ip-line: #36393f;
+  --ip-link: #7aa8f2;
+  --ip-link-hover: #9dc0f7;
+
+  --ip-trap-fg: #e8a24a;
+  --ip-trap-bg: #2c251c;
+  --ip-tip-fg: #6cc08f;
+  --ip-tip-bg: #1d2a23;
+  --ip-note-fg: #7aa8f2;
+  --ip-note-bg: #1f2633;
+  --ip-danger-fg: #f0857d;
+  --ip-danger-bg: #2f1f1e;
+
+  --ip-inline-code-bg: #2b2d30;
+  --ip-inline-code-fg: #c9d6e8;
+
+  /* Darcula на #191a1c */
+  --ip-code-bg: #191a1c;
+  --ip-code-border: var(--ip-line);
+  --ip-code-fg: #a9b7c6;
+  --ip-code-keyword: #cc7832;
+  --ip-code-string: #6d8b5b;     /* #6a8759 */
+  --ip-code-number: #6897bb;
+  --ip-code-comment: #838383;    /* #808080 */
+  --ip-code-function: #ffc66d;
+  --ip-code-constant: #9876aa;
+  --ip-code-annotation: #bbb529;
+}
+
+/* Переменные Material — общие для обеих схем, значения берутся из --ip-* */
+:root,
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+  --md-default-fg-color: var(--ip-fg);
+  --md-default-fg-color--light: var(--ip-fg-2);
+  --md-default-fg-color--lighter: var(--ip-fg-3);
+  --md-default-fg-color--lightest: var(--ip-line);
+  --md-default-bg-color: var(--ip-bg);
+
+  --md-typeset-color: var(--ip-fg);
+  --md-typeset-a-color: var(--ip-link);
+  --md-typeset-table-color: var(--ip-line);
+  --md-typeset-table-color--light: var(--ip-panel);
+
+  --md-code-bg-color: var(--ip-inline-code-bg);
+  --md-code-fg-color: var(--ip-inline-code-fg);
+
+  --md-admonition-fg-color: var(--ip-fg);
+  --md-admonition-bg-color: var(--ip-note-bg);
+
+  --md-footer-fg-color: var(--ip-fg);
+  --md-footer-fg-color--light: var(--ip-fg-2);
+  --md-footer-fg-color--lighter: var(--ip-fg-2);
+  --md-footer-bg-color: var(--ip-panel);
+  --md-footer-bg-color--dark: var(--ip-panel);
+}
+
+[data-md-color-primary="custom"] {
+  --md-primary-fg-color: var(--ip-link);
+  --md-primary-fg-color--light: var(--ip-link-hover);
+  --md-primary-fg-color--dark: var(--ip-link);
+  --md-primary-bg-color: var(--ip-bg);
+  --md-primary-bg-color--light: var(--ip-fg-2);
+}
+
+[data-md-color-accent="custom"] {
+  --md-accent-fg-color: var(--ip-link-hover);
+  --md-accent-fg-color--transparent: color-mix(in srgb, var(--ip-link) 10%, transparent);
+  --md-accent-bg-color: var(--ip-bg);
+  --md-accent-bg-color--light: var(--ip-panel);
+}
+
+body {
+  background-color: var(--ip-bg);
+}
+
+/* ---------- Фокус с клавиатуры ---------- */
+
+/* !important — Material гасит outline у части элементов (теги, кнопки шапки) */
+:focus-visible:not(input),
+.focus-visible:not(input) {
+  outline: 2px solid var(--ip-link) !important;
+  outline-offset: 2px;
+}
+
+/* Переключатель темы — скрытые radio; фокус показываем на видимой иконке */
+.md-header__option:has(.md-option:focus-visible) > label:not([hidden]) {
+  outline: 2px solid var(--ip-link);
+  outline-offset: 2px;
+  border-radius: .2rem;
+}
+
+/* Поле поиска: рамка вокруг всей формы вместо outline у input */
+.md-search__form:has(.md-search__input:focus-visible) {
+  box-shadow: inset 0 0 0 2px var(--ip-link) !important;
+}
+
+/* ---------- Шапка и вкладки разделов ---------- */
+
+.md-header {
+  --md-primary-bg-color: var(--ip-fg);
+  --md-primary-bg-color--light: var(--ip-fg-2);
+  background-color: var(--ip-bg);
+  color: var(--ip-fg);
+  box-shadow: none;
+  border-bottom: 1px solid var(--ip-line);
+}
+
+.md-header--shadow {
+  box-shadow: none;
+}
+
+.md-header__button.md-logo {
+  color: var(--ip-link);
+}
+
+.md-tabs {
+  background-color: var(--ip-bg);
+  color: var(--ip-fg-2);
+}
+
+.md-tabs__item {
+  height: 2.2rem;
+}
+
+.md-tabs__link {
+  box-sizing: border-box;
+  height: 100%;
+  margin-top: 0;
+  padding-top: .6rem;
+  border-bottom: 2px solid transparent;
+  opacity: 1;
+  font-weight: 500;
+}
+
+.md-tabs__link:hover,
+.md-tabs__link:focus {
+  color: var(--ip-fg);
+}
+
+.md-tabs__item--active .md-tabs__link {
+  color: var(--ip-fg);
+  border-bottom-color: var(--ip-link);
+}
+
+/* Поиск: фон панелей, без тени */
+.md-search__form,
+.md-search__form:hover,
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  background-color: var(--ip-panel);
+  box-shadow: none;
+}
+
+@media screen and (min-width: 60em) {
+  .md-search__form {
+    border-radius: .4rem;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    border-radius: .4rem .4rem 0 0;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__output {
+    box-shadow: none;
+    border: 1px solid var(--ip-line);
+    border-top: 0;
+    border-radius: 0 0 .4rem .4rem;
+  }
+}
+
+.md-search__input::placeholder {
+  color: var(--ip-fg-2);
+}
+
+.md-search__output,
+.md-search__scrollwrap {
+  background-color: var(--ip-bg);
+}
+
+/* Заголовок выдвижного меню на телефоне */
+.md-nav--primary .md-nav__title[for="__drawer"] {
+  background-color: var(--ip-panel);
+  color: var(--ip-fg);
+}
+
+.md-nav--primary .md-nav__title[for="__drawer"] .md-logo {
+  color: var(--ip-link);
+}
+
+/* ---------- Сетка и текст ---------- */
+
+.md-grid {
+  max-width: 70rem;
+}
+
+.md-content__inner {
+  max-width: 46rem;
+}
+
+.md-content__inner.md-typeset {
+  font-size: .86rem;
+  line-height: 1.7;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  color: var(--ip-fg);
+  letter-spacing: -.015em;
+}
+
+.md-typeset h1 {
+  font-size: 2.1em;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 .9em;
+}
+
+.md-typeset h2 {
+  font-size: 1.45em;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 2.4em 0 .8em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--ip-line);
+}
+
+.md-typeset h3 {
+  font-size: 1.15em;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 2em 0 .7em;
+}
+
+.md-typeset h2 + h3 {
+  margin-top: .4em;
+}
+
+.md-typeset h4 {
+  font-weight: 600;
+}
+
+.md-typeset hr {
+  display: none;
+}
+
+/* Ссылки: без подчёркивания, подчёркивание при наведении */
+.md-typeset a {
+  text-decoration: none;
+}
+
+.md-typeset a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+
+.md-typeset a.headerlink:hover,
+.md-typeset a.md-button:hover,
+.md-typeset a.md-tag:hover {
+  text-decoration: none;
+}
+
+/* Встроенный код */
+.md-typeset code {
+  border-radius: .25rem;
+}
+
+/* ---------- Таблицы ---------- */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--ip-line);
+  border-radius: .5rem;
+  box-shadow: none;
+  font-size: .78rem;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--ip-panel);
+  font-weight: 600;
+}
+
+.md-typeset table:not([class]) td,
+.md-typeset table:not([class]) th {
+  border-top: 1px solid var(--ip-line);
+}
+
+.md-typeset table:not([class]) tr:first-child th {
+  border-top: 0;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* ---------- Блоки кода: Darcula ---------- */
+
+.md-typeset .highlight {
+  --md-code-bg-color: var(--ip-code-bg);
+  --md-code-bg-color--light: transparent;
+  --md-code-bg-color--lighter: transparent;
+  --md-code-fg-color: var(--ip-code-fg);
+  --md-code-hl-color: #ffffff;
+  --md-code-hl-color--light: rgba(255, 255, 255, .07);
+  --md-code-hl-keyword-color: var(--ip-code-keyword);
+  --md-code-hl-special-color: var(--ip-code-keyword);
+  --md-code-hl-string-color: var(--ip-code-string);
+  --md-code-hl-number-color: var(--ip-code-number);
+  --md-code-hl-comment-color: var(--ip-code-comment);
+  --md-code-hl-generic-color: var(--ip-code-comment);
+  --md-code-hl-function-color: var(--ip-code-function);
+  --md-code-hl-constant-color: var(--ip-code-constant);
+  --md-code-hl-variable-color: var(--ip-code-constant);
+  --md-code-hl-name-color: var(--ip-code-fg);
+  --md-code-hl-operator-color: var(--ip-code-fg);
+  --md-code-hl-punctuation-color: var(--ip-code-fg);
+}
+
+/* Как в Darcula: true/false/null — ключевые слова, аннотации — свой цвет,
+   имена классов и пакетов — обычный текст */
+.md-typeset .highlight .kc {
+  color: var(--ip-code-keyword);
+}
+
+.md-typeset .highlight .nd {
+  color: var(--ip-code-annotation);
+}
+
+.md-typeset .highlight .nc,
+.md-typeset .highlight .nn {
+  color: var(--ip-code-fg);
+}
+
+.md-typeset .highlight pre {
+  border: 1px solid var(--ip-code-border);
+  border-radius: .5rem;
+  background-color: var(--ip-code-bg);
+}
+
+.md-typeset .highlight pre > code {
+  border-radius: .5rem;
+  padding: 1.1em 1.3em;
+  scrollbar-color: #555 transparent;
+}
+
+.md-typeset .highlight code ::selection,
+.md-typeset .highlight code::selection {
+  background-color: #214283;
+}
+
+/* Кнопки копирования и выделения — без фона */
+.md-typeset .highlight .md-code__nav,
+.md-typeset .highlight :hover > .md-code__nav {
+  background-color: transparent;
+}
+
+.md-typeset .highlight .md-clipboard,
+.md-typeset .highlight .md-code__button {
+  background: none;
+  color: #6f737a;
+}
+
+.md-typeset .highlight :hover > .md-clipboard,
+.md-typeset .highlight :hover > * > .md-code__button {
+  color: #a9b7c6;
+}
+
+.md-typeset .highlight .md-clipboard:hover,
+.md-typeset .highlight .md-clipboard:focus-visible,
+.md-typeset .highlight .md-code__button:hover,
+.md-typeset .highlight .md-code__button:focus-visible {
+  color: #ffffff;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-content__inner > .highlight > pre,
+  .md-content__inner > .highlight > pre > code {
+    border-radius: 0;
+  }
+
+  .md-content__inner > .highlight > pre {
+    border-left: 0;
+    border-right: 0;
+  }
+}
+
+/* ---------- Выноски: admonition и details ---------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  --ip-callout-fg: var(--ip-note-fg);
+  --ip-callout-bg: var(--ip-note-bg);
+}
+
+.md-typeset :is(.admonition, details):is(.warning, .caution, .attention) {
+  --ip-callout-fg: var(--ip-trap-fg);
+  --ip-callout-bg: var(--ip-trap-bg);
+}
+
+.md-typeset :is(.admonition, details):is(.tip, .hint, .important, .success, .check, .done, .question, .help, .faq) {
+  --ip-callout-fg: var(--ip-tip-fg);
+  --ip-callout-bg: var(--ip-tip-bg);
+}
+
+.md-typeset :is(.admonition, details):is(.danger, .error, .bug, .failure, .fail, .missing) {
+  --ip-callout-fg: var(--ip-danger-fg);
+  --ip-callout-bg: var(--ip-danger-bg);
+}
+
+/* [class] поднимает специфичность над правилами Material для каждого типа */
+.md-typeset .admonition[class],
+.md-typeset details[class] {
+  background-color: var(--ip-callout-bg);
+  border: 0;
+  border-left: 3px solid var(--ip-callout-fg);
+  border-radius: 0 .5rem .5rem 0;
+  box-shadow: none;
+  font-size: .8rem;
+  line-height: 1.65;
+  padding: 0 1rem 0 .9rem;
+}
+
+.md-typeset .admonition[class]:focus-within,
+.md-typeset details[class]:focus-within {
+  box-shadow: none;
+}
+
+.md-typeset .admonition[class] > .admonition-title,
+.md-typeset details[class] > summary {
+  background-color: transparent;
+  color: var(--ip-callout-fg);
+  font-weight: 700;
+  margin: 0 -1rem 0 -.9rem;
+  padding: .7rem 1rem .2rem 2.5rem;
+  border-radius: 0 .5rem .5rem 0;
+}
+
+.md-typeset details[class]:not([open]) > summary {
+  padding-bottom: .7rem;
+}
+
+.md-typeset .admonition[class] > .admonition-title::before,
+.md-typeset details[class] > summary::before {
+  background-color: var(--ip-callout-fg);
+  left: .9rem;
+  top: .78rem;
+  height: 1.1rem;
+  width: 1.1rem;
+}
+
+.md-typeset details[class] > summary::after {
+  top: .78rem;
+}
+
+.md-typeset .admonition[class] > :last-child,
+.md-typeset details[class] > :last-child {
+  margin-bottom: .8rem;
+}
+
+.md-typeset details[class] > summary:last-child {
+  margin-bottom: 0;
+}
+
+.md-typeset .admonition[class] > .admonition-title + *,
+.md-typeset details[class] > summary + * {
+  margin-top: .4rem;
+}
+
+/* ---------- Кнопки ---------- */
+
+.md-typeset .md-button {
+  border: 1px solid var(--ip-line);
+  border-radius: .5rem;
+  color: var(--ip-fg);
+  font-weight: 600;
+  padding: .55em 1.25em;
+}
+
+.md-typeset .md-button:hover,
+.md-typeset .md-button:focus {
+  background-color: var(--ip-panel);
+  border-color: var(--ip-fg-3);
+  color: var(--ip-fg);
+}
+
+.md-typeset .md-button--primary {
+  background-color: var(--ip-link);
+  border-color: var(--ip-link);
+  color: var(--ip-bg);
+}
+
+.md-typeset .md-button--primary:hover,
+.md-typeset .md-button--primary:focus {
+  background-color: var(--ip-link-hover);
+  border-color: var(--ip-link-hover);
+  color: var(--ip-bg);
+}
+
+/* ---------- Подвал ---------- */
+
+.md-footer-meta {
+  border-top: 1px solid var(--ip-line);
+}
+
+/* ---------- Главная ---------- */
+
+.md-content__inner:has(> .ip-hero) {
+  max-width: 60rem;
+}
+
+.ip-hero {
+  display: grid;
+  gap: 1.5rem 3rem;
+  align-items: center;
+  margin: .5rem 0 1rem;
+}
+
+@media screen and (min-width: 60em) {
+  .ip-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    margin-top: 1rem;
+  }
+}
+
+.md-typeset .ip-hero h1 {
+  font-size: 2.3em;
+  margin-bottom: .6em;
+}
+
+.ip-hero__lead {
+  color: var(--ip-fg-2);
+  font-size: 1.05em;
+}
+
+.ip-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+.md-typeset .ip-hero__actions .md-button {
+  margin: 0;
+}
+
+.md-typeset .ip-hero__label {
+  color: var(--ip-fg-2);
+  font-size: .9em;
+  font-weight: 600;
+  margin: 0 0 .5em;
+}
+
+.md-typeset .ip-hero__quiz .highlight {
+  margin-top: 0;
+}
+
+.ip-sections {
+  display: grid;
+  column-gap: 2.5rem;
+}
+
+@media screen and (min-width: 45em) {
+  .ip-sections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.ip-section {
+  border-top: 1px solid var(--ip-line);
+  padding: .9rem 0 1rem;
+}
+
+.md-typeset .ip-section p {
+  margin: 0;
+}
+
+.md-typeset .ip-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .2em;
+}
+
+.md-typeset .ip-section__head a {
+  font-size: 1.1em;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+
+.ip-section__count {
+  color: var(--ip-fg-2);
+  font-size: .85em;
+  white-space: nowrap;
+}
+
+.md-typeset .ip-section__topics {
+  color: var(--ip-fg-2);
+  font-size: .92em;
+  line-height: 1.55;
+}
+
+/* ---------- Вкладки «Коротко / Подробно» ---------- */
+
+.md-typeset .tabbed-labels > label {
+  font-size: .74rem;
+  font-weight: 600;
+}

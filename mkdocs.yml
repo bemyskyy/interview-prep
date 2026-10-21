@@ -6,21 +6,28 @@ theme:
   name: material
   language: ru
 
+  # Шрифты подключены локально в stylesheets/extra.css, без Google Fonts
+  font: false
+
+  # Цвета заданы в stylesheets/extra.css; схема по умолчанию — как в системе
   palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Тёмная тема
-    - scheme: slate
-      primary: indigo
-      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Светлая тема
 
   icon:
+    logo: material/code-braces
     repo: fontawesome/brands/github
     tag:
       default: material/tag-outline
@@ -119,6 +126,9 @@ plugins:
 # Проверяет, что страницы раздела «Подготовка» не устарели (см. README)
 hooks:
   - scripts/prep_pages.py
+
+extra_css:
+  - stylesheets/extra.css
 
 # Иконки тегов уровня (theme.icon.tag)
 extra:
