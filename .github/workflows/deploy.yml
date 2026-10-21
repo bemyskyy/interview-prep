@@ -2,6 +2,8 @@ name: deploy
 on:
   push:
     branches: [main]
+  # Ручной запуск из вкладки Actions, если деплой на push не стартовал
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
