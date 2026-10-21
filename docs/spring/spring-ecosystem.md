@@ -97,7 +97,7 @@ Collection<? extends GrantedAuthority> roles = auth.getAuthorities();
 ```
 
 !!! warning "Ловушка: `SecurityContextHolder` привязан к потоку"
-    Это `ThreadLocal`, поэтому в другом потоке контекста нет. Как это ломает `@Async` и `CompletableFuture`, — в [теме про асинхронность](#security-context-async).
+    Это [`ThreadLocal`](../concurrency/threads.md#thread-local), поэтому в другом потоке контекста нет. Как это ломает `@Async` и `CompletableFuture`, — в [теме про асинхронность](#security-context-async).
 
 ??? question "Проверь себя"
     1. Кто сверяет пароль при аутентификации?

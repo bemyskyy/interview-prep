@@ -1,13 +1,14 @@
 ---
 tags:
   - Junior
+  - Middle
   - Java
   - Многопоточность
 ---
 
-# Потоки
+# Потоки и ThreadLocal
 
-Чем поток отличается от процесса, как его создать и запустить, какие у него состояния и как его остановить. На собесе с этого начинают блок многопоточности: просят нарисовать жизненный цикл потока, объяснить разницу `sleep` и `wait` и показать, как правильно обработать `InterruptedException`.
+Чем поток отличается от процесса, как его создать и запустить, какие у него состояния и как его остановить, а в конце — данные, привязанные к потоку (`ThreadLocal`). На собесе с этого начинают блок многопоточности: просят нарисовать жизненный цикл потока, объяснить разницу `sleep` и `wait`, показать, как правильно обработать `InterruptedException`, и объяснить, почему `ThreadLocal` течёт в пуле потоков.
 
 ## Фундамент { #basics }
 
@@ -176,6 +177,201 @@ worker.interrupt(); // «стучимся» к потоку
     2. Что происходит с флагом прерывания, когда бросается `InterruptedException`?
     3. Как поток узнаёт, что его попросили остановиться?
 
+## Данные потока { #thread-data }
+
+### Как работает `ThreadLocal` и почему он течёт в пуле потоков? { #thread-local }
+
+**Уровень:** Middle
+
+=== "Коротко"
+
+    !!! abstract "Ответ вслух"
+        `ThreadLocal` даёт каждому потоку свою копию значения: оно лежит не в самом `ThreadLocal`, а в `ThreadLocalMap` внутри объекта `Thread`, где `ThreadLocal` — ключ. В пуле поток живёт долго, поэтому значение, которое задача не убрала через `remove()` в `finally`, увидит следующая задача, и память держится, пока жив поток. `InheritableThreadLocal` копирует значения только при создании потока, поэтому в пул контекст передают явно — в Spring через `TaskDecorator`.
+
+=== "Подробно"
+
+    **Где хранится значение.** У каждого `Thread` есть поле `threadLocals` типа `ThreadLocal.ThreadLocalMap` — хеш-таблица, своя у каждого потока. `get()` берёт `Thread.currentThread()`, достаёт его карту и ищет в ней запись по ключу — самому объекту `ThreadLocal`. Поэтому синхронизация не нужна: два потока читают разные карты.
+
+    ```mermaid
+    flowchart LR
+        TL["static ThreadLocal CURRENT_USER"]
+        subgraph T1["Thread http-nio-1"]
+            M1["ThreadLocalMap"] --> E1["ключ → «alice»"]
+        end
+        subgraph T2["Thread http-nio-2"]
+            M2["ThreadLocalMap"] --> E2["ключ → «bob»"]
+        end
+        E1 -. слабая ссылка .-> TL
+        E2 -. слабая ссылка .-> TL
+    ```
+
+    Запись карты (`Entry`) держит ключ через `WeakReference`, а значение — обычной сильной ссылкой. Если сам `ThreadLocal` стал недостижим, GC обнулит ключ, но значение останется в карте. Такие записи без ключа (stale entries) карта чистит только попутно, при следующих `set`, `get` и `remove` в этом же потоке, и не обязательно все.
+
+    Типичные пользователи `ThreadLocal` — контекст запроса, который неудобно передавать параметром через все методы: `SecurityContextHolder` в Spring Security, `TransactionSynchronizationManager` с соединением текущей транзакции, `RequestContextHolder`, MDC (Mapped Diagnostic Context) логгера.
+
+    **Почему течёт в пуле.** Обычно `ThreadLocal` — `static final` поле, поэтому ключ достижим всегда и слабая ссылка ничего не освобождает. Значение живёт, пока жив поток, а поток пула живёт до остановки приложения. Задача, которая положила значение и не убрала его, оставляет его следующей задаче в этом потоке:
+
+    ```java
+    import java.util.concurrent.ExecutorService;
+    import java.util.concurrent.Executors;
+
+    public class ThreadLocalLeak {
+
+        // Как в фильтре веб-приложения: кто делает текущий запрос
+        static final ThreadLocal<String> CURRENT_USER = new ThreadLocal<>();
+
+        public static void main(String[] args) throws Exception {
+            try (ExecutorService pool = Executors.newFixedThreadPool(1)) {
+                // ❌ Запрос alice кладёт значение и не убирает его
+                pool.submit(() -> CURRENT_USER.set("alice")).get();
+
+                // Следующий запрос попал в тот же поток и видит чужого пользователя
+                pool.submit(() -> System.out.println("запрос без логина: " + CURRENT_USER.get())).get();
+
+                // ✅ set — в начале задачи, remove — в finally
+                pool.submit(() -> {
+                    CURRENT_USER.set("bob");
+                    try {
+                        System.out.println("запрос bob: " + CURRENT_USER.get());
+                    } finally {
+                        CURRENT_USER.remove();
+                    }
+                }).get();
+
+                pool.submit(() -> System.out.println("после remove(): " + CURRENT_USER.get())).get();
+            }
+        }
+    }
+    ```
+
+    Вывод `java ThreadLocalLeak.java` на JDK 25:
+
+    ```text
+    запрос без логина: alice
+    запрос bob: bob
+    после remove(): null
+    ```
+
+    Потоки Tomcat — тоже пул. Поэтому интерсептор, который кладёт данные в `ThreadLocal`, очищает их в `afterCompletion`, а не в `postHandle` (см. [интерсепторы](../spring/spring-mvc.md#interceptor)). В сервере приложений забытое значение ещё и держит класс из приложения, а через него — весь его `ClassLoader`: после редеплоя это [утечка Metaspace](../java/jvm.md#metaspace-gc).
+
+    **Почему `InheritableThreadLocal` не спасает.** Он копирует значения родителя в момент создания дочернего потока, и только тогда. Поток пула создаётся один раз — на первой задаче — и дальше видит снимок того момента:
+
+    ```java
+    import java.util.concurrent.ExecutorService;
+    import java.util.concurrent.Executors;
+
+    public class InheritableInPool {
+
+        static final InheritableThreadLocal<String> REQUEST_ID = new InheritableThreadLocal<>();
+
+        public static void main(String[] args) throws Exception {
+            try (ExecutorService pool = Executors.newFixedThreadPool(1)) {
+                REQUEST_ID.set("req-1");
+                // Поток пула создаётся на первой задаче и копирует значения main
+                pool.submit(() -> System.out.println("задача 1: " + REQUEST_ID.get())).get();
+
+                REQUEST_ID.set("req-2");
+                // Поток уже есть, копирования больше не будет
+                pool.submit(() -> System.out.println("задача 2: " + REQUEST_ID.get())).get();
+            }
+        }
+    }
+    ```
+
+    ```text
+    задача 1: req-1
+    задача 2: req-1
+    ```
+
+    **Как передать контекст в пул.** Снять значение в потоке, который отправляет задачу, установить его в потоке пула перед запуском и убрать в `finally`. Это и есть декоратор задачи:
+
+    ```java
+    import java.util.concurrent.ExecutorService;
+    import java.util.concurrent.Executors;
+
+    public class CapturedContext {
+
+        static final ThreadLocal<String> REQUEST_ID = new ThreadLocal<>();
+
+        // То же делает TaskDecorator в Spring: снимок — в потоке, который отправляет
+        // задачу, установка и очистка — в потоке пула
+        static Runnable withContext(Runnable task) {
+            String captured = REQUEST_ID.get();
+            return () -> {
+                REQUEST_ID.set(captured);
+                try {
+                    task.run();
+                } finally {
+                    REQUEST_ID.remove();
+                }
+            };
+        }
+
+        public static void main(String[] args) throws Exception {
+            Runnable task = () -> System.out.println(Thread.currentThread().getName() + ": " + REQUEST_ID.get());
+            try (ExecutorService pool = Executors.newFixedThreadPool(1)) {
+                for (String id : new String[] {"req-1", "req-2"}) {
+                    REQUEST_ID.set(id);
+                    pool.submit(withContext(task)).get();
+                }
+                pool.submit(task).get(); // без обёртки: в потоке пула ничего не осталось
+            }
+        }
+    }
+    ```
+
+    ```text
+    pool-1-thread-1: req-1
+    pool-1-thread-1: req-2
+    pool-1-thread-1: null
+    ```
+
+    В Spring такую обёртку пишут как `TaskDecorator`. Spring Boot сам применяет бины `TaskDecorator` к пулу, который создаёт для `@Async`. Пример переносит MDC, чтобы в логах асинхронной задачи остался `requestId` запроса:
+
+    ```java
+    @Bean
+    TaskDecorator mdcTaskDecorator() {
+        return task -> {
+            Map<String, String> mdc = MDC.getCopyOfContextMap(); // поток, который вызвал @Async
+            return () -> {
+                if (mdc != null) MDC.setContextMap(mdc);          // поток пула
+                try {
+                    task.run();
+                } finally {
+                    MDC.clear();                                  // поток вернётся в пул чистым
+                }
+            };
+        };
+    }
+    ```
+
+    На Spring Boot 4.0.8 `@Async`-метод, который печатает `MDC.get("requestId")`, без этого бина выводит `task-1: requestId=null`, с ним — `task-1: requestId=req-42`. Для логов и трейсинга в Spring 6.1+ есть готовый `ContextPropagatingTaskDecorator` (поверх библиотеки Micrometer Context Propagation). Контекст безопасности переносят обёртками Spring Security — см. [`SecurityContext` в асинхронном коде](../spring/spring-ecosystem.md#security-context-async).
+
+    `ThreadLocal` работает и в виртуальных потоках, но копия значения будет у каждого из них, а их бывают миллионы. Для передачи контекста вниз по вызовам в Java 25 есть `ScopedValue` ([JEP 506](https://openjdk.org/jeps/506)): значение неизменяемое и привязано к блоку кода, поэтому забыть его убрать нельзя.
+
+!!! warning "Ловушка: забытый `remove()` — данные чужого запроса"
+    Без `remove()` в `finally` значение переживает задачу, и следующий запрос в том же потоке пула увидит чужой `userId` или `tenantId`. Это не только утечка памяти, но и утечка данных между пользователями. `set` без парного `remove` в коде с пулом — баг, даже если исключений не бывает.
+
+!!! warning "Ловушка: «ключ слабый — GC всё почистит»"
+    Слабая ссылка — только на ключ, значение карта держит сильно. А ключ обычно `static final` и не собирается никогда. Освобождает значение только `remove()` или смерть потока.
+
+!!! warning "Ловушка: `InheritableThreadLocal` для `@Async`"
+    Значения копируются один раз, при создании потока. В пуле задача получит контекст того запроса, на котором создали поток, — или ничего. Так же ведёт себя `SecurityContextHolder` в режиме `MODE_INHERITABLETHREADLOCAL`. Для пула нужен декоратор задачи, который снимает и восстанавливает контекст на каждую задачу.
+
+??? question "Проверь себя"
+    1. Где физически хранится значение `ThreadLocal` и почему его чтение не требует синхронизации?
+    2. Почему значение остаётся в потоке пула после задачи, хотя ключ в `ThreadLocalMap` слабый?
+    3. Почему `InheritableThreadLocal` не передаёт контекст в задачу пула и что делает `TaskDecorator`?
+
+**Источники:**
+
+- [`ThreadLocal` — Java SE 25 API](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/ThreadLocal.html) — копия значения живёт, пока жив поток и доступен `ThreadLocal`; `remove()`
+- [`InheritableThreadLocal` — Java SE 25 API](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/InheritableThreadLocal.html) — значения передаются при создании дочернего потока
+- [Исходник `ThreadLocal.ThreadLocalMap` (JDK 25)](https://github.com/openjdk/jdk/blob/jdk-25%2B36/src/java.base/share/classes/java/lang/ThreadLocal.java) — `Entry extends WeakReference<ThreadLocal<?>>`, stale entries
+- [JEP 506: Scoped Values](https://openjdk.org/jeps/506) — финальная фича Java 25
+- [`TaskDecorator` — Spring Framework API](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/task/TaskDecorator.html) и [`ContextPropagatingTaskDecorator`](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/task/support/ContextPropagatingTaskDecorator.html) (с 6.1)
+- [Spring Boot: Task Execution and Scheduling](https://docs.spring.io/spring-boot/reference/features/task-execution-and-scheduling.html) — автоконфигурация пула для `@Async`; бины `TaskDecorator` к нему применяет [`TaskExecutorConfigurations`](https://github.com/spring-projects/spring-boot/blob/v4.0.0/core/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/task/TaskExecutorConfigurations.java)
+
 ## Шпаргалка { #cheatsheet }
 
 <!-- --8<-- [start:cheatsheet] -->
@@ -186,5 +382,6 @@ worker.interrupt(); // «стучимся» к потоку
 | **Жизненный цикл** | NEW → RUNNABLE → BLOCKED / WAITING / TIMED_WAITING → TERMINATED; перезапустить нельзя |
 | **`sleep` / `join` / `yield`** | `sleep` не отпускает мониторы; `join` ждёт завершения потока; `yield` — лишь подсказка |
 | **Остановка потока** | `interrupt()` + проверка флага; в `catch (InterruptedException)` восстанавливай флаг |
+| **`ThreadLocal`** | Значение — в `ThreadLocalMap` потока, ключ слабый, значение — нет; в пуле — `remove()` в `finally`; `InheritableThreadLocal` копирует только при создании потока, в пул контекст переносит `TaskDecorator` |
 
 <!-- --8<-- [end:cheatsheet] -->

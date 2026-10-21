@@ -7,7 +7,7 @@ tags:
 
 # Вопросы собеса
 
-Все 439 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 440 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
 ## Язык Java { #java }
@@ -183,13 +183,14 @@ tags:
 
 ## Многопоточность { #concurrency }
 
-### Потоки { #threads }
+### Потоки и ThreadLocal { #threads }
 
 - [Чем поток отличается от процесса?](../concurrency/threads.md#thread-vs-process) — *Junior*
 - [Как создать поток: `Thread` или `Runnable`?](../concurrency/threads.md#thread-vs-runnable) — *Junior*
 - [Какие состояния есть у потока?](../concurrency/threads.md#thread-states) — *Junior*
 - [Как работают `join`, `sleep` и `yield`?](../concurrency/threads.md#join-sleep-yield) — *Junior*
 - [Как правильно остановить поток?](../concurrency/threads.md#interrupt) — *Middle*
+- [Как работает `ThreadLocal` и почему он течёт в пуле потоков?](../concurrency/threads.md#thread-local) — *Middle*
 
 ### Блокировки и синхронизаторы { #locks }
 

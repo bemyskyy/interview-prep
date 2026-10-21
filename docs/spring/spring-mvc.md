@@ -448,7 +448,7 @@ public class LoggingFilter extends OncePerRequestFilter { // не Filter нап�
     - Обогащение контекста: достать `userId` из токена и положить в `ThreadLocal`.
 
 !!! warning "Ловушка: очистка в `postHandle`"
-    `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда.
+    `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда. Почему забытое значение достаётся следующему запросу — в [ThreadLocal](../concurrency/threads.md#thread-local).
 
 ??? question "Проверь себя"
     1. Что произойдёт, если `preHandle` вернёт `false`?

@@ -46,7 +46,7 @@ System.out.println(c == d);
 
 <div class="ip-section" markdown>
 <p class="ip-section__head" markdown>[Многопоточность](concurrency/threads.md) <span class="ip-section__count">7 страниц</span></p>
-<p class="ip-section__topics" markdown>Потоки, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки</p>
+<p class="ip-section__topics" markdown>Потоки, `ThreadLocal`, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки</p>
 </div>
 
 <div class="ip-section" markdown>

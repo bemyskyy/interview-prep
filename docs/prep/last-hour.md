@@ -90,7 +90,7 @@ tags:
 
 ## Многопоточность { #concurrency }
 
-### Потоки { #threads }
+### Потоки и ThreadLocal { #threads }
 
 [Полный разбор →](../concurrency/threads.md)
 

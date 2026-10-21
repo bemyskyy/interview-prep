@@ -187,7 +187,7 @@ nav:
           - Паттерны проектирования: java/patterns.md
 
   - Многопоточность:
-      - Потоки: concurrency/threads.md
+      - Потоки и ThreadLocal: concurrency/threads.md
       - Блокировки и синхронизаторы: concurrency/locks.md
       - JMM, volatile и атомики: concurrency/jmm.md
       - Deadlock, livelock, starvation: concurrency/deadlock.md
