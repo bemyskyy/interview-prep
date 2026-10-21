@@ -50,7 +50,7 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Дизайн кода](design/solid.md) <span class="ip-section__count">4 страницы</span></p>
+<p class="ip-section__head" markdown>[Дизайн кода](design/solid.md) <span class="ip-section__count">5 страниц</span></p>
 <p class="ip-section__topics" markdown>SOLID, композиция и наследование, связность и зацепление, паттерны GoF</p>
 </div>
 

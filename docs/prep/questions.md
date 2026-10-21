@@ -7,7 +7,7 @@ tags:
 
 # Вопросы собеса
 
-Все 438 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 437 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
 ## Язык Java { #java }
@@ -65,17 +65,12 @@ tags:
 - [Что такое инкапсуляция?](../java/oop.md#encapsulation) — *Junior*
 - [Что такое абстракция?](../java/oop.md#abstraction) — *Junior*
 - [Что такое полиморфизм?](../java/oop.md#polymorphism) — *Junior*
-- [Почему с наследованием нужно быть осторожным?](../java/oop.md#inheritance) — *Middle*
 - [Чем интерфейс отличается от абстрактного класса?](../java/oop.md#interface-vs-abstract) — *Junior*
 - [Зачем в интерфейсах `default`, `static` и `private` методы?](../java/oop.md#interface-methods) — *Middle*
 - [Превратили ли `default`-методы интерфейс в абстрактный класс?](../java/oop.md#interface-state) — *Middle*
 - [Что входит в сигнатуру метода?](../java/oop.md#signature) — *Junior*
 - [Чем перегрузка отличается от переопределения?](../java/oop.md#overload-vs-override) — *Junior*
 - [Можно ли при переопределении изменить тип возвращаемого значения?](../java/oop.md#covariant-return) — *Middle*
-- [Почему наследование нарушает инкапсуляцию?](../java/oop.md#fragile-base-class) — *Middle*
-- [Когда наследование всё-таки уместно?](../java/oop.md#when-inherit) — *Middle*
-- [Что такое high cohesion и low coupling?](../java/oop.md#cohesion-coupling) — *Middle*
-- [Как эти принципы работают в микросервисах?](../java/oop.md#microservices) — *Senior*
 
 ### Коллекции { #collections }
 
@@ -229,6 +224,12 @@ tags:
 - [Что такое Structured Concurrency?](../concurrency/virtual-threads.md#structured-concurrency) — *Senior*
 
 ## Дизайн кода { #design }
+
+### Композиция и зацепление { #composition }
+
+- [Почему наследование нарушает инкапсуляцию?](../design/composition.md#fragile-base-class) — *Middle*
+- [Когда наследование всё-таки уместно?](../design/composition.md#when-inherit) — *Middle*
+- [Что такое high cohesion и low coupling?](../design/composition.md#cohesion-coupling) — *Middle*
 
 ### SOLID { #solid }
 
@@ -508,6 +509,7 @@ tags:
 
 - [Монолит или микросервисы?](../architecture/microservices.md#monolith-vs-microservices) — *Middle*
 - [Что такое модульный монолит?](../architecture/microservices.md#modular-monolith) — *Middle*
+- [Как high cohesion и low coupling работают в микросервисах?](../architecture/microservices.md#service-boundaries) — *Senior*
 - [Синхронно или асинхронно?](../architecture/microservices.md#sync-async) — *Junior*
 - [Зачем нужны API Gateway, BFF и Service Discovery?](../architecture/microservices.md#api-gateway) — *Middle*
 - [Как работает rate limiting?](../architecture/microservices.md#rate-limiting) — *Middle*

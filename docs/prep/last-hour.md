@@ -134,6 +134,12 @@ tags:
 
 ## Дизайн кода { #design }
 
+### Композиция и зацепление { #composition }
+
+[Полный разбор →](../design/composition.md)
+
+--8<-- "docs/design/composition.md:cheatsheet"
+
 ### SOLID { #solid }
 
 [Полный разбор →](../design/solid.md)

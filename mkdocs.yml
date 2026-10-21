@@ -201,6 +201,7 @@ nav:
       - Виртуальные потоки: concurrency/virtual-threads.md
 
   - Дизайн кода:
+      - Композиция и зацепление: design/composition.md
       - SOLID: design/solid.md
       - Порождающие паттерны: design/creational-patterns.md
       - Структурные паттерны: design/structural-patterns.md
