@@ -154,6 +154,10 @@ hooks:
 extra_css:
   - stylesheets/extra.css
 
+# Старые ссылки на переехавшие темы ведут на их новую страницу
+extra_javascript:
+  - javascripts/moved-anchors.js
+
 # Иконки тегов уровня (theme.icon.tag)
 extra:
   tags:
