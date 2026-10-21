@@ -178,7 +178,13 @@ tags:
 
 --8<-- "docs/spring/spring-mvc.md:cheatsheet"
 
-### Spring Data JPA { #spring-data-jpa }
+### Транзакции в Spring { #spring-transactions }
+
+[Полный разбор →](../spring/spring-transactions.md)
+
+--8<-- "docs/spring/spring-transactions.md:cheatsheet"
+
+### Spring Data JPA и Hibernate { #spring-data-jpa }
 
 [Полный разбор →](../spring/spring-data-jpa.md)
 
@@ -209,6 +215,12 @@ tags:
 [Полный разбор →](../database/transactions.md)
 
 --8<-- "docs/database/transactions.md:cheatsheet"
+
+### Блокировки и конкурентные обновления { #locking }
+
+[Полный разбор →](../database/locking.md)
+
+--8<-- "docs/database/locking.md:cheatsheet"
 
 ### NoSQL { #nosql }
 

@@ -301,18 +301,19 @@ tags:
 - [Как работает `@Valid`?](../spring/spring-mvc.md#valid) — *Junior*
 - [Как настроить CORS?](../spring/spring-mvc.md#cors) — *Junior*
 
-### Spring Data JPA { #spring-data-jpa }
+### Транзакции в Spring { #spring-transactions }
 
-- [Что происходит при вызове `@Transactional`-метода?](../spring/spring-data-jpa.md#transactional-flow) — *Middle*
-- [При каких исключениях Spring откатывает транзакцию?](../spring/spring-data-jpa.md#rollback-rules) — *Junior*
-- [Чем опасен самовызов для транзакций?](../spring/spring-data-jpa.md#self-invocation-transactions) — *Middle*
-- [Как работает `REQUIRED` и откуда берётся `UnexpectedRollbackException`?](../spring/spring-data-jpa.md#required) — *Senior*
-- [Когда нужен `REQUIRES_NEW`?](../spring/spring-data-jpa.md#requires-new) — *Middle*
-- [Чем `NESTED` отличается от `REQUIRES_NEW`?](../spring/spring-data-jpa.md#nested) — *Senior*
-- [Какие ещё бывают типы propagation?](../spring/spring-data-jpa.md#other-propagation) — *Junior*
-- [Как задать уровень изоляции в Spring?](../spring/spring-data-jpa.md#isolation) — *Middle*
-- [Как работает оптимистичная блокировка?](../spring/spring-data-jpa.md#optimistic-locking) — *Middle*
-- [Как работает пессимистичная блокировка?](../spring/spring-data-jpa.md#pessimistic-locking) — *Middle*
+- [Что происходит при вызове `@Transactional`-метода?](../spring/spring-transactions.md#transactional-flow) — *Middle*
+- [При каких исключениях Spring откатывает транзакцию?](../spring/spring-transactions.md#rollback-rules) — *Junior*
+- [Чем опасен самовызов для транзакций?](../spring/spring-transactions.md#self-invocation-transactions) — *Middle*
+- [Как работает `REQUIRED` и откуда берётся `UnexpectedRollbackException`?](../spring/spring-transactions.md#required) — *Senior*
+- [Когда нужен `REQUIRES_NEW`?](../spring/spring-transactions.md#requires-new) — *Middle*
+- [Чем `NESTED` отличается от `REQUIRES_NEW`?](../spring/spring-transactions.md#nested) — *Senior*
+- [Какие ещё бывают типы propagation?](../spring/spring-transactions.md#other-propagation) — *Junior*
+- [Как задать уровень изоляции в Spring?](../spring/spring-transactions.md#isolation) — *Middle*
+
+### Spring Data JPA и Hibernate { #spring-data-jpa }
+
 - [Что такое проблема N+1 и как её решить?](../spring/spring-data-jpa.md#n-plus-one) — *Middle*
 - [Какие состояния бывают у Entity?](../spring/spring-data-jpa.md#entity-lifecycle) — *Middle*
 - [Что такое dirty checking?](../spring/spring-data-jpa.md#dirty-checking) — *Middle*
@@ -377,6 +378,11 @@ tags:
 - [Как MVCC реализует уровни изоляции?](../database/transactions.md#mvcc-isolation) — *Senior*
 - [Что такое table bloat и autovacuum?](../database/transactions.md#vacuum) — *Senior*
 - [Чем MVCC в PostgreSQL отличается от MySQL?](../database/transactions.md#mvcc-postgres-vs-mysql) — *Senior*
+
+### Блокировки и конкурентные обновления { #locking }
+
+- [Как работает оптимистичная блокировка?](../database/locking.md#optimistic-locking) — *Middle*
+- [Как работает пессимистичная блокировка?](../database/locking.md#pessimistic-locking) — *Middle*
 
 ### NoSQL { #nosql }
 

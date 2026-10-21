@@ -208,7 +208,8 @@ nav:
           - Spring Boot: spring/spring-boot.md
       - Веб и данные:
           - Spring MVC / REST: spring/spring-mvc.md
-          - Spring Data JPA: spring/spring-data-jpa.md
+          - Транзакции в Spring: spring/spring-transactions.md
+          - Spring Data JPA и Hibernate: spring/spring-data-jpa.md
       - Экосистема:
           - Security, Kafka, DDD: spring/spring-ecosystem.md
           - Тестирование и инструменты: spring/spring-tools.md
@@ -216,6 +217,7 @@ nav:
   - Данные:
       - SQL и индексы: database/sql.md
       - Транзакции и MVCC: database/transactions.md
+      - Блокировки и конкурентные обновления: database/locking.md
       - NoSQL: database/nosql.md
 
   - Kafka:
