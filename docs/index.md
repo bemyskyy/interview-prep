@@ -118,7 +118,7 @@ System.out.println(c == d);
     Цель — граничные случаи, производительность, распределённые системы и обоснованный выбор архитектуры.
 
     1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → Многопоточность под капотом: [CAS](concurrency/jmm.md#cas-aba), [AQS](concurrency/locks.md#aqs), [false sharing](concurrency/jmm.md#false-sharing) → [Виртуальные потоки](concurrency/virtual-threads.md#loom).
-    2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/transactions.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/transactions.md#serializable) → [Блокировки JPA](database/locking.md#row-locking).
+    2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/transactions.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/transactions.md#serializable) → [Lost update и write skew](database/locking.md#write-anomalies) → [Блокировки JPA](database/locking.md#row-locking).
     3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction).
     4. **Распределённые системы.** [Теория распределённых систем](system-design/system-design.md#distributed): CAP, консенсус, Saga, Outbox → [Микросервисы](system-design/system-design.md#microservices).
     5. **Архитектура.** [DDD](architecture/architecture.md#ddd) → [Архитектурные стили](architecture/architecture.md#styles) → [CQRS и Event Sourcing](architecture/architecture.md#cqrs-es) → [DDD в Spring-приложении](spring/spring-ecosystem.md#spring-ddd).

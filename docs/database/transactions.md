@@ -138,7 +138,7 @@ sequenceDiagram
 | **REPEATABLE READ** | ✅ Защита | ✅ Защита | 🔴 Возможно* |
 | **SERIALIZABLE** | ✅ Защита | ✅ Защита | ✅ Защита |
 
-_*В PostgreSQL `REPEATABLE READ` дополнительно защищает от phantom read через MVCC._
+_*В PostgreSQL `REPEATABLE READ` дополнительно защищает от phantom read через MVCC, но не от аномалий записи вроде [write skew](locking.md#write-skew)._
 
 Как задать уровень в Spring (`@Transactional(isolation = ...)`, `Isolation.DEFAULT`), — в [Spring Data JPA → Изоляция](../spring/spring-transactions.md#isolation).
 
