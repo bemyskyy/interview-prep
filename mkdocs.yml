@@ -214,10 +214,9 @@ nav:
           - Тестирование и инструменты: spring/spring-tools.md
 
   - Данные:
-      - Реляционные:
-          - SQL и транзакции: database/sql.md
-      - Нереляционные:
-          - NoSQL: database/nosql.md
+      - SQL и индексы: database/sql.md
+      - Транзакции и MVCC: database/transactions.md
+      - NoSQL: database/nosql.md
 
   - Kafka:
       - Физика брокера: kafka/kafka.md

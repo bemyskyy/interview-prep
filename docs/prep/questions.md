@@ -353,17 +353,8 @@ tags:
 
 ## Данные { #data }
 
-### SQL и транзакции { #sql }
+### SQL и индексы { #sql }
 
-- [Что такое ACID?](../database/sql.md#acid-properties) — *Junior*
-- [Как БД гарантирует долговечность?](../database/sql.md#wal) — *Middle*
-- [Какие бывают аномалии чтения?](../database/sql.md#read-anomalies) — *Junior*
-- [Какие бывают уровни изоляции?](../database/sql.md#isolation-levels) — *Middle*
-- [Почему не ставить `SERIALIZABLE` везде?](../database/sql.md#serializable) — *Senior*
-- [Как работает MVCC?](../database/sql.md#mvcc-how) — *Middle*
-- [Как MVCC реализует уровни изоляции?](../database/sql.md#mvcc-isolation) — *Senior*
-- [Что такое table bloat и autovacuum?](../database/sql.md#vacuum) — *Senior*
-- [Чем MVCC в PostgreSQL отличается от MySQL?](../database/sql.md#mvcc-postgres-vs-mysql) — *Senior*
 - [Как индекс ускоряет поиск?](../database/sql.md#how-index) — *Junior*
 - [Какие типы индексов есть в PostgreSQL?](../database/sql.md#index-types) — *Middle*
 - [Когда индекс не помогает?](../database/sql.md#index-not-used) — *Middle*
@@ -374,6 +365,18 @@ tags:
 - [Что такое CTE?](../database/sql.md#cte) — *Middle*
 - [Что такое нормальные формы?](../database/sql.md#normal-forms) — *Junior*
 - [Когда денормализовать?](../database/sql.md#denormalization) — *Middle*
+
+### Транзакции и MVCC { #transactions }
+
+- [Что такое ACID?](../database/transactions.md#acid-properties) — *Junior*
+- [Как БД гарантирует долговечность?](../database/transactions.md#wal) — *Middle*
+- [Какие бывают аномалии чтения?](../database/transactions.md#read-anomalies) — *Junior*
+- [Какие бывают уровни изоляции?](../database/transactions.md#isolation-levels) — *Middle*
+- [Почему не ставить `SERIALIZABLE` везде?](../database/transactions.md#serializable) — *Senior*
+- [Как работает MVCC?](../database/transactions.md#mvcc-how) — *Middle*
+- [Как MVCC реализует уровни изоляции?](../database/transactions.md#mvcc-isolation) — *Senior*
+- [Что такое table bloat и autovacuum?](../database/transactions.md#vacuum) — *Senior*
+- [Чем MVCC в PostgreSQL отличается от MySQL?](../database/transactions.md#mvcc-postgres-vs-mysql) — *Senior*
 
 ### NoSQL { #nosql }
 

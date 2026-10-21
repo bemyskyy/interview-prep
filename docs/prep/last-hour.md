@@ -198,11 +198,17 @@ tags:
 
 ## Данные { #data }
 
-### SQL и транзакции { #sql }
+### SQL и индексы { #sql }
 
 [Полный разбор →](../database/sql.md)
 
 --8<-- "docs/database/sql.md:cheatsheet"
+
+### Транзакции и MVCC { #transactions }
+
+[Полный разбор →](../database/transactions.md)
+
+--8<-- "docs/database/transactions.md:cheatsheet"
 
 ### NoSQL { #nosql }
 

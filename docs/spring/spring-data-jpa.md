@@ -334,7 +334,7 @@ public class NotificationService {
 !!! abstract "Ответ вслух"
     Через атрибут `isolation` у `@Transactional`, например `@Transactional(isolation = Isolation.REPEATABLE_READ)`. Значение по умолчанию `Isolation.DEFAULT` означает «использовать уровень, настроенный в самой БД». На практике жёсткие уровни изоляции поднимают редко, а конкуренцию за строки решают блокировками JPA.
 
-Аномалии чтения, уровни изоляции, особенности PostgreSQL и цена `SERIALIZABLE` разобраны в [SQL → Уровни изоляции](../database/sql.md#isolation-levels). Здесь — только то, что относится к Spring.
+Аномалии чтения, уровни изоляции, особенности PostgreSQL и цена `SERIALIZABLE` разобраны в [SQL → Уровни изоляции](../database/transactions.md#isolation-levels). Здесь — только то, что относится к Spring.
 
 ```java
 @Service
@@ -653,7 +653,7 @@ public void example() {
 | **`REQUIRED`** | 1 соединение, общая транзакция. Ошибка внутри + `catch` снаружи → `UnexpectedRollbackException` |
 | **`REQUIRES_NEW`** | 2 соединения, независимые транзакции. Риск исчерпания пула |
 | **`NESTED`** | 1 соединение + savepoint. Внутренняя откатывается независимо |
-| **Isolation** | `@Transactional(isolation = ...)`, `DEFAULT` — уровень БД. Теория — в [SQL](../database/sql.md#isolation-levels) |
+| **Isolation** | `@Transactional(isolation = ...)`, `DEFAULT` — уровень БД. Теория — в [SQL](../database/transactions.md#isolation-levels) |
 | **Optimistic Lock** | Поле `@Version`, без блокировки БД. Для низкой конкуренции |
 | **Pessimistic Lock** | `SELECT FOR UPDATE`, физическая блокировка. Для критичных операций |
 | **N+1** | `JOIN FETCH` → `@EntityGraph` → `@BatchSize` |
