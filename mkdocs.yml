@@ -136,7 +136,8 @@ plugins:
   # Старые адреса страниц, которых больше нет, ведут на их новое место:
   # опубликованные ссылки не отдают 404. Якорь из адреса сохраняется
   - redirects:
-      redirect_maps: {}
+      redirect_maps:
+        java/multithreading.md: concurrency/threads.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -171,7 +172,6 @@ nav:
   - Язык Java:
       - Платформа и память:
           - JVM и память: java/jvm.md
-          - Многопоточность: java/multithreading.md
       - Язык и API:
           - Основы языка: java/basics.md
           - Строки: java/strings.md
@@ -185,6 +185,15 @@ nav:
       - Дизайн кода:
           - SOLID: java/solid.md
           - Паттерны проектирования: java/patterns.md
+
+  - Многопоточность:
+      - Потоки: concurrency/threads.md
+      - Блокировки и синхронизаторы: concurrency/locks.md
+      - JMM, volatile и атомики: concurrency/jmm.md
+      - Deadlock, livelock, starvation: concurrency/deadlock.md
+      - Пулы потоков и CompletableFuture: concurrency/executors.md
+      - Потокобезопасные коллекции: concurrency/concurrent-collections.md
+      - Виртуальные потоки: concurrency/virtual-threads.md
 
   - Spring:
       - Ядро:

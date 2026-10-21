@@ -28,44 +28,6 @@ tags:
 - [Какие бывают OutOfMemoryError?](../java/jvm.md#oom-types) — *Middle*
 - [Как расследовать и лечить OutOfMemoryError?](../java/jvm.md#oom-investigation) — *Senior*
 
-### Многопоточность { #multithreading }
-
-- [Чем поток отличается от процесса?](../java/multithreading.md#thread-vs-process) — *Junior*
-- [Как создать поток: `Thread` или `Runnable`?](../java/multithreading.md#thread-vs-runnable) — *Junior*
-- [Какие состояния есть у потока?](../java/multithreading.md#thread-states) — *Junior*
-- [Как работают `join`, `sleep` и `yield`?](../java/multithreading.md#join-sleep-yield) — *Junior*
-- [Как правильно остановить поток?](../java/multithreading.md#interrupt) — *Middle*
-- [Как работает `synchronized`?](../java/multithreading.md#synchronized) — *Junior*
-- [Зачем `wait()` вызывают в цикле `while`?](../java/multithreading.md#wait-notify) — *Middle*
-- [Какие три проблемы решает JMM?](../java/multithreading.md#jmm-basics) — *Middle*
-- [Что такое happens-before?](../java/multithreading.md#happens-before) — *Middle*
-- [Что гарантирует `volatile`, а что нет?](../java/multithreading.md#volatile) — *Middle*
-- [Как `final`-поля помогают безопасной публикации?](../java/multithreading.md#final-fields) — *Senior*
-- [Чем `ReentrantLock` лучше `synchronized`?](../java/multithreading.md#reentrantlock) — *Middle*
-- [Зачем нужны `ReadWriteLock`, `StampedLock` и `Condition`?](../java/multithreading.md#rwlock-condition) — *Middle*
-- [Как работают атомики?](../java/multithreading.md#atomics) — *Middle*
-- [Почему `LongAdder` быстрее `AtomicLong` под нагрузкой?](../java/multithreading.md#longadder) — *Senior*
-- [Чем `CountDownLatch` отличается от `CyclicBarrier`?](../java/multithreading.md#latch-barrier) — *Middle*
-- [Как `Semaphore` ограничивает доступ?](../java/multithreading.md#semaphore) — *Middle*
-- [Что такое deadlock и как он возникает?](../java/multithreading.md#deadlock) — *Middle*
-- [Как найти дедлок в работающем приложении?](../java/multithreading.md#deadlock-detection) — *Middle*
-- [Как избежать дедлока?](../java/multithreading.md#deadlock-prevention) — *Middle*
-- [Чем livelock и starvation отличаются от deadlock?](../java/multithreading.md#livelock-starvation) — *Middle*
-- [Зачем пулы, если есть `new Thread()`?](../java/multithreading.md#why-pools) — *Junior*
-- [Как `ThreadPoolExecutor` решает, что делать с задачей?](../java/multithreading.md#thread-pool-executor) — *Middle*
-- [Чем опасны фабрики `Executors`?](../java/multithreading.md#executors-factories) — *Middle*
-- [Как устроен `ForkJoinPool`?](../java/multithreading.md#forkjoinpool) — *Senior*
-- [Чем плох `Future`?](../java/multithreading.md#future) — *Junior*
-- [Как строить цепочки на `CompletableFuture`?](../java/multithreading.md#completablefuture) — *Middle*
-- [Как обрабатывать ошибки в `CompletableFuture`?](../java/multithreading.md#cf-errors) — *Middle*
-- [Что такое CAS и проблема ABA?](../java/multithreading.md#cas-aba) — *Senior*
-- [Как устроен AQS?](../java/multithreading.md#aqs) — *Senior*
-- [Чем `LockSupport.park()` отличается от `wait()`?](../java/multithreading.md#park-unpark) — *Senior*
-- [Что такое false sharing?](../java/multithreading.md#false-sharing) — *Senior*
-- [Чем виртуальные потоки отличаются от платформенных?](../java/multithreading.md#virtual-threads) — *Middle*
-- [Что такое pinning?](../java/multithreading.md#pinning) — *Senior*
-- [Что такое Structured Concurrency?](../java/multithreading.md#structured-concurrency) — *Senior*
-
 ### Основы языка { #basics }
 
 - [Чем примитивы отличаются от ссылочных типов?](../java/basics.md#primitives) — *Junior*
@@ -218,6 +180,64 @@ tags:
 - [Что такое Decorator?](../java/patterns.md#decorator) — *Middle*
 - [Что такое Strategy?](../java/patterns.md#strategy) — *Junior*
 - [Что такое Observer?](../java/patterns.md#observer) — *Middle*
+
+## Многопоточность { #concurrency }
+
+### Потоки { #threads }
+
+- [Чем поток отличается от процесса?](../concurrency/threads.md#thread-vs-process) — *Junior*
+- [Как создать поток: `Thread` или `Runnable`?](../concurrency/threads.md#thread-vs-runnable) — *Junior*
+- [Какие состояния есть у потока?](../concurrency/threads.md#thread-states) — *Junior*
+- [Как работают `join`, `sleep` и `yield`?](../concurrency/threads.md#join-sleep-yield) — *Junior*
+- [Как правильно остановить поток?](../concurrency/threads.md#interrupt) — *Middle*
+
+### Блокировки и синхронизаторы { #locks }
+
+- [Как работает `synchronized`?](../concurrency/locks.md#synchronized) — *Junior*
+- [Зачем `wait()` вызывают в цикле `while`?](../concurrency/locks.md#wait-notify) — *Middle*
+- [Чем `ReentrantLock` лучше `synchronized`?](../concurrency/locks.md#reentrantlock) — *Middle*
+- [Зачем нужны `ReadWriteLock`, `StampedLock` и `Condition`?](../concurrency/locks.md#rwlock-condition) — *Middle*
+- [Чем `CountDownLatch` отличается от `CyclicBarrier`?](../concurrency/locks.md#latch-barrier) — *Middle*
+- [Как `Semaphore` ограничивает доступ?](../concurrency/locks.md#semaphore) — *Middle*
+- [Как устроен AQS?](../concurrency/locks.md#aqs) — *Senior*
+- [Чем `LockSupport.park()` отличается от `wait()`?](../concurrency/locks.md#park-unpark) — *Senior*
+
+### JMM, volatile и атомики { #jmm }
+
+- [Какие три проблемы решает JMM?](../concurrency/jmm.md#jmm-basics) — *Middle*
+- [Что такое happens-before?](../concurrency/jmm.md#happens-before) — *Middle*
+- [Что гарантирует `volatile`, а что нет?](../concurrency/jmm.md#volatile) — *Middle*
+- [Как `final`-поля помогают безопасной публикации?](../concurrency/jmm.md#final-fields) — *Senior*
+- [Как работают атомики?](../concurrency/jmm.md#atomics) — *Middle*
+- [Что такое CAS и проблема ABA?](../concurrency/jmm.md#cas-aba) — *Senior*
+- [Почему `LongAdder` быстрее `AtomicLong` под нагрузкой?](../concurrency/jmm.md#longadder) — *Senior*
+- [Что такое false sharing?](../concurrency/jmm.md#false-sharing) — *Senior*
+
+### Deadlock, livelock, starvation { #deadlock }
+
+- [Что такое deadlock и как он возникает?](../concurrency/deadlock.md#deadlock) — *Middle*
+- [Как найти дедлок в работающем приложении?](../concurrency/deadlock.md#deadlock-detection) — *Middle*
+- [Как избежать дедлока?](../concurrency/deadlock.md#deadlock-prevention) — *Middle*
+- [Чем livelock и starvation отличаются от deadlock?](../concurrency/deadlock.md#livelock-starvation) — *Middle*
+
+### Пулы потоков и CompletableFuture { #executors }
+
+- [Зачем пулы, если есть `new Thread()`?](../concurrency/executors.md#why-pools) — *Junior*
+- [Как `ThreadPoolExecutor` решает, что делать с задачей?](../concurrency/executors.md#thread-pool-executor) — *Middle*
+- [Чем опасны фабрики `Executors`?](../concurrency/executors.md#executors-factories) — *Middle*
+- [Как устроен `ForkJoinPool`?](../concurrency/executors.md#forkjoinpool) — *Senior*
+- [Чем плох `Future`?](../concurrency/executors.md#future) — *Junior*
+- [Как строить цепочки на `CompletableFuture`?](../concurrency/executors.md#completablefuture) — *Middle*
+- [Как обрабатывать ошибки в `CompletableFuture`?](../concurrency/executors.md#cf-errors) — *Middle*
+
+### Потокобезопасные коллекции { #concurrent-collections }
+
+
+### Виртуальные потоки { #virtual-threads }
+
+- [Чем виртуальные потоки отличаются от платформенных?](../concurrency/virtual-threads.md#virtual-threads) — *Middle*
+- [Что такое pinning?](../concurrency/virtual-threads.md#pinning) — *Senior*
+- [Что такое Structured Concurrency?](../concurrency/virtual-threads.md#structured-concurrency) — *Senior*
 
 ## Spring { #spring }
 

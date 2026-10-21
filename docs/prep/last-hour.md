@@ -22,12 +22,6 @@ tags:
 
 --8<-- "docs/java/jvm.md:cheatsheet"
 
-### Многопоточность { #multithreading }
-
-[Полный разбор →](../java/multithreading.md)
-
---8<-- "docs/java/multithreading.md:cheatsheet"
-
 ### Основы языка { #basics }
 
 [Полный разбор →](../java/basics.md)
@@ -93,6 +87,50 @@ tags:
 [Полный разбор →](../java/patterns.md)
 
 --8<-- "docs/java/patterns.md:cheatsheet"
+
+## Многопоточность { #concurrency }
+
+### Потоки { #threads }
+
+[Полный разбор →](../concurrency/threads.md)
+
+--8<-- "docs/concurrency/threads.md:cheatsheet"
+
+### Блокировки и синхронизаторы { #locks }
+
+[Полный разбор →](../concurrency/locks.md)
+
+--8<-- "docs/concurrency/locks.md:cheatsheet"
+
+### JMM, volatile и атомики { #jmm }
+
+[Полный разбор →](../concurrency/jmm.md)
+
+--8<-- "docs/concurrency/jmm.md:cheatsheet"
+
+### Deadlock, livelock, starvation { #deadlock }
+
+[Полный разбор →](../concurrency/deadlock.md)
+
+--8<-- "docs/concurrency/deadlock.md:cheatsheet"
+
+### Пулы потоков и CompletableFuture { #executors }
+
+[Полный разбор →](../concurrency/executors.md)
+
+--8<-- "docs/concurrency/executors.md:cheatsheet"
+
+### Потокобезопасные коллекции { #concurrent-collections }
+
+[Полный разбор →](../concurrency/concurrent-collections.md)
+
+--8<-- "docs/concurrency/concurrent-collections.md:cheatsheet"
+
+### Виртуальные потоки { #virtual-threads }
+
+[Полный разбор →](../concurrency/virtual-threads.md)
+
+--8<-- "docs/concurrency/virtual-threads.md:cheatsheet"
 
 ## Spring { #spring }
 

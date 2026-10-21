@@ -40,8 +40,13 @@ System.out.println(c == d);
 <div class="ip-sections" markdown>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">13 страниц</span></p>
-<p class="ip-section__topics" markdown>JVM и память, многопоточность, коллекции, ООП, дженерики, Stream API, SOLID, паттерны</p>
+<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">12 страниц</span></p>
+<p class="ip-section__topics" markdown>JVM и память, коллекции, ООП, дженерики, Stream API, SOLID, паттерны</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Многопоточность](concurrency/threads.md) <span class="ip-section__count">7 страниц</span></p>
+<p class="ip-section__topics" markdown>Потоки, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки</p>
 </div>
 
 <div class="ip-section" markdown>
@@ -81,7 +86,7 @@ System.out.println(c == d);
 
     1. **Язык.** [Основы языка](java/basics.md) → [Строки](java/strings.md) → [ООП](java/oop.md) → [Исключения](java/exceptions.md).
     2. **Коллекции и стримы.** [Коллекции](java/collections.md) до раздела [HashMap](java/collections.md#hashmap) включительно → [Дженерики: основы](java/generics.md#basics) → [Stream API](java/streams.md) → [Современная Java](java/modern-java.md).
-    3. **Платформа.** [JVM: платформа](java/jvm.md#platform) → [Сборка мусора](java/jvm.md#gc) → [Stack и Heap](java/jvm.md#memory) → [Многопоточность: основы](java/multithreading.md#basics) и [мониторы](java/multithreading.md#monitors).
+    3. **Платформа.** [JVM: платформа](java/jvm.md#platform) → [Сборка мусора](java/jvm.md#gc) → [Stack и Heap](java/jvm.md#memory) → [Потоки](concurrency/threads.md) и [`synchronized`](concurrency/locks.md#monitors).
     4. **Базы данных.** [ACID](database/sql.md#acid) → [SQL-запросы](database/sql.md#queries) → [Индексы](database/sql.md#indexes).
     5. **Spring.** [Core: IoC и DI](spring/spring-core.md) → [Spring Boot](spring/spring-boot.md) → [MVC / REST](spring/spring-mvc.md) → [Data JPA: `@Transactional`](spring/spring-data-jpa.md#transactional).
     6. **Сети.** [TCP и UDP](networks/networks.md#tcp-udp) → [HTTP](networks/networks.md#http) → [REST](networks/networks.md#rest).
@@ -94,7 +99,7 @@ System.out.println(c == d);
 
     Цель — объяснить, как это устроено внутри, назвать сложность операций и типичные ошибки.
 
-    1. **Java целиком.** [Коллекции](java/collections.md), включая потокобезопасные → [Многопоточность](java/multithreading.md): JMM, блокировки, executors, `CompletableFuture` → [JVM и память](java/jvm.md) → [Дженерики](java/generics.md): PECS и стирание типов → [IO / NIO](java/io-nio.md).
+    1. **Java целиком.** [Коллекции](java/collections.md), включая потокобезопасные → Многопоточность: [JMM и `volatile`](concurrency/jmm.md) → [блокировки](concurrency/locks.md) → [пулы потоков и `CompletableFuture`](concurrency/executors.md) → [дедлоки](concurrency/deadlock.md) → [JVM и память](java/jvm.md) → [Дженерики](java/generics.md): PECS и стирание типов → [IO / NIO](java/io-nio.md).
     2. **Дизайн кода.** [SOLID](java/solid.md) → [Паттерны проектирования](java/patterns.md).
     3. **Spring изнутри.** [Жизненный цикл бина и AOP](spring/spring-core.md#bean-lifecycle) → [Propagation и блокировки](spring/spring-data-jpa.md#propagation) → [Hibernate и N+1](spring/spring-data-jpa.md#hibernate) → [Тестирование и инструменты](spring/spring-tools.md) → [Security и Spring Kafka](spring/spring-ecosystem.md).
     4. **Базы данных.** [Изоляция транзакций](database/sql.md#isolation) → [MVCC](database/sql.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
@@ -107,7 +112,7 @@ System.out.println(c == d);
 
     Цель — граничные случаи, производительность, распределённые системы и обоснованный выбор архитектуры.
 
-    1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → [Многопоточность под капотом](java/multithreading.md#under-the-hood): CAS, AQS, false sharing → [Виртуальные потоки](java/multithreading.md#loom).
+    1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → Многопоточность под капотом: [CAS](concurrency/jmm.md#cas-aba), [AQS](concurrency/locks.md#aqs), [false sharing](concurrency/jmm.md#false-sharing) → [Виртуальные потоки](concurrency/virtual-threads.md#loom).
     2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/sql.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/sql.md#serializable) → [Блокировки JPA](spring/spring-data-jpa.md#isolation-locking).
     3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction).
     4. **Распределённые системы.** [Теория распределённых систем](system-design/system-design.md#distributed): CAP, консенсус, Saga, Outbox → [Микросервисы](system-design/system-design.md#microservices).
