@@ -3,7 +3,8 @@
 Собирает из навигации mkdocs.yml и страниц тем:
 
 - docs/prep/last-hour.md  — шпаргалки всех страниц, подключённые через pymdownx.snippets;
-- docs/prep/questions.md  — все вопросы-заголовки `###` со ссылками на их якоря.
+- docs/prep/questions.md  — все вопросы-заголовки `###` со ссылками на их якоря;
+- docs/index.md           — число страниц каждого раздела в блоке «Разделы».
 
 Запуск после добавления страницы или вопроса:
 
@@ -23,6 +24,10 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 LAST_HOUR = DOCS / "prep" / "last-hour.md"
 QUESTIONS = DOCS / "prep" / "questions.md"
+INDEX = DOCS / "index.md"
+
+# Страницы целиком из генератора: кнопку «Редактировать» у них прячем
+GENERATED = {LAST_HOUR, QUESTIONS}
 
 # Разделы навигации, которые не являются темами
 SKIP_SECTIONS = {"Старт", "Подготовка"}
@@ -44,6 +49,11 @@ CHEATSHEET_SECTION = "cheatsheet"
 HEADING = re.compile(r"^### (?P<title>.+?) \{ #(?P<id>[\w-]+) \}\s*$")
 LEVEL = re.compile(r"^\*\*Уровень:\*\* (?P<level>Junior|Middle|Senior)\s*$")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})")
+# Раздел на главной: <p class="ip-section__head" markdown>[Spring](...) <span class="ip-section__count">6 страниц</span></p>
+SECTION_HEAD = re.compile(
+    r'(?P<head><p class="ip-section__head" markdown>\[(?P<name>[^\]]+)\]\([^)]+\) '
+    r'<span class="ip-section__count">)(?P<count>[^<]*)(?P<tail></span>)'
+)
 
 log = logging.getLogger("mkdocs.hooks.prep_pages")
 
@@ -180,9 +190,41 @@ def render_questions(sections):
     return "\n".join(out + body).rstrip() + "\n"
 
 
+def pages_word(n):
+    """13 страниц, 2 страницы, 21 страница."""
+    if n % 10 == 1 and n % 100 != 11:
+        return f"{n} страница"
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return f"{n} страницы"
+    return f"{n} страниц"
+
+
+def render_index(sections):
+    """docs/index.md с числом страниц разделов по навигации."""
+    counts = {name: len(pages) for name, pages in sections}
+    found = set()
+
+    def replace(match):
+        name = match["name"]
+        if name not in counts:
+            raise KeyError(f"docs/index.md: раздела «{name}» нет в навигации mkdocs.yml")
+        found.add(name)
+        return match["head"] + pages_word(counts[name]) + match["tail"]
+
+    content = SECTION_HEAD.sub(replace, INDEX.read_text(encoding="utf-8"))
+    missing = [name for name in counts if name not in found]
+    if missing:
+        raise KeyError(f"docs/index.md: добавь в блок «Разделы» раздел {', '.join(missing)}")
+    return content
+
+
 def render():
     sections = load_sections()
-    return {LAST_HOUR: render_last_hour(sections), QUESTIONS: render_questions(sections)}
+    return {
+        LAST_HOUR: render_last_hour(sections),
+        QUESTIONS: render_questions(sections),
+        INDEX: render_index(sections),
+    }
 
 
 def stale_pages():
@@ -199,6 +241,12 @@ def on_pre_build(config, **kwargs):
             "%s устарела: запусти `python scripts/prep_pages.py`",
             path.relative_to(ROOT),
         )
+
+
+def on_page_markdown(markdown, page, **kwargs):
+    if DOCS / page.file.src_path in GENERATED:
+        page.edit_url = None
+    return markdown
 
 
 if __name__ == "__main__":
