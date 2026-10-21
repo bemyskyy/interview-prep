@@ -138,6 +138,7 @@ plugins:
   - redirects:
       redirect_maps:
         java/multithreading.md: concurrency/threads.md
+        java/solid.md: design/solid.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -184,9 +185,6 @@ nav:
           - Stream API: java/streams.md
           - Лямбды и Optional: java/functional.md
           - IO / NIO: java/io-nio.md
-      - Дизайн кода:
-          - SOLID: java/solid.md
-          - Паттерны проектирования: java/patterns.md
 
   - Многопоточность:
       - Потоки и ThreadLocal: concurrency/threads.md
@@ -196,6 +194,10 @@ nav:
       - Пулы потоков и CompletableFuture: concurrency/executors.md
       - Потокобезопасные коллекции: concurrency/concurrent-collections.md
       - Виртуальные потоки: concurrency/virtual-threads.md
+
+  - Дизайн кода:
+      - SOLID: design/solid.md
+      - Паттерны проектирования: java/patterns.md
 
   - Spring:
       - Ядро:

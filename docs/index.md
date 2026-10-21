@@ -40,13 +40,18 @@ System.out.println(c == d);
 <div class="ip-sections" markdown>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">14 страниц</span></p>
-<p class="ip-section__topics" markdown>JVM и память, коллекции, ООП, дженерики, Stream API, SOLID, паттерны</p>
+<p class="ip-section__head" markdown>[Язык Java](java/jvm.md) <span class="ip-section__count">12 страниц</span></p>
+<p class="ip-section__topics" markdown>JVM и память, коллекции, ООП, дженерики, Stream API</p>
 </div>
 
 <div class="ip-section" markdown>
 <p class="ip-section__head" markdown>[Многопоточность](concurrency/threads.md) <span class="ip-section__count">7 страниц</span></p>
 <p class="ip-section__topics" markdown>Потоки, `ThreadLocal`, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки</p>
+</div>
+
+<div class="ip-section" markdown>
+<p class="ip-section__head" markdown>[Дизайн кода](design/solid.md) <span class="ip-section__count">2 страницы</span></p>
+<p class="ip-section__topics" markdown>SOLID, композиция и наследование, связность и зацепление, паттерны GoF</p>
 </div>
 
 <div class="ip-section" markdown>
@@ -100,7 +105,7 @@ System.out.println(c == d);
     Цель — объяснить, как это устроено внутри, назвать сложность операций и типичные ошибки.
 
     1. **Java целиком.** [Коллекции](java/collections.md) и [потокобезопасные коллекции](concurrency/concurrent-collections.md) → Многопоточность: [JMM и `volatile`](concurrency/jmm.md) → [блокировки](concurrency/locks.md) → [пулы потоков и `CompletableFuture`](concurrency/executors.md) → [дедлоки](concurrency/deadlock.md) → [JVM и память](java/jvm.md) → [Дженерики](java/generics.md): PECS и стирание типов → [IO / NIO](java/io-nio.md).
-    2. **Дизайн кода.** [SOLID](java/solid.md) → [Паттерны проектирования](java/patterns.md).
+    2. **Дизайн кода.** [SOLID](design/solid.md) → [Паттерны проектирования](java/patterns.md).
     3. **Spring изнутри.** [Жизненный цикл бина и AOP](spring/spring-core.md#bean-lifecycle) → [Propagation и блокировки](spring/spring-data-jpa.md#propagation) → [Hibernate и N+1](spring/spring-data-jpa.md#hibernate) → [Тестирование и инструменты](spring/spring-tools.md) → [Security и Spring Kafka](spring/spring-ecosystem.md).
     4. **Базы данных.** [Изоляция транзакций](database/sql.md#isolation) → [MVCC](database/sql.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
     5. **Kafka.** [Физика брокера](kafka/kafka.md) → [Consumer и Producer](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).

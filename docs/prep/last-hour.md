@@ -88,18 +88,6 @@ tags:
 
 --8<-- "docs/java/io-nio.md:cheatsheet"
 
-### SOLID { #solid }
-
-[Полный разбор →](../java/solid.md)
-
---8<-- "docs/java/solid.md:cheatsheet"
-
-### Паттерны проектирования { #patterns }
-
-[Полный разбор →](../java/patterns.md)
-
---8<-- "docs/java/patterns.md:cheatsheet"
-
 ## Многопоточность { #concurrency }
 
 ### Потоки и ThreadLocal { #threads }
@@ -143,6 +131,20 @@ tags:
 [Полный разбор →](../concurrency/virtual-threads.md)
 
 --8<-- "docs/concurrency/virtual-threads.md:cheatsheet"
+
+## Дизайн кода { #design }
+
+### SOLID { #solid }
+
+[Полный разбор →](../design/solid.md)
+
+--8<-- "docs/design/solid.md:cheatsheet"
+
+### Паттерны проектирования { #patterns }
+
+[Полный разбор →](../java/patterns.md)
+
+--8<-- "docs/java/patterns.md:cheatsheet"
 
 ## Spring { #spring }
 

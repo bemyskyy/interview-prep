@@ -166,24 +166,6 @@ tags:
 - [Как скопировать файл?](../java/io-nio.md#copy) — *Junior*
 - [Как работать с properties-файлами?](../java/io-nio.md#properties) — *Junior*
 
-### SOLID { #solid }
-
-- [Что такое Single Responsibility Principle?](../java/solid.md#srp) — *Junior*
-- [Что такое Open/Closed Principle?](../java/solid.md#ocp) — *Junior*
-- [Что такое Liskov Substitution Principle?](../java/solid.md#lsp) — *Middle*
-- [Что такое Interface Segregation Principle?](../java/solid.md#isp) — *Junior*
-- [Что такое Dependency Inversion Principle?](../java/solid.md#dip) — *Middle*
-
-### Паттерны проектирования { #patterns }
-
-- [Как написать потокобезопасный Singleton?](../java/patterns.md#singleton) — *Middle*
-- [Почему Enum Singleton считается самым надёжным?](../java/patterns.md#enum-singleton) — *Middle*
-- [Зачем нужен Builder?](../java/patterns.md#builder) — *Junior*
-- [Что такое Factory Method и чем он отличается от Simple Factory?](../java/patterns.md#factory-method) — *Middle*
-- [Что такое Decorator?](../java/patterns.md#decorator) — *Middle*
-- [Что такое Strategy?](../java/patterns.md#strategy) — *Junior*
-- [Что такое Observer?](../java/patterns.md#observer) — *Middle*
-
 ## Многопоточность { #concurrency }
 
 ### Потоки и ThreadLocal { #threads }
@@ -245,6 +227,26 @@ tags:
 - [Чем виртуальные потоки отличаются от платформенных?](../concurrency/virtual-threads.md#virtual-threads) — *Middle*
 - [Что такое pinning?](../concurrency/virtual-threads.md#pinning) — *Senior*
 - [Что такое Structured Concurrency?](../concurrency/virtual-threads.md#structured-concurrency) — *Senior*
+
+## Дизайн кода { #design }
+
+### SOLID { #solid }
+
+- [Что такое Single Responsibility Principle?](../design/solid.md#srp) — *Junior*
+- [Что такое Open/Closed Principle?](../design/solid.md#ocp) — *Junior*
+- [Что такое Liskov Substitution Principle?](../design/solid.md#lsp) — *Middle*
+- [Что такое Interface Segregation Principle?](../design/solid.md#isp) — *Junior*
+- [Что такое Dependency Inversion Principle?](../design/solid.md#dip) — *Middle*
+
+### Паттерны проектирования { #patterns }
+
+- [Как написать потокобезопасный Singleton?](../java/patterns.md#singleton) — *Middle*
+- [Почему Enum Singleton считается самым надёжным?](../java/patterns.md#enum-singleton) — *Middle*
+- [Зачем нужен Builder?](../java/patterns.md#builder) — *Junior*
+- [Что такое Factory Method и чем он отличается от Simple Factory?](../java/patterns.md#factory-method) — *Middle*
+- [Что такое Decorator?](../java/patterns.md#decorator) — *Middle*
+- [Что такое Strategy?](../java/patterns.md#strategy) — *Junior*
+- [Что такое Observer?](../java/patterns.md#observer) — *Middle*
 
 ## Spring { #spring }
 

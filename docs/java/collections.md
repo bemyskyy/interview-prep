@@ -73,7 +73,7 @@ queue.remove();          // очередь пуста → NoSuchElementException
 !!! abstract "Ответ вслух"
     `Collection` работает с одиночными элементами и её базовый метод — `add(e)`, а `Map` работает с парами ключ → значение через `put(k, v)`. Если бы `Map` наследовала `Collection`, ей пришлось бы реализовать `add(e)`, у которого для пар нет осмысленного поведения. Это принцип разделения интерфейсов из SOLID.
 
-На собесе спросят: _"Почему `List` и `Set` наследуются от `Collection`, а `Map` стоит особняком?"_ Ответ — [Interface Segregation из SOLID](solid.md#isp):
+На собесе спросят: _"Почему `List` и `Set` наследуются от `Collection`, а `Map` стоит особняком?"_ Ответ — [Interface Segregation из SOLID](../design/solid.md#isp):
 
 - `Collection` оперирует **одиночными элементами** (values). Её базовый метод — `add(Element e)`.
 - `Map` оперирует **парами** (key → value). Её базовый метод — `put(Key k, Value v)`.
