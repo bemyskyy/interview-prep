@@ -8,7 +8,7 @@ tags:
 
 # NoSQL
 
-Четыре семейства NoSQL-баз — документные, key-value, wide-column и графовые — и как с ними работать из Spring Boot. На собесе спрашивают, когда NoSQL лучше SQL, чем отличаются семейства, где каждая база стоит в CAP-теореме и какие задачи решают на Redis.
+Когда брать NoSQL вместо SQL, четыре семейства NoSQL-баз — документные, key-value, wide-column и графовые — и как с ними работать из Spring Boot, кластер Redis и polyglot persistence. На собесе спрашивают, когда NoSQL лучше SQL, чем отличаются семейства, какие задачи решают на Redis и какие хранилища нужны кроме основной БД. Где базы стоят в CAP-теореме — на странице [Распределённые данные](../system-design/distributed-data.md#cap).
 
 ## Зачем NoSQL { #why-nosql }
 
@@ -426,96 +426,7 @@ RETURN path, length(path)
     2. Какое масштабируется в основном вертикально?
     3. Какой лучший кейс у wide-column БД?
 
-## CAP-теорема { #cap }
-
-### Где NoSQL-базы находятся в CAP-теореме? { #cap-theorem }
-
-**Уровень:** Middle
-
-!!! abstract "Ответ вслух"
-    CAP-теорема (теорема Брюера) говорит, что распределённая система может гарантировать только два свойства из трёх: согласованность, доступность и устойчивость к разделению сети. Сеть может упасть всегда, поэтому реальный выбор — между CP (HBase, Zookeeper) и AP (Cassandra, CouchDB, DynamoDB). PACELC добавляет, что и без сбоя есть компромисс между задержкой и согласованностью.
-
-Полный разбор CAP и PACELC — в [System Design → CAP-теорема](../system-design/distributed-data.md#cap) и [PACELC](../system-design/distributed-data.md#pacelc). Здесь — где стоят NoSQL-семейства.
-
-![CAP](../assets/nosql_cap_families.png)
-
-```mermaid
-flowchart TD
-    C["C — Consistency (согласованность): все узлы видят одинаковые данные"]
-    A["A — Availability (доступность): каждый запрос получает ответ"]
-    P["P — Partition tolerance (устойчивость к разделению): система работает, даже если узлы не могут общаться"]
-    C ---|"CA: RDBMS на одном сервере"| A
-    C ---|"CP: HBase, Zookeeper, Redis (в режиме CP)"| P
-    A ---|"AP: Cassandra, CouchDB, DynamoDB"| P
-```
-
-- **CA (без P)** — нет смысла в реальных распределённых системах: сеть всегда может упасть. Это традиционные RDBMS на одном сервере.
-- **CP (без A)** — при разрыве сети система предпочтёт вернуть ошибку, чем устаревшие данные. **HBase, Zookeeper, Redis (в режиме CP).**
-- **AP (без C)** — при разрыве сети система продолжит работу, но может отдавать устаревшие данные. **Cassandra, CouchDB, DynamoDB.**
-
-!!! tip "PACELC — более реалистичная модель"
-    CAP описывает поведение только при сетевом разделении (P), а большую часть времени сеть работает. PACELC добавляет: даже без разделения есть компромисс между **latency (задержкой)** и **consistency (согласованностью)**. Cassandra позволяет настраивать уровень согласованности на уровне запроса через `ConsistencyLevel`.
-
-!!! warning "Ловушка: «выбираем любые два из трёх»"
-    В распределённой системе отказаться от P нельзя — разрыв сети случится независимо от твоего выбора. Поэтому CA-систем в распределённом мире нет, и выбор всегда между C и A в момент сбоя.
-
-??? question "Проверь себя"
-    1. Почему CA не имеет смысла в распределённой системе?
-    2. Как поведёт себя CP-система при разрыве сети, а как AP?
-    3. Что PACELC добавляет к CAP?
-
-## Redis в Spring Boot { #redis-patterns }
-
-### Как вручную реализовать Cache-Aside на Redis? { #cache-aside }
-
-**Уровень:** Middle
-
-!!! abstract "Ответ вслух"
-    Сначала ищем значение в Redis; при промахе идём в основную БД, кладём результат в кэш и отдаём. При обновлении данных запись в кэше инвалидируем. В Spring это же делает `@Cacheable`, но ручная реализация показывает, что происходит внутри.
-
-Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [System Design → Caching](../system-design/building-blocks.md#caching), декларативный вариант через `@Cacheable` — в [Кэширование → `@Cacheable`](../spring/spring-caching.md#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](#key-value).
-
-```java
-@Service
-public class HabitService {
-
-    private final HabitRepository habitRepository;     // PostgreSQL
-    private final HabitCacheService cacheService;      // Redis
-
-    public HabitDto findById(String id) {
-        // 1. Проверяем кэш
-        HabitDto cached = cacheService.getCachedHabit(id);
-        if (cached != null) return cached;
-
-        // 2. Промах — идём в БД
-        HabitDto habit = habitRepository.findById(id)
-            .map(HabitMapper::toDto)
-            .orElseThrow(() -> new HabitNotFoundException(id));
-
-        // 3. Кладём в кэш для следующих запросов
-        cacheService.cacheHabit(id, habit);
-        return habit;
-    }
-
-    public HabitDto update(String id, HabitUpdateDto dto) {
-        HabitEntity entity = habitRepository.findById(id).orElseThrow();
-        entity.setName(dto.name());
-        habitRepository.save(entity);
-
-        // Инвалидируем кэш после обновления
-        cacheService.evictHabit(id);
-        return HabitMapper.toDto(entity);
-    }
-}
-```
-
-!!! warning "Ловушка: забытая инвалидация"
-    Если после `update()` не удалить ключ из кэша, читатели будут получать старую версию до истечения TTL. Каждое место, которое меняет данные, должно инвалидировать кэш.
-
-??? question "Проверь себя"
-    1. Из каких трёх шагов состоит чтение в Cache-Aside?
-    2. Что нужно сделать с кэшем после обновления данных?
-    3. Какая аннотация Spring делает то же самое декларативно?
+## Другие хранилища { #other-stores }
 
 ### Что такое polyglot persistence? { #polyglot }
 
@@ -568,48 +479,6 @@ public class HabitTrackerService {
     2. Почему файлы не хранят в реляционной БД и что такое presigned URL?
     3. Почему `LIKE '%слово%'` не заменяет поисковый движок?
 
-### Как сделать rate limiting на Redis? { #rate-limiting }
-
-**Уровень:** Middle
-
-!!! abstract "Ответ вслух"
-    Простейший вариант — фиксированное окно: на каждый запрос атомарно увеличиваем счётчик `INCR` по ключу «пользователь + эндпоинт», а при первом запросе ставим TTL на длину окна. Пока счётчик не превысил лимит, запрос пропускаем. Redis подходит, потому что счётчик общий для всех инстансов приложения.
-
-Алгоритмы ограничения частоты (fixed window, sliding window, token bucket, leaky bucket) — в [System Design → Rate Limiting](../architecture/microservices.md#rate-limiting). Ниже — fixed window на Redis.
-
-```java
-@Component
-public class RateLimiter {
-
-    private final RedisTemplate<String, String> redis;
-
-    public boolean isAllowed(String userId, String endpoint, int maxRequests, Duration window) {
-        String key = "rate:" + userId + ":" + endpoint;
-
-        Long count = redis.opsForValue().increment(key);
-
-        if (count == 1) {
-            // Первый запрос — устанавливаем TTL окна
-            redis.expire(key, window);
-        }
-
-        return count <= maxRequests;
-    }
-}
-
-// Использование в фильтре:
-// isAllowed("user_42", "/api/habits", 100, Duration.ofMinutes(1))
-// → true пока запросов ≤ 100 в минуту, потом false
-```
-
-!!! warning "Ловушка: проблема границы окна"
-    Fixed window пропускает всплеск на стыке окон: 100 запросов в конце минуты и 100 в начале следующей — 200 за пару секунд. Если это критично, нужен sliding window или token bucket.
-
-??? question "Проверь себя"
-    1. Зачем ставить TTL только при первом запросе?
-    2. Почему для распределённого лимитера используют Redis?
-    3. В чём проблема fixed window на границе окон?
-
 ## Шпаргалка { #cheatsheet }
 
 <!-- --8<-- [start:cheatsheet] -->
@@ -621,12 +490,8 @@ public class RateLimiter {
 | **Redis vs Hazelcast** | Redis — 16 384 слота, smart clients. Hazelcast — 271 партиция, data locality |
 | **Wide-Column** | Проектируй под запросы. Cassandra. IoT, логи, временные ряды, огромные объёмы |
 | **Graph** | Узлы и рёбра — полноценные объекты. Neo4j. Соцсети, рекомендации, мошенничество |
-| **CAP** | C + P = HBase. A + P = Cassandra. Реальных CA нет в распределённых системах |
-| **PACELC** | Без разделения — компромисс latency vs consistency. Cassandra: `ConsistencyLevel` на запрос |
 | **Redis типы** | String (кэш), List (очередь), Set (уникальные), ZSet (рейтинг), Hash (объект), Stream (события) |
 | **Cassandra правило** | Partition key обязателен в запросе. Схема = запросы, не данные |
-| **Cache-Aside** | Читай из кэша → промах → БД → положи в кэш → инвалидируй при обновлении |
 | **Polyglot** | Разные данные в разных хранилищах: PostgreSQL + Redis + Cassandra — нормально. Файлы — в S3 (в БД ключ, presigned URL), поиск — Elasticsearch, метрики — time-series |
-| **Rate limiting** | `INCR` + TTL на окно в Redis — общий счётчик для всех инстансов |
 
 <!-- --8<-- [end:cheatsheet] -->

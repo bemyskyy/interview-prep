@@ -7,7 +7,7 @@ tags:
 
 # Вопросы собеса
 
-Все 440 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 438 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
 ## Язык Java { #java }
@@ -336,6 +336,7 @@ tags:
 ### Кэширование { #spring-caching }
 
 - [Как работает `@Cacheable`?](../spring/spring-caching.md#cacheable) — *Junior*
+- [Как вручную реализовать Cache-Aside на Redis?](../spring/spring-caching.md#cache-aside) — *Middle*
 - [Как настроить Redis-кэш с TTL?](../spring/spring-caching.md#redis-cache-config) — *Middle*
 - [Чем `condition` отличается от `unless`?](../spring/spring-caching.md#condition-vs-unless) — *Middle*
 
@@ -396,10 +397,7 @@ tags:
 - [Как устроены wide-column БД?](../database/nosql.md#wide-column) — *Middle*
 - [Когда нужна графовая БД?](../database/nosql.md#graph) — *Middle*
 - [Как сравнить четыре семейства?](../database/nosql.md#comparison) — *Middle*
-- [Где NoSQL-базы находятся в CAP-теореме?](../database/nosql.md#cap-theorem) — *Middle*
-- [Как вручную реализовать Cache-Aside на Redis?](../database/nosql.md#cache-aside) — *Middle*
 - [Что такое polyglot persistence?](../database/nosql.md#polyglot) — *Middle*
-- [Как сделать rate limiting на Redis?](../database/nosql.md#rate-limiting) — *Middle*
 
 ## Kafka { #kafka }
 

@@ -104,7 +104,7 @@ flowchart LR
 **Уровень:** Middle
 
 !!! abstract "Ответ вслух"
-    Rate limiting ограничивает частоту запросов: защищает от абьюза и брутфорса, делит ресурсы честно и контролирует затраты. Основные алгоритмы — fixed window, sliding window, token bucket и leaky bucket. Token bucket разрешает всплески до размера ведра, leaky bucket выравнивает поток.
+    Rate limiting ограничивает частоту запросов: защищает от абьюза и брутфорса, делит ресурсы честно и контролирует затраты. Основные алгоритмы — fixed window, sliding window, token bucket и leaky bucket; token bucket разрешает всплески до размера ведра, leaky bucket выравнивает поток. Счётчик должен быть общим для всех инстансов, поэтому его держат в Redis: простейший fixed window — атомарный `INCR` по ключу «пользователь + эндпоинт» и TTL на длину окна.
 
 | Алгоритм | Суть | Особенность |
 |---|---|---|
@@ -114,15 +114,45 @@ flowchart LR
 | **Token bucket** | Токены капают со скоростью R, запрос тратит токен | **Разрешает всплески** до размера ведра |
 | **Leaky bucket** | Запросы «вытекают» с постоянной скоростью | **Выравнивает** поток, всплесков не допускает |
 
-Различие, которое спрашивают: token bucket допускает burst — накопил токены, потратил разом, — а leaky bucket выравнивает поток в ровный темп. Реализация на Redis — в [NoSQL](../database/nosql.md).
+Различие, которое спрашивают: token bucket допускает burst — накопил токены, потратил разом, — а leaky bucket выравнивает поток в ровный темп.
+
+**Fixed window на Redis.** На каждый запрос атомарно увеличиваем счётчик по ключу, а при первом запросе в окне ставим TTL на длину окна. Пока счётчик не превысил лимит, запрос пропускаем:
+
+```java
+@Component
+public class RateLimiter {
+
+    private final RedisTemplate<String, String> redis;
+
+    public boolean isAllowed(String userId, String endpoint, int maxRequests, Duration window) {
+        String key = "rate:" + userId + ":" + endpoint;
+
+        Long count = redis.opsForValue().increment(key);
+
+        if (count == 1) {
+            // Первый запрос — устанавливаем TTL окна
+            redis.expire(key, window);
+        }
+
+        return count <= maxRequests;
+    }
+}
+
+// Использование в фильтре:
+// isAllowed("user_42", "/api/habits", 100, Duration.ofMinutes(1))
+// → true пока запросов ≤ 100 в минуту, потом false
+```
 
 !!! warning "Ловушка: локальный счётчик на каждом инстансе"
     При многих инстансах за балансировщиком каждый будет считать лимит по-своему, и реальный предел умножится на число инстансов. Счётчик распределённого лимитера должен быть общим — атомарные инкременты в **Redis**.
 
+!!! warning "Ловушка: проблема границы окна"
+    Fixed window пропускает всплеск на стыке окон: 100 запросов в конце минуты и 100 в начале следующей — 200 за пару секунд. Если это критично, нужен sliding window или token bucket.
+
 ??? question "Проверь себя"
-    1. В чём проблема границы окна у fixed window?
-    2. Чем token bucket отличается от leaky bucket?
-    3. Где хранить счётчик, если сервис запущен в нескольких инстансах?
+    1. Чем token bucket отличается от leaky bucket?
+    2. Где хранить счётчик, если сервис запущен в нескольких инстансах?
+    3. Зачем в реализации на Redis ставить TTL только при первом запросе и в чём проблема fixed window на границе окон?
 
 ## Надёжность { #reliability }
 
@@ -230,7 +260,7 @@ public BonusResult fallbackBonus(Long userId, Throwable t) {
 | **Modular Monolith** | Границы модулей по контекстам без сетевой боли. Готовые линии разреза на сервисы |
 | **Sync vs async** | Sync — просто, но связность. Async — развязка и буфер, цена — eventual consistency |
 | **API Gateway / BFF** | Gateway — единая точка входа. BFF — 1 запрос → готовый JSON для экрана |
-| **Rate limiting** | Token bucket — всплески ок. Leaky — ровный поток. Счётчик — в Redis |
+| **Rate limiting** | Token bucket — всплески ок. Leaky — ровный поток. Счётчик — общий, в Redis: `INCR` + TTL на окно |
 | **Retry** | Только идемпотентные + exponential backoff + jitter (иначе retry storm) |
 | **Circuit breaker** | Closed → Open → Half-Open. Fail fast против каскадного отказа |
 | **Bulkhead** | Изолируй пулы потоков по зависимостям; fallback — урезанный ответ вместо 500 |

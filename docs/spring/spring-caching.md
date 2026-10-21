@@ -78,6 +78,57 @@ public class HabitService {
     2. Как очистить весь кэш `habits`?
     3. Почему `@Cacheable` не срабатывает при вызове через `this`?
 
+### Как вручную реализовать Cache-Aside на Redis? { #cache-aside }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Сначала ищем значение в Redis; при промахе идём в основную БД, кладём результат в кэш и отдаём. При обновлении данных запись в кэше инвалидируем. В Spring это же делает `@Cacheable`, но ручная реализация показывает, что происходит внутри.
+
+Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [System Design → Caching](../system-design/building-blocks.md#caching), декларативный вариант через `@Cacheable` — в [Кэширование → `@Cacheable`](#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](../database/nosql.md#key-value).
+
+```java
+@Service
+public class HabitService {
+
+    private final HabitRepository habitRepository;     // PostgreSQL
+    private final HabitCacheService cacheService;      // Redis
+
+    public HabitDto findById(String id) {
+        // 1. Проверяем кэш
+        HabitDto cached = cacheService.getCachedHabit(id);
+        if (cached != null) return cached;
+
+        // 2. Промах — идём в БД
+        HabitDto habit = habitRepository.findById(id)
+            .map(HabitMapper::toDto)
+            .orElseThrow(() -> new HabitNotFoundException(id));
+
+        // 3. Кладём в кэш для следующих запросов
+        cacheService.cacheHabit(id, habit);
+        return habit;
+    }
+
+    public HabitDto update(String id, HabitUpdateDto dto) {
+        HabitEntity entity = habitRepository.findById(id).orElseThrow();
+        entity.setName(dto.name());
+        habitRepository.save(entity);
+
+        // Инвалидируем кэш после обновления
+        cacheService.evictHabit(id);
+        return HabitMapper.toDto(entity);
+    }
+}
+```
+
+!!! warning "Ловушка: забытая инвалидация"
+    Если после `update()` не удалить ключ из кэша, читатели будут получать старую версию до истечения TTL. Каждое место, которое меняет данные, должно инвалидировать кэш.
+
+??? question "Проверь себя"
+    1. Из каких трёх шагов состоит чтение в Cache-Aside?
+    2. Что нужно сделать с кэшем после обновления данных?
+    3. Какая аннотация Spring делает то же самое декларативно?
+
 ### Как настроить Redis-кэш с TTL? { #redis-cache-config }
 
 **Уровень:** Middle
@@ -153,6 +204,7 @@ public class CacheConfig {
 |---|---|
 | **`@Cacheable`** | AOP-аспект. Не работает при самовызове. Кэширует `null` по умолчанию |
 | **`@CacheEvict` / `@CachePut`** | Удалить из кэша (`allEntries = true` — весь кэш) / всегда выполнить и обновить |
+| **Cache-Aside** | Читай из кэша → промах → БД → положи в кэш → инвалидируй при обновлении |
 | **`unless` vs `condition`** | `condition` — до метода. `unless` — после (есть доступ к `#result`) |
 | **Redis-кэш** | `RedisCacheManager`: TTL по умолчанию и на кэш, JSON-сериализация, `disableCachingNullValues()` |
 
