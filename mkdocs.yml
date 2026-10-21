@@ -1,6 +1,13 @@
 site_name: Interview Prep
 site_description: База знаний для подготовки к техническим собеседованиям по Java и backend
 site_author: bemyskyy
+# Адрес опубликованного сайта: канонические ссылки, sitemap.xml, 404
+site_url: https://bemyskyy.github.io/interview-prep/
+
+# Ссылка на репозиторий в шапке и кнопка «Редактировать» на страницах
+repo_url: https://github.com/bemyskyy/interview-prep
+repo_name: bemyskyy/interview-prep
+edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -41,6 +48,7 @@ theme:
     - navigation.tabs.sticky    # вкладки закреплены при прокрутке
     - navigation.sections       # подразделы группами в боковом меню
     - navigation.top            # кнопка "Наверх"
+    - navigation.footer         # ссылки «Назад / Вперёд» внизу страницы
     - navigation.indexes        # раздел имеет свою обзорную страницу
     - toc.follow                # оглавление следует за прокруткой
 
@@ -58,6 +66,7 @@ theme:
 
     # Контент
     - content.tooltips          # подсказки глоссария (abbr) в стиле темы
+    - content.action.edit       # кнопка «Редактировать на GitHub»
 
 markdown_extensions:
   - abbr                        # термины глоссария с подсказкой при наведении
@@ -123,7 +132,8 @@ plugins:
         - Тестирование
         - Подготовка
 
-# Проверяет, что страницы раздела «Подготовка» не устарели (см. README)
+# Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
+# не устарели (см. README)
 hooks:
   - scripts/prep_pages.py
 
