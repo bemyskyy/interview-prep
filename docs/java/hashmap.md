@@ -41,7 +41,7 @@ static class Node<K, V> {
 ```
 
 !!! warning "Ловушка: `null` в ключах и значениях"
-    `HashMap` допускает один ключ `null` (он всегда лежит в бакете 0) и сколько угодно значений `null`. Из-за этого `map.get(key) == null` не отличает «ключа нет» от «значение — `null`»: для проверки есть `containsKey()`. А `ConcurrentHashMap` `null` не принимает вовсе — об этом [ниже](../concurrency/concurrent-collections.md#concurrenthashmap).
+    `HashMap` допускает один ключ `null` (он всегда лежит в бакете 0) и сколько угодно значений `null`. Из-за этого `map.get(key) == null` не отличает «ключа нет» от «значение — `null`»: для проверки есть `containsKey()`. А `ConcurrentHashMap` `null` не принимает вовсе — об этом — в [Потокобезопасных коллекциях](../concurrency/concurrent-collections.md#concurrenthashmap).
 
 ??? question "Проверь себя"
     1. Сколько бакетов у `new HashMap<>()` и когда создаётся массив?

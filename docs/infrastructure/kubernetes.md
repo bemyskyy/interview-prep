@@ -21,7 +21,7 @@ tags:
 - **Services & Ingress** — как внешний трафик маршрутизируется внутрь кластера и балансируется между инстансами.
 - **ConfigMaps & Secrets** — логины, пароли и переменные окружения прокидываются извне, без хардкода в `application.yml`.
 
-Как K8s решает, жив ли под и готов ли он к трафику, разобрано в [System Design → Liveness и readiness](kubernetes.md#health-checks).
+Как K8s решает, жив ли под и готов ли он к трафику, разобрано ниже, в [пробах liveness и readiness](#health-checks).
 
 !!! warning "Ловушка: Rolling Update без readiness probe"
     Kubernetes ждёт готовности нового пода по readiness probe. Если её нет, под считается готовым сразу после старта контейнера, и трафик пойдёт на приложение, которое ещё не подняло Spring-контекст. Пользователи получат ошибки во время каждого деплоя.
@@ -84,7 +84,7 @@ flowchart LR
 !!! abstract "Ответ вслух"
     Reverse proxy — Nginx или HAProxy — стоит перед приложениями и принимает запросы от клиентов. Он балансирует нагрузку, терминирует SSL — HTTPS снаружи, HTTP внутри защищённого контура — и кэширует статику. API Gateway делает похожую работу на уровне микросервисов: проверяет JWT, ограничивает частоту запросов и маршрутизирует.
 
-API Gateway (например, Spring Cloud Gateway) разобран в [System Design → API Gateway, BFF и Service Discovery](../architecture/microservices.md#api-gateway). Балансировка на L4 и L7 — в [System Design → L4 и L7](../system-design/building-blocks.md#l4-l7).
+API Gateway (например, Spring Cloud Gateway) разобран в [Микросервисы → API Gateway, BFF и Service Discovery](../architecture/microservices.md#api-gateway). Балансировка на L4 и L7 — в [Строительные блоки → L4 и L7](../system-design/building-blocks.md#l4-l7).
 
 !!! warning "Ловушка: HTTP внутри контура «и так безопасно»"
     SSL termination на прокси означает, что за ним трафик идёт в открытом виде. Это допустимо только внутри действительно защищённого контура. Если сеть между прокси и приложениями общая с чужими сервисами, шифруют и внутренний трафик.

@@ -11,7 +11,7 @@ tags:
 
 ## Spring Kafka { #spring-kafka }
 
-Физика Kafka, группы потребителей и гарантии доставки разобраны в разделе Kafka: [брокер](kafka.md), [Consumer и Producer](kafka-consumer-producer.md), [надёжность](kafka-reliability.md). Здесь — только настройка `@KafkaListener` в Spring.
+Устройство брокера, группы потребителей и гарантии доставки разобраны на соседних страницах: [брокер](kafka.md), [порядок, группы и ребаланс](kafka-consumer-producer.md), [гарантии доставки](kafka-reliability.md). Здесь — только настройка `@KafkaListener` в Spring.
 
 ### Как работает `@KafkaListener`? { #kafka-listener }
 
@@ -74,7 +74,7 @@ spring:
 - **Почему авто-коммит теряет сообщения**, чем `MANUAL` отличается от `MANUAL_IMMEDIATE` и что даёт at-least-once — в [Гарантии доставки → Управление оффсетами](kafka-reliability.md#offset-commit).
 - **Идемпотентность консьюмера** — дубли при at-least-once неизбежны — в [Гарантии доставки → Идемпотентность](kafka-reliability.md#idempotent-consumer).
 - **Retry и DLQ** через `DefaultErrorHandler` и `DeadLetterPublishingRecoverer` — в [Гарантии доставки → DLQ](kafka-reliability.md#dlq).
-- **`max.poll.interval.ms` и ребаланс** при зависшем листенере — в [Consumer и Producer → Два пульса](kafka-consumer-producer.md#heartbeats).
+- **`max.poll.interval.ms` и ребаланс** при зависшем листенере — в [Порядок, группы и ребаланс → Два пульса](kafka-consumer-producer.md#heartbeats).
 
 !!! warning "Ловушка: долгая синхронная работа в листенере"
     Если листенер завис на внешнем вызове дольше `max.poll.interval.ms` (по умолчанию 5 минут), брокер сочтёт консьюмер мёртвым и запустит ребаланс. Долгие задачи выносят в отдельный пул потоков и ставят таймауты на внешние вызовы.

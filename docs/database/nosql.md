@@ -227,7 +227,7 @@ tags:
     - Pub/Sub (уведомления в реальном времени).
     - Лидерборды и рейтинги.
 
-    Сравнение Redis с Memcached и Hazelcast и устройство Redis Cluster — в [System Design → Caching](../system-design/building-blocks.md#caching).
+    Сравнение Redis с Memcached и Hazelcast и устройство Redis Cluster — в [Строительные блоки → Caching](../system-design/building-blocks.md#caching).
 
 !!! warning "Ловушка: поиск не по ключу"
     Key-value хранилище отвечает быстро только на запрос по ключу. Найти «все сессии пользователя из Алматы» без заранее построенного ключа или индекса нельзя — это задача другой БД.

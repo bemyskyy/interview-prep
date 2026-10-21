@@ -32,7 +32,7 @@ UPDATE accounts SET balance = balance + 1000 WHERE id = 2; -- зачислили
 COMMIT;
 ```
 
-Связь со Spring: `@Transactional` → `RuntimeException` → `ROLLBACK`, успех → `COMMIT` (подробно — в [Spring Data JPA](../spring/spring-transactions.md#transactional-flow)).
+Связь со Spring: `@Transactional` → `RuntimeException` → `ROLLBACK`, успех → `COMMIT` (подробно — в [Транзакции в Spring](../spring/spring-transactions.md#transactional-flow)).
 
 **C — Consistency (консистентность).** Переход строго от одного валидного состояния к другому. БД не даст зафиксировать изменения, нарушающие правила: ограничения (constraints), внешние ключи (foreign keys), типы данных.
 
@@ -140,7 +140,7 @@ sequenceDiagram
 
 _*В PostgreSQL `REPEATABLE READ` дополнительно защищает от phantom read через MVCC, но не от аномалий записи вроде [write skew](locking.md#write-skew)._
 
-Как задать уровень в Spring (`@Transactional(isolation = ...)`, `Isolation.DEFAULT`), — в [Spring Data JPA → Изоляция](../spring/spring-transactions.md#isolation).
+Как задать уровень в Spring (`@Transactional(isolation = ...)`, `Isolation.DEFAULT`), — в [Транзакции в Spring → Изоляция](../spring/spring-transactions.md#isolation).
 
 ```java
 @Transactional(isolation = Isolation.READ_COMMITTED) // умолчание в PostgreSQL
@@ -180,7 +180,7 @@ flowchart TD
     F -- нет --> H["Ошибка 40001 → повтор транзакции целиком"]
 ```
 
-`SERIALIZABLE` используют редко — только для критичных финансовых операций: сложных отчётов, итоговых расчётов. В остальных случаях конкуренцию за строки решают блокировками на уровне приложения (см. [Spring Data JPA → Оптимистичная блокировка](locking.md#optimistic-locking)).
+`SERIALIZABLE` используют редко — только для критичных финансовых операций: сложных отчётов, итоговых расчётов. В остальных случаях конкуренцию за строки решают блокировками на уровне приложения (см. [Блокировки → Оптимистичная блокировка](locking.md#optimistic-locking)).
 
 !!! warning "Ловушка: SSI без повторов"
     На SSI ошибка сериализации — нормальная часть работы, а не баг. Приложение обязано поймать SQLSTATE `40001` и **повторить транзакцию целиком**. При высокой конкуренции это превращается в лавину откатов и повторов.

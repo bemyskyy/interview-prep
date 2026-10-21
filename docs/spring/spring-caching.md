@@ -11,7 +11,7 @@ tags:
 
 ## Кэширование { #caching }
 
-Стратегии кэширования (Cache-Aside, Write-Through, Write-Behind), вытеснение и Cache Stampede разобраны в [System Design → Caching](../system-design/building-blocks.md#caching). Здесь — Spring-абстракция кэша.
+Стратегии кэширования (Cache-Aside, Write-Through, Write-Behind), вытеснение и Cache Stampede разобраны в [Строительные блоки → Caching](../system-design/building-blocks.md#caching). Здесь — Spring-абстракция кэша.
 
 ### Как работает `@Cacheable`? { #cacheable }
 
@@ -85,7 +85,7 @@ public class HabitService {
 !!! abstract "Ответ вслух"
     Сначала ищем значение в Redis; при промахе идём в основную БД, кладём результат в кэш и отдаём. При обновлении данных запись в кэше инвалидируем. В Spring это же делает `@Cacheable`, но ручная реализация показывает, что происходит внутри.
 
-Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [System Design → Caching](../system-design/building-blocks.md#caching), декларативный вариант через `@Cacheable` — в [Кэширование → `@Cacheable`](#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](../database/nosql.md#key-value).
+Сама стратегия Cache-Aside и её альтернативы (Write-Through, Write-Behind) — в [Строительные блоки → Caching](../system-design/building-blocks.md#caching), декларативный вариант через `@Cacheable` — в [Кэширование → `@Cacheable`](#cacheable). Ниже — ручная реализация поверх `HabitCacheService` из [темы про Redis](../database/nosql.md#key-value).
 
 ```java
 @Service
