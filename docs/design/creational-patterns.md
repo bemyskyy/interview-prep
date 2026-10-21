@@ -1,18 +1,17 @@
 ---
 tags:
-  - Junior
   - Middle
   - Java
   - Архитектура
 ---
 
-# Паттерны проектирования
+# Порождающие паттерны
 
-Проверенные решения типовых задач проектирования по классификации GoF (Gang of Four): порождающие, структурные и поведенческие. На собесах просят не только объяснить паттерн, но и написать код — чаще всего Singleton, Builder, Factory Method, Decorator, Strategy и Observer.
+Порождающие паттерны отвечают на вопрос: **как создавать объекты?** На собесе их просят не только объяснить, но и написать: потокобезопасный Singleton, Builder с обязательными полями, Factory Method и его отличие от Simple Factory.
+
+Паттерны проектирования по классификации GoF (Gang of Four) делятся на порождающие (эта страница), [структурные](structural-patterns.md) и [поведенческие](behavioral-patterns.md).
 
 ## Порождающие паттерны { #creational }
-
-Отвечают на вопрос: **как создавать объекты?**
 
 ### Как написать потокобезопасный Singleton? { #singleton }
 
@@ -103,7 +102,7 @@ Singleton.INSTANCE.doWork();
 2. **Защита от рефлексии:** `Constructor.newInstance()` для `enum` бросает `IllegalArgumentException: Cannot reflectively create enum objects`. Приватный конструктор обычного Singleton рефлексия вызывает без проблем.
 3. **Безопасная сериализация:** при десериализации `enum` возвращается та же константа. Обычный `Serializable`-синглтон создаст новый объект, если не написать `readResolve()`.
 
-Как устроен сам `enum` и почему он так себя ведёт — в [Основы языка → enum](basics.md#enum).
+Как устроен сам `enum` и почему он так себя ведёт — в [Основы языка → enum](../java/basics.md#enum).
 
 !!! warning "Ловушка: ограничения Enum Singleton"
     `enum` не может наследоваться от другого класса и создаётся сразу при инициализации класса, а не лениво. Если синглтону нужен базовый класс или тяжёлая ленивая инициализация, выбирают вариант с Holder.
@@ -184,7 +183,7 @@ Singleton.INSTANCE.doWork();
     ```
 
     !!! note "Lombok и Builder"
-        В реальном коде используй `@Builder` от Lombok — он генерирует всё автоматически. Но на собесе без Lombok умей написать руками. Для простых DTO вместо Builder подойдёт `record` (Java 16+) — см. [Современная Java → record](modern-java.md#records).
+        В реальном коде используй `@Builder` от Lombok — он генерирует всё автоматически. Но на собесе без Lombok умей написать руками. Для простых DTO вместо Builder подойдёт `record` (Java 16+) — см. [Современная Java → record](../java/modern-java.md#records).
 
 !!! warning "Ловушка: валидация не в `build()`"
     Если проверять данные в сеттерах билдера, объект можно собрать, просто не вызвав нужный метод. Обязательные поля передавай в конструктор билдера, а согласованность всех полей проверяй в `build()` — там видна вся картина.
@@ -296,7 +295,7 @@ Singleton.INSTANCE.doWork();
     |---|---|---|
     | **Кто выбирает класс** | Один статический метод по параметру (`switch`) | Подкласс, переопределяя фабричный метод |
     | **Механизм** | Условная логика | Наследование и полиморфизм |
-    | **Новый тип продукта** | Правим `switch` — нарушаем [OCP](../design/solid.md#ocp) | Добавляем новый подкласс — старый код не трогаем |
+    | **Новый тип продукта** | Правим `switch` — нарушаем [OCP](solid.md#ocp) | Добавляем новый подкласс — старый код не трогаем |
     | **Паттерн GoF?** | Нет, идиома | Да |
 
     Пример из JDK: `Collection.iterator()` — фабричный метод. `ArrayList`, `HashSet`, `ArrayDeque` переопределяют его и возвращают каждый свой `Iterator`, а код, написанный против `Collection`, об этом не знает.
@@ -312,272 +311,6 @@ Singleton.INSTANCE.doWork();
     2. Как добавить новый тип уведомления в каждом из вариантов?
     3. Какой метод JDK — пример Factory Method?
 
-## Структурные паттерны { #structural }
-
-Отвечают на вопрос: **как организовать классы и объекты?**
-
-### Что такое Decorator? { #decorator }
-
-**Уровень:** Middle
-
-=== "Коротко"
-
-    !!! abstract "Ответ вслух"
-        Decorator добавляет объекту поведение во время работы программы, оборачивая его в объект того же интерфейса. Каждая обёртка делегирует вызов внутреннему объекту и добавляет своё. Классический пример — `java.io`: `BufferedInputStream` и `GZIPInputStream` оборачивают `FileInputStream`.
-
-=== "Подробно"
-
-    **Проблема:** нужно добавить объекту новое поведение, не меняя его класс и не плодя наследников.
-
-    Классический пример — Java I/O, подробно в [IO / NIO → Декоратор в java.io](io-nio.md#io-decorator):
-
-    ```java
-    // Вся система I/O в Java — это декораторы
-    InputStream base      = new FileInputStream("file.txt");     // базовый компонент
-    InputStream buffered  = new BufferedInputStream(base);       // декоратор: буферизация
-    InputStream gzipped   = new GZIPInputStream(buffered);       // декоратор: распаковка
-    ```
-
-    Реализуем сами:
-
-    ```java
-    // Базовый интерфейс
-    public interface Coffee {
-        String getDescription();
-        double getCost();
-    }
-
-    // Базовая реализация
-    public class SimpleCoffee implements Coffee {
-        @Override public String getDescription() { return "Coffee"; }
-        @Override public double getCost()        { return 1.0; }
-    }
-
-    // Абстрактный декоратор — держит ссылку на декорируемый объект
-    public abstract class CoffeeDecorator implements Coffee {
-        protected final Coffee coffee;
-        public CoffeeDecorator(Coffee coffee) { this.coffee = coffee; }
-    }
-
-    // Конкретные декораторы
-    public class MilkDecorator extends CoffeeDecorator {
-        public MilkDecorator(Coffee coffee) { super(coffee); }
-
-        @Override public String getDescription() { return coffee.getDescription() + ", Milk"; }
-        @Override public double getCost()        { return coffee.getCost() + 0.5; }
-    }
-
-    public class SugarDecorator extends CoffeeDecorator {
-        public SugarDecorator(Coffee coffee) { super(coffee); }
-
-        @Override public String getDescription() { return coffee.getDescription() + ", Sugar"; }
-        @Override public double getCost()        { return coffee.getCost() + 0.25; }
-    }
-
-    // Использование — оборачиваем слой за слоем
-    Coffee order = new SugarDecorator(new MilkDecorator(new SimpleCoffee()));
-    System.out.println(order.getDescription()); // Coffee, Milk, Sugar
-    System.out.println(order.getCost());        // 1.75
-    ```
-
-    ```mermaid
-    flowchart LR
-        C["Клиент"] -- "getCost()" --> S["SugarDecorator<br/>+0.25"]
-        S -- "getCost()" --> M["MilkDecorator<br/>+0.5"]
-        M -- "getCost()" --> B["SimpleCoffee<br/>1.0"]
-    ```
-
-    !!! tip "Decorator vs наследование"
-        Наследование — статическое (на этапе компиляции). Декоратор — динамическое (в рантайме): объект можно обернуть любым числом декораторов в любом порядке. Это реализация принципа [OCP](../design/solid.md#ocp).
-
-!!! warning "Ловушка: порядок обёрток важен"
-    Декораторы применяются снаружи внутрь, и порядок меняет результат. `new GZIPInputStream(new BufferedInputStream(file))` и `new BufferedInputStream(new GZIPInputStream(file))` работают по-разному: в первом случае буферизируются сжатые байты, во втором — уже распакованные.
-
-??? question "Проверь себя"
-    1. Какую проблему решает Decorator?
-    2. Чем Decorator отличается от наследования?
-    3. Где Decorator используется в JDK?
-
-## Поведенческие паттерны { #behavioral }
-
-Отвечают на вопрос: **как организовать взаимодействие объектов?**
-
-### Что такое Strategy? { #strategy }
-
-**Уровень:** Junior
-
-=== "Коротко"
-
-    !!! abstract "Ответ вслух"
-        Strategy выносит взаимозаменяемые алгоритмы в отдельные классы с общим интерфейсом, а контекст получает нужный алгоритм снаружи и может сменить его на лету. Если интерфейс функциональный, стратегию передают лямбдой. В JDK это, например, `Comparator`.
-
-=== "Подробно"
-
-    **Проблема:** нужно менять алгоритм в зависимости от ситуации, не меняя клиентский код.
-
-    ```java
-    // Интерфейс стратегии
-    @FunctionalInterface
-    public interface SortStrategy {
-        void sort(int[] array);
-    }
-
-    // Конкретные стратегии
-    public class BubbleSort implements SortStrategy {
-        @Override
-        public void sort(int[] array) {
-            // O(n²) — для маленьких массивов
-            System.out.println("Bubble sort...");
-        }
-    }
-
-    public class QuickSort implements SortStrategy {
-        @Override
-        public void sort(int[] array) {
-            // O(n log n) — для больших массивов
-            System.out.println("Quick sort...");
-        }
-    }
-
-    // Контекст использует стратегию
-    public class Sorter {
-        private SortStrategy strategy;
-
-        public Sorter(SortStrategy strategy) {
-            this.strategy = strategy;
-        }
-
-        // Можно менять стратегию на лету
-        public void setStrategy(SortStrategy strategy) {
-            this.strategy = strategy;
-        }
-
-        public void sort(int[] array) {
-            strategy.sort(array);
-        }
-    }
-
-    // Использование
-    Sorter sorter = new Sorter(new BubbleSort());
-    sorter.sort(smallArray);
-
-    sorter.setStrategy(new QuickSort());
-    sorter.sort(largeArray);
-
-    // С Java 8 — стратегии как лямбды (раз это @FunctionalInterface)
-    sorter.setStrategy(array -> Arrays.sort(array));
-    ```
-
-    !!! note "Strategy везде"
-        `Comparator` (см. [Коллекции → Comparator](collections.md#comparable-comparator)), `Runnable` и `DiscountStrategy` из [SOLID → OCP](../design/solid.md#ocp) — всё это Strategy. Паттерн пронизывает всю Java-экосистему.
-
-!!! warning "Ловушка: Strategy против `switch` внутри класса"
-    Если алгоритм выбирается `switch`-ем внутри одного класса, каждый новый вариант требует правки этого класса — это нарушение OCP. Признак, что пора выделять стратегии, — несколько веток с разной логикой, которые растут со временем.
-
-??? question "Проверь себя"
-    1. Из каких частей состоит паттерн Strategy?
-    2. Как сменить стратегию во время работы программы?
-    3. Какие примеры Strategy есть в JDK?
-
-### Что такое Observer? { #observer }
-
-**Уровень:** Middle
-
-=== "Коротко"
-
-    !!! abstract "Ответ вслух"
-        Observer — подписка на события: субъект хранит список наблюдателей и уведомляет всех, когда что-то происходит, не зная, кто они. Наблюдатели независимы друг от друга, и новых можно добавлять без правки субъекта. В Spring это `ApplicationEvent` и `@EventListener`, на уровне микросервисов — Kafka и RabbitMQ.
-
-=== "Подробно"
-
-    **Проблема:** одно событие должно вызвать реакцию у нескольких независимых объектов.
-
-    ```java
-    // Интерфейс наблюдателя
-    public interface OrderObserver {
-        void onOrderPlaced(Order order);
-    }
-
-    // Subject — тот, за кем наблюдают
-    public class OrderService {
-        private final List<OrderObserver> observers = new ArrayList<>();
-
-        public void addObserver(OrderObserver observer) {
-            observers.add(observer);
-        }
-
-        public void removeObserver(OrderObserver observer) {
-            observers.remove(observer);
-        }
-
-        public void placeOrder(Order order) {
-            // бизнес-логика
-            order.confirm();
-
-            // уведомляем всех наблюдателей — OrderService не знает, кто они
-            observers.forEach(o -> o.onOrderPlaced(order));
-        }
-    }
-
-    // Конкретные наблюдатели — независимые друг от друга
-    public class EmailNotifier implements OrderObserver {
-        @Override
-        public void onOrderPlaced(Order order) {
-            System.out.println("Email: заказ " + order.getId() + " подтверждён");
-        }
-    }
-
-    public class InventoryUpdater implements OrderObserver {
-        @Override
-        public void onOrderPlaced(Order order) {
-            System.out.println("Резервируем товары для заказа " + order.getId());
-        }
-    }
-
-    public class AnalyticsTracker implements OrderObserver {
-        @Override
-        public void onOrderPlaced(Order order) {
-            System.out.println("Пишем в аналитику: заказ на сумму " + order.getTotal());
-        }
-    }
-
-    // Сборка
-    OrderService service = new OrderService();
-    service.addObserver(new EmailNotifier());
-    service.addObserver(new InventoryUpdater());
-    service.addObserver(new AnalyticsTracker());
-
-    service.placeOrder(new Order());
-    // Выполнятся все три наблюдателя, при этом они ничего не знают друг о друге
-    ```
-
-    ```mermaid
-    sequenceDiagram
-        participant C as Клиент
-        participant S as OrderService
-        participant E as EmailNotifier
-        participant I as InventoryUpdater
-        participant A as AnalyticsTracker
-        C->>S: placeOrder(order)
-        S->>S: order.confirm()
-        S->>E: onOrderPlaced(order)
-        S->>I: onOrderPlaced(order)
-        S->>A: onOrderPlaced(order)
-    ```
-
-    !!! note "Observer в Java и Spring"
-        - `java.util.EventListener` — маркерный интерфейс слушателей в стандартной библиотеке.
-        - `ApplicationEvent` / `@EventListener` в Spring — Observer из коробки.
-        - Kafka и RabbitMQ — Observer на уровне микросервисов (publisher/subscriber).
-
-!!! warning "Ловушка: синхронные наблюдатели и исключения"
-    В примере наблюдатели вызываются по очереди в том же потоке. Если `EmailNotifier` бросит исключение, `InventoryUpdater` и `AnalyticsTracker` не выполнятся, а `placeOrder` упадёт. Наблюдателей изолируют через `try-catch` вокруг каждого вызова или выносят в асинхронную обработку.
-
-??? question "Проверь себя"
-    1. Из каких участников состоит Observer?
-    2. Что знает субъект о своих наблюдателях?
-    3. Что произойдёт, если один из синхронных наблюдателей бросит исключение?
-
 ## Шпаргалка { #cheatsheet }
 
 <!-- --8<-- [start:cheatsheet] -->
@@ -587,8 +320,5 @@ Singleton.INSTANCE.doWork();
 | **Enum Singleton** | Самый надёжный: JVM-потокобезопасность, защита от рефлексии и сериализации |
 | **Builder** | Пошаговая сборка через fluent API; обязательные поля — в конструктор билдера, проверка — в `build()` |
 | **Factory Method** | Подкласс решает, какой объект создать; `switch` по параметру — это Simple Factory |
-| **Decorator** | Обёртка с тем же интерфейсом добавляет поведение в рантайме; `java.io` |
-| **Strategy** | Интерфейс + реализации + контекст; стратегию можно передать лямбдой; `Comparator` |
-| **Observer** | Субъект уведомляет список наблюдателей; `@EventListener`, Kafka |
 
 <!-- --8<-- [end:cheatsheet] -->

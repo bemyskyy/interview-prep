@@ -531,7 +531,7 @@ class DogFactory extends AnimalFactory {
 
     #### Решение: композиция и делегирование { #delegation }
 
-    Вместо того чтобы _быть_ `HashSet`-ом, класс _содержит_ его. Это паттерн делегирования (delegation), на нём же часто строится [Декоратор](patterns.md#decorator).
+    Вместо того чтобы _быть_ `HashSet`-ом, класс _содержит_ его. Это паттерн делегирования (delegation), на нём же часто строится [Декоратор](../design/structural-patterns.md#decorator).
 
     ```java
     public class CountingSet<T> {

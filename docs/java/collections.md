@@ -337,7 +337,7 @@ public class Habit implements Comparable<Habit> {
 
 #### `java.util.Comparator` — внешний судья { #comparator }
 
-Что если нужно сортировать по-разному: на главном экране — по дате, в профиле — по приоритету? `compareTo()` один, а логик несколько. `Comparator` — это паттерн [Strategy](patterns.md#strategy).
+Что если нужно сортировать по-разному: на главном экране — по дате, в профиле — по приоритету? `compareTo()` один, а логик несколько. `Comparator` — это паттерн [Strategy](../design/behavioral-patterns.md#strategy).
 
 - **Суть:** "Я — независимый судья, сравниваю **два чужих** объекта."
 - **Реализуется снаружи класса:** лямбда, анонимный класс или отдельный класс. Передаётся в `TreeSet`, `Collections.sort()`, `Stream.sorted()`.

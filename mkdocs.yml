@@ -139,6 +139,7 @@ plugins:
       redirect_maps:
         java/multithreading.md: concurrency/threads.md
         java/solid.md: design/solid.md
+        java/patterns.md: design/creational-patterns.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -197,7 +198,9 @@ nav:
 
   - Дизайн кода:
       - SOLID: design/solid.md
-      - Паттерны проектирования: java/patterns.md
+      - Порождающие паттерны: design/creational-patterns.md
+      - Структурные паттерны: design/structural-patterns.md
+      - Поведенческие паттерны: design/behavioral-patterns.md
 
   - Spring:
       - Ядро:

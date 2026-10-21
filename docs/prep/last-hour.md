@@ -140,11 +140,23 @@ tags:
 
 --8<-- "docs/design/solid.md:cheatsheet"
 
-### Паттерны проектирования { #patterns }
+### Порождающие паттерны { #creational-patterns }
 
-[Полный разбор →](../java/patterns.md)
+[Полный разбор →](../design/creational-patterns.md)
 
---8<-- "docs/java/patterns.md:cheatsheet"
+--8<-- "docs/design/creational-patterns.md:cheatsheet"
+
+### Структурные паттерны { #structural-patterns }
+
+[Полный разбор →](../design/structural-patterns.md)
+
+--8<-- "docs/design/structural-patterns.md:cheatsheet"
+
+### Поведенческие паттерны { #behavioral-patterns }
+
+[Полный разбор →](../design/behavioral-patterns.md)
+
+--8<-- "docs/design/behavioral-patterns.md:cheatsheet"
 
 ## Spring { #spring }
 

@@ -543,7 +543,7 @@ public void calculate() {
     }
     ```
 
-    **Singleton.** `enum` из одного элемента — самый надёжный способ написать Singleton в Java; почему — в [Паттерны → Enum Singleton](patterns.md#enum-singleton).
+    **Singleton.** `enum` из одного элемента — самый надёжный способ написать Singleton в Java; почему — в [Паттерны → Enum Singleton](../design/creational-patterns.md#enum-singleton).
 
     **`EnumSet` и `EnumMap`.** Для набора констант или констант-ключей используй их вместо `HashSet` и `HashMap`. `EnumSet` хранит набор как битовый вектор, `EnumMap` — как массив по `ordinal()`: никаких хэшей, бакетов и коллизий, минимум памяти.
 
@@ -585,7 +585,7 @@ public void calculate() {
 Самый строгий модификатор.
 
 - **Архитектурное правило:** все поля класса **всегда** `private`. Доступ к ним — только через методы. Это основа инкапсуляции.
-- **Приватный конструктор:** запрещает `new` снаружи. Так устроены [Singleton](patterns.md#singleton) и утилитные классы вроде `Math` — никто не сделает `new Math()`.
+- **Приватный конструктор:** запрещает `new` снаружи. Так устроены [Singleton](../design/creational-patterns.md#singleton) и утилитные классы вроде `Math` — никто не сделает `new Math()`.
 
 #### `default` (package-private) — внутри пакета { #package-private }
 

@@ -137,7 +137,7 @@ spring:
 
 1. **AOP** — поддержка аспектов (транзакции, логирование) из коробки.
 2. **`MessageSource` (i18n)** — интернационализация.
-3. **Публикация событий (Event Publication)** — механизм событий, паттерн [Observer](../java/patterns.md#observer).
+3. **Публикация событий (Event Publication)** — механизм событий, паттерн [Observer](../design/behavioral-patterns.md#observer).
 4. **Веб-скоупы** — `request`, `session`, интеграция с `DispatcherServlet`.
 5. **Авторегистрация BPP** — `BeanPostProcessor`-ы регистрируются автоматически (в `BeanFactory` — вручную).
 

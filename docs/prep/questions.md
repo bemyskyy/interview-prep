@@ -238,15 +238,21 @@ tags:
 - [Что такое Interface Segregation Principle?](../design/solid.md#isp) — *Junior*
 - [Что такое Dependency Inversion Principle?](../design/solid.md#dip) — *Middle*
 
-### Паттерны проектирования { #patterns }
+### Порождающие паттерны { #creational-patterns }
 
-- [Как написать потокобезопасный Singleton?](../java/patterns.md#singleton) — *Middle*
-- [Почему Enum Singleton считается самым надёжным?](../java/patterns.md#enum-singleton) — *Middle*
-- [Зачем нужен Builder?](../java/patterns.md#builder) — *Junior*
-- [Что такое Factory Method и чем он отличается от Simple Factory?](../java/patterns.md#factory-method) — *Middle*
-- [Что такое Decorator?](../java/patterns.md#decorator) — *Middle*
-- [Что такое Strategy?](../java/patterns.md#strategy) — *Junior*
-- [Что такое Observer?](../java/patterns.md#observer) — *Middle*
+- [Как написать потокобезопасный Singleton?](../design/creational-patterns.md#singleton) — *Middle*
+- [Почему Enum Singleton считается самым надёжным?](../design/creational-patterns.md#enum-singleton) — *Middle*
+- [Зачем нужен Builder?](../design/creational-patterns.md#builder) — *Junior*
+- [Что такое Factory Method и чем он отличается от Simple Factory?](../design/creational-patterns.md#factory-method) — *Middle*
+
+### Структурные паттерны { #structural-patterns }
+
+- [Что такое Decorator?](../design/structural-patterns.md#decorator) — *Middle*
+
+### Поведенческие паттерны { #behavioral-patterns }
+
+- [Что такое Strategy?](../design/behavioral-patterns.md#strategy) — *Junior*
+- [Что такое Observer?](../design/behavioral-patterns.md#observer) — *Middle*
 
 ## Spring { #spring }
 
