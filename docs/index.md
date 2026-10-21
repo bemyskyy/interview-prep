@@ -85,7 +85,7 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">4 страницы</span></p>
+<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">5 страниц</span></p>
 <p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны LeetCode, TCP, HTTP, TLS, gRPC</p>
 </div>
 
@@ -122,7 +122,7 @@ System.out.println(c == d);
     5. **Kafka.** [Физика брокера](kafka/kafka.md) → [Consumer и Producer](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).
     6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/networks.md#grpc) → [WebSocket и SSE](networks/networks.md#websocket).
     7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/cicd.md#cicd) → [Миграции БД](infrastructure/cicd.md#migrations).
-    8. **Алгоритмы.** Все паттерны из [Паттернов задач](algorithms/leetcode-patterns.md), включая [динамическое программирование](algorithms/leetcode-patterns.md#dp) → [Графы](algorithms/sorting-graphs.md#graphs).
+    8. **Алгоритмы.** Все паттерны из [задач на массивы и строки](algorithms/leetcode-patterns.md) и [на деревья, графы и ДП](algorithms/leetcode-trees-dp.md), включая [динамическое программирование](algorithms/leetcode-trees-dp.md#dp) → [Графы](algorithms/sorting-graphs.md#graphs).
 
 === "Senior"
 

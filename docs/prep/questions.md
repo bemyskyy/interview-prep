@@ -591,7 +591,7 @@ tags:
 - [Как работает DFS?](../algorithms/sorting-graphs.md#graph-dfs) — *Middle*
 - [Как работает алгоритм Дейкстры?](../algorithms/sorting-graphs.md#dijkstra) — *Senior*
 
-### Паттерны задач (LeetCode) { #leetcode-patterns }
+### Задачи: массивы и строки { #leetcode-patterns }
 
 - [Как решать задачу на собесе?](../algorithms/leetcode-patterns.md#framework) — *Junior*
 - [Какие edge cases проверять всегда?](../algorithms/leetcode-patterns.md#edge-cases) — *Junior*
@@ -604,15 +604,18 @@ tags:
 - [Как найти два числа с заданной суммой (Two Sum)?](../algorithms/leetcode-patterns.md#two-sum) — *Junior*
 - [Как сгруппировать анаграммы?](../algorithms/leetcode-patterns.md#group-anagrams) — *Middle*
 - [Как искать в повёрнутом отсортированном массиве?](../algorithms/leetcode-patterns.md#rotated-array) — *Middle*
-- [Как проверить, что дерево — валидное BST?](../algorithms/leetcode-patterns.md#validate-bst) — *Middle*
-- [Как посчитать количество островов?](../algorithms/leetcode-patterns.md#islands) — *Middle*
-- [Как найти кратчайший путь в лабиринте?](../algorithms/leetcode-patterns.md#maze) — *Middle*
-- [Что такое динамическое программирование?](../algorithms/leetcode-patterns.md#dp-basics) — *Middle*
-- [Как найти подмассив с максимальной суммой (Kadane)?](../algorithms/leetcode-patterns.md#kadane) — *Middle*
-- [Как набрать сумму минимальным числом монет (Coin Change)?](../algorithms/leetcode-patterns.md#coin-change) — *Middle*
-- [Как найти наибольшую общую подпоследовательность (LCS)?](../algorithms/leetcode-patterns.md#lcs) — *Middle*
 - [Как проверить скобочную последовательность?](../algorithms/leetcode-patterns.md#valid-parentheses) — *Junior*
 - [Как найти следующий больший элемент (монотонный стек)?](../algorithms/leetcode-patterns.md#monotonic-stack) — *Middle*
+
+### Задачи: деревья, графы, ДП { #leetcode-trees-dp }
+
+- [Как проверить, что дерево — валидное BST?](../algorithms/leetcode-trees-dp.md#validate-bst) — *Middle*
+- [Как посчитать количество островов?](../algorithms/leetcode-trees-dp.md#islands) — *Middle*
+- [Как найти кратчайший путь в лабиринте?](../algorithms/leetcode-trees-dp.md#maze) — *Middle*
+- [Что такое динамическое программирование?](../algorithms/leetcode-trees-dp.md#dp-basics) — *Middle*
+- [Как найти подмассив с максимальной суммой (Kadane)?](../algorithms/leetcode-trees-dp.md#kadane) — *Middle*
+- [Как набрать сумму минимальным числом монет (Coin Change)?](../algorithms/leetcode-trees-dp.md#coin-change) — *Middle*
+- [Как найти наибольшую общую подпоследовательность (LCS)?](../algorithms/leetcode-trees-dp.md#lcs) — *Middle*
 
 ### HTTP, TCP, REST, gRPC { #networks }
 

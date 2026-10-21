@@ -256,6 +256,7 @@ nav:
       - Алгоритмы:
           - Big O и структуры данных: algorithms/algorithms.md
           - Сортировки и графы: algorithms/sorting-graphs.md
-          - Паттерны задач (LeetCode): algorithms/leetcode-patterns.md
+          - "Задачи: массивы и строки": algorithms/leetcode-patterns.md
+          - "Задачи: деревья, графы, ДП": algorithms/leetcode-trees-dp.md
       - Сети:
           - HTTP, TCP, REST, gRPC: networks/networks.md

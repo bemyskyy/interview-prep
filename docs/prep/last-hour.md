@@ -358,11 +358,17 @@ tags:
 
 --8<-- "docs/algorithms/sorting-graphs.md:cheatsheet"
 
-### Паттерны задач (LeetCode) { #leetcode-patterns }
+### Задачи: массивы и строки { #leetcode-patterns }
 
 [Полный разбор →](../algorithms/leetcode-patterns.md)
 
 --8<-- "docs/algorithms/leetcode-patterns.md:cheatsheet"
+
+### Задачи: деревья, графы, ДП { #leetcode-trees-dp }
+
+[Полный разбор →](../algorithms/leetcode-trees-dp.md)
+
+--8<-- "docs/algorithms/leetcode-trees-dp.md:cheatsheet"
 
 ### HTTP, TCP, REST, gRPC { #networks }
 
