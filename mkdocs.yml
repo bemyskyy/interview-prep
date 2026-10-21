@@ -176,21 +176,22 @@ nav:
       - Вопросы собеса: prep/questions.md
       - Теги: prep/tags.md
 
-  - Язык Java:
-      - Платформа и память:
-          - JVM и память: java/jvm.md
-      - Язык и API:
+  - Java:
+      - Язык:
           - Основы языка: java/basics.md
           - Строки: java/strings.md
-          - Современная Java: java/modern-java.md
           - ООП: java/oop.md
-          - Коллекции: java/collections.md
-          - HashMap: java/hashmap.md
           - Исключения: java/exceptions.md
           - Дженерики: java/generics.md
+          - Современная Java: java/modern-java.md
+      - Коллекции и API:
+          - Коллекции: java/collections.md
+          - HashMap: java/hashmap.md
           - Stream API: java/streams.md
           - Лямбды и Optional: java/functional.md
           - IO / NIO: java/io-nio.md
+      - JVM:
+          - Память и сборка мусора: java/jvm.md
 
   - Многопоточность:
       - Потоки и ThreadLocal: concurrency/threads.md
@@ -210,7 +211,7 @@ nav:
 
   - Spring:
       - Ядро:
-          - Core (IoC, DI, AOP): spring/spring-core.md
+          - "Spring Core: IoC, DI, AOP": spring/spring-core.md
           - Spring Boot: spring/spring-boot.md
       - Веб:
           - Spring MVC и WebFlux: spring/spring-mvc.md
@@ -230,8 +231,8 @@ nav:
       - NoSQL: database/nosql.md
 
   - Kafka:
-      - Физика брокера: kafka/kafka.md
-      - Consumer и Producer: kafka/kafka-consumer-producer.md
+      - "Брокер: топики, партиции, хранение": kafka/kafka.md
+      - Порядок, группы и ребаланс: kafka/kafka-consumer-producer.md
       - Гарантии доставки: kafka/kafka-reliability.md
       - Kafka в Spring: kafka/spring-kafka.md
 

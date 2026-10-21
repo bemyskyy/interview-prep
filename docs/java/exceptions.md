@@ -5,9 +5,9 @@ tags:
   - Java
 ---
 
-# Исключения (Exceptions)
+# Исключения
 
-Иерархия исключений, checked против unchecked, `try-catch-finally`, `try-with-resources`, свои исключения и антипаттерны. Чаще всего спрашивают разницу между checked и unchecked, когда не выполняется `finally` и почему в Spring принято бросать `RuntimeException`.
+Иерархия исключений (exceptions), checked против unchecked, `try-catch-finally`, `try-with-resources`, свои исключения и антипаттерны. Чаще всего спрашивают разницу между checked и unchecked, когда не выполняется `finally` и почему в Spring принято бросать `RuntimeException`.
 
 ## Иерархия { #hierarchy }
 

@@ -14,13 +14,7 @@ tags:
     Строка не вспоминается за пару секунд — открой полный разбор и прочитай «Ответ вслух» этой темы.
     Новое за час до собеса не учи: только освежай то, что уже разбирал.
 
-## Язык Java { #java }
-
-### JVM и память { #jvm }
-
-[Полный разбор →](../java/jvm.md)
-
---8<-- "docs/java/jvm.md:cheatsheet"
+## Java { #java }
 
 ### Основы языка { #basics }
 
@@ -34,29 +28,11 @@ tags:
 
 --8<-- "docs/java/strings.md:cheatsheet"
 
-### Современная Java { #modern-java }
-
-[Полный разбор →](../java/modern-java.md)
-
---8<-- "docs/java/modern-java.md:cheatsheet"
-
 ### ООП { #oop }
 
 [Полный разбор →](../java/oop.md)
 
 --8<-- "docs/java/oop.md:cheatsheet"
-
-### Коллекции { #collections }
-
-[Полный разбор →](../java/collections.md)
-
---8<-- "docs/java/collections.md:cheatsheet"
-
-### HashMap { #hashmap }
-
-[Полный разбор →](../java/hashmap.md)
-
---8<-- "docs/java/hashmap.md:cheatsheet"
 
 ### Исключения { #exceptions }
 
@@ -69,6 +45,24 @@ tags:
 [Полный разбор →](../java/generics.md)
 
 --8<-- "docs/java/generics.md:cheatsheet"
+
+### Современная Java { #modern-java }
+
+[Полный разбор →](../java/modern-java.md)
+
+--8<-- "docs/java/modern-java.md:cheatsheet"
+
+### Коллекции { #collections }
+
+[Полный разбор →](../java/collections.md)
+
+--8<-- "docs/java/collections.md:cheatsheet"
+
+### HashMap { #hashmap }
+
+[Полный разбор →](../java/hashmap.md)
+
+--8<-- "docs/java/hashmap.md:cheatsheet"
 
 ### Stream API { #streams }
 
@@ -87,6 +81,12 @@ tags:
 [Полный разбор →](../java/io-nio.md)
 
 --8<-- "docs/java/io-nio.md:cheatsheet"
+
+### Память и сборка мусора { #jvm }
+
+[Полный разбор →](../java/jvm.md)
+
+--8<-- "docs/java/jvm.md:cheatsheet"
 
 ## Многопоточность { #concurrency }
 
@@ -166,7 +166,7 @@ tags:
 
 ## Spring { #spring }
 
-### Core (IoC, DI, AOP) { #spring-core }
+### Spring Core: IoC, DI, AOP { #spring-core }
 
 [Полный разбор →](../spring/spring-core.md)
 
@@ -248,13 +248,13 @@ tags:
 
 ## Kafka { #kafka }
 
-### Физика брокера { #kafka-broker }
+### Брокер: топики, партиции, хранение { #kafka-broker }
 
 [Полный разбор →](../kafka/kafka.md)
 
 --8<-- "docs/kafka/kafka.md:cheatsheet"
 
-### Consumer и Producer { #kafka-consumer-producer }
+### Порядок, группы и ребаланс { #kafka-consumer-producer }
 
 [Полный разбор →](../kafka/kafka-consumer-producer.md)
 

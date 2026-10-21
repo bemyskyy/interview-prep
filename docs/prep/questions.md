@@ -10,23 +10,7 @@ tags:
 Все 437 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
-## Язык Java { #java }
-
-### JVM и память { #jvm }
-
-- [Чем отличаются JVM, JRE и JDK?](../java/jvm.md#jvm-jre-jdk) — *Junior*
-- [Как GC понимает, что объект больше не нужен?](../java/jvm.md#gc-roots) — *Junior*
-- [Что такое гипотеза поколений?](../java/jvm.md#generations) — *Middle*
-- [Как работает Mark-Sweep-Compact?](../java/jvm.md#mark-sweep-compact) — *Middle*
-- [Что такое Stop-The-World?](../java/jvm.md#stw) — *Middle*
-- [Какие сборщики мусора есть и какой выбрать?](../java/jvm.md#collectors) — *Senior*
-- [Чем Stack отличается от Heap?](../java/jvm.md#stack-heap) — *Junior*
-- [Что такое Metaspace и чем он отличается от PermGen?](../java/jvm.md#metaspace) — *Middle*
-- [Где живут статические переменные и String Pool?](../java/jvm.md#static-location) — *Senior*
-- [Как очищается Metaspace?](../java/jvm.md#metaspace-gc) — *Senior*
-- [Что такое OutOfMemoryError?](../java/jvm.md#oom-basics) — *Junior*
-- [Какие бывают OutOfMemoryError?](../java/jvm.md#oom-types) — *Middle*
-- [Как расследовать и лечить OutOfMemoryError?](../java/jvm.md#oom-investigation) — *Senior*
+## Java { #java }
 
 ### Основы языка { #basics }
 
@@ -50,15 +34,6 @@ tags:
 - [Что такое String Pool?](../java/strings.md#string-pool) — *Junior*
 - [Как работает `intern()`?](../java/strings.md#intern) — *Middle*
 
-### Современная Java { #modern-java }
-
-- [Что такое `var` и где его нельзя использовать?](../java/modern-java.md#var) — *Junior*
-- [Что такое `record`?](../java/modern-java.md#records) — *Junior*
-- [Как работает новый `switch`?](../java/modern-java.md#switch-expressions) — *Junior*
-- [Что такое pattern matching?](../java/modern-java.md#pattern-matching) — *Middle*
-- [Что такое `sealed`-классы?](../java/modern-java.md#sealed) — *Middle*
-- [Зачем `sealed` нужен в паре со `switch`?](../java/modern-java.md#sealed-switch) — *Senior*
-
 ### ООП { #oop }
 
 - [Что такое ООП и зачем оно нужно?](../java/oop.md#what-is-oop) — *Junior*
@@ -71,30 +46,6 @@ tags:
 - [Что входит в сигнатуру метода?](../java/oop.md#signature) — *Junior*
 - [Чем перегрузка отличается от переопределения?](../java/oop.md#overload-vs-override) — *Junior*
 - [Можно ли при переопределении изменить тип возвращаемого значения?](../java/oop.md#covariant-return) — *Middle*
-
-### Коллекции { #collections }
-
-- [Как устроена иерархия коллекций?](../java/collections.md#collection-hierarchy) — *Junior*
-- [Почему `Map` — это не `Collection`?](../java/collections.md#map-not-collection) — *Junior*
-- [Как устроен `ArrayList`?](../java/collections.md#arraylist) — *Junior*
-- [Как устроен `LinkedList`?](../java/collections.md#linkedlist) — *Junior*
-- [Что быстрее для вставки в середину: `ArrayList` или `LinkedList`?](../java/collections.md#insert-middle) — *Middle*
-- [Почему `LinkedList` проигрывает даже при равной асимптотике?](../java/collections.md#cache-locality) — *Senior*
-- [Как `HashSet` обеспечивает уникальность?](../java/collections.md#hashset) — *Junior*
-- [Как `TreeSet` сортирует элементы?](../java/collections.md#treeset) — *Junior*
-- [`Comparable` или `Comparator`?](../java/collections.md#comparable-comparator) — *Junior*
-- [Почему `Stack` устарел и чем его заменить?](../java/collections.md#stack-arraydeque) — *Junior*
-- [Как работает `PriorityQueue`?](../java/collections.md#priorityqueue) — *Middle*
-- [Откуда берётся `ConcurrentModificationException`?](../java/collections.md#cme) — *Middle*
-
-### HashMap { #hashmap }
-
-- [Как `HashMap` устроена внутри?](../java/hashmap.md#hashmap-internals) — *Junior*
-- [Как `HashMap` находит бакет по ключу?](../java/hashmap.md#bucket-index) — *Middle*
-- [Что происходит при коллизии?](../java/hashmap.md#collisions) — *Middle*
-- [Когда `HashMap` расширяется?](../java/hashmap.md#rehashing) — *Middle*
-- [Зачем в Java 8 бакеты превращаются в деревья?](../java/hashmap.md#treeify) — *Senior*
-- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/hashmap.md#map-choice) — *Junior*
 
 ### Исключения { #exceptions }
 
@@ -121,6 +72,39 @@ tags:
 - [Почему raw types опасны?](../java/generics.md#raw) — *Middle*
 - [Что такое heap pollution?](../java/generics.md#heap-pollution) — *Senior*
 - [Когда ставить `@SafeVarargs`?](../java/generics.md#safevarargs) — *Senior*
+
+### Современная Java { #modern-java }
+
+- [Что такое `var` и где его нельзя использовать?](../java/modern-java.md#var) — *Junior*
+- [Что такое `record`?](../java/modern-java.md#records) — *Junior*
+- [Как работает новый `switch`?](../java/modern-java.md#switch-expressions) — *Junior*
+- [Что такое pattern matching?](../java/modern-java.md#pattern-matching) — *Middle*
+- [Что такое `sealed`-классы?](../java/modern-java.md#sealed) — *Middle*
+- [Зачем `sealed` нужен в паре со `switch`?](../java/modern-java.md#sealed-switch) — *Senior*
+
+### Коллекции { #collections }
+
+- [Как устроена иерархия коллекций?](../java/collections.md#collection-hierarchy) — *Junior*
+- [Почему `Map` — это не `Collection`?](../java/collections.md#map-not-collection) — *Junior*
+- [Как устроен `ArrayList`?](../java/collections.md#arraylist) — *Junior*
+- [Как устроен `LinkedList`?](../java/collections.md#linkedlist) — *Junior*
+- [Что быстрее для вставки в середину: `ArrayList` или `LinkedList`?](../java/collections.md#insert-middle) — *Middle*
+- [Почему `LinkedList` проигрывает даже при равной асимптотике?](../java/collections.md#cache-locality) — *Senior*
+- [Как `HashSet` обеспечивает уникальность?](../java/collections.md#hashset) — *Junior*
+- [Как `TreeSet` сортирует элементы?](../java/collections.md#treeset) — *Junior*
+- [`Comparable` или `Comparator`?](../java/collections.md#comparable-comparator) — *Junior*
+- [Почему `Stack` устарел и чем его заменить?](../java/collections.md#stack-arraydeque) — *Junior*
+- [Как работает `PriorityQueue`?](../java/collections.md#priorityqueue) — *Middle*
+- [Откуда берётся `ConcurrentModificationException`?](../java/collections.md#cme) — *Middle*
+
+### HashMap { #hashmap }
+
+- [Как `HashMap` устроена внутри?](../java/hashmap.md#hashmap-internals) — *Junior*
+- [Как `HashMap` находит бакет по ключу?](../java/hashmap.md#bucket-index) — *Middle*
+- [Что происходит при коллизии?](../java/hashmap.md#collisions) — *Middle*
+- [Когда `HashMap` расширяется?](../java/hashmap.md#rehashing) — *Middle*
+- [Зачем в Java 8 бакеты превращаются в деревья?](../java/hashmap.md#treeify) — *Senior*
+- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/hashmap.md#map-choice) — *Junior*
 
 ### Stream API { #streams }
 
@@ -160,6 +144,22 @@ tags:
 - [Как обработать большой CSV построчно?](../java/io-nio.md#big-files) — *Middle*
 - [Как скопировать файл?](../java/io-nio.md#copy) — *Junior*
 - [Как работать с properties-файлами?](../java/io-nio.md#properties) — *Junior*
+
+### Память и сборка мусора { #jvm }
+
+- [Чем отличаются JVM, JRE и JDK?](../java/jvm.md#jvm-jre-jdk) — *Junior*
+- [Как GC понимает, что объект больше не нужен?](../java/jvm.md#gc-roots) — *Junior*
+- [Что такое гипотеза поколений?](../java/jvm.md#generations) — *Middle*
+- [Как работает Mark-Sweep-Compact?](../java/jvm.md#mark-sweep-compact) — *Middle*
+- [Что такое Stop-The-World?](../java/jvm.md#stw) — *Middle*
+- [Какие сборщики мусора есть и какой выбрать?](../java/jvm.md#collectors) — *Senior*
+- [Чем Stack отличается от Heap?](../java/jvm.md#stack-heap) — *Junior*
+- [Что такое Metaspace и чем он отличается от PermGen?](../java/jvm.md#metaspace) — *Middle*
+- [Где живут статические переменные и String Pool?](../java/jvm.md#static-location) — *Senior*
+- [Как очищается Metaspace?](../java/jvm.md#metaspace-gc) — *Senior*
+- [Что такое OutOfMemoryError?](../java/jvm.md#oom-basics) — *Junior*
+- [Какие бывают OutOfMemoryError?](../java/jvm.md#oom-types) — *Middle*
+- [Как расследовать и лечить OutOfMemoryError?](../java/jvm.md#oom-investigation) — *Senior*
 
 ## Многопоточность { #concurrency }
 
@@ -257,7 +257,7 @@ tags:
 
 ## Spring { #spring }
 
-### Core (IoC, DI, AOP) { #spring-core }
+### Spring Core: IoC, DI, AOP { #spring-core }
 
 - [Что такое IoC и чем он отличается от DI?](../spring/spring-core.md#ioc-vs-di) — *Junior*
 - [Почему внедрение через конструктор лучше, чем через поле?](../spring/spring-core.md#constructor-injection) — *Junior*
@@ -402,7 +402,7 @@ tags:
 
 ## Kafka { #kafka }
 
-### Физика брокера { #kafka-broker }
+### Брокер: топики, партиции, хранение { #kafka-broker }
 
 - [Чем Kafka отличается от RabbitMQ?](../kafka/kafka.md#kafka-vs-rabbitmq) — *Junior*
 - [Что такое топик и партиция?](../kafka/kafka.md#topic-partition) — *Junior*
@@ -414,7 +414,7 @@ tags:
 - [Зачем хранить сообщения неделями?](../kafka/kafka.md#why-retention) — *Junior*
 - [Что такое log compaction?](../kafka/kafka.md#log-compaction) — *Senior*
 
-### Consumer и Producer { #kafka-consumer-producer }
+### Порядок, группы и ребаланс { #kafka-consumer-producer }
 
 - [Почему Kafka не гарантирует глобальный порядок?](../kafka/kafka-consumer-producer.md#no-global-order) — *Junior*
 - [Что будет, если отправить сообщение без ключа?](../kafka/kafka-consumer-producer.md#null-key) — *Junior*
