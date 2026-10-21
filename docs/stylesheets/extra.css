@@ -213,6 +213,26 @@
   --md-footer-fg-color--lighter: var(--ip-fg-2);
   --md-footer-bg-color: var(--ip-panel);
   --md-footer-bg-color--dark: var(--ip-panel);
+
+  /* Диаграммы mermaid: узлы и участники — на фоне панелей с рамкой цвета
+     ссылок, линии и стрелки — вторичным цветом */
+  --md-mermaid-edge-color: var(--ip-fg-2);
+  --md-mermaid-label-fg-color: var(--ip-fg);
+  --md-mermaid-label-bg-color: var(--ip-bg);
+  --md-mermaid-node-fg-color: var(--ip-link);
+  --md-mermaid-node-bg-color: var(--ip-panel);
+  --md-mermaid-sequence-actor-line-color: var(--ip-fg-3);
+  --md-mermaid-sequence-message-fg-color: var(--ip-fg);
+  --md-mermaid-sequence-loop-border-color: var(--ip-fg-3);
+  --md-mermaid-sequence-loop-bg-color: transparent;
+  --md-mermaid-sequence-loop-fg-color: var(--ip-fg-2);
+  --md-mermaid-sequence-label-bg-color: var(--ip-note-bg);
+  --md-mermaid-sequence-label-fg-color: var(--ip-link);
+  --md-mermaid-sequence-note-bg-color: var(--ip-note-bg);
+  --md-mermaid-sequence-note-border-color: var(--ip-note-fg);
+  --md-mermaid-sequence-note-fg-color: var(--ip-fg);
+  --md-mermaid-sequence-number-bg-color: var(--ip-link);
+  --md-mermaid-sequence-number-fg-color: var(--ip-bg);
 }
 
 [data-md-color-primary="custom"] {

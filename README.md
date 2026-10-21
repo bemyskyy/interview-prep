@@ -71,6 +71,8 @@ interview-prep/
 ├── requirements.txt         # зафиксированная версия mkdocs-material
 ├── includes/
 │   └── abbreviations.md     # глоссарий: подключается ко всем страницам
+├── overrides/
+│   └── main.html            # подключает mermaid из репозитория на страницах с диаграммами
 ├── scripts/
 │   └── prep_pages.py        # генератор «Подготовки» и чисел страниц на главной, хук сборки
 └── docs/
@@ -89,8 +91,10 @@ interview-prep/
     ├── architecture/        # DDD, микросервисы, CQRS
     ├── infrastructure/      # Docker, CI/CD, Kubernetes
     ├── stylesheets/
-    │   └── extra.css        # оформление: шрифты, палитра, код, выноски, главная
-    └── assets/              # картинки и шрифты (fonts/: Golos Text, JetBrains Mono)
+    │   └── extra.css        # оформление: шрифты, палитра, код, выноски, диаграммы, главная
+    ├── javascripts/
+    │   └── mermaid-theme.js # стили диаграмм, которых нет в Material для mermaid 11
+    └── assets/              # картинки, шрифты (fonts/) и mermaid (vendor/mermaid/)
 ```
 
 Что подключено в `mkdocs.yml` и зачем:
@@ -104,6 +108,7 @@ interview-prep/
 | `attr_list` | Явные id заголовков: `### Вопрос? { #anchor }` |
 | `md_in_html` | Вёрстка главной: первый экран и сетка разделов |
 | `extra_css` + `theme.font: false` | Своё оформление из `docs/stylesheets/extra.css`, шрифты лежат локально, без Google Fonts |
+| `theme.custom_dir: overrides` | Mermaid 11.17.2 из `docs/assets/vendor/mermaid/` вместо unpkg.com, только на страницах с диаграммами. Обновить версию — заменить `mermaid.min.js` файлом из npm-пакета `mermaid` |
 | `hooks: scripts/prep_pages.py` | Сборка падает, если «Вопросы собеса», «За час до собеса» или числа страниц на главной устарели |
 | `repo_url` + `content.action.edit` | Ссылка на репозиторий в шапке и кнопка «Редактировать» на страницах (у сгенерированных страниц её нет) |
 | `site_url` + `navigation.footer` | Канонические ссылки и `sitemap.xml`; ссылки «Назад / Вперёд» внизу страницы |

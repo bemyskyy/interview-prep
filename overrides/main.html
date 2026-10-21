@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{#-
+  Mermaid из репозитория (docs/assets/vendor/mermaid) вместо unpkg.com.
+  Material берёт глобальный `mermaid`, если он уже есть, поэтому скрипт
+  подключается до бандла темы и только на страницах с диаграммами.
+-#}
+{% block scripts %}
+  {% if page and page.content and 'class="mermaid"' in page.content %}
+    <script src="{{ 'assets/vendor/mermaid/mermaid.min.js' | url }}"></script>
+    <script src="{{ 'javascripts/mermaid-theme.js' | url }}"></script>
+  {% endif %}
+  {{ super() }}
+{% endblock %}
