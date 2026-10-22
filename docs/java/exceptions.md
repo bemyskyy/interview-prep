@@ -5,9 +5,9 @@ tags:
   - Java
 ---
 
-# Исключения (Exceptions)
+# Исключения
 
-Иерархия исключений, checked против unchecked, `try-catch-finally`, `try-with-resources`, свои исключения и антипаттерны. Чаще всего спрашивают разницу между checked и unchecked, когда не выполняется `finally` и почему в Spring принято бросать `RuntimeException`.
+Иерархия исключений (exceptions), checked против unchecked, `try-catch-finally`, `try-with-resources`, свои исключения и антипаттерны. Чаще всего спрашивают разницу между checked и unchecked, когда не выполняется `finally` и почему в Spring принято бросать `RuntimeException`.
 
 ## Иерархия { #hierarchy }
 
@@ -26,7 +26,7 @@ tags:
 
 `Error` — критические проблемы на уровне JVM или ОС, которые приложение **не должно** пытаться обработать. Когда возникает `Error`, JVM сигнализирует: «нормально продолжать работу я не могу». Ловить их через `try-catch` — плохая практика. Типичные представители:
 
-- **`OutOfMemoryError`** — закончилась память. Подробно — в [JVM и память → OutOfMemoryError](jvm.md#oom).
+- **`OutOfMemoryError`** — закончилась память. Подробно — в [Память и сборка мусора → OutOfMemoryError](jvm.md#oom).
 - **`StackOverflowError`** — переполнение стека вызовов (бесконечная рекурсия).
 - **`AssertionError`** — нарушено утверждение `assert` в коде.
 

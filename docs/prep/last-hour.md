@@ -14,19 +14,7 @@ tags:
     Строка не вспоминается за пару секунд — открой полный разбор и прочитай «Ответ вслух» этой темы.
     Новое за час до собеса не учи: только освежай то, что уже разбирал.
 
-## Язык Java { #java }
-
-### JVM и память { #jvm }
-
-[Полный разбор →](../java/jvm.md)
-
---8<-- "docs/java/jvm.md:cheatsheet"
-
-### Многопоточность { #multithreading }
-
-[Полный разбор →](../java/multithreading.md)
-
---8<-- "docs/java/multithreading.md:cheatsheet"
+## Java { #java }
 
 ### Основы языка { #basics }
 
@@ -40,23 +28,11 @@ tags:
 
 --8<-- "docs/java/strings.md:cheatsheet"
 
-### Современная Java { #modern-java }
-
-[Полный разбор →](../java/modern-java.md)
-
---8<-- "docs/java/modern-java.md:cheatsheet"
-
 ### ООП { #oop }
 
 [Полный разбор →](../java/oop.md)
 
 --8<-- "docs/java/oop.md:cheatsheet"
-
-### Коллекции { #collections }
-
-[Полный разбор →](../java/collections.md)
-
---8<-- "docs/java/collections.md:cheatsheet"
 
 ### Исключения { #exceptions }
 
@@ -70,11 +46,35 @@ tags:
 
 --8<-- "docs/java/generics.md:cheatsheet"
 
+### Современная Java { #modern-java }
+
+[Полный разбор →](../java/modern-java.md)
+
+--8<-- "docs/java/modern-java.md:cheatsheet"
+
+### Коллекции { #collections }
+
+[Полный разбор →](../java/collections.md)
+
+--8<-- "docs/java/collections.md:cheatsheet"
+
+### HashMap { #hashmap }
+
+[Полный разбор →](../java/hashmap.md)
+
+--8<-- "docs/java/hashmap.md:cheatsheet"
+
 ### Stream API { #streams }
 
 [Полный разбор →](../java/streams.md)
 
 --8<-- "docs/java/streams.md:cheatsheet"
+
+### Лямбды и Optional { #functional }
+
+[Полный разбор →](../java/functional.md)
+
+--8<-- "docs/java/functional.md:cheatsheet"
 
 ### IO / NIO { #io-nio }
 
@@ -82,21 +82,91 @@ tags:
 
 --8<-- "docs/java/io-nio.md:cheatsheet"
 
+### Память и сборка мусора { #jvm }
+
+[Полный разбор →](../java/jvm.md)
+
+--8<-- "docs/java/jvm.md:cheatsheet"
+
+## Многопоточность { #concurrency }
+
+### Потоки и ThreadLocal { #threads }
+
+[Полный разбор →](../concurrency/threads.md)
+
+--8<-- "docs/concurrency/threads.md:cheatsheet"
+
+### Блокировки и синхронизаторы { #locks }
+
+[Полный разбор →](../concurrency/locks.md)
+
+--8<-- "docs/concurrency/locks.md:cheatsheet"
+
+### JMM, volatile и атомики { #jmm }
+
+[Полный разбор →](../concurrency/jmm.md)
+
+--8<-- "docs/concurrency/jmm.md:cheatsheet"
+
+### Deadlock, livelock, starvation { #deadlock }
+
+[Полный разбор →](../concurrency/deadlock.md)
+
+--8<-- "docs/concurrency/deadlock.md:cheatsheet"
+
+### Пулы потоков и CompletableFuture { #executors }
+
+[Полный разбор →](../concurrency/executors.md)
+
+--8<-- "docs/concurrency/executors.md:cheatsheet"
+
+### Потокобезопасные коллекции { #concurrent-collections }
+
+[Полный разбор →](../concurrency/concurrent-collections.md)
+
+--8<-- "docs/concurrency/concurrent-collections.md:cheatsheet"
+
+### Виртуальные потоки { #virtual-threads }
+
+[Полный разбор →](../concurrency/virtual-threads.md)
+
+--8<-- "docs/concurrency/virtual-threads.md:cheatsheet"
+
+## Дизайн кода { #design }
+
+### Композиция и зацепление { #composition }
+
+[Полный разбор →](../design/composition.md)
+
+--8<-- "docs/design/composition.md:cheatsheet"
+
 ### SOLID { #solid }
 
-[Полный разбор →](../java/solid.md)
+[Полный разбор →](../design/solid.md)
 
---8<-- "docs/java/solid.md:cheatsheet"
+--8<-- "docs/design/solid.md:cheatsheet"
 
-### Паттерны проектирования { #patterns }
+### Порождающие паттерны { #creational-patterns }
 
-[Полный разбор →](../java/patterns.md)
+[Полный разбор →](../design/creational-patterns.md)
 
---8<-- "docs/java/patterns.md:cheatsheet"
+--8<-- "docs/design/creational-patterns.md:cheatsheet"
+
+### Структурные паттерны { #structural-patterns }
+
+[Полный разбор →](../design/structural-patterns.md)
+
+--8<-- "docs/design/structural-patterns.md:cheatsheet"
+
+### Поведенческие паттерны { #behavioral-patterns }
+
+[Полный разбор →](../design/behavioral-patterns.md)
+
+--8<-- "docs/design/behavioral-patterns.md:cheatsheet"
 
 ## Spring { #spring }
 
-### Core (IoC, DI, AOP) { #spring-core }
+### Spring Core: IoC, DI, AOP { #spring-core }
 
 [Полный разбор →](../spring/spring-core.md)
 
@@ -108,37 +178,67 @@ tags:
 
 --8<-- "docs/spring/spring-boot.md:cheatsheet"
 
-### Spring MVC / REST { #spring-mvc }
+### Spring MVC и WebFlux { #spring-mvc }
 
 [Полный разбор →](../spring/spring-mvc.md)
 
 --8<-- "docs/spring/spring-mvc.md:cheatsheet"
 
-### Spring Data JPA { #spring-data-jpa }
+### Spring Security { #spring-security }
+
+[Полный разбор →](../spring/spring-security.md)
+
+--8<-- "docs/spring/spring-security.md:cheatsheet"
+
+### Транзакции в Spring { #spring-transactions }
+
+[Полный разбор →](../spring/spring-transactions.md)
+
+--8<-- "docs/spring/spring-transactions.md:cheatsheet"
+
+### Spring Data JPA и Hibernate { #spring-data-jpa }
 
 [Полный разбор →](../spring/spring-data-jpa.md)
 
 --8<-- "docs/spring/spring-data-jpa.md:cheatsheet"
 
-### Security, Kafka, DDD { #spring-ecosystem }
+### Кэширование { #spring-caching }
 
-[Полный разбор →](../spring/spring-ecosystem.md)
+[Полный разбор →](../spring/spring-caching.md)
 
---8<-- "docs/spring/spring-ecosystem.md:cheatsheet"
+--8<-- "docs/spring/spring-caching.md:cheatsheet"
 
-### Тестирование и инструменты { #spring-tools }
+### Тестирование { #spring-testing }
 
-[Полный разбор →](../spring/spring-tools.md)
+[Полный разбор →](../spring/spring-testing.md)
 
---8<-- "docs/spring/spring-tools.md:cheatsheet"
+--8<-- "docs/spring/spring-testing.md:cheatsheet"
+
+### Actuator и Micrometer { #spring-actuator }
+
+[Полный разбор →](../spring/spring-actuator.md)
+
+--8<-- "docs/spring/spring-actuator.md:cheatsheet"
 
 ## Данные { #data }
 
-### SQL и транзакции { #sql }
+### SQL и индексы { #sql }
 
 [Полный разбор →](../database/sql.md)
 
 --8<-- "docs/database/sql.md:cheatsheet"
+
+### Транзакции и MVCC { #transactions }
+
+[Полный разбор →](../database/transactions.md)
+
+--8<-- "docs/database/transactions.md:cheatsheet"
+
+### Блокировки и конкурентные обновления { #locking }
+
+[Полный разбор →](../database/locking.md)
+
+--8<-- "docs/database/locking.md:cheatsheet"
 
 ### NoSQL { #nosql }
 
@@ -148,13 +248,13 @@ tags:
 
 ## Kafka { #kafka }
 
-### Физика брокера { #kafka-broker }
+### Брокер: топики, партиции, хранение { #kafka-broker }
 
 [Полный разбор →](../kafka/kafka.md)
 
 --8<-- "docs/kafka/kafka.md:cheatsheet"
 
-### Consumer и Producer { #kafka-consumer-producer }
+### Порядок, группы и ребаланс { #kafka-consumer-producer }
 
 [Полный разбор →](../kafka/kafka-consumer-producer.md)
 
@@ -166,42 +266,118 @@ tags:
 
 --8<-- "docs/kafka/kafka-reliability.md:cheatsheet"
 
+### Kafka в Spring { #spring-kafka }
+
+[Полный разбор →](../kafka/spring-kafka.md)
+
+--8<-- "docs/kafka/spring-kafka.md:cheatsheet"
+
+## System Design { #system-design }
+
+### Интервью и оценка нагрузки { #interview }
+
+[Полный разбор →](../system-design/interview.md)
+
+--8<-- "docs/system-design/interview.md:cheatsheet"
+
+### Строительные блоки { #building-blocks }
+
+[Полный разбор →](../system-design/building-blocks.md)
+
+--8<-- "docs/system-design/building-blocks.md:cheatsheet"
+
+### Распределённые данные { #distributed-data }
+
+[Полный разбор →](../system-design/distributed-data.md)
+
+--8<-- "docs/system-design/distributed-data.md:cheatsheet"
+
+## Архитектура { #architecture }
+
+### DDD, CQRS и Event Sourcing { #ddd }
+
+[Полный разбор →](../architecture/ddd.md)
+
+--8<-- "docs/architecture/ddd.md:cheatsheet"
+
+### Слоистая и гексагональная архитектура { #hexagonal }
+
+[Полный разбор →](../architecture/hexagonal.md)
+
+--8<-- "docs/architecture/hexagonal.md:cheatsheet"
+
+### Микросервисы и отказоустойчивость { #microservices }
+
+[Полный разбор →](../architecture/microservices.md)
+
+--8<-- "docs/architecture/microservices.md:cheatsheet"
+
+### Распределённые транзакции { #distributed-transactions }
+
+[Полный разбор →](../architecture/distributed-transactions.md)
+
+--8<-- "docs/architecture/distributed-transactions.md:cheatsheet"
+
+## Инфраструктура { #infrastructure }
+
+### Docker и Compose { #docker }
+
+[Полный разбор →](../infrastructure/docker.md)
+
+--8<-- "docs/infrastructure/docker.md:cheatsheet"
+
+### CI/CD и миграции БД { #cicd }
+
+[Полный разбор →](../infrastructure/cicd.md)
+
+--8<-- "docs/infrastructure/cicd.md:cheatsheet"
+
+### Kubernetes { #kubernetes }
+
+[Полный разбор →](../infrastructure/kubernetes.md)
+
+--8<-- "docs/infrastructure/kubernetes.md:cheatsheet"
+
+### Observability { #observability }
+
+[Полный разбор →](../infrastructure/observability.md)
+
+--8<-- "docs/infrastructure/observability.md:cheatsheet"
+
 ## Computer Science { #cs }
 
-### Теория (Big O, структуры, сортировки) { #algorithms }
+### Big O и структуры данных { #algorithms }
 
 [Полный разбор →](../algorithms/algorithms.md)
 
 --8<-- "docs/algorithms/algorithms.md:cheatsheet"
 
-### Паттерны задач (LeetCode) { #leetcode-patterns }
+### Сортировки и графы { #sorting-graphs }
+
+[Полный разбор →](../algorithms/sorting-graphs.md)
+
+--8<-- "docs/algorithms/sorting-graphs.md:cheatsheet"
+
+### Задачи: массивы и строки { #leetcode-patterns }
 
 [Полный разбор →](../algorithms/leetcode-patterns.md)
 
 --8<-- "docs/algorithms/leetcode-patterns.md:cheatsheet"
 
-### HTTP, TCP, REST, gRPC { #networks }
+### Задачи: деревья, графы, ДП { #leetcode-trees-dp }
+
+[Полный разбор →](../algorithms/leetcode-trees-dp.md)
+
+--8<-- "docs/algorithms/leetcode-trees-dp.md:cheatsheet"
+
+### TCP/IP, HTTP и TLS { #networks }
 
 [Полный разбор →](../networks/networks.md)
 
 --8<-- "docs/networks/networks.md:cheatsheet"
 
-## Проектирование { #design }
+### REST, gRPC и WebSocket { #api-styles }
 
-### Масштабирование систем { #system-design }
+[Полный разбор →](../networks/api-styles.md)
 
-[Полный разбор →](../system-design/system-design.md)
-
---8<-- "docs/system-design/system-design.md:cheatsheet"
-
-### DDD, микросервисы, CQRS { #architecture }
-
-[Полный разбор →](../architecture/architecture.md)
-
---8<-- "docs/architecture/architecture.md:cheatsheet"
-
-### Docker, CI/CD, K8s { #infrastructure }
-
-[Полный разбор →](../infrastructure/infrastructure.md)
-
---8<-- "docs/infrastructure/infrastructure.md:cheatsheet"
+--8<-- "docs/networks/api-styles.md:cheatsheet"

@@ -7,64 +7,10 @@ tags:
 
 # Вопросы собеса
 
-Все 439 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 437 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
-## Язык Java { #java }
-
-### JVM и память { #jvm }
-
-- [Чем отличаются JVM, JRE и JDK?](../java/jvm.md#jvm-jre-jdk) — *Junior*
-- [Как GC понимает, что объект больше не нужен?](../java/jvm.md#gc-roots) — *Junior*
-- [Что такое гипотеза поколений?](../java/jvm.md#generations) — *Middle*
-- [Как работает Mark-Sweep-Compact?](../java/jvm.md#mark-sweep-compact) — *Middle*
-- [Что такое Stop-The-World?](../java/jvm.md#stw) — *Middle*
-- [Какие сборщики мусора есть и какой выбрать?](../java/jvm.md#collectors) — *Senior*
-- [Чем Stack отличается от Heap?](../java/jvm.md#stack-heap) — *Junior*
-- [Что такое Metaspace и чем он отличается от PermGen?](../java/jvm.md#metaspace) — *Middle*
-- [Где живут статические переменные и String Pool?](../java/jvm.md#static-location) — *Senior*
-- [Как очищается Metaspace?](../java/jvm.md#metaspace-gc) — *Senior*
-- [Что такое OutOfMemoryError?](../java/jvm.md#oom-basics) — *Junior*
-- [Какие бывают OutOfMemoryError?](../java/jvm.md#oom-types) — *Middle*
-- [Как расследовать и лечить OutOfMemoryError?](../java/jvm.md#oom-investigation) — *Senior*
-
-### Многопоточность { #multithreading }
-
-- [Чем поток отличается от процесса?](../java/multithreading.md#thread-vs-process) — *Junior*
-- [Как создать поток: `Thread` или `Runnable`?](../java/multithreading.md#thread-vs-runnable) — *Junior*
-- [Какие состояния есть у потока?](../java/multithreading.md#thread-states) — *Junior*
-- [Как работают `join`, `sleep` и `yield`?](../java/multithreading.md#join-sleep-yield) — *Junior*
-- [Как правильно остановить поток?](../java/multithreading.md#interrupt) — *Middle*
-- [Как работает `synchronized`?](../java/multithreading.md#synchronized) — *Junior*
-- [Зачем `wait()` вызывают в цикле `while`?](../java/multithreading.md#wait-notify) — *Middle*
-- [Какие три проблемы решает JMM?](../java/multithreading.md#jmm-basics) — *Middle*
-- [Что такое happens-before?](../java/multithreading.md#happens-before) — *Middle*
-- [Что гарантирует `volatile`, а что нет?](../java/multithreading.md#volatile) — *Middle*
-- [Как `final`-поля помогают безопасной публикации?](../java/multithreading.md#final-fields) — *Senior*
-- [Чем `ReentrantLock` лучше `synchronized`?](../java/multithreading.md#reentrantlock) — *Middle*
-- [Зачем нужны `ReadWriteLock`, `StampedLock` и `Condition`?](../java/multithreading.md#rwlock-condition) — *Middle*
-- [Как работают атомики?](../java/multithreading.md#atomics) — *Middle*
-- [Почему `LongAdder` быстрее `AtomicLong` под нагрузкой?](../java/multithreading.md#longadder) — *Senior*
-- [Чем `CountDownLatch` отличается от `CyclicBarrier`?](../java/multithreading.md#latch-barrier) — *Middle*
-- [Как `Semaphore` ограничивает доступ?](../java/multithreading.md#semaphore) — *Middle*
-- [Что такое deadlock и как он возникает?](../java/multithreading.md#deadlock) — *Middle*
-- [Как найти дедлок в работающем приложении?](../java/multithreading.md#deadlock-detection) — *Middle*
-- [Как избежать дедлока?](../java/multithreading.md#deadlock-prevention) — *Middle*
-- [Чем livelock и starvation отличаются от deadlock?](../java/multithreading.md#livelock-starvation) — *Middle*
-- [Зачем пулы, если есть `new Thread()`?](../java/multithreading.md#why-pools) — *Junior*
-- [Как `ThreadPoolExecutor` решает, что делать с задачей?](../java/multithreading.md#thread-pool-executor) — *Middle*
-- [Чем опасны фабрики `Executors`?](../java/multithreading.md#executors-factories) — *Middle*
-- [Как устроен `ForkJoinPool`?](../java/multithreading.md#forkjoinpool) — *Senior*
-- [Чем плох `Future`?](../java/multithreading.md#future) — *Junior*
-- [Как строить цепочки на `CompletableFuture`?](../java/multithreading.md#completablefuture) — *Middle*
-- [Как обрабатывать ошибки в `CompletableFuture`?](../java/multithreading.md#cf-errors) — *Middle*
-- [Что такое CAS и проблема ABA?](../java/multithreading.md#cas-aba) — *Senior*
-- [Как устроен AQS?](../java/multithreading.md#aqs) — *Senior*
-- [Чем `LockSupport.park()` отличается от `wait()`?](../java/multithreading.md#park-unpark) — *Senior*
-- [Что такое false sharing?](../java/multithreading.md#false-sharing) — *Senior*
-- [Чем виртуальные потоки отличаются от платформенных?](../java/multithreading.md#virtual-threads) — *Middle*
-- [Что такое pinning?](../java/multithreading.md#pinning) — *Senior*
-- [Что такое Structured Concurrency?](../java/multithreading.md#structured-concurrency) — *Senior*
+## Java { #java }
 
 ### Основы языка { #basics }
 
@@ -88,56 +34,18 @@ tags:
 - [Что такое String Pool?](../java/strings.md#string-pool) — *Junior*
 - [Как работает `intern()`?](../java/strings.md#intern) — *Middle*
 
-### Современная Java { #modern-java }
-
-- [Что такое `var` и где его нельзя использовать?](../java/modern-java.md#var) — *Junior*
-- [Что такое `record`?](../java/modern-java.md#records) — *Junior*
-- [Как работает новый `switch`?](../java/modern-java.md#switch-expressions) — *Junior*
-- [Что такое pattern matching?](../java/modern-java.md#pattern-matching) — *Middle*
-- [Что такое `sealed`-классы?](../java/modern-java.md#sealed) — *Middle*
-- [Зачем `sealed` нужен в паре со `switch`?](../java/modern-java.md#sealed-switch) — *Senior*
-
 ### ООП { #oop }
 
 - [Что такое ООП и зачем оно нужно?](../java/oop.md#what-is-oop) — *Junior*
 - [Что такое инкапсуляция?](../java/oop.md#encapsulation) — *Junior*
 - [Что такое абстракция?](../java/oop.md#abstraction) — *Junior*
 - [Что такое полиморфизм?](../java/oop.md#polymorphism) — *Junior*
-- [Почему с наследованием нужно быть осторожным?](../java/oop.md#inheritance) — *Middle*
 - [Чем интерфейс отличается от абстрактного класса?](../java/oop.md#interface-vs-abstract) — *Junior*
 - [Зачем в интерфейсах `default`, `static` и `private` методы?](../java/oop.md#interface-methods) — *Middle*
 - [Превратили ли `default`-методы интерфейс в абстрактный класс?](../java/oop.md#interface-state) — *Middle*
 - [Что входит в сигнатуру метода?](../java/oop.md#signature) — *Junior*
 - [Чем перегрузка отличается от переопределения?](../java/oop.md#overload-vs-override) — *Junior*
 - [Можно ли при переопределении изменить тип возвращаемого значения?](../java/oop.md#covariant-return) — *Middle*
-- [Почему наследование нарушает инкапсуляцию?](../java/oop.md#fragile-base-class) — *Middle*
-- [Когда наследование всё-таки уместно?](../java/oop.md#when-inherit) — *Middle*
-- [Что такое high cohesion и low coupling?](../java/oop.md#cohesion-coupling) — *Middle*
-- [Как эти принципы работают в микросервисах?](../java/oop.md#microservices) — *Senior*
-
-### Коллекции { #collections }
-
-- [Как устроена иерархия коллекций?](../java/collections.md#collection-hierarchy) — *Junior*
-- [Почему `Map` — это не `Collection`?](../java/collections.md#map-not-collection) — *Junior*
-- [Как устроен `ArrayList`?](../java/collections.md#arraylist) — *Junior*
-- [Как устроен `LinkedList`?](../java/collections.md#linkedlist) — *Junior*
-- [Что быстрее для вставки в середину: `ArrayList` или `LinkedList`?](../java/collections.md#insert-middle) — *Middle*
-- [Почему `LinkedList` проигрывает даже при равной асимптотике?](../java/collections.md#cache-locality) — *Senior*
-- [Как `HashMap` устроена внутри?](../java/collections.md#hashmap-internals) — *Junior*
-- [Как `HashMap` находит бакет по ключу?](../java/collections.md#bucket-index) — *Middle*
-- [Что происходит при коллизии?](../java/collections.md#collisions) — *Middle*
-- [Когда `HashMap` расширяется?](../java/collections.md#rehashing) — *Middle*
-- [Зачем в Java 8 бакеты превращаются в деревья?](../java/collections.md#treeify) — *Senior*
-- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/collections.md#map-choice) — *Junior*
-- [Как `HashSet` обеспечивает уникальность?](../java/collections.md#hashset) — *Junior*
-- [Как `TreeSet` сортирует элементы?](../java/collections.md#treeset) — *Junior*
-- [`Comparable` или `Comparator`?](../java/collections.md#comparable-comparator) — *Junior*
-- [Почему `Stack` устарел и чем его заменить?](../java/collections.md#stack-arraydeque) — *Junior*
-- [Как работает `PriorityQueue`?](../java/collections.md#priorityqueue) — *Middle*
-- [Откуда берётся `ConcurrentModificationException`?](../java/collections.md#cme) — *Middle*
-- [Чем плохи `Hashtable` и `Vector`?](../java/collections.md#hashtable-vector) — *Junior*
-- [Как `ConcurrentHashMap` обходится почти без блокировок?](../java/collections.md#concurrenthashmap) — *Senior*
-- [Когда нужен `CopyOnWriteArrayList`?](../java/collections.md#copyonwritearraylist) — *Middle*
 
 ### Исключения { #exceptions }
 
@@ -165,6 +73,39 @@ tags:
 - [Что такое heap pollution?](../java/generics.md#heap-pollution) — *Senior*
 - [Когда ставить `@SafeVarargs`?](../java/generics.md#safevarargs) — *Senior*
 
+### Современная Java { #modern-java }
+
+- [Что такое `var` и где его нельзя использовать?](../java/modern-java.md#var) — *Junior*
+- [Что такое `record`?](../java/modern-java.md#records) — *Junior*
+- [Как работает новый `switch`?](../java/modern-java.md#switch-expressions) — *Junior*
+- [Что такое pattern matching?](../java/modern-java.md#pattern-matching) — *Middle*
+- [Что такое `sealed`-классы?](../java/modern-java.md#sealed) — *Middle*
+- [Зачем `sealed` нужен в паре со `switch`?](../java/modern-java.md#sealed-switch) — *Senior*
+
+### Коллекции { #collections }
+
+- [Как устроена иерархия коллекций?](../java/collections.md#collection-hierarchy) — *Junior*
+- [Почему `Map` — это не `Collection`?](../java/collections.md#map-not-collection) — *Junior*
+- [Как устроен `ArrayList`?](../java/collections.md#arraylist) — *Junior*
+- [Как устроен `LinkedList`?](../java/collections.md#linkedlist) — *Junior*
+- [Что быстрее для вставки в середину: `ArrayList` или `LinkedList`?](../java/collections.md#insert-middle) — *Middle*
+- [Почему `LinkedList` проигрывает даже при равной асимптотике?](../java/collections.md#cache-locality) — *Senior*
+- [Как `HashSet` обеспечивает уникальность?](../java/collections.md#hashset) — *Junior*
+- [Как `TreeSet` сортирует элементы?](../java/collections.md#treeset) — *Junior*
+- [`Comparable` или `Comparator`?](../java/collections.md#comparable-comparator) — *Junior*
+- [Почему `Stack` устарел и чем его заменить?](../java/collections.md#stack-arraydeque) — *Junior*
+- [Как работает `PriorityQueue`?](../java/collections.md#priorityqueue) — *Middle*
+- [Откуда берётся `ConcurrentModificationException`?](../java/collections.md#cme) — *Middle*
+
+### HashMap { #hashmap }
+
+- [Как `HashMap` устроена внутри?](../java/hashmap.md#hashmap-internals) — *Junior*
+- [Как `HashMap` находит бакет по ключу?](../java/hashmap.md#bucket-index) — *Middle*
+- [Что происходит при коллизии?](../java/hashmap.md#collisions) — *Middle*
+- [Когда `HashMap` расширяется?](../java/hashmap.md#rehashing) — *Middle*
+- [Зачем в Java 8 бакеты превращаются в деревья?](../java/hashmap.md#treeify) — *Senior*
+- [`HashMap`, `LinkedHashMap` или `TreeMap`?](../java/hashmap.md#map-choice) — *Junior*
+
 ### Stream API { #streams }
 
 - [Что такое Stream и из чего состоит конвейер?](../java/streams.md#what-is-stream) — *Junior*
@@ -178,13 +119,16 @@ tags:
 - [Чем опасен `toMap`?](../java/streams.md#to-map) — *Middle*
 - [Как группировать элементы?](../java/streams.md#grouping) — *Middle*
 - [Как склеить строки из стрима?](../java/streams.md#joining) — *Junior*
-- [Что такое `Optional` и как его создать?](../java/streams.md#optional-basics) — *Junior*
-- [Чем `orElse` отличается от `orElseGet`?](../java/streams.md#orelse) — *Middle*
-- [Как правильно работать с `Optional`?](../java/streams.md#optional-chains) — *Middle*
-- [Что такое функциональный интерфейс?](../java/streams.md#functional-interfaces) — *Junior*
-- [Что такое ссылки на методы?](../java/streams.md#method-references) — *Junior*
-- [Почему лямбда требует effectively final?](../java/streams.md#effectively-final) — *Middle*
 - [Как решать типовые задачи на стримы?](../java/streams.md#stream-tasks) — *Middle*
+
+### Лямбды и Optional { #functional }
+
+- [Что такое функциональный интерфейс?](../java/functional.md#functional-interfaces) — *Junior*
+- [Что такое ссылки на методы?](../java/functional.md#method-references) — *Junior*
+- [Почему лямбда требует effectively final?](../java/functional.md#effectively-final) — *Middle*
+- [Что такое `Optional` и как его создать?](../java/functional.md#optional-basics) — *Junior*
+- [Чем `orElse` отличается от `orElseGet`?](../java/functional.md#orelse) — *Middle*
+- [Как правильно работать с `Optional`?](../java/functional.md#optional-chains) — *Middle*
 
 ### IO / NIO { #io-nio }
 
@@ -201,27 +145,119 @@ tags:
 - [Как скопировать файл?](../java/io-nio.md#copy) — *Junior*
 - [Как работать с properties-файлами?](../java/io-nio.md#properties) — *Junior*
 
+### Память и сборка мусора { #jvm }
+
+- [Чем отличаются JVM, JRE и JDK?](../java/jvm.md#jvm-jre-jdk) — *Junior*
+- [Как GC понимает, что объект больше не нужен?](../java/jvm.md#gc-roots) — *Junior*
+- [Что такое гипотеза поколений?](../java/jvm.md#generations) — *Middle*
+- [Как работает Mark-Sweep-Compact?](../java/jvm.md#mark-sweep-compact) — *Middle*
+- [Что такое Stop-The-World?](../java/jvm.md#stw) — *Middle*
+- [Какие сборщики мусора есть и какой выбрать?](../java/jvm.md#collectors) — *Senior*
+- [Чем Stack отличается от Heap?](../java/jvm.md#stack-heap) — *Junior*
+- [Что такое Metaspace и чем он отличается от PermGen?](../java/jvm.md#metaspace) — *Middle*
+- [Где живут статические переменные и String Pool?](../java/jvm.md#static-location) — *Senior*
+- [Как очищается Metaspace?](../java/jvm.md#metaspace-gc) — *Senior*
+- [Что такое OutOfMemoryError?](../java/jvm.md#oom-basics) — *Junior*
+- [Какие бывают OutOfMemoryError?](../java/jvm.md#oom-types) — *Middle*
+- [Как расследовать и лечить OutOfMemoryError?](../java/jvm.md#oom-investigation) — *Senior*
+
+## Многопоточность { #concurrency }
+
+### Потоки и ThreadLocal { #threads }
+
+- [Чем поток отличается от процесса?](../concurrency/threads.md#thread-vs-process) — *Junior*
+- [Как создать поток: `Thread` или `Runnable`?](../concurrency/threads.md#thread-vs-runnable) — *Junior*
+- [Какие состояния есть у потока?](../concurrency/threads.md#thread-states) — *Junior*
+- [Как работают `join`, `sleep` и `yield`?](../concurrency/threads.md#join-sleep-yield) — *Junior*
+- [Как правильно остановить поток?](../concurrency/threads.md#interrupt) — *Middle*
+- [Как работает `ThreadLocal` и почему он течёт в пуле потоков?](../concurrency/threads.md#thread-local) — *Middle*
+
+### Блокировки и синхронизаторы { #locks }
+
+- [Как работает `synchronized`?](../concurrency/locks.md#synchronized) — *Junior*
+- [Зачем `wait()` вызывают в цикле `while`?](../concurrency/locks.md#wait-notify) — *Middle*
+- [Чем `ReentrantLock` лучше `synchronized`?](../concurrency/locks.md#reentrantlock) — *Middle*
+- [Зачем нужны `ReadWriteLock`, `StampedLock` и `Condition`?](../concurrency/locks.md#rwlock-condition) — *Middle*
+- [Чем `CountDownLatch` отличается от `CyclicBarrier`?](../concurrency/locks.md#latch-barrier) — *Middle*
+- [Как `Semaphore` ограничивает доступ?](../concurrency/locks.md#semaphore) — *Middle*
+- [Как устроен AQS?](../concurrency/locks.md#aqs) — *Senior*
+- [Чем `LockSupport.park()` отличается от `wait()`?](../concurrency/locks.md#park-unpark) — *Senior*
+
+### JMM, volatile и атомики { #jmm }
+
+- [Какие три проблемы решает JMM?](../concurrency/jmm.md#jmm-basics) — *Middle*
+- [Что такое happens-before?](../concurrency/jmm.md#happens-before) — *Middle*
+- [Что гарантирует `volatile`, а что нет?](../concurrency/jmm.md#volatile) — *Middle*
+- [Как `final`-поля помогают безопасной публикации?](../concurrency/jmm.md#final-fields) — *Senior*
+- [Как работают атомики?](../concurrency/jmm.md#atomics) — *Middle*
+- [Что такое CAS и проблема ABA?](../concurrency/jmm.md#cas-aba) — *Senior*
+- [Почему `LongAdder` быстрее `AtomicLong` под нагрузкой?](../concurrency/jmm.md#longadder) — *Senior*
+- [Что такое false sharing?](../concurrency/jmm.md#false-sharing) — *Senior*
+
+### Deadlock, livelock, starvation { #deadlock }
+
+- [Что такое deadlock и как он возникает?](../concurrency/deadlock.md#deadlock) — *Middle*
+- [Как найти дедлок в работающем приложении?](../concurrency/deadlock.md#deadlock-detection) — *Middle*
+- [Как избежать дедлока?](../concurrency/deadlock.md#deadlock-prevention) — *Middle*
+- [Чем livelock и starvation отличаются от deadlock?](../concurrency/deadlock.md#livelock-starvation) — *Middle*
+
+### Пулы потоков и CompletableFuture { #executors }
+
+- [Зачем пулы, если есть `new Thread()`?](../concurrency/executors.md#why-pools) — *Junior*
+- [Как `ThreadPoolExecutor` решает, что делать с задачей?](../concurrency/executors.md#thread-pool-executor) — *Middle*
+- [Чем опасны фабрики `Executors`?](../concurrency/executors.md#executors-factories) — *Middle*
+- [Как устроен `ForkJoinPool`?](../concurrency/executors.md#forkjoinpool) — *Senior*
+- [Чем плох `Future`?](../concurrency/executors.md#future) — *Junior*
+- [Как строить цепочки на `CompletableFuture`?](../concurrency/executors.md#completablefuture) — *Middle*
+- [Как обрабатывать ошибки в `CompletableFuture`?](../concurrency/executors.md#cf-errors) — *Middle*
+
+### Потокобезопасные коллекции { #concurrent-collections }
+
+- [Чем плохи `Hashtable` и `Vector`?](../concurrency/concurrent-collections.md#hashtable-vector) — *Junior*
+- [Как `ConcurrentHashMap` обходится почти без блокировок?](../concurrency/concurrent-collections.md#concurrenthashmap) — *Senior*
+- [Когда нужен `CopyOnWriteArrayList`?](../concurrency/concurrent-collections.md#copyonwritearraylist) — *Middle*
+
+### Виртуальные потоки { #virtual-threads }
+
+- [Чем виртуальные потоки отличаются от платформенных?](../concurrency/virtual-threads.md#virtual-threads) — *Middle*
+- [Что такое pinning?](../concurrency/virtual-threads.md#pinning) — *Senior*
+- [Что такое Structured Concurrency?](../concurrency/virtual-threads.md#structured-concurrency) — *Senior*
+
+## Дизайн кода { #design }
+
+### Композиция и зацепление { #composition }
+
+- [Почему наследование нарушает инкапсуляцию?](../design/composition.md#fragile-base-class) — *Middle*
+- [Когда наследование всё-таки уместно?](../design/composition.md#when-inherit) — *Middle*
+- [Что такое high cohesion и low coupling?](../design/composition.md#cohesion-coupling) — *Middle*
+
 ### SOLID { #solid }
 
-- [Что такое Single Responsibility Principle?](../java/solid.md#srp) — *Junior*
-- [Что такое Open/Closed Principle?](../java/solid.md#ocp) — *Junior*
-- [Что такое Liskov Substitution Principle?](../java/solid.md#lsp) — *Middle*
-- [Что такое Interface Segregation Principle?](../java/solid.md#isp) — *Junior*
-- [Что такое Dependency Inversion Principle?](../java/solid.md#dip) — *Middle*
+- [Что такое Single Responsibility Principle?](../design/solid.md#srp) — *Junior*
+- [Что такое Open/Closed Principle?](../design/solid.md#ocp) — *Junior*
+- [Что такое Liskov Substitution Principle?](../design/solid.md#lsp) — *Middle*
+- [Что такое Interface Segregation Principle?](../design/solid.md#isp) — *Junior*
+- [Что такое Dependency Inversion Principle?](../design/solid.md#dip) — *Middle*
 
-### Паттерны проектирования { #patterns }
+### Порождающие паттерны { #creational-patterns }
 
-- [Как написать потокобезопасный Singleton?](../java/patterns.md#singleton) — *Middle*
-- [Почему Enum Singleton считается самым надёжным?](../java/patterns.md#enum-singleton) — *Middle*
-- [Зачем нужен Builder?](../java/patterns.md#builder) — *Junior*
-- [Что такое Factory Method и чем он отличается от Simple Factory?](../java/patterns.md#factory-method) — *Middle*
-- [Что такое Decorator?](../java/patterns.md#decorator) — *Middle*
-- [Что такое Strategy?](../java/patterns.md#strategy) — *Junior*
-- [Что такое Observer?](../java/patterns.md#observer) — *Middle*
+- [Как написать потокобезопасный Singleton?](../design/creational-patterns.md#singleton) — *Middle*
+- [Почему Enum Singleton считается самым надёжным?](../design/creational-patterns.md#enum-singleton) — *Middle*
+- [Зачем нужен Builder?](../design/creational-patterns.md#builder) — *Junior*
+- [Что такое Factory Method и чем он отличается от Simple Factory?](../design/creational-patterns.md#factory-method) — *Middle*
+
+### Структурные паттерны { #structural-patterns }
+
+- [Что такое Decorator?](../design/structural-patterns.md#decorator) — *Middle*
+
+### Поведенческие паттерны { #behavioral-patterns }
+
+- [Что такое Strategy?](../design/behavioral-patterns.md#strategy) — *Junior*
+- [Что такое Observer?](../design/behavioral-patterns.md#observer) — *Middle*
 
 ## Spring { #spring }
 
-### Core (IoC, DI, AOP) { #spring-core }
+### Spring Core: IoC, DI, AOP { #spring-core }
 
 - [Что такое IoC и чем он отличается от DI?](../spring/spring-core.md#ioc-vs-di) — *Junior*
 - [Почему внедрение через конструктор лучше, чем через поле?](../spring/spring-core.md#constructor-injection) — *Junior*
@@ -251,7 +287,7 @@ tags:
 - [Как работают профили?](../spring/spring-boot.md#profiles) — *Junior*
 - [`@Value` или `@ConfigurationProperties`?](../spring/spring-boot.md#value-vs-configprops) — *Middle*
 
-### Spring MVC / REST { #spring-mvc }
+### Spring MVC и WebFlux { #spring-mvc }
 
 - [Как `DispatcherServlet` обрабатывает запрос?](../spring/spring-mvc.md#dispatcherservlet) — *Middle*
 - [Зачем нужен `HandlerAdapter`?](../spring/spring-mvc.md#handler-adapter) — *Senior*
@@ -265,70 +301,64 @@ tags:
 - [Как написать интерсептор?](../spring/spring-mvc.md#interceptor) — *Middle*
 - [Как работает `@Valid`?](../spring/spring-mvc.md#valid) — *Junior*
 - [Как настроить CORS?](../spring/spring-mvc.md#cors) — *Junior*
+- [Зачем нужен реактивный подход?](../spring/spring-mvc.md#why-reactive) — *Middle*
+- [Что такое `Mono` и `Flux`?](../spring/spring-mvc.md#mono-flux) — *Middle*
+- [Когда выбирать WebFlux, а когда MVC?](../spring/spring-mvc.md#webflux-vs-mvc) — *Senior*
 
-### Spring Data JPA { #spring-data-jpa }
+### Spring Security { #spring-security }
 
-- [Что происходит при вызове `@Transactional`-метода?](../spring/spring-data-jpa.md#transactional-flow) — *Middle*
-- [При каких исключениях Spring откатывает транзакцию?](../spring/spring-data-jpa.md#rollback-rules) — *Junior*
-- [Чем опасен самовызов для транзакций?](../spring/spring-data-jpa.md#self-invocation-transactions) — *Middle*
-- [Как работает `REQUIRED` и откуда берётся `UnexpectedRollbackException`?](../spring/spring-data-jpa.md#required) — *Senior*
-- [Когда нужен `REQUIRES_NEW`?](../spring/spring-data-jpa.md#requires-new) — *Middle*
-- [Чем `NESTED` отличается от `REQUIRES_NEW`?](../spring/spring-data-jpa.md#nested) — *Senior*
-- [Какие ещё бывают типы propagation?](../spring/spring-data-jpa.md#other-propagation) — *Junior*
-- [Как задать уровень изоляции в Spring?](../spring/spring-data-jpa.md#isolation) — *Middle*
-- [Как работает оптимистичная блокировка?](../spring/spring-data-jpa.md#optimistic-locking) — *Middle*
-- [Как работает пессимистичная блокировка?](../spring/spring-data-jpa.md#pessimistic-locking) — *Middle*
+- [Как устроен Spring Security?](../spring/spring-security.md#security-filter-chain) — *Middle*
+- [Как проходит аутентификация?](../spring/spring-security.md#authentication) — *Middle*
+- [Как настроить авторизацию?](../spring/spring-security.md#authorization) — *Junior*
+- [Как учитывать безопасность в дизайне?](../spring/spring-security.md#sessions-vs-jwt) — *Middle*
+- [Как встроить JWT в Spring Security?](../spring/spring-security.md#jwt-filter) — *Middle*
+- [Почему теряется `SecurityContext` в асинхронном коде?](../spring/spring-security.md#security-context-async) — *Senior*
+- [Как сделать logout, если используется JWT?](../spring/spring-security.md#jwt-logout) — *Senior*
+
+### Транзакции в Spring { #spring-transactions }
+
+- [Что происходит при вызове `@Transactional`-метода?](../spring/spring-transactions.md#transactional-flow) — *Middle*
+- [При каких исключениях Spring откатывает транзакцию?](../spring/spring-transactions.md#rollback-rules) — *Junior*
+- [Чем опасен самовызов для транзакций?](../spring/spring-transactions.md#self-invocation-transactions) — *Middle*
+- [Как работает `REQUIRED` и откуда берётся `UnexpectedRollbackException`?](../spring/spring-transactions.md#required) — *Senior*
+- [Когда нужен `REQUIRES_NEW`?](../spring/spring-transactions.md#requires-new) — *Middle*
+- [Чем `NESTED` отличается от `REQUIRES_NEW`?](../spring/spring-transactions.md#nested) — *Senior*
+- [Какие ещё бывают типы propagation?](../spring/spring-transactions.md#other-propagation) — *Junior*
+- [Как задать уровень изоляции в Spring?](../spring/spring-transactions.md#isolation) — *Middle*
+
+### Spring Data JPA и Hibernate { #spring-data-jpa }
+
 - [Что такое проблема N+1 и как её решить?](../spring/spring-data-jpa.md#n-plus-one) — *Middle*
 - [Какие состояния бывают у Entity?](../spring/spring-data-jpa.md#entity-lifecycle) — *Middle*
 - [Что такое dirty checking?](../spring/spring-data-jpa.md#dirty-checking) — *Middle*
 - [Чем `save()` отличается от `saveAndFlush()`?](../spring/spring-data-jpa.md#save-vs-saveandflush) — *Middle*
 - [Чем кэш первого уровня отличается от второго?](../spring/spring-data-jpa.md#hibernate-cache) — *Middle*
 
-### Security, Kafka, DDD { #spring-ecosystem }
+### Кэширование { #spring-caching }
 
-- [Как устроен Spring Security?](../spring/spring-ecosystem.md#security-filter-chain) — *Middle*
-- [Как проходит аутентификация?](../spring/spring-ecosystem.md#authentication) — *Middle*
-- [Как настроить авторизацию?](../spring/spring-ecosystem.md#authorization) — *Junior*
-- [Как встроить JWT в Spring Security?](../spring/spring-ecosystem.md#jwt-filter) — *Middle*
-- [Почему теряется `SecurityContext` в асинхронном коде?](../spring/spring-ecosystem.md#security-context-async) — *Senior*
-- [Как сделать logout, если используется JWT?](../spring/spring-ecosystem.md#jwt-logout) — *Senior*
-- [Как работает `@KafkaListener`?](../spring/spring-ecosystem.md#kafka-listener) — *Middle*
-- [Как настроить коммит оффсетов и обработку ошибок листенера?](../spring/spring-ecosystem.md#listener-config) — *Middle*
-- [В каких слоях живут аннотации Spring?](../spring/spring-ecosystem.md#where-annotations) — *Middle*
-- [Как адаптеры и конфигурация связывают ядро со Spring?](../spring/spring-ecosystem.md#adapters-config) — *Middle*
-- [Где ставить `@Transactional`, если в ядре нет Spring?](../spring/spring-ecosystem.md#transactional-ddd) — *Senior*
-- [Зачем маппить доменную модель в отдельную JPA Entity?](../spring/spring-ecosystem.md#double-entities) — *Senior*
+- [Как работает `@Cacheable`?](../spring/spring-caching.md#cacheable) — *Junior*
+- [Как вручную реализовать Cache-Aside на Redis?](../spring/spring-caching.md#cache-aside) — *Middle*
+- [Как настроить Redis-кэш с TTL?](../spring/spring-caching.md#redis-cache-config) — *Middle*
+- [Чем `condition` отличается от `unless`?](../spring/spring-caching.md#condition-vs-unless) — *Middle*
 
-### Тестирование и инструменты { #spring-tools }
+### Тестирование { #spring-testing }
 
-- [Какой тестовый срез выбрать?](../spring/spring-tools.md#test-slices) — *Junior*
-- [Как написать юнит-тест без Spring?](../spring/spring-tools.md#unit-tests) — *Junior*
-- [Как протестировать контроллер без БД?](../spring/spring-tools.md#webmvctest) — *Middle*
-- [Как протестировать репозиторий?](../spring/spring-tools.md#datajpatest) — *Middle*
-- [Зачем нужны Testcontainers?](../spring/spring-tools.md#testcontainers) — *Middle*
-- [Как работает `@Cacheable`?](../spring/spring-tools.md#cacheable) — *Junior*
-- [Как настроить Redis-кэш с TTL?](../spring/spring-tools.md#redis-cache-config) — *Middle*
-- [Чем `condition` отличается от `unless`?](../spring/spring-tools.md#condition-vs-unless) — *Middle*
-- [Что даёт Actuator и как его защитить?](../spring/spring-tools.md#actuator) — *Junior*
-- [Как писать свои метрики в Micrometer?](../spring/spring-tools.md#micrometer) — *Middle*
-- [Как подключить Prometheus и Grafana?](../spring/spring-tools.md#prometheus) — *Middle*
-- [Зачем нужен реактивный подход?](../spring/spring-tools.md#why-reactive) — *Middle*
-- [Что такое `Mono` и `Flux`?](../spring/spring-tools.md#mono-flux) — *Middle*
-- [Когда выбирать WebFlux, а когда MVC?](../spring/spring-tools.md#webflux-vs-mvc) — *Senior*
+- [Какой тестовый срез выбрать?](../spring/spring-testing.md#test-slices) — *Junior*
+- [Как написать юнит-тест без Spring?](../spring/spring-testing.md#unit-tests) — *Junior*
+- [Как протестировать контроллер без БД?](../spring/spring-testing.md#webmvctest) — *Middle*
+- [Как протестировать репозиторий?](../spring/spring-testing.md#datajpatest) — *Middle*
+- [Зачем нужны Testcontainers?](../spring/spring-testing.md#testcontainers) — *Middle*
+
+### Actuator и Micrometer { #spring-actuator }
+
+- [Что даёт Actuator и как его защитить?](../spring/spring-actuator.md#actuator) — *Junior*
+- [Как писать свои метрики в Micrometer?](../spring/spring-actuator.md#micrometer) — *Middle*
+- [Как подключить Prometheus и Grafana?](../spring/spring-actuator.md#prometheus) — *Middle*
 
 ## Данные { #data }
 
-### SQL и транзакции { #sql }
+### SQL и индексы { #sql }
 
-- [Что такое ACID?](../database/sql.md#acid-properties) — *Junior*
-- [Как БД гарантирует долговечность?](../database/sql.md#wal) — *Middle*
-- [Какие бывают аномалии чтения?](../database/sql.md#read-anomalies) — *Junior*
-- [Какие бывают уровни изоляции?](../database/sql.md#isolation-levels) — *Middle*
-- [Почему не ставить `SERIALIZABLE` везде?](../database/sql.md#serializable) — *Senior*
-- [Как работает MVCC?](../database/sql.md#mvcc-how) — *Middle*
-- [Как MVCC реализует уровни изоляции?](../database/sql.md#mvcc-isolation) — *Senior*
-- [Что такое table bloat и autovacuum?](../database/sql.md#vacuum) — *Senior*
-- [Чем MVCC в PostgreSQL отличается от MySQL?](../database/sql.md#mvcc-postgres-vs-mysql) — *Senior*
 - [Как индекс ускоряет поиск?](../database/sql.md#how-index) — *Junior*
 - [Какие типы индексов есть в PostgreSQL?](../database/sql.md#index-types) — *Middle*
 - [Когда индекс не помогает?](../database/sql.md#index-not-used) — *Middle*
@@ -340,22 +370,39 @@ tags:
 - [Что такое нормальные формы?](../database/sql.md#normal-forms) — *Junior*
 - [Когда денормализовать?](../database/sql.md#denormalization) — *Middle*
 
+### Транзакции и MVCC { #transactions }
+
+- [Что такое ACID?](../database/transactions.md#acid-properties) — *Junior*
+- [Как БД гарантирует долговечность?](../database/transactions.md#wal) — *Middle*
+- [Какие бывают аномалии чтения?](../database/transactions.md#read-anomalies) — *Junior*
+- [Какие бывают уровни изоляции?](../database/transactions.md#isolation-levels) — *Middle*
+- [Почему не ставить `SERIALIZABLE` везде?](../database/transactions.md#serializable) — *Senior*
+- [Как работает MVCC?](../database/transactions.md#mvcc-how) — *Middle*
+- [Как MVCC реализует уровни изоляции?](../database/transactions.md#mvcc-isolation) — *Senior*
+- [Что такое table bloat и autovacuum?](../database/transactions.md#vacuum) — *Senior*
+- [Чем MVCC в PostgreSQL отличается от MySQL?](../database/transactions.md#mvcc-postgres-vs-mysql) — *Senior*
+
+### Блокировки и конкурентные обновления { #locking }
+
+- [Что такое lost update и как его избежать?](../database/locking.md#lost-update) — *Middle*
+- [Что такое write skew и почему от него не спасает `REPEATABLE READ`?](../database/locking.md#write-skew) — *Senior*
+- [Как работает оптимистичная блокировка?](../database/locking.md#optimistic-locking) — *Middle*
+- [Как работает пессимистичная блокировка?](../database/locking.md#pessimistic-locking) — *Middle*
+
 ### NoSQL { #nosql }
 
 - [Зачем NoSQL, если есть SQL?](../database/nosql.md#nosql-vs-sql) — *Junior*
 - [Что такое документная БД?](../database/nosql.md#document-store) — *Junior*
 - [Что такое key-value хранилище?](../database/nosql.md#key-value) — *Junior*
+- [Redis, Memcached или Hazelcast?](../database/nosql.md#redis-cluster) — *Senior*
 - [Как устроены wide-column БД?](../database/nosql.md#wide-column) — *Middle*
 - [Когда нужна графовая БД?](../database/nosql.md#graph) — *Middle*
 - [Как сравнить четыре семейства?](../database/nosql.md#comparison) — *Middle*
-- [Где NoSQL-базы находятся в CAP-теореме?](../database/nosql.md#cap-theorem) — *Middle*
-- [Как вручную реализовать Cache-Aside на Redis?](../database/nosql.md#cache-aside) — *Middle*
 - [Что такое polyglot persistence?](../database/nosql.md#polyglot) — *Middle*
-- [Как сделать rate limiting на Redis?](../database/nosql.md#rate-limiting) — *Middle*
 
 ## Kafka { #kafka }
 
-### Физика брокера { #kafka-broker }
+### Брокер: топики, партиции, хранение { #kafka-broker }
 
 - [Чем Kafka отличается от RabbitMQ?](../kafka/kafka.md#kafka-vs-rabbitmq) — *Junior*
 - [Что такое топик и партиция?](../kafka/kafka.md#topic-partition) — *Junior*
@@ -367,7 +414,7 @@ tags:
 - [Зачем хранить сообщения неделями?](../kafka/kafka.md#why-retention) — *Junior*
 - [Что такое log compaction?](../kafka/kafka.md#log-compaction) — *Senior*
 
-### Consumer и Producer { #kafka-consumer-producer }
+### Порядок, группы и ребаланс { #kafka-consumer-producer }
 
 - [Почему Kafka не гарантирует глобальный порядок?](../kafka/kafka-consumer-producer.md#no-global-order) — *Junior*
 - [Что будет, если отправить сообщение без ключа?](../kafka/kafka-consumer-producer.md#null-key) — *Junior*
@@ -391,9 +438,135 @@ tags:
 - [Как сделать консьюмер идемпотентным?](../kafka/kafka-reliability.md#idempotent-consumer) — *Middle*
 - [Что делать с «ядовитым» сообщением?](../kafka/kafka-reliability.md#dlq) — *Middle*
 
+### Kafka в Spring { #spring-kafka }
+
+- [Как работает `@KafkaListener`?](../kafka/spring-kafka.md#kafka-listener) — *Middle*
+- [Как настроить коммит оффсетов и обработку ошибок листенера?](../kafka/spring-kafka.md#listener-config) — *Middle*
+
+## System Design { #system-design }
+
+### Интервью и оценка нагрузки { #interview }
+
+- [Какими метриками описывают систему?](../system-design/interview.md#metrics) — *Junior*
+- [Как оценить нагрузку «на салфетке»?](../system-design/interview.md#estimation) — *Middle*
+- [Как масштабировать сервис?](../system-design/interview.md#scaling) — *Junior*
+- [Как проходить интервью по system design?](../system-design/interview.md#methodology) — *Middle*
+- [Как спроектировать URL shortener?](../system-design/interview.md#url-shortener) — *Senior*
+- [Ради чего спрашивают классические задачи?](../system-design/interview.md#classic-tasks) — *Middle*
+- [Почему Round Robin убивает один сервер?](../system-design/interview.md#case-round-robin) — *Middle*
+- [Что убило базу в 10:10, если Redis-узел сгорел в 10:05?](../system-design/interview.md#case-stampede) — *Senior*
+- [Нужно ли шардировать таблицу на 100M строк?](../system-design/interview.md#case-sharding) — *Middle*
+- [Что делать сервису «Избранное», когда перерубили кабель между ДЦ?](../system-design/interview.md#case-partition) — *Senior*
+- [Почему письма теряются, дублируются и блокируют очередь?](../system-design/interview.md#case-emails) — *Senior*
+
+### Строительные блоки { #building-blocks }
+
+- [Чем L4-балансировщик отличается от L7?](../system-design/building-blocks.md#l4-l7) — *Middle*
+- [Какие есть алгоритмы балансировки?](../system-design/building-blocks.md#lb-algorithms) — *Middle*
+- [Почему sticky sessions — антипаттерн?](../system-design/building-blocks.md#sticky-sessions) — *Junior*
+- [Где и как кэшировать?](../system-design/building-blocks.md#caching) — *Middle*
+- [Как кэш вытесняет и инвалидирует данные?](../system-design/building-blocks.md#eviction) — *Junior*
+- [Что такое cache stampede и как его лечить?](../system-design/building-blocks.md#cache-stampede) — *Senior*
+- [Зачем нужны очереди сообщений?](../system-design/building-blocks.md#message-queues) — *Junior*
+- [Что даёт CDN?](../system-design/building-blocks.md#cdn) — *Junior*
+
+### Распределённые данные { #distributed-data }
+
+- [Как масштабировать БД репликацией?](../system-design/distributed-data.md#replication) — *Middle*
+- [Чем партиционирование отличается от шардирования?](../system-design/distributed-data.md#partitioning) — *Middle*
+- [Как шардировать и выбрать shard key?](../system-design/distributed-data.md#sharding) — *Senior*
+- [Что такое consistent hashing?](../system-design/distributed-data.md#consistent-hashing) — *Senior*
+- [Что утверждает CAP-теорема?](../system-design/distributed-data.md#cap) — *Middle*
+- [Что добавляет PACELC?](../system-design/distributed-data.md#pacelc) — *Senior*
+- [Какие бывают модели согласованности?](../system-design/distributed-data.md#consistency-models) — *Senior*
+- [Как узлы договариваются: Raft и Paxos?](../system-design/distributed-data.md#consensus) — *Senior*
+
+## Архитектура { #architecture }
+
+### DDD, CQRS и Event Sourcing { #ddd }
+
+- [Что такое Ubiquitous Language?](../architecture/ddd.md#ubiquitous-language) — *Junior*
+- [Что такое Bounded Context?](../architecture/ddd.md#bounded-context) — *Middle*
+- [Как связываются контексты?](../architecture/ddd.md#context-mapping) — *Senior*
+- [Что такое Entity и Aggregate?](../architecture/ddd.md#aggregate) — *Middle*
+- [Где должна жить бизнес-логика?](../architecture/ddd.md#rich-domain-model) — *Middle*
+- [Что такое Value Object?](../architecture/ddd.md#value-object) — *Junior*
+- [Что такое доменные события?](../architecture/ddd.md#domain-events) — *Middle*
+- [Что такое CQRS?](../architecture/ddd.md#cqrs) — *Senior*
+- [Что такое Event Sourcing?](../architecture/ddd.md#event-sourcing) — *Senior*
+
+### Слоистая и гексагональная архитектура { #hexagonal }
+
+- [Чем плоха классическая слоистая архитектура?](../architecture/hexagonal.md#layered) — *Middle*
+- [Как устроена гексагональная архитектура?](../architecture/hexagonal.md#hexagonal) — *Middle*
+- [Layered или Hexagonal?](../architecture/hexagonal.md#layered-vs-hexagonal) — *Middle*
+- [В каких слоях живут аннотации Spring?](../architecture/hexagonal.md#where-annotations) — *Middle*
+- [Как адаптеры и конфигурация связывают ядро со Spring?](../architecture/hexagonal.md#adapters-config) — *Middle*
+- [Где ставить `@Transactional`, если в ядре нет Spring?](../architecture/hexagonal.md#transactional-ddd) — *Senior*
+- [Зачем маппить доменную модель в отдельную JPA Entity?](../architecture/hexagonal.md#double-entities) — *Senior*
+
+### Микросервисы и отказоустойчивость { #microservices }
+
+- [Монолит или микросервисы?](../architecture/microservices.md#monolith-vs-microservices) — *Middle*
+- [Что такое модульный монолит?](../architecture/microservices.md#modular-monolith) — *Middle*
+- [Как high cohesion и low coupling работают в микросервисах?](../architecture/microservices.md#service-boundaries) — *Senior*
+- [Синхронно или асинхронно?](../architecture/microservices.md#sync-async) — *Junior*
+- [Зачем нужны API Gateway, BFF и Service Discovery?](../architecture/microservices.md#api-gateway) — *Middle*
+- [Как работает rate limiting?](../architecture/microservices.md#rate-limiting) — *Middle*
+- [Зачем нужны timeout и retry с backoff?](../architecture/microservices.md#timeout-retry) — *Middle*
+- [Как работает circuit breaker?](../architecture/microservices.md#circuit-breaker) — *Middle*
+- [Что такое bulkhead и graceful degradation?](../architecture/microservices.md#bulkhead) — *Middle*
+
+### Распределённые транзакции { #distributed-transactions }
+
+- [Какие бывают гарантии доставки и при чём тут идемпотентность?](../architecture/distributed-transactions.md#delivery-guarantees) — *Middle*
+- [Почему 2PC почти не используют в микросервисах?](../architecture/distributed-transactions.md#two-phase-commit) — *Senior*
+- [Как работает Saga?](../architecture/distributed-transactions.md#saga) — *Senior*
+- [Что такое Transactional Outbox?](../architecture/distributed-transactions.md#outbox) — *Senior*
+
+## Инфраструктура { #infrastructure }
+
+### Docker и Compose { #docker }
+
+- [Какую проблему решает Docker?](../infrastructure/docker.md#why-docker) — *Junior*
+- [Чем контейнер отличается от виртуальной машины?](../infrastructure/docker.md#container-vs-vm) — *Junior*
+- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/docker.md#image-container) — *Junior*
+- [На чём держится изоляция контейнера?](../infrastructure/docker.md#namespaces-cgroups) — *Middle*
+- [Как написать хороший Dockerfile для Java?](../infrastructure/docker.md#dockerfile) — *Middle*
+- [Какой базовый образ выбрать?](../infrastructure/docker.md#base-images) — *Middle*
+- [Почему контейнер нельзя запускать под root?](../infrastructure/docker.md#non-root) — *Junior*
+- [Как сервисы в Compose находят друг друга?](../infrastructure/docker.md#compose-dns) — *Junior*
+- [Как дождаться готовности базы при старте?](../infrastructure/docker.md#healthcheck) — *Junior*
+- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/docker.md#compose-profiles) — *Junior*
+- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/docker.md#kraft) — *Middle*
+- [Какие сети бывают в Docker?](../infrastructure/docker.md#docker-networks) — *Middle*
+- [Как Docker хранит данные?](../infrastructure/docker.md#volumes) — *Middle*
+
+### CI/CD и миграции БД { #cicd }
+
+- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/cicd.md#ci-cd) — *Junior*
+- [Из каких стадий состоит Java-пайплайн?](../infrastructure/cicd.md#pipeline) — *Middle*
+- [Какие есть стратегии деплоя?](../infrastructure/cicd.md#deploy-strategies) — *Middle*
+- [Зачем нужны Flyway и Liquibase?](../infrastructure/cicd.md#flyway) — *Junior*
+- [Как запускать миграции в CI/CD?](../infrastructure/cicd.md#migrations-cicd) — *Middle*
+- [Что будет, если изменить уже применённую миграцию?](../infrastructure/cicd.md#flyway-checksum) — *Middle*
+- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/cicd.md#flyway-lock) — *Senior*
+- [Как мигрировать схему без простоя?](../infrastructure/cicd.md#zero-downtime) — *Senior*
+
+### Kubernetes { #kubernetes }
+
+- [Что даёт Kubernetes?](../infrastructure/kubernetes.md#k8s-basics) — *Junior*
+- [Чем liveness отличается от readiness?](../infrastructure/kubernetes.md#health-checks) — *Junior*
+- [Что такое sidecar?](../infrastructure/kubernetes.md#sidecar) — *Middle*
+- [Зачем нужен reverse proxy?](../infrastructure/kubernetes.md#reverse-proxy) — *Junior*
+
+### Observability { #observability }
+
+- [Что такое observability?](../infrastructure/observability.md#observability) — *Middle*
+
 ## Computer Science { #cs }
 
-### Теория (Big O, структуры, сортировки) { #algorithms }
+### Big O и структуры данных { #algorithms }
 
 - [Что такое Big O?](../algorithms/algorithms.md#big-o-basics) — *Junior*
 - [Как упрощать Big O?](../algorithms/algorithms.md#simplification) — *Junior*
@@ -405,17 +578,20 @@ tags:
 - [Как устроено BST и как обходить дерево?](../algorithms/algorithms.md#tree-traversal) — *Junior*
 - [Как обойти дерево по уровням?](../algorithms/algorithms.md#tree-bfs) — *Junior*
 - [Что такое красно-чёрное дерево?](../algorithms/algorithms.md#red-black-tree) — *Middle*
-- [Какие сортировки нужно знать?](../algorithms/algorithms.md#sorting-overview) — *Middle*
-- [Как работает Merge Sort?](../algorithms/algorithms.md#merge-sort) — *Middle*
-- [Как работает Quick Sort?](../algorithms/algorithms.md#quick-sort) — *Middle*
-- [Как хранить граф?](../algorithms/algorithms.md#graph-representation) — *Junior*
-- [Как найти кратчайший путь в невзвешенном графе?](../algorithms/algorithms.md#graph-bfs) — *Middle*
-- [Как работает DFS?](../algorithms/algorithms.md#graph-dfs) — *Middle*
-- [Как работает алгоритм Дейкстры?](../algorithms/algorithms.md#dijkstra) — *Senior*
 - [Какая сложность у операций основных структур?](../algorithms/algorithms.md#structures-complexity) — *Junior*
 - [Какую сложность у основных алгоритмов назвать сразу?](../algorithms/algorithms.md#algorithms-complexity) — *Junior*
 
-### Паттерны задач (LeetCode) { #leetcode-patterns }
+### Сортировки и графы { #sorting-graphs }
+
+- [Какие сортировки нужно знать?](../algorithms/sorting-graphs.md#sorting-overview) — *Middle*
+- [Как работает Merge Sort?](../algorithms/sorting-graphs.md#merge-sort) — *Middle*
+- [Как работает Quick Sort?](../algorithms/sorting-graphs.md#quick-sort) — *Middle*
+- [Как хранить граф?](../algorithms/sorting-graphs.md#graph-representation) — *Junior*
+- [Как найти кратчайший путь в невзвешенном графе?](../algorithms/sorting-graphs.md#graph-bfs) — *Middle*
+- [Как работает DFS?](../algorithms/sorting-graphs.md#graph-dfs) — *Middle*
+- [Как работает алгоритм Дейкстры?](../algorithms/sorting-graphs.md#dijkstra) — *Senior*
+
+### Задачи: массивы и строки { #leetcode-patterns }
 
 - [Как решать задачу на собесе?](../algorithms/leetcode-patterns.md#framework) — *Junior*
 - [Какие edge cases проверять всегда?](../algorithms/leetcode-patterns.md#edge-cases) — *Junior*
@@ -428,17 +604,20 @@ tags:
 - [Как найти два числа с заданной суммой (Two Sum)?](../algorithms/leetcode-patterns.md#two-sum) — *Junior*
 - [Как сгруппировать анаграммы?](../algorithms/leetcode-patterns.md#group-anagrams) — *Middle*
 - [Как искать в повёрнутом отсортированном массиве?](../algorithms/leetcode-patterns.md#rotated-array) — *Middle*
-- [Как проверить, что дерево — валидное BST?](../algorithms/leetcode-patterns.md#validate-bst) — *Middle*
-- [Как посчитать количество островов?](../algorithms/leetcode-patterns.md#islands) — *Middle*
-- [Как найти кратчайший путь в лабиринте?](../algorithms/leetcode-patterns.md#maze) — *Middle*
-- [Что такое динамическое программирование?](../algorithms/leetcode-patterns.md#dp-basics) — *Middle*
-- [Как найти подмассив с максимальной суммой (Kadane)?](../algorithms/leetcode-patterns.md#kadane) — *Middle*
-- [Как набрать сумму минимальным числом монет (Coin Change)?](../algorithms/leetcode-patterns.md#coin-change) — *Middle*
-- [Как найти наибольшую общую подпоследовательность (LCS)?](../algorithms/leetcode-patterns.md#lcs) — *Middle*
 - [Как проверить скобочную последовательность?](../algorithms/leetcode-patterns.md#valid-parentheses) — *Junior*
 - [Как найти следующий больший элемент (монотонный стек)?](../algorithms/leetcode-patterns.md#monotonic-stack) — *Middle*
 
-### HTTP, TCP, REST, gRPC { #networks }
+### Задачи: деревья, графы, ДП { #leetcode-trees-dp }
+
+- [Как проверить, что дерево — валидное BST?](../algorithms/leetcode-trees-dp.md#validate-bst) — *Middle*
+- [Как посчитать количество островов?](../algorithms/leetcode-trees-dp.md#islands) — *Middle*
+- [Как найти кратчайший путь в лабиринте?](../algorithms/leetcode-trees-dp.md#maze) — *Middle*
+- [Что такое динамическое программирование?](../algorithms/leetcode-trees-dp.md#dp-basics) — *Middle*
+- [Как найти подмассив с максимальной суммой (Kadane)?](../algorithms/leetcode-trees-dp.md#kadane) — *Middle*
+- [Как набрать сумму минимальным числом монет (Coin Change)?](../algorithms/leetcode-trees-dp.md#coin-change) — *Middle*
+- [Как найти наибольшую общую подпоследовательность (LCS)?](../algorithms/leetcode-trees-dp.md#lcs) — *Middle*
+
+### TCP/IP, HTTP и TLS { #networks }
 
 - [На каких уровнях живут протоколы, которыми ты пользуешься?](../networks/networks.md#osi-tcpip) — *Junior*
 - [Чем TCP отличается от UDP?](../networks/networks.md#tcp-vs-udp) — *Junior*
@@ -454,99 +633,10 @@ tags:
 - [Что происходит, когда вводишь URL в браузере?](../networks/networks.md#url-flow) — *Junior*
 - [Как имя превращается в IP?](../networks/networks.md#dns-resolution) — *Junior*
 - [Какие бывают DNS-записи?](../networks/networks.md#dns-records) — *Junior*
-- [Что такое REST?](../networks/networks.md#rest) — *Junior*
-- [Как устроен gRPC?](../networks/networks.md#grpc) — *Middle*
-- [REST, gRPC или GraphQL?](../networks/networks.md#rest-vs-grpc) — *Middle*
-- [Когда нужен WebSocket и чем он отличается от SSE?](../networks/networks.md#websocket) — *Middle*
 
-## Проектирование { #design }
+### REST, gRPC и WebSocket { #api-styles }
 
-### Масштабирование систем { #system-design }
-
-- [Синхронно или асинхронно?](../system-design/system-design.md#sync-async) — *Junior*
-- [Какими метриками описывают систему?](../system-design/system-design.md#metrics) — *Junior*
-- [Как оценить нагрузку «на салфетке»?](../system-design/system-design.md#estimation) — *Middle*
-- [Чем L4-балансировщик отличается от L7?](../system-design/system-design.md#l4-l7) — *Middle*
-- [Какие есть алгоритмы балансировки?](../system-design/system-design.md#lb-algorithms) — *Middle*
-- [Почему sticky sessions — антипаттерн?](../system-design/system-design.md#sticky-sessions) — *Junior*
-- [Где и как кэшировать?](../system-design/system-design.md#caching) — *Middle*
-- [Как кэш вытесняет и инвалидирует данные?](../system-design/system-design.md#eviction) — *Junior*
-- [Что такое cache stampede и как его лечить?](../system-design/system-design.md#cache-stampede) — *Senior*
-- [Redis, Memcached или Hazelcast?](../system-design/system-design.md#redis-hazelcast) — *Senior*
-- [SQL или NoSQL?](../system-design/system-design.md#sql-vs-nosql) — *Junior*
-- [Как масштабировать БД репликацией?](../system-design/system-design.md#replication) — *Middle*
-- [Чем партиционирование отличается от шардирования?](../system-design/system-design.md#partitioning) — *Middle*
-- [Как шардировать и выбрать shard key?](../system-design/system-design.md#sharding) — *Senior*
-- [Что такое consistent hashing?](../system-design/system-design.md#consistent-hashing) — *Senior*
-- [Зачем нужны очереди сообщений?](../system-design/system-design.md#message-queues) — *Junior*
-- [Что даёт CDN?](../system-design/system-design.md#cdn) — *Junior*
-- [Что утверждает CAP-теорема?](../system-design/system-design.md#cap) — *Middle*
-- [Что добавляет PACELC?](../system-design/system-design.md#pacelc) — *Senior*
-- [Какие бывают модели согласованности?](../system-design/system-design.md#consistency-models) — *Senior*
-- [Как узлы договариваются: Raft и Paxos?](../system-design/system-design.md#consensus) — *Senior*
-- [Какие бывают гарантии доставки и при чём тут идемпотентность?](../system-design/system-design.md#delivery-guarantees) — *Middle*
-- [Почему 2PC почти не используют в микросервисах?](../system-design/system-design.md#two-phase-commit) — *Senior*
-- [Как работает Saga?](../system-design/system-design.md#saga) — *Senior*
-- [Что такое Transactional Outbox?](../system-design/system-design.md#outbox) — *Senior*
-- [Монолит или микросервисы?](../system-design/system-design.md#monolith-vs-microservices) — *Middle*
-- [Зачем нужны API Gateway, BFF и Service Discovery?](../system-design/system-design.md#api-gateway) — *Middle*
-- [Как работает rate limiting?](../system-design/system-design.md#rate-limiting) — *Middle*
-- [Зачем нужны timeout и retry с backoff?](../system-design/system-design.md#timeout-retry) — *Middle*
-- [Как работает circuit breaker?](../system-design/system-design.md#circuit-breaker) — *Middle*
-- [Что такое bulkhead и graceful degradation?](../system-design/system-design.md#bulkhead) — *Middle*
-- [Что такое observability?](../system-design/system-design.md#observability) — *Middle*
-- [Чем liveness отличается от readiness?](../system-design/system-design.md#health-checks) — *Junior*
-- [Что такое sidecar?](../system-design/system-design.md#sidecar) — *Middle*
-- [Как масштабировать сервис?](../system-design/system-design.md#scaling) — *Junior*
-- [Какие хранилища нужны, кроме основной БД?](../system-design/system-design.md#polyglot-persistence) — *Middle*
-- [Как учитывать безопасность в дизайне?](../system-design/system-design.md#security) — *Middle*
-- [Как проходить интервью по system design?](../system-design/system-design.md#methodology) — *Middle*
-- [Как спроектировать URL shortener?](../system-design/system-design.md#url-shortener) — *Senior*
-- [Ради чего спрашивают классические задачи?](../system-design/system-design.md#classic-tasks) — *Middle*
-- [Почему Round Robin убивает один сервер?](../system-design/system-design.md#case-round-robin) — *Middle*
-- [Что убило базу в 10:10, если Redis-узел сгорел в 10:05?](../system-design/system-design.md#case-stampede) — *Senior*
-- [Нужно ли шардировать таблицу на 100M строк?](../system-design/system-design.md#case-sharding) — *Middle*
-- [Что делать сервису «Избранное», когда перерубили кабель между ДЦ?](../system-design/system-design.md#case-partition) — *Senior*
-- [Почему письма теряются, дублируются и блокируют очередь?](../system-design/system-design.md#case-emails) — *Senior*
-
-### DDD, микросервисы, CQRS { #architecture }
-
-- [Что такое Ubiquitous Language?](../architecture/architecture.md#ubiquitous-language) — *Junior*
-- [Что такое Bounded Context?](../architecture/architecture.md#bounded-context) — *Middle*
-- [Как связываются контексты?](../architecture/architecture.md#context-mapping) — *Senior*
-- [Что такое Entity и Aggregate?](../architecture/architecture.md#aggregate) — *Middle*
-- [Где должна жить бизнес-логика?](../architecture/architecture.md#rich-domain-model) — *Middle*
-- [Что такое Value Object?](../architecture/architecture.md#value-object) — *Junior*
-- [Что такое доменные события?](../architecture/architecture.md#domain-events) — *Middle*
-- [Чем плоха классическая слоистая архитектура?](../architecture/architecture.md#layered) — *Middle*
-- [Как устроена гексагональная архитектура?](../architecture/architecture.md#hexagonal) — *Middle*
-- [Layered или Hexagonal?](../architecture/architecture.md#layered-vs-hexagonal) — *Middle*
-- [Что такое модульный монолит?](../architecture/architecture.md#modular-monolith) — *Middle*
-- [Что такое CQRS?](../architecture/architecture.md#cqrs) — *Senior*
-- [Что такое Event Sourcing?](../architecture/architecture.md#event-sourcing) — *Senior*
-
-### Docker, CI/CD, K8s { #infrastructure }
-
-- [Какую проблему решает Docker?](../infrastructure/infrastructure.md#why-docker) — *Junior*
-- [Чем контейнер отличается от виртуальной машины?](../infrastructure/infrastructure.md#container-vs-vm) — *Junior*
-- [Чем Dockerfile, образ и контейнер отличаются?](../infrastructure/infrastructure.md#image-container) — *Junior*
-- [На чём держится изоляция контейнера?](../infrastructure/infrastructure.md#namespaces-cgroups) — *Middle*
-- [Как написать хороший Dockerfile для Java?](../infrastructure/infrastructure.md#dockerfile) — *Middle*
-- [Какой базовый образ выбрать?](../infrastructure/infrastructure.md#base-images) — *Middle*
-- [Почему контейнер нельзя запускать под root?](../infrastructure/infrastructure.md#non-root) — *Junior*
-- [Как сервисы в Compose находят друг друга?](../infrastructure/infrastructure.md#compose-dns) — *Junior*
-- [Как дождаться готовности базы при старте?](../infrastructure/infrastructure.md#healthcheck) — *Junior*
-- [Как запускать тяжёлые сервисы только по запросу?](../infrastructure/infrastructure.md#compose-profiles) — *Junior*
-- [Как поднять Kafka в Compose без ZooKeeper?](../infrastructure/infrastructure.md#kraft) — *Middle*
-- [Какие сети бывают в Docker?](../infrastructure/infrastructure.md#docker-networks) — *Middle*
-- [Как Docker хранит данные?](../infrastructure/infrastructure.md#volumes) — *Middle*
-- [Чем CI отличается от Continuous Delivery и Continuous Deployment?](../infrastructure/infrastructure.md#ci-cd) — *Junior*
-- [Из каких стадий состоит Java-пайплайн?](../infrastructure/infrastructure.md#pipeline) — *Middle*
-- [Какие есть стратегии деплоя?](../infrastructure/infrastructure.md#deploy-strategies) — *Middle*
-- [Зачем нужны Flyway и Liquibase?](../infrastructure/infrastructure.md#flyway) — *Junior*
-- [Как запускать миграции в CI/CD?](../infrastructure/infrastructure.md#migrations-cicd) — *Middle*
-- [Что будет, если изменить уже применённую миграцию?](../infrastructure/infrastructure.md#flyway-checksum) — *Middle*
-- [Что, если пять инстансов одновременно начнут миграцию?](../infrastructure/infrastructure.md#flyway-lock) — *Senior*
-- [Как мигрировать схему без простоя?](../infrastructure/infrastructure.md#zero-downtime) — *Senior*
-- [Что даёт Kubernetes?](../infrastructure/infrastructure.md#k8s-basics) — *Junior*
-- [Зачем нужен reverse proxy?](../infrastructure/infrastructure.md#reverse-proxy) — *Junior*
+- [Что такое REST?](../networks/api-styles.md#rest) — *Junior*
+- [Как устроен gRPC?](../networks/api-styles.md#grpc) — *Middle*
+- [REST, gRPC или GraphQL?](../networks/api-styles.md#rest-vs-grpc) — *Middle*
+- [Когда нужен WebSocket и чем он отличается от SSE?](../networks/api-styles.md#websocket) — *Middle*

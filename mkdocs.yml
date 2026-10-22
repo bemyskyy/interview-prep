@@ -133,6 +133,18 @@ plugins:
         - Безопасность
         - Тестирование
         - Подготовка
+  # Старые адреса страниц, которых больше нет, ведут на их новое место:
+  # опубликованные ссылки не отдают 404. Якорь из адреса сохраняется
+  - redirects:
+      redirect_maps:
+        java/multithreading.md: concurrency/threads.md
+        java/solid.md: design/solid.md
+        java/patterns.md: design/creational-patterns.md
+        spring/spring-ecosystem.md: spring/spring-security.md
+        spring/spring-tools.md: spring/spring-testing.md
+        system-design/system-design.md: system-design/interview.md
+        architecture/architecture.md: architecture/ddd.md
+        infrastructure/infrastructure.md: infrastructure/docker.md
 
 # Проверяет, что страницы раздела «Подготовка» и числа страниц на главной
 # не устарели (см. README)
@@ -141,6 +153,10 @@ hooks:
 
 extra_css:
   - stylesheets/extra.css
+
+# Старые ссылки на переехавшие темы ведут на их новую страницу
+extra_javascript:
+  - javascripts/moved-anchors.js
 
 # Иконки тегов уровня (theme.icon.tag)
 extra:
@@ -164,57 +180,89 @@ nav:
       - Вопросы собеса: prep/questions.md
       - Теги: prep/tags.md
 
-  - Язык Java:
-      - Платформа и память:
-          - JVM и память: java/jvm.md
-          - Многопоточность: java/multithreading.md
-      - Язык и API:
+  - Java:
+      - Язык:
           - Основы языка: java/basics.md
           - Строки: java/strings.md
-          - Современная Java: java/modern-java.md
           - ООП: java/oop.md
-          - Коллекции: java/collections.md
           - Исключения: java/exceptions.md
           - Дженерики: java/generics.md
+          - Современная Java: java/modern-java.md
+      - Коллекции и API:
+          - Коллекции: java/collections.md
+          - HashMap: java/hashmap.md
           - Stream API: java/streams.md
+          - Лямбды и Optional: java/functional.md
           - IO / NIO: java/io-nio.md
-      - Дизайн кода:
-          - SOLID: java/solid.md
-          - Паттерны проектирования: java/patterns.md
+      - JVM:
+          - Память и сборка мусора: java/jvm.md
+
+  - Многопоточность:
+      - Потоки и ThreadLocal: concurrency/threads.md
+      - Блокировки и синхронизаторы: concurrency/locks.md
+      - JMM, volatile и атомики: concurrency/jmm.md
+      - Deadlock, livelock, starvation: concurrency/deadlock.md
+      - Пулы потоков и CompletableFuture: concurrency/executors.md
+      - Потокобезопасные коллекции: concurrency/concurrent-collections.md
+      - Виртуальные потоки: concurrency/virtual-threads.md
+
+  - Дизайн кода:
+      - Композиция и зацепление: design/composition.md
+      - SOLID: design/solid.md
+      - Порождающие паттерны: design/creational-patterns.md
+      - Структурные паттерны: design/structural-patterns.md
+      - Поведенческие паттерны: design/behavioral-patterns.md
 
   - Spring:
       - Ядро:
-          - Core (IoC, DI, AOP): spring/spring-core.md
+          - "Spring Core: IoC, DI, AOP": spring/spring-core.md
           - Spring Boot: spring/spring-boot.md
-      - Веб и данные:
-          - Spring MVC / REST: spring/spring-mvc.md
-          - Spring Data JPA: spring/spring-data-jpa.md
-      - Экосистема:
-          - Security, Kafka, DDD: spring/spring-ecosystem.md
-          - Тестирование и инструменты: spring/spring-tools.md
+      - Веб:
+          - Spring MVC и WebFlux: spring/spring-mvc.md
+          - Spring Security: spring/spring-security.md
+      - Работа с БД:
+          - Транзакции в Spring: spring/spring-transactions.md
+          - Spring Data JPA и Hibernate: spring/spring-data-jpa.md
+          - Кэширование: spring/spring-caching.md
+      - Тесты и эксплуатация:
+          - Тестирование: spring/spring-testing.md
+          - Actuator и Micrometer: spring/spring-actuator.md
 
   - Данные:
-      - Реляционные:
-          - SQL и транзакции: database/sql.md
-      - Нереляционные:
-          - NoSQL: database/nosql.md
+      - SQL и индексы: database/sql.md
+      - Транзакции и MVCC: database/transactions.md
+      - Блокировки и конкурентные обновления: database/locking.md
+      - NoSQL: database/nosql.md
 
   - Kafka:
-      - Физика брокера: kafka/kafka.md
-      - Consumer и Producer: kafka/kafka-consumer-producer.md
+      - "Брокер: топики, партиции, хранение": kafka/kafka.md
+      - Порядок, группы и ребаланс: kafka/kafka-consumer-producer.md
       - Гарантии доставки: kafka/kafka-reliability.md
+      - Kafka в Spring: kafka/spring-kafka.md
+
+  - System Design:
+      - Интервью и оценка нагрузки: system-design/interview.md
+      - Строительные блоки: system-design/building-blocks.md
+      - Распределённые данные: system-design/distributed-data.md
+
+  - Архитектура:
+      - DDD, CQRS и Event Sourcing: architecture/ddd.md
+      - Слоистая и гексагональная архитектура: architecture/hexagonal.md
+      - Микросервисы и отказоустойчивость: architecture/microservices.md
+      - Распределённые транзакции: architecture/distributed-transactions.md
+
+  - Инфраструктура:
+      - Docker и Compose: infrastructure/docker.md
+      - CI/CD и миграции БД: infrastructure/cicd.md
+      - Kubernetes: infrastructure/kubernetes.md
+      - Observability: infrastructure/observability.md
 
   - Computer Science:
       - Алгоритмы:
-          - Теория (Big O, структуры, сортировки): algorithms/algorithms.md
-          - Паттерны задач (LeetCode): algorithms/leetcode-patterns.md
+          - Big O и структуры данных: algorithms/algorithms.md
+          - Сортировки и графы: algorithms/sorting-graphs.md
+          - "Задачи: массивы и строки": algorithms/leetcode-patterns.md
+          - "Задачи: деревья, графы, ДП": algorithms/leetcode-trees-dp.md
       - Сети:
-          - HTTP, TCP, REST, gRPC: networks/networks.md
-
-  - Проектирование:
-      - Системы:
-          - Масштабирование систем: system-design/system-design.md
-      - Архитектура приложений:
-          - DDD, микросервисы, CQRS: architecture/architecture.md
-      - Инфраструктура:
-          - Docker, CI/CD, K8s: infrastructure/infrastructure.md
+          - TCP/IP, HTTP и TLS: networks/networks.md
+          - REST, gRPC и WebSocket: networks/api-styles.md

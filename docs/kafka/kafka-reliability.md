@@ -5,7 +5,7 @@ tags:
   - Микросервисы
 ---
 
-# Kafka: гарантии доставки и надёжность
+# Гарантии доставки
 
 Как не потерять и не задвоить сообщения: `acks` продюсера, репликация и ISR, семантики доставки, коммит оффсетов, идемпотентность консьюмера и Dead Letter Queue. Это вопросы уровня Middle и Senior, на которых проверяют понимание потери данных.
 
@@ -140,7 +140,7 @@ sequenceDiagram
 | **At-least-once** | После обработки | Нет | Возможны | Стандарт (+ идемпотентность) |
 | **Exactly-once** | Транзакция | Нет | Нет | Только внутри Kafka |
 
-Те же семантики в общем виде, для любых брокеров, и приём с idempotency key для API — в [System Design → Idempotent Consumer](../system-design/system-design.md#delivery-guarantees).
+Те же семантики в общем виде, для любых брокеров, и приём с idempotency key для API — в [Распределённые транзакции → гарантии доставки](../architecture/distributed-transactions.md#delivery-guarantees).
 
 !!! warning "Ловушка: at-least-once без идемпотентности"
     At-least-once означает, что дубли **будут** рано или поздно. Если обработка не идемпотентна, повторное сообщение об оплате спишет деньги дважды.
@@ -231,7 +231,7 @@ Exactly-once работает **только внутри Kafka** через т�
     }
     ```
 
-    Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Экосистема → Spring Kafka](../spring/spring-ecosystem.md#kafka-listener).
+    Остальные настройки `@KafkaListener` (`concurrency`, `auto-offset-reset`) — в [Kafka в Spring](spring-kafka.md#kafka-listener).
 
     !!! tip "`MANUAL` vs `MANUAL_IMMEDIATE`"
         `MANUAL` — коммит ставится в очередь и выполняется при следующем `poll()`. `MANUAL_IMMEDIATE` — коммит выполняется немедленно в потоке слушателя. Для большинства случаев `MANUAL` эффективнее: он батчит коммиты.
@@ -357,7 +357,7 @@ public void consume(PaymentEvent event, Acknowledgment ack) {
         E --> F["Битые сообщения в .DLT разбирают разработчики или отдельный сервис; по ним настроены алерты в Grafana"]
     ```
 
-    Общая идея DLQ для любых брокеров — в [System Design → DLQ](../system-design/system-design.md#message-queues).
+    Общая идея DLQ для любых брокеров — в [Строительные блоки → DLQ](../system-design/building-blocks.md#message-queues).
 
     !!! tip "Retryable vs non-retryable"
         Временные ошибки (БД недоступна, таймаут сети) ретраить есть смысл. Постоянные (битый JSON, невалидные данные) ретраить бессмысленно — они не починятся. `addNotRetryableExceptions` отправляет постоянные ошибки в DLQ сразу, не тратя попытки.

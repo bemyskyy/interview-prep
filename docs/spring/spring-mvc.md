@@ -2,12 +2,13 @@
 tags:
   - Junior
   - Middle
+  - Senior
   - Spring
 ---
 
-# Spring Web / MVC
+# Spring MVC и WebFlux
 
-Как Spring MVC превращает HTTP-запрос в вызов метода контроллера и обратно: `DispatcherServlet`, обработка исключений, фильтры и интерсепторы, валидация и CORS. На собесе чаще всего спрашивают путь запроса через `DispatcherServlet`, `@RestControllerAdvice` и разницу между Filter и Interceptor.
+Как Spring MVC превращает HTTP-запрос в вызов метода контроллера и обратно: `DispatcherServlet`, обработка исключений, фильтры и интерсепторы, валидация и CORS. В конце — реактивный стек WebFlux и когда его выбирать вместо MVC. На собесе чаще всего спрашивают путь запроса через `DispatcherServlet`, `@RestControllerAdvice`, разницу между Filter и Interceptor и чем WebFlux лучше MVC.
 
 ## Путь запроса { #request-flow }
 
@@ -318,7 +319,7 @@ sequenceDiagram
 | **Базовый класс** | `OncePerRequestFilter` | `HandlerInterceptor` |
 
 !!! warning "Ловушка: Spring Security — это фильтры"
-    Частая ошибка — говорить, что Spring Security работает на интерсепторах. **Это не так.** Spring Security — `FilterChainProxy`, цепочка именно **фильтров**: он должен отбить злоумышленника ещё до того, как начнёт работу `DispatcherServlet`. Подробно — в [Экосистема → Spring Security](spring-ecosystem.md#security-filter-chain).
+    Частая ошибка — говорить, что Spring Security работает на интерсепторах. **Это не так.** Spring Security — `FilterChainProxy`, цепочка именно **фильтров**: он должен отбить злоумышленника ещё до того, как начнёт работу `DispatcherServlet`. Подробно — в [Spring Security](spring-security.md#security-filter-chain).
 
 ??? question "Проверь себя"
     1. Какой из механизмов срабатывает раньше и почему?
@@ -448,7 +449,7 @@ public class LoggingFilter extends OncePerRequestFilter { // не Filter нап�
     - Обогащение контекста: достать `userId` из токена и положить в `ThreadLocal`.
 
 !!! warning "Ловушка: очистка в `postHandle`"
-    `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда.
+    `postHandle` не вызывается, если контроллер бросил исключение. Очищать `ThreadLocal` и закрывать ресурсы нужно в `afterCompletion` — он срабатывает всегда. Почему забытое значение достаётся следующему запросу — в [ThreadLocal](../concurrency/threads.md#thread-local).
 
 ??? question "Проверь себя"
     1. Что произойдёт, если `preHandle` вернёт `false`?
@@ -547,6 +548,107 @@ public class WebConfig implements WebMvcConfigurer {
     2. Что делает `maxAge(3600)`?
     3. Почему при Spring Security CORS настраивают в его фильтре?
 
+## Spring WebFlux { #webflux }
+
+### Зачем нужен реактивный подход? { #why-reactive }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    В Spring MVC каждый запрос занимает поток Tomcat, и большую часть времени поток просто ждёт ответа БД или другого сервиса. WebFlux использует неблокирующий ввод-вывод на Netty: небольшой пул потоков обслуживает тысячи запросов, переключаясь между ними, пока те ждут I/O.
+
+В классическом Spring MVC каждый HTTP-запрос занимает поток Tomcat. При 1000 одновременных запросов — 1000 потоков, каждый примерно с 1 МБ стека, то есть около 1 ГБ памяти. 90% времени потоки просто **ждут** — ответа от БД или от другого сервиса.
+
+**WebFlux** использует неблокирующий I/O (Netty вместо Tomcat): небольшой пул потоков обрабатывает тысячи запросов, переключаясь между ними, когда те ждут I/O.
+
+!!! warning "Ловушка: реактивность не ускоряет вычисления"
+    WebFlux выигрывает только там, где потоки ждут I/O. CPU-bound работу он не ускоряет — потоков для вычислений меньше не становится.
+
+??? question "Проверь себя"
+    1. Сколько памяти уходит на стеки 1000 потоков в MVC?
+    2. На каком сервере работает WebFlux по умолчанию?
+    3. За счёт чего WebFlux обходится небольшим пулом потоков?
+
+### Что такое `Mono` и `Flux`? { #mono-flux }
+
+**Уровень:** Middle
+
+!!! abstract "Ответ вслух"
+    Это основные реактивные типы. `Mono<T>` — 0 или 1 элемент, аналог `Optional` плюс `Future`; `Flux<T>` — 0..N элементов, аналог `Stream` плюс `Future`. Контроллер просто возвращает `Mono` или `Flux`, а Spring сам на них подписывается.
+
+```java
+// Mono<T> — 0 или 1 элемент (аналог Optional + Future)
+Mono<HabitDto> findById(Long id) { ... }
+
+// Flux<T> — 0..N элементов (аналог Stream + Future)
+Flux<HabitDto> findAll() { ... }
+
+// Пример реактивного сервиса
+@Service
+public class HabitService {
+
+    public Mono<HabitDto> findById(Long id) {
+        return habitRepository.findById(id)          // реактивный репозиторий
+            .switchIfEmpty(Mono.error(new NotFoundException(id)))
+            .map(HabitMapper::toDto);
+    }
+
+    public Flux<HabitDto> findAllByUser(Long userId) {
+        return habitRepository.findByUserId(userId)
+            .filter(h -> h.isActive())
+            .map(HabitMapper::toDto);
+    }
+}
+
+// Реактивный контроллер
+@RestController
+public class HabitController {
+
+    @GetMapping("/api/habits/{id}")
+    public Mono<HabitDto> getById(@PathVariable Long id) {
+        return habitService.findById(id);  // просто возвращаем Mono, Spring сам подпишется
+    }
+
+    @GetMapping(value = "/api/habits/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<HabitDto> streamHabits() {
+        return habitService.findAll();  // Server-Sent Events из коробки
+    }
+}
+```
+
+На собесах по WebFlux часто спрашивают разницу `map` и `flatMap` (синхронная и асинхронная трансформация) и что такое backpressure — потребитель контролирует скорость производителя.
+
+!!! warning "Ловушка: без подписки ничего не происходит"
+    `Mono` и `Flux` ленивые: цепочка операторов только описывает работу. Пока на результат никто не подписался (в контроллере это делает Spring), запрос к БД не выполнится.
+
+??? question "Проверь себя"
+    1. Чем `Mono` отличается от `Flux`?
+    2. Чем `map` отличается от `flatMap`?
+    3. Что такое backpressure?
+
+### Когда выбирать WebFlux, а когда MVC? { #webflux-vs-mvc }
+
+**Уровень:** Senior
+
+!!! abstract "Ответ вслух"
+    MVC — для обычных CRUD-сервисов на JPA/JDBC, когда команда знает MVC: просто и предсказуемо. WebFlux — когда много I/O-bound запросов, стриминг данных и высокая конкурентность, но тогда весь стек должен быть реактивным: R2DBC вместо JPA, WebClient вместо RestTemplate.
+
+| | **Spring MVC** | **Spring WebFlux** |
+|---|---|---|
+| **Модель** | Блокирующая, поток на запрос | Неблокирующая, событийный цикл |
+| **Сервер** | Tomcat (по умолчанию) | Netty (по умолчанию) |
+| **БД** | JPA/JDBC (блокирующие) | R2DBC (реактивный драйвер) |
+| **Когда** | Обычные CRUD-сервисы, команда знает MVC | Много I/O-bound запросов, стриминг данных, высокая конкурентность |
+| **Сложность** | Низкая | Высокая (дебаг, стектрейсы) |
+
+!!! warning "Ловушка: блокирующий вызов в реактивном коде"
+    Если в реактивном коде есть хотя бы **одна блокирующая операция** (JDBC, синхронный HTTP-клиент, `Thread.sleep`), блокируется весь event loop, и производительность падает **ниже MVC**. WebFlux требует полностью реактивного стека: R2DBC вместо JPA, WebClient вместо RestTemplate.
+
+??? question "Проверь себя"
+    1. Какой драйвер БД нужен для WebFlux?
+    2. Что будет, если в реактивном коде вызвать JDBC?
+    3. Когда MVC остаётся лучшим выбором?
+
 ## Шпаргалка { #cheatsheet }
 
 <!-- --8<-- [start:cheatsheet] -->
@@ -565,5 +667,7 @@ public class WebConfig implements WebMvcConfigurer {
 | **Spring Security** | Это цепочка **фильтров** (`FilterChainProxy`), не интерсепторов |
 | **`@Valid`** | Запускает Bean Validation. Ошибки летят как `MethodArgumentNotValidException` |
 | **CORS** | `@CrossOrigin`, `addCorsMappings()` или фильтр Security (предпочтительно при Security) |
+| **WebFlux** | Неблокирующий I/O. Netty вместо Tomcat. `Mono` / `Flux` вместо объектов |
+| **WebFlux ловушка** | Одна блокирующая операция блокирует весь event loop |
 
 <!-- --8<-- [end:cheatsheet] -->

@@ -12,12 +12,16 @@
 
 | Раздел | Темы |
 |---|---|
-| **Java** | JVM и память, основы языка, строки, современная Java, многопоточность, ООП, коллекции, исключения, дженерики, Stream API, IO/NIO, SOLID, паттерны |
-| **Spring** | Core (IoC/DI/AOP), Spring Boot, MVC/REST, Data JPA и транзакции, Security, Spring Kafka, тестирование, кэширование, Actuator и Micrometer, WebFlux |
-| **Данные** | SQL, ACID, MVCC, индексы, оконные функции, NoSQL, CAP-теорема, Redis, Cassandra |
-| **Kafka** | Партиции, оффсеты, consumer groups, rebalancing, ISR, acks, семантики доставки, DLQ |
-| **Computer Science** | Алгоритмы, Big O, структуры данных, сортировки, графы, паттерны LeetCode, сети (HTTP/TCP/TLS/gRPC) |
-| **Проектирование** | Системный дизайн, масштабирование, кэширование, очереди, DDD, микросервисы, CQRS, Docker, CI/CD, K8s |
+| **Java** | Основы языка, строки, ООП, исключения, дженерики, современная Java, коллекции и `HashMap`, Stream API, лямбды и `Optional`, IO/NIO, память и сборка мусора |
+| **Многопоточность** | Потоки и `ThreadLocal`, блокировки и синхронизаторы, JMM, `volatile` и атомики, дедлоки, пулы потоков и `CompletableFuture`, потокобезопасные коллекции, виртуальные потоки |
+| **Дизайн кода** | Композиция и зацепление, SOLID, порождающие, структурные и поведенческие паттерны |
+| **Spring** | Core (IoC/DI/AOP), Spring Boot, MVC и WebFlux, Security, транзакции, Data JPA и Hibernate, кэширование, тестирование, Actuator и Micrometer |
+| **Данные** | SQL и индексы, ACID, изоляция и MVCC, lost update и write skew, блокировки, NoSQL, Redis, Cassandra |
+| **Kafka** | Партиции, оффсеты, consumer groups, rebalancing, ISR, acks, семантики доставки, DLQ, Spring Kafka |
+| **System Design** | Интервью и оценка нагрузки, балансировка, кэши, очереди, CDN, репликация, шардирование, CAP, консенсус |
+| **Архитектура** | DDD, CQRS и Event Sourcing, слоистая и гексагональная архитектура, микросервисы и отказоустойчивость, Saga и Outbox |
+| **Инфраструктура** | Docker и Compose, CI/CD и миграции БД, Kubernetes, observability |
+| **Computer Science** | Big O, структуры данных, сортировки, графы, паттерны задач LeetCode, сети (TCP/IP, HTTP, TLS, REST, gRPC, WebSocket) |
 
 Каждая тема — **вопрос с собеса → ответ вслух → разбор с кодом → ловушки → проверь себя**, в конце страницы — шпаргалка.
 
@@ -68,7 +72,7 @@ interview-prep/
 │   └── deploy.yml           # публикация на GitHub Pages после мержа в main
 ├── mkdocs.yml               # конфигурация сайта, навигация, расширения, словарь тегов
 ├── STYLE.md                 # правила оформления страниц
-├── requirements.txt         # зафиксированная версия mkdocs-material
+├── requirements.txt         # зафиксированные версии mkdocs-material и mkdocs-redirects
 ├── includes/
 │   └── abbreviations.md     # глоссарий: подключается ко всем страницам
 ├── overrides/
@@ -81,19 +85,22 @@ interview-prep/
     │   ├── last-hour.md     #   За час до собеса — генерируется
     │   ├── questions.md     #   Вопросы собеса — генерируется
     │   └── tags.md          #   Теги
-    ├── java/                # язык Java
+    ├── java/                # язык Java, коллекции, JVM
+    ├── concurrency/         # многопоточность
+    ├── design/              # дизайн кода: композиция, SOLID, паттерны
     ├── spring/              # Spring
-    ├── database/            # SQL и NoSQL
-    ├── kafka/               # Apache Kafka
-    ├── algorithms/          # алгоритмы и паттерны задач
-    ├── networks/            # сети и протоколы
+    ├── database/            # SQL, транзакции, блокировки, NoSQL
+    ├── kafka/               # Apache Kafka и Spring Kafka
     ├── system-design/       # системный дизайн
-    ├── architecture/        # DDD, микросервисы, CQRS
-    ├── infrastructure/      # Docker, CI/CD, Kubernetes
+    ├── architecture/        # DDD, гексагональная архитектура, микросервисы
+    ├── infrastructure/      # Docker, CI/CD, Kubernetes, observability
+    ├── algorithms/          # алгоритмы и паттерны задач
+    ├── networks/            # сети и стили API
     ├── stylesheets/
     │   └── extra.css        # оформление: шрифты, палитра, код, выноски, диаграммы, главная
     ├── javascripts/
-    │   └── mermaid-theme.js # стили диаграмм, которых нет в Material для mermaid 11
+    │   ├── mermaid-theme.js # стили диаграмм, которых нет в Material для mermaid 11
+    │   └── moved-anchors.js # старые ссылки на переехавшие темы ведут на новую страницу
     └── assets/              # картинки, шрифты (fonts/) и mermaid (vendor/mermaid/)
 ```
 
@@ -109,6 +116,8 @@ interview-prep/
 | `md_in_html` | Вёрстка главной: первый экран и сетка разделов |
 | `extra_css` + `theme.font: false` | Своё оформление из `docs/stylesheets/extra.css`, шрифты лежат локально, без Google Fonts |
 | `theme.custom_dir: overrides` | Mermaid 11.17.2 из `docs/assets/vendor/mermaid/` вместо unpkg.com, только на страницах с диаграммами. Обновить версию — заменить `mermaid.min.js` файлом из npm-пакета `mermaid` |
+| `redirects` (`mkdocs-redirects`) | Старые адреса удалённых страниц (`java/multithreading/` и др.) перенаправляют на новое место, якорь из адреса сохраняется |
+| `extra_javascript: moved-anchors.js` | Якорь темы, которая уехала на другую страницу, ведёт на её новую страницу: `java/multithreading/#jmm` → `concurrency/jmm/#jmm` |
 | `hooks: scripts/prep_pages.py` | Сборка падает, если «Вопросы собеса», «За час до собеса» или числа страниц на главной устарели |
 | `repo_url` + `content.action.edit` | Ссылка на репозиторий в шапке и кнопка «Редактировать» на страницах (у сгенерированных страниц её нет) |
 | `site_url` + `navigation.footer` | Канонические ссылки и `sitemap.xml`; ссылки «Назад / Вперёд» внизу страницы |
@@ -185,6 +194,8 @@ interview-prep/
 6. **Если тема подходит для маршрута** — добавь ссылку на неё в нужный уровень в разделе «Маршрут подготовки» в [docs/index.md](docs/index.md). Новый раздел верхнего уровня добавь и в блок «Разделы» на главной — без него сборка упадёт.
 
 Новый вопрос на существующей странице добавляется так же: тема по шаблону, затем `python scripts/prep_pages.py`.
+
+Переносишь или удаляешь страницу — добавь её старый путь в `redirect_maps` плагина `redirects` в `mkdocs.yml`, чтобы опубликованные ссылки не отдавали 404.
 
 ---
 
