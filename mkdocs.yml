@@ -205,6 +205,7 @@ nav:
       - Пулы потоков и CompletableFuture: concurrency/executors.md
       - Потокобезопасные коллекции: concurrency/concurrent-collections.md
       - Виртуальные потоки: concurrency/virtual-threads.md
+      - Реактивное программирование: concurrency/reactive.md
 
   - Дизайн кода:
       - Композиция и зацепление: design/composition.md
@@ -239,6 +240,7 @@ nav:
       - Порядок, группы и ребаланс: kafka/kafka-consumer-producer.md
       - Гарантии доставки: kafka/kafka-reliability.md
       - Kafka в Spring: kafka/spring-kafka.md
+      - Kafka Streams: kafka/kafka-streams.md
 
   - System Design:
       - Интервью и оценка нагрузки: system-design/interview.md
@@ -266,3 +268,4 @@ nav:
       - Сети:
           - TCP/IP, HTTP и TLS: networks/networks.md
           - REST, gRPC и WebSocket: networks/api-styles.md
+          - SOAP и XML-интеграции: networks/soap.md

@@ -134,6 +134,8 @@ sequenceDiagram
 - Транзакции Kafka (`transactional.id`).
 - Read-process-write в одной транзакции.
 
+В Kafka Streams вся цепочка read-process-write включается одной настройкой — см. [Kafka Streams → exactly-once](kafka-streams.md#streams-eos).
+
 | Семантика | Коммит | Потери | Дубли | Когда |
 |---|---|---|---|---|
 | **At-most-once** | До обработки | Возможны | Нет | Метрики, некритичные логи |

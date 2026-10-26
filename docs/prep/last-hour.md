@@ -132,6 +132,12 @@ tags:
 
 --8<-- "docs/concurrency/virtual-threads.md:cheatsheet"
 
+### Реактивное программирование { #reactive }
+
+[Полный разбор →](../concurrency/reactive.md)
+
+--8<-- "docs/concurrency/reactive.md:cheatsheet"
+
 ## Дизайн кода { #design }
 
 ### Композиция и зацепление { #composition }
@@ -272,6 +278,12 @@ tags:
 
 --8<-- "docs/kafka/spring-kafka.md:cheatsheet"
 
+### Kafka Streams { #kafka-streams }
+
+[Полный разбор →](../kafka/kafka-streams.md)
+
+--8<-- "docs/kafka/kafka-streams.md:cheatsheet"
+
 ## System Design { #system-design }
 
 ### Интервью и оценка нагрузки { #interview }
@@ -381,3 +393,9 @@ tags:
 [Полный разбор →](../networks/api-styles.md)
 
 --8<-- "docs/networks/api-styles.md:cheatsheet"
+
+### SOAP и XML-интеграции { #soap }
+
+[Полный разбор →](../networks/soap.md)
+
+--8<-- "docs/networks/soap.md:cheatsheet"

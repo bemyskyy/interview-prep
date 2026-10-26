@@ -45,8 +45,8 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Многопоточность](concurrency/threads.md) <span class="ip-section__count">7 страниц</span></p>
-<p class="ip-section__topics" markdown>Потоки, `ThreadLocal`, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки</p>
+<p class="ip-section__head" markdown>[Многопоточность](concurrency/threads.md) <span class="ip-section__count">8 страниц</span></p>
+<p class="ip-section__topics" markdown>Потоки, `ThreadLocal`, `synchronized` и `ReentrantLock`, JMM и `volatile`, атомики и CAS, дедлоки, пулы потоков, `CompletableFuture`, виртуальные потоки, Reactor и backpressure</p>
 </div>
 
 <div class="ip-section" markdown>
@@ -65,8 +65,8 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Kafka](kafka/kafka.md) <span class="ip-section__count">4 страницы</span></p>
-<p class="ip-section__topics" markdown>Партиции, оффсеты, consumer groups, ребаланс, ISR, `acks`, exactly-once, DLQ, `@KafkaListener`</p>
+<p class="ip-section__head" markdown>[Kafka](kafka/kafka.md) <span class="ip-section__count">5 страниц</span></p>
+<p class="ip-section__topics" markdown>Партиции, оффсеты, consumer groups, ребаланс, ISR, `acks`, exactly-once, DLQ, `@KafkaListener`, Kafka Streams</p>
 </div>
 
 <div class="ip-section" markdown>
@@ -85,8 +85,8 @@ System.out.println(c == d);
 </div>
 
 <div class="ip-section" markdown>
-<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">6 страниц</span></p>
-<p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны задач LeetCode, TCP, HTTP, TLS, REST, gRPC</p>
+<p class="ip-section__head" markdown>[Computer Science](algorithms/algorithms.md) <span class="ip-section__count">7 страниц</span></p>
+<p class="ip-section__topics" markdown>Big O, структуры данных, сортировки, графы, паттерны задач LeetCode, TCP, HTTP, TLS, REST, gRPC, SOAP</p>
 </div>
 
 </div>
@@ -119,7 +119,7 @@ System.out.println(c == d);
     3. **Spring изнутри.** [Жизненный цикл бина и AOP](spring/spring-core.md#bean-lifecycle) → [Propagation](spring/spring-transactions.md#propagation) → [Блокировки](database/locking.md) → [Hibernate и N+1](spring/spring-data-jpa.md#hibernate) → [Тестирование](spring/spring-testing.md) → [Кэширование](spring/spring-caching.md) → [Actuator и Micrometer](spring/spring-actuator.md) → [Spring Security](spring/spring-security.md) → [Kafka в Spring](kafka/spring-kafka.md).
     4. **Базы данных.** [Изоляция транзакций](database/transactions.md#isolation) → [MVCC](database/transactions.md#mvcc) → [`EXPLAIN ANALYZE`](database/sql.md#explain) → [NoSQL](database/nosql.md).
     5. **Kafka.** [Брокер: топики, партиции, хранение](kafka/kafka.md) → [Порядок, группы и ребаланс](kafka/kafka-consumer-producer.md) → [Гарантии доставки](kafka/kafka-reliability.md).
-    6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/api-styles.md#grpc) → [WebSocket и SSE](networks/api-styles.md#websocket).
+    6. **Сети.** [TLS](networks/networks.md#tls) → [gRPC и выбор стиля API](networks/api-styles.md#grpc) → [WebSocket и SSE](networks/api-styles.md#websocket) → [SOAP: Fault, таймауты и повторы](networks/soap.md#soap-client), если в стеке интеграции с банками.
     7. **Основы System Design.** [Строительные блоки](system-design/building-blocks.md#building-blocks) → [Надёжность микросервисов](architecture/microservices.md#reliability) → [Observability](infrastructure/observability.md) → [CI/CD](infrastructure/cicd.md#cicd) → [Миграции БД](infrastructure/cicd.md#migrations).
     8. **Алгоритмы.** Все паттерны из [задач на массивы и строки](algorithms/leetcode-patterns.md) и [на деревья, графы и ДП](algorithms/leetcode-trees-dp.md), включая [динамическое программирование](algorithms/leetcode-trees-dp.md#dp) → [Графы](algorithms/sorting-graphs.md#graphs).
 
@@ -127,9 +127,9 @@ System.out.println(c == d);
 
     Цель — граничные случаи, производительность, распределённые системы и обоснованный выбор архитектуры.
 
-    1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → Многопоточность под капотом: [CAS](concurrency/jmm.md#cas-aba), [AQS](concurrency/locks.md#aqs), [false sharing](concurrency/jmm.md#false-sharing) → [Виртуальные потоки](concurrency/virtual-threads.md#loom).
+    1. **JVM и конкурентность в глубину.** [Выбор сборщика мусора](java/jvm.md#collectors) → [Расследование OOM](java/jvm.md#oom-investigation) → Многопоточность под капотом: [CAS](concurrency/jmm.md#cas-aba), [AQS](concurrency/locks.md#aqs), [false sharing](concurrency/jmm.md#false-sharing) → [Виртуальные потоки](concurrency/virtual-threads.md#loom) → [Реактивное программирование](concurrency/reactive.md#reactive-streams).
     2. **Данные под нагрузкой.** [MVCC в PostgreSQL и MySQL](database/transactions.md#mvcc-postgres-vs-mysql) → [Почему не `SERIALIZABLE` везде](database/transactions.md#serializable) → [Lost update и write skew](database/locking.md#write-anomalies) → [Блокировки JPA](database/locking.md#row-locking).
-    3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction).
+    3. **Kafka в проде.** [Ребаланс](kafka/kafka-consumer-producer.md#rebalancing) → [Exactly-once](kafka/kafka-reliability.md#exactly-once) → [Log compaction](kafka/kafka.md#log-compaction) → [Kafka Streams](kafka/kafka-streams.md).
     4. **Распределённые системы.** [Распределённые данные](system-design/distributed-data.md): репликация, CAP, консенсус → [Распределённые транзакции](architecture/distributed-transactions.md): Saga, Outbox → [Микросервисы](architecture/microservices.md#microservices).
     5. **Архитектура.** [DDD](architecture/ddd.md#ddd) → [Слоистая и гексагональная архитектура](architecture/hexagonal.md#styles) → [CQRS и Event Sourcing](architecture/ddd.md#cqrs-es) → [DDD в Spring-приложении](architecture/hexagonal.md#spring-ddd).
     6. **Интервью по System Design.** [Методология](system-design/interview.md#methodology) → [Разбор кейсов](system-design/interview.md#cases).

@@ -75,6 +75,7 @@ spring:
 - **Идемпотентность консьюмера** — дубли при at-least-once неизбежны — в [Гарантии доставки → Идемпотентность](kafka-reliability.md#idempotent-consumer).
 - **Retry и DLQ** через `DefaultErrorHandler` и `DeadLetterPublishingRecoverer` — в [Гарантии доставки → DLQ](kafka-reliability.md#dlq).
 - **`max.poll.interval.ms` и ребаланс** при зависшем листенере — в [Порядок, группы и ребаланс → Два пульса](kafka-consumer-producer.md#heartbeats).
+- **Агрегаты, окна и джойны** поверх топиков вместо ручного листенера — в [Kafka Streams](kafka-streams.md#what-is-kafka-streams).
 
 !!! warning "Ловушка: долгая синхронная работа в листенере"
     Если листенер завис на внешнем вызове дольше `max.poll.interval.ms` (по умолчанию 5 минут), брокер сочтёт консьюмер мёртвым и запустит ребаланс. Долгие задачи выносят в отдельный пул потоков и ставят таймауты на внешние вызовы.

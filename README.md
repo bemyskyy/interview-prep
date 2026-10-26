@@ -13,15 +13,15 @@
 | Раздел | Темы |
 |---|---|
 | **Java** | Основы языка, строки, ООП, исключения, дженерики, современная Java, коллекции и `HashMap`, Stream API, лямбды и `Optional`, IO/NIO, память и сборка мусора |
-| **Многопоточность** | Потоки и `ThreadLocal`, блокировки и синхронизаторы, JMM, `volatile` и атомики, дедлоки, пулы потоков и `CompletableFuture`, потокобезопасные коллекции, виртуальные потоки |
+| **Многопоточность** | Потоки и `ThreadLocal`, блокировки и синхронизаторы, JMM, `volatile` и атомики, дедлоки, пулы потоков и `CompletableFuture`, потокобезопасные коллекции, виртуальные потоки, реактивное программирование (Reactive Streams, Reactor) |
 | **Дизайн кода** | Композиция и зацепление, SOLID, порождающие, структурные и поведенческие паттерны |
 | **Spring** | Core (IoC/DI/AOP), Spring Boot, MVC и WebFlux, Security, транзакции, Data JPA и Hibernate, кэширование, тестирование, Actuator и Micrometer |
 | **Данные** | SQL и индексы, ACID, изоляция и MVCC, lost update и write skew, блокировки, NoSQL, Redis, Cassandra |
-| **Kafka** | Партиции, оффсеты, consumer groups, rebalancing, ISR, acks, семантики доставки, DLQ, Spring Kafka |
+| **Kafka** | Партиции, оффсеты, consumer groups, rebalancing, ISR, acks, семантики доставки, DLQ, Spring Kafka, Kafka Streams |
 | **System Design** | Интервью и оценка нагрузки, балансировка, кэши, очереди, CDN, репликация, шардирование, CAP, консенсус |
 | **Архитектура** | DDD, CQRS и Event Sourcing, слоистая и гексагональная архитектура, микросервисы и отказоустойчивость, Saga и Outbox |
 | **Инфраструктура** | Docker и Compose, CI/CD и миграции БД, Kubernetes, observability |
-| **Computer Science** | Big O, структуры данных, сортировки, графы, паттерны задач LeetCode, сети (TCP/IP, HTTP, TLS, REST, gRPC, WebSocket) |
+| **Computer Science** | Big O, структуры данных, сортировки, графы, паттерны задач LeetCode, сети (TCP/IP, HTTP, TLS, REST, gRPC, WebSocket, SOAP) |
 
 Каждая тема — **вопрос с собеса → ответ вслух → разбор с кодом → ловушки → проверь себя**, в конце страницы — шпаргалка.
 
