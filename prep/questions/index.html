@@ -1,0 +1,6375 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
+      
+      
+        <meta name="author" content="bemyskyy">
+      
+      
+        <link rel="canonical" href="https://bemyskyy.github.io/interview-prep/prep/questions/">
+      
+      
+        <link rel="prev" href="../last-hour/">
+      
+      
+        <link rel="next" href="../tags/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Вопросы собеса - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+  
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+  
+  <style>:root{.md-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.41%2011.58-9-9A2%202%200%200%200%2011%202H4a2%202%200%200%200-2%202v7a2%202%200%200%200%20.59%201.42l9%209A2%202%200%200%200%2013%2022a2%202%200%200%200%201.41-.59l7-7A2%202%200%200%200%2022%2013a2%202%200%200%200-.59-1.42M13%2020l-9-9V4h7l9%209M6.5%205A1.5%201.5%200%201%201%205%206.5%201.5%201.5%200%200%201%206.5%205%22/%3E%3C/svg%3E');}.md-tag.md-tag--junior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zm-7%205v8h-2v-8zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--middle{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--senior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}}</style>
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Вопросы собеса
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Старт
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../last-hour/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Подготовка
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../concurrency/threads/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Многопоточность
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/composition/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Дизайн кода
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/sql/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Данные
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system-design/interview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/ddd/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Архитектура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../infrastructure/docker/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Инфраструктура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Computer Science
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подготовка
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Подготовка
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../last-hour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    За час до собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы собеса
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основы языка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ООП
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Исключения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дженерики
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modern-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Современная Java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Коллекции
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HashMap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Лямбды и Optional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#io-nio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO / NIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Память и сборка мусора
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Многопоточность
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Многопоточность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Потоки и ThreadLocal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Блокировки и синхронизаторы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JMM, volatile и атомики
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deadlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deadlock, livelock, starvation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пулы потоков и CompletableFuture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrent-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Потокобезопасные коллекции
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Виртуальные потоки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Реактивное программирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дизайн кода
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Дизайн кода">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Композиция и зацепление
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOLID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creational-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порождающие паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Структурные паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поведенческие паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Core: IoC, DI, AOP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-mvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring MVC и WebFlux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Транзакции в Spring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-data-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Data JPA и Hibernate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кэширование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тестирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actuator и Micrometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Данные
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL и индексы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Транзакции и MVCC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Блокировки и конкурентные обновления
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kafka-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Брокер: топики, партиции, хранение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок, группы и ребаланс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Гарантии доставки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka в Spring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Streams
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интервью и оценка нагрузки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строительные блоки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Распределённые данные
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Архитектура
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Архитектура">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDD, CQRS и Event Sourcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Слоистая и гексагональная архитектура
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Микросервисы и отказоустойчивость
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Распределённые транзакции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инфраструктура
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Инфраструктура">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker и Compose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD и миграции БД
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Computer Science
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Computer Science">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big O и структуры данных
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorting-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сортировки и графы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leetcode-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи: массивы и строки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leetcode-trees-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи: деревья, графы, ДП
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP/IP, HTTP и TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST, gRPC и WebSocket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOAP и XML-интеграции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Теги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы языка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/strings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Современная Java
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции и API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Коллекции и API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/hashmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/functional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лямбды и Optional
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/jvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память и сборка мусора
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Многопоточность
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потоки и ThreadLocal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и синхронизаторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/jmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JMM, volatile и атомики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/deadlock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deadlock, livelock, starvation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/executors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пулы потоков и CompletableFuture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/concurrent-collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потокобезопасные коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/virtual-threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Виртуальные потоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/reactive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реактивное программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дизайн кода
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дизайн кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Композиция и зацепление
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/creational-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порождающие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/structural-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Структурные паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/behavioral-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поведенческие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ядро
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ядро
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Core: IoC, DI, AOP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Веб
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Веб
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring MVC и WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с БД
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с БД
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Data JPA и Hibernate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Кэширование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тесты и эксплуатация
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Тесты и эксплуатация
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тестирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-actuator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actuator и Micrometer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL и индексы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции и MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/locking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и конкурентные обновления
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kafka
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Брокер: топики, партиции, хранение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-consumer-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порядок, группы и ребаланс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гарантии доставки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/spring-kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Streams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Интервью и оценка нагрузки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строительные блоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/distributed-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые данные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Архитектура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ddd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDD, CQRS и Event Sourcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/hexagonal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Слоистая и гексагональная архитектура
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Микросервисы и отказоустойчивость
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/distributed-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые транзакции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инфраструктура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инфраструктура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker и Compose
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD и миграции БД
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Science
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Computer Science
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_1" id="__nav_12_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Алгоритмы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Алгоритмы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big O и структуры данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/sorting-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сортировки и графы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: массивы и строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-trees-dp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: деревья, графы, ДП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_2" id="__nav_12_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сети
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Сети
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP/IP, HTTP и TLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/api-styles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST, gRPC и WebSocket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/soap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP и XML-интеграции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Java">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основы языка
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ООП
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Исключения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дженерики
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modern-java" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Современная Java
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Коллекции
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hashmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HashMap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stream API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Лямбды и Optional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#io-nio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IO / NIO
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Память и сборка мусора
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Многопоточность
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Многопоточность">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Потоки и ThreadLocal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Блокировки и синхронизаторы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jmm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JMM, volatile и атомики
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deadlock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deadlock, livelock, starvation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пулы потоков и CompletableFuture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrent-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Потокобезопасные коллекции
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Виртуальные потоки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Реактивное программирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Дизайн кода
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Дизайн кода">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Композиция и зацепление
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOLID
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creational-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порождающие паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Структурные паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Поведенческие паттерны
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Spring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spring-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Core: IoC, DI, AOP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-boot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Boot
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-mvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring MVC и WebFlux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Транзакции в Spring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-data-jpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Spring Data JPA и Hibernate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Кэширование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тестирование
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-actuator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actuator и Micrometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Данные
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Данные">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL и индексы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Транзакции и MVCC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Блокировки и конкурентные обновления
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nosql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NoSQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kafka-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Брокер: топики, партиции, хранение
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-consumer-producer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок, группы и ребаланс
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Гарантии доставки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spring-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka в Spring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kafka Streams
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#interview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Интервью и оценка нагрузки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Строительные блоки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Распределённые данные
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Архитектура
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Архитектура">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ddd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DDD, CQRS и Event Sourcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hexagonal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Слоистая и гексагональная архитектура
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Микросервисы и отказоустойчивость
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Распределённые транзакции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Инфраструктура
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Инфраструктура">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker и Compose
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD и миграции БД
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Computer Science
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Computer Science">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Big O и структуры данных
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sorting-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Сортировки и графы
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leetcode-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи: массивы и строки
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leetcode-trees-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Задачи: деревья, графы, ДП
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TCP/IP, HTTP и TLS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-styles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST, gRPC и WebSocket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#soap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOAP и XML-интеграции
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../tags/#tag:подготовка" class="md-tag md-tag-icon">Подготовка</a>
+      
+    
+  </nav>
+
+
+
+<!-- Сгенерировано scripts/prep_pages.py — не редактируй руками. -->
+
+<h1 id="_1">Вопросы собеса<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Все 476 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.</p>
+<h2 id="java">Java<a class="headerlink" href="#java" title="Permanent link">&para;</a></h2>
+<h3 id="basics">Основы языка<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/basics/#primitives">Чем примитивы отличаются от ссылочных типов?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#pass-by-value">Java передаёт параметры по ссылке или по значению?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#autoboxing">Как работают автоупаковка и распаковка?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#autoboxing-traps">Какие ловушки у автоупаковки?</a> — <em>Middle</em></li>
+<li><a href="../../java/basics/#equals-hashcode">Какой контракт у <code>equals()</code> и <code>hashCode()</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/basics/#final-finally-finalize">Чем отличаются <code>final</code>, <code>finally</code> и <code>finalize()</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#static">Что значит <code>static</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#init-order">В каком порядке инициализируется объект?</a> — <em>Middle</em></li>
+<li><a href="../../java/basics/#default-values">Какие значения по умолчанию у переменных?</a> — <em>Junior</em></li>
+<li><a href="../../java/basics/#enum">Как устроен <code>enum</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/basics/#access-modifiers">Какие модификаторы доступа есть в Java?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="strings">Строки<a class="headerlink" href="#strings" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/strings/#string-immutable">Почему <code>String</code> неизменяемый?</a> — <em>Junior</em></li>
+<li><a href="../../java/strings/#stringbuilder">Чем <code>StringBuilder</code> отличается от <code>StringBuffer</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/strings/#concat-indy">Нужен ли <code>StringBuilder</code> для <code>a + b + c</code>?</a> — <em>Senior</em></li>
+<li><a href="../../java/strings/#string-pool">Что такое String Pool?</a> — <em>Junior</em></li>
+<li><a href="../../java/strings/#intern">Как работает <code>intern()</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="oop"><abbr title="Объектно-ориентированное программирование">ООП</abbr><a class="headerlink" href="#oop" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/oop/#what-is-oop">Что такое <abbr title="Объектно-ориентированное программирование">ООП</abbr> и зачем оно нужно?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#encapsulation">Что такое инкапсуляция?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#abstraction">Что такое абстракция?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#polymorphism">Что такое полиморфизм?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#interface-vs-abstract">Чем интерфейс отличается от абстрактного класса?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#interface-methods">Зачем в интерфейсах <code>default</code>, <code>static</code> и <code>private</code> методы?</a> — <em>Middle</em></li>
+<li><a href="../../java/oop/#interface-state">Превратили ли <code>default</code>-методы интерфейс в абстрактный класс?</a> — <em>Middle</em></li>
+<li><a href="../../java/oop/#signature">Что входит в сигнатуру метода?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#overload-vs-override">Чем перегрузка отличается от переопределения?</a> — <em>Junior</em></li>
+<li><a href="../../java/oop/#covariant-return">Можно ли при переопределении изменить тип возвращаемого значения?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="exceptions">Исключения<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/exceptions/#throwable">Как устроена иерархия исключений?</a> — <em>Junior</em></li>
+<li><a href="../../java/exceptions/#checked-unchecked">Чем checked-исключения отличаются от unchecked?</a> — <em>Junior</em></li>
+<li><a href="../../java/exceptions/#try-catch">Как работает <code>try-catch-finally</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/exceptions/#finally">Когда <code>finally</code> не выполняется?</a> — <em>Middle</em></li>
+<li><a href="../../java/exceptions/#try-with-resources">Что даёт <code>try-with-resources</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/exceptions/#custom-exceptions">Когда создавать свои исключения и какие — checked или unchecked?</a> — <em>Middle</em></li>
+<li><a href="../../java/exceptions/#antipatterns">Какие антипаттерны встречаются при работе с исключениями?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="generics">Дженерики<a class="headerlink" href="#generics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/generics/#why-generics">Зачем нужны дженерики?</a> — <em>Junior</em></li>
+<li><a href="../../java/generics/#type-erasure">Что такое стирание типов?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#bridge-methods">Что такое bridge-методы?</a> — <em>Senior</em></li>
+<li><a href="../../java/generics/#extends">Что значит <code>? extends T</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#super">Что значит <code>? super T</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#wildcard-vs-object">Чем <code>List&lt;?&gt;</code> отличается от <code>List&lt;Object&gt;</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#pecs">Что такое <abbr title="Producer Extends, Consumer Super — правило выбора wildcard в дженериках">PECS</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#upper-bound">Как ограничить параметр типа?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#generic-methods">Что такое generic-метод?</a> — <em>Junior</em></li>
+<li><a href="../../java/generics/#generics-restrictions">Чего нельзя делать с дженериками?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#raw">Почему raw types опасны?</a> — <em>Middle</em></li>
+<li><a href="../../java/generics/#heap-pollution">Что такое heap pollution?</a> — <em>Senior</em></li>
+<li><a href="../../java/generics/#safevarargs">Когда ставить <code>@SafeVarargs</code>?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="modern-java">Современная Java<a class="headerlink" href="#modern-java" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/modern-java/#var">Что такое <code>var</code> и где его нельзя использовать?</a> — <em>Junior</em></li>
+<li><a href="../../java/modern-java/#records">Что такое <code>record</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/modern-java/#switch-expressions">Как работает новый <code>switch</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/modern-java/#pattern-matching">Что такое pattern matching?</a> — <em>Middle</em></li>
+<li><a href="../../java/modern-java/#sealed">Что такое <code>sealed</code>-классы?</a> — <em>Middle</em></li>
+<li><a href="../../java/modern-java/#sealed-switch">Зачем <code>sealed</code> нужен в паре со <code>switch</code>?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="collections">Коллекции<a class="headerlink" href="#collections" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/collections/#collection-hierarchy">Как устроена иерархия коллекций?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#map-not-collection">Почему <code>Map</code> — это не <code>Collection</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#arraylist">Как устроен <code>ArrayList</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#linkedlist">Как устроен <code>LinkedList</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#insert-middle">Что быстрее для вставки в середину: <code>ArrayList</code> или <code>LinkedList</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/collections/#cache-locality">Почему <code>LinkedList</code> проигрывает даже при равной асимптотике?</a> — <em>Senior</em></li>
+<li><a href="../../java/collections/#hashset">Как <code>HashSet</code> обеспечивает уникальность?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#treeset">Как <code>TreeSet</code> сортирует элементы?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#comparable-comparator"><code>Comparable</code> или <code>Comparator</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#stack-arraydeque">Почему <code>Stack</code> устарел и чем его заменить?</a> — <em>Junior</em></li>
+<li><a href="../../java/collections/#priorityqueue">Как работает <code>PriorityQueue</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/collections/#cme">Откуда берётся <code>ConcurrentModificationException</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="hashmap">HashMap<a class="headerlink" href="#hashmap" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/hashmap/#hashmap-internals">Как <code>HashMap</code> устроена внутри?</a> — <em>Junior</em></li>
+<li><a href="../../java/hashmap/#bucket-index">Как <code>HashMap</code> находит бакет по ключу?</a> — <em>Middle</em></li>
+<li><a href="../../java/hashmap/#collisions">Что происходит при коллизии?</a> — <em>Middle</em></li>
+<li><a href="../../java/hashmap/#rehashing">Когда <code>HashMap</code> расширяется?</a> — <em>Middle</em></li>
+<li><a href="../../java/hashmap/#treeify">Зачем в Java 8 бакеты превращаются в деревья?</a> — <em>Senior</em></li>
+<li><a href="../../java/hashmap/#map-choice"><code>HashMap</code>, <code>LinkedHashMap</code> или <code>TreeMap</code>?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="streams">Stream API<a class="headerlink" href="#streams" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/streams/#what-is-stream">Что такое Stream и из чего состоит конвейер?</a> — <em>Junior</em></li>
+<li><a href="../../java/streams/#intermediate-terminal">Чем промежуточные операции отличаются от терминальных?</a> — <em>Junior</em></li>
+<li><a href="../../java/streams/#map-flatmap">Чем <code>map</code> отличается от <code>flatMap</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/streams/#vertical">В каком порядке выполняются операции стрима?</a> — <em>Middle</em></li>
+<li><a href="../../java/streams/#short-circuit">Что такое short-circuiting?</a> — <em>Middle</em></li>
+<li><a href="../../java/streams/#primitive-streams">Зачем нужны <code>IntStream</code>, <code>LongStream</code> и <code>DoubleStream</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/streams/#parallel">Когда использовать <code>parallelStream()</code>?</a> — <em>Senior</em></li>
+<li><a href="../../java/streams/#to-list">Как собрать стрим в коллекцию?</a> — <em>Junior</em></li>
+<li><a href="../../java/streams/#to-map">Чем опасен <code>toMap</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/streams/#grouping">Как группировать элементы?</a> — <em>Middle</em></li>
+<li><a href="../../java/streams/#joining">Как склеить строки из стрима?</a> — <em>Junior</em></li>
+<li><a href="../../java/streams/#stream-tasks">Как решать типовые задачи на стримы?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="functional">Лямбды и Optional<a class="headerlink" href="#functional" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/functional/#functional-interfaces">Что такое функциональный интерфейс?</a> — <em>Junior</em></li>
+<li><a href="../../java/functional/#method-references">Что такое ссылки на методы?</a> — <em>Junior</em></li>
+<li><a href="../../java/functional/#effectively-final">Почему лямбда требует effectively final?</a> — <em>Middle</em></li>
+<li><a href="../../java/functional/#optional-basics">Что такое <code>Optional</code> и как его создать?</a> — <em>Junior</em></li>
+<li><a href="../../java/functional/#orelse">Чем <code>orElse</code> отличается от <code>orElseGet</code>?</a> — <em>Middle</em></li>
+<li><a href="../../java/functional/#optional-chains">Как правильно работать с <code>Optional</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="io-nio">IO / <abbr title="New I/O — неблокирующий ввод-вывод на каналах и буферах">NIO</abbr><a class="headerlink" href="#io-nio" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/io-nio/#io-vs-nio-diff">Чем <code>java.io</code> отличается от <code>java.nio</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#io-streams">Как устроены потоки <code>java.io</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#io-decorator">Как в <code>java.io</code> используется паттерн Декоратор?</a> — <em>Middle</em></li>
+<li><a href="../../java/io-nio/#buffered">Зачем нужны <code>Buffered</code>-потоки?</a> — <em>Middle</em></li>
+<li><a href="../../java/io-nio/#path">Чем <code>Path</code> лучше <code>File</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#files-read-write">Как читать и писать файлы через <code>Files</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#files-ops">Какие операции с файлами и директориями есть в <code>Files</code>?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#walk">Как обойти директорию?</a> — <em>Middle</em></li>
+<li><a href="../../java/io-nio/#attributes">Как читать атрибуты файла?</a> — <em>Middle</em></li>
+<li><a href="../../java/io-nio/#big-files">Как обработать большой CSV построчно?</a> — <em>Middle</em></li>
+<li><a href="../../java/io-nio/#copy">Как скопировать файл?</a> — <em>Junior</em></li>
+<li><a href="../../java/io-nio/#properties">Как работать с properties-файлами?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="jvm">Память и сборка мусора<a class="headerlink" href="#jvm" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../java/jvm/#jvm-jre-jdk">Чем отличаются <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr>, <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> и <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../java/jvm/#gc-roots">Как <abbr title="Garbage Collector — сборщик мусора">GC</abbr> понимает, что объект больше не нужен?</a> — <em>Junior</em></li>
+<li><a href="../../java/jvm/#generations">Что такое гипотеза поколений?</a> — <em>Middle</em></li>
+<li><a href="../../java/jvm/#mark-sweep-compact">Как работает Mark-Sweep-Compact?</a> — <em>Middle</em></li>
+<li><a href="../../java/jvm/#stw">Что такое Stop-The-World?</a> — <em>Middle</em></li>
+<li><a href="../../java/jvm/#collectors">Какие сборщики мусора есть и какой выбрать?</a> — <em>Senior</em></li>
+<li><a href="../../java/jvm/#stack-heap">Чем Stack отличается от Heap?</a> — <em>Junior</em></li>
+<li><a href="../../java/jvm/#metaspace">Что такое Metaspace и чем он отличается от PermGen?</a> — <em>Middle</em></li>
+<li><a href="../../java/jvm/#static-location">Где живут статические переменные и String Pool?</a> — <em>Senior</em></li>
+<li><a href="../../java/jvm/#metaspace-gc">Как очищается Metaspace?</a> — <em>Senior</em></li>
+<li><a href="../../java/jvm/#oom-basics">Что такое OutOfMemoryError?</a> — <em>Junior</em></li>
+<li><a href="../../java/jvm/#oom-types">Какие бывают OutOfMemoryError?</a> — <em>Middle</em></li>
+<li><a href="../../java/jvm/#oom-investigation">Как расследовать и лечить OutOfMemoryError?</a> — <em>Senior</em></li>
+</ul>
+<h2 id="concurrency">Многопоточность<a class="headerlink" href="#concurrency" title="Permanent link">&para;</a></h2>
+<h3 id="threads">Потоки и ThreadLocal<a class="headerlink" href="#threads" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/threads/#thread-vs-process">Чем поток отличается от процесса?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/threads/#thread-vs-runnable">Как создать поток: <code>Thread</code> или <code>Runnable</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/threads/#thread-states">Какие состояния есть у потока?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/threads/#join-sleep-yield">Как работают <code>join</code>, <code>sleep</code> и <code>yield</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/threads/#interrupt">Как правильно остановить поток?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/threads/#thread-local">Как работает <code>ThreadLocal</code> и почему он течёт в пуле потоков?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="locks">Блокировки и синхронизаторы<a class="headerlink" href="#locks" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/locks/#synchronized">Как работает <code>synchronized</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/locks/#wait-notify">Зачем <code>wait()</code> вызывают в цикле <code>while</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/locks/#reentrantlock">Чем <code>ReentrantLock</code> лучше <code>synchronized</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/locks/#rwlock-condition">Зачем нужны <code>ReadWriteLock</code>, <code>StampedLock</code> и <code>Condition</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/locks/#latch-barrier">Чем <code>CountDownLatch</code> отличается от <code>CyclicBarrier</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/locks/#semaphore">Как <code>Semaphore</code> ограничивает доступ?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/locks/#aqs">Как устроен <abbr title="AbstractQueuedSynchronizer — база для ReentrantLock, Semaphore, CountDownLatch">AQS</abbr>?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/locks/#park-unpark">Чем <code>LockSupport.park()</code> отличается от <code>wait()</code>?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="jmm"><abbr title="Java Memory Model — правила видимости и упорядочивания операций с памятью между потоками">JMM</abbr>, volatile и атомики<a class="headerlink" href="#jmm" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/jmm/#jmm-basics">Какие три проблемы решает <abbr title="Java Memory Model — правила видимости и упорядочивания операций с памятью между потоками">JMM</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/jmm/#happens-before">Что такое happens-before?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/jmm/#volatile">Что гарантирует <code>volatile</code>, а что нет?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/jmm/#final-fields">Как <code>final</code>-поля помогают безопасной публикации?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/jmm/#atomics">Как работают атомики?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/jmm/#cas-aba">Что такое <abbr title="Compare-And-Swap — атомарная инструкция «сравнить и заменить», основа lock-free алгоритмов">CAS</abbr> и проблема <abbr title="Проблема ABA — значение сменилось A → B → A, и CAS не заметил изменения">ABA</abbr>?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/jmm/#longadder">Почему <code>LongAdder</code> быстрее <code>AtomicLong</code> под нагрузкой?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/jmm/#false-sharing">Что такое false sharing?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="deadlock">Deadlock, livelock, starvation<a class="headerlink" href="#deadlock" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/deadlock/#deadlock">Что такое deadlock и как он возникает?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/deadlock/#deadlock-detection">Как найти дедлок в работающем приложении?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/deadlock/#deadlock-prevention">Как избежать дедлока?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/deadlock/#livelock-starvation">Чем livelock и starvation отличаются от deadlock?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="executors">Пулы потоков и CompletableFuture<a class="headerlink" href="#executors" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/executors/#why-pools">Зачем пулы, если есть <code>new Thread()</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/executors/#thread-pool-executor">Как <code>ThreadPoolExecutor</code> решает, что делать с задачей?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/executors/#executors-factories">Чем опасны фабрики <code>Executors</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/executors/#forkjoinpool">Как устроен <code>ForkJoinPool</code>?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/executors/#future">Чем плох <code>Future</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/executors/#completablefuture">Как строить цепочки на <code>CompletableFuture</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/executors/#cf-errors">Как обрабатывать ошибки в <code>CompletableFuture</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="concurrent-collections">Потокобезопасные коллекции<a class="headerlink" href="#concurrent-collections" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/concurrent-collections/#hashtable-vector">Чем плохи <code>Hashtable</code> и <code>Vector</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/concurrent-collections/#concurrenthashmap">Как <code>ConcurrentHashMap</code> обходится почти без блокировок?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/concurrent-collections/#copyonwritearraylist">Когда нужен <code>CopyOnWriteArrayList</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="virtual-threads">Виртуальные потоки<a class="headerlink" href="#virtual-threads" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/virtual-threads/#virtual-threads">Чем виртуальные потоки отличаются от платформенных?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/virtual-threads/#pinning">Что такое pinning?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/virtual-threads/#structured-concurrency">Что такое Structured Concurrency?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="reactive">Реактивное программирование<a class="headerlink" href="#reactive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../concurrency/reactive/#what-is-reactive">Что такое реактивное программирование и когда оно нужно?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/reactive/#reactor-vs-stream-cf">Чем <code>Mono</code> и <code>Flux</code> отличаются от <code>Stream</code> и <code>CompletableFuture</code>?</a> — <em>Junior</em></li>
+<li><a href="../../concurrency/reactive/#reactive-streams-spec">Как устроена спецификация Reactive Streams?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#backpressure">Что такое backpressure и как с ним работать?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#cold-hot">Почему без подписки ничего не происходит и чем холодный поток отличается от горячего?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#flatmap">Чем <code>map</code> отличается от <code>flatMap</code>, <code>concatMap</code> и <code>flatMapSequential</code>?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#schedulers">Как работают <code>publishOn</code> и <code>subscribeOn</code>?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/reactive/#blocking-calls">Как вызвать блокирующий код из реактивной цепочки?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#reactive-errors">Как обрабатывать ошибки и повторы в реактивной цепочке?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#reactor-context">Как передать traceId и пользователя без <code>ThreadLocal</code>?</a> — <em>Senior</em></li>
+<li><a href="../../concurrency/reactive/#stepverifier">Как тестировать реактивный код?</a> — <em>Middle</em></li>
+<li><a href="../../concurrency/reactive/#reactive-vs-loom">Реактивщина или виртуальные потоки?</a> — <em>Senior</em></li>
+</ul>
+<h2 id="design">Дизайн кода<a class="headerlink" href="#design" title="Permanent link">&para;</a></h2>
+<h3 id="composition">Композиция и зацепление<a class="headerlink" href="#composition" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../design/composition/#fragile-base-class">Почему наследование нарушает инкапсуляцию?</a> — <em>Middle</em></li>
+<li><a href="../../design/composition/#when-inherit">Когда наследование всё-таки уместно?</a> — <em>Middle</em></li>
+<li><a href="../../design/composition/#cohesion-coupling">Что такое high cohesion и low coupling?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="solid"><abbr title="Пять принципов проектирования классов: SRP, OCP, LSP, ISP, DIP">SOLID</abbr><a class="headerlink" href="#solid" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../design/solid/#srp">Что такое Single Responsibility Principle?</a> — <em>Junior</em></li>
+<li><a href="../../design/solid/#ocp">Что такое Open/Closed Principle?</a> — <em>Junior</em></li>
+<li><a href="../../design/solid/#lsp">Что такое Liskov Substitution Principle?</a> — <em>Middle</em></li>
+<li><a href="../../design/solid/#isp">Что такое Interface Segregation Principle?</a> — <em>Junior</em></li>
+<li><a href="../../design/solid/#dip">Что такое Dependency Inversion Principle?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="creational-patterns">Порождающие паттерны<a class="headerlink" href="#creational-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../design/creational-patterns/#singleton">Как написать потокобезопасный Singleton?</a> — <em>Middle</em></li>
+<li><a href="../../design/creational-patterns/#enum-singleton">Почему Enum Singleton считается самым надёжным?</a> — <em>Middle</em></li>
+<li><a href="../../design/creational-patterns/#builder">Зачем нужен Builder?</a> — <em>Junior</em></li>
+<li><a href="../../design/creational-patterns/#factory-method">Что такое Factory Method и чем он отличается от Simple Factory?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="structural-patterns">Структурные паттерны<a class="headerlink" href="#structural-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../design/structural-patterns/#decorator">Что такое Decorator?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="behavioral-patterns">Поведенческие паттерны<a class="headerlink" href="#behavioral-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../design/behavioral-patterns/#strategy">Что такое Strategy?</a> — <em>Junior</em></li>
+<li><a href="../../design/behavioral-patterns/#observer">Что такое Observer?</a> — <em>Middle</em></li>
+</ul>
+<h2 id="spring">Spring<a class="headerlink" href="#spring" title="Permanent link">&para;</a></h2>
+<h3 id="spring-core">Spring Core: <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>, <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>, <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr><a class="headerlink" href="#spring-core" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-core/#ioc-vs-di">Что такое <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> и чем он отличается от <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-core/#constructor-injection">Почему внедрение через конструктор лучше, чем через поле?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-core/#circular-dependencies">Что будет при циклической зависимости бинов?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#applicationcontext-vs-beanfactory">Чем <code>ApplicationContext</code> отличается от <code>BeanFactory</code>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-core/#bean-lifecycle-phases">Через какие этапы проходит бин?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#bfpp-vs-bpp">Чем <code>BeanFactoryPostProcessor</code> отличается от <code>BeanPostProcessor</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#proxy-creation">На каком этапе создаётся прокси?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#bean-scopes">Какие бывают скоупы бинов?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-core/#prototype-in-singleton">Что будет, если внедрить prototype в singleton?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#fresh-prototype">Как получать новый prototype при каждом вызове?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#why-aop">Зачем нужен <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-core/#proxy">Как Spring оборачивает бины в прокси?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#jdk-proxy-vs-cglib">Чем <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Dynamic Proxy отличается от <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-core/#self-invocation">Почему не срабатывает <code>@Transactional</code> при вызове метода через <code>this</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-boot">Spring Boot<a class="headerlink" href="#spring-boot" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-boot/#boot-vs-spring">Зачем Spring Boot, если есть Spring?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-boot/#springbootapplication">Что внутри <code>@SpringBootApplication</code>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-boot/#how-autoconfig">Как работает автоконфигурация?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-boot/#override-autoconfig">Как отключить или переопределить автоконфигурацию?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-boot/#starters">Что такое стартер?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-boot/#bom">Почему в зависимостях Spring Boot не пишут <code>&lt;version&gt;</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-boot/#starter-vs-autoconfig">Чем стартер отличается от автоконфигурации?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-boot/#config-priority">В каком порядке Spring Boot читает настройки?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-boot/#profiles">Как работают профили?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-boot/#value-vs-configprops"><code>@Value</code> или <code>@ConfigurationProperties</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-mvc">Spring <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> и WebFlux<a class="headerlink" href="#spring-mvc" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-mvc/#dispatcherservlet">Как <code>DispatcherServlet</code> обрабатывает запрос?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#handler-adapter">Зачем нужен <code>HandlerAdapter</code>?</a> — <em>Senior</em></li>
+<li><a href="../../spring/spring-mvc/#controller-annotations">Какие аннотации извлекают данные из запроса?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-mvc/#response-entity">Как управлять статусом и заголовками ответа?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-mvc/#controller-advice">Как централизованно обработать исключения?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-mvc/#handler-resolution">Как Spring выбирает обработчик исключения?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#problem-detail">Что такое <code>ProblemDetail</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#filter-vs-interceptor">Чем Filter отличается от Interceptor?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#filter">Как написать фильтр?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#interceptor">Как написать интерсептор?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#valid">Как работает <code>@Valid</code>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-mvc/#cors">Как настроить <abbr title="Cross-Origin Resource Sharing — правила запросов браузера к чужому домену">CORS</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-mvc/#why-reactive">Зачем нужен реактивный подход?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#mono-flux">Что такое <code>Mono</code> и <code>Flux</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-mvc/#webflux-vs-mvc">Когда выбирать WebFlux, а когда <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr>?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="spring-security">Spring Security<a class="headerlink" href="#spring-security" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-security/#security-filter-chain">Как устроен Spring Security?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-security/#authentication">Как проходит аутентификация?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-security/#authorization">Как настроить авторизацию?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-security/#sessions-vs-jwt">Как учитывать безопасность в дизайне?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-security/#jwt-filter">Как встроить <abbr title="JSON Web Token — подписанный токен с данными пользователя">JWT</abbr> в Spring Security?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-security/#security-context-async">Почему теряется <code>SecurityContext</code> в асинхронном коде?</a> — <em>Senior</em></li>
+<li><a href="../../spring/spring-security/#jwt-logout">Как сделать logout, если используется <abbr title="JSON Web Token — подписанный токен с данными пользователя">JWT</abbr>?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="spring-transactions">Транзакции в Spring<a class="headerlink" href="#spring-transactions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-transactions/#transactional-flow">Что происходит при вызове <code>@Transactional</code>-метода?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-transactions/#rollback-rules">При каких исключениях Spring откатывает транзакцию?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-transactions/#self-invocation-transactions">Чем опасен самовызов для транзакций?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-transactions/#required">Как работает <code>REQUIRED</code> и откуда берётся <code>UnexpectedRollbackException</code>?</a> — <em>Senior</em></li>
+<li><a href="../../spring/spring-transactions/#requires-new">Когда нужен <code>REQUIRES_NEW</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-transactions/#nested">Чем <code>NESTED</code> отличается от <code>REQUIRES_NEW</code>?</a> — <em>Senior</em></li>
+<li><a href="../../spring/spring-transactions/#other-propagation">Какие ещё бывают типы propagation?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-transactions/#isolation">Как задать уровень изоляции в Spring?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-data-jpa">Spring Data <abbr title="Jakarta Persistence API — стандарт ORM в Java">JPA</abbr> и Hibernate<a class="headerlink" href="#spring-data-jpa" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-data-jpa/#n-plus-one">Что такое проблема N+1 и как её решить?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-data-jpa/#entity-lifecycle">Какие состояния бывают у Entity?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-data-jpa/#dirty-checking">Что такое dirty checking?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-data-jpa/#save-vs-saveandflush">Чем <code>save()</code> отличается от <code>saveAndFlush()</code>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-data-jpa/#hibernate-cache">Чем кэш первого уровня отличается от второго?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-caching">Кэширование<a class="headerlink" href="#spring-caching" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-caching/#cacheable">Как работает <code>@Cacheable</code>?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-caching/#cache-aside">Как вручную реализовать Cache-Aside на Redis?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-caching/#redis-cache-config">Как настроить Redis-кэш с <abbr title="Time To Live — время жизни записи">TTL</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-caching/#condition-vs-unless">Чем <code>condition</code> отличается от <code>unless</code>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-testing">Тестирование<a class="headerlink" href="#spring-testing" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-testing/#test-slices">Какой тестовый срез выбрать?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-testing/#unit-tests">Как написать юнит-тест без Spring?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-testing/#webmvctest">Как протестировать контроллер без БД?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-testing/#datajpatest">Как протестировать репозиторий?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-testing/#testcontainers">Зачем нужны Testcontainers?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-actuator">Actuator и Micrometer<a class="headerlink" href="#spring-actuator" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../spring/spring-actuator/#actuator">Что даёт Actuator и как его защитить?</a> — <em>Junior</em></li>
+<li><a href="../../spring/spring-actuator/#micrometer">Как писать свои метрики в Micrometer?</a> — <em>Middle</em></li>
+<li><a href="../../spring/spring-actuator/#prometheus">Как подключить Prometheus и Grafana?</a> — <em>Middle</em></li>
+</ul>
+<h2 id="data">Данные<a class="headerlink" href="#data" title="Permanent link">&para;</a></h2>
+<h3 id="sql">SQL и индексы<a class="headerlink" href="#sql" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../database/sql/#how-index">Как индекс ускоряет поиск?</a> — <em>Junior</em></li>
+<li><a href="../../database/sql/#index-types">Какие типы индексов есть в PostgreSQL?</a> — <em>Middle</em></li>
+<li><a href="../../database/sql/#index-not-used">Когда индекс не помогает?</a> — <em>Middle</em></li>
+<li><a href="../../database/sql/#explain">Как читать <code>EXPLAIN ANALYZE</code>?</a> — <em>Middle</em></li>
+<li><a href="../../database/sql/#joins">Чем отличаются виды <code>JOIN</code>?</a> — <em>Junior</em></li>
+<li><a href="../../database/sql/#group-by">Чем <code>WHERE</code> отличается от <code>HAVING</code>?</a> — <em>Junior</em></li>
+<li><a href="../../database/sql/#window-functions">Как работают оконные функции?</a> — <em>Middle</em></li>
+<li><a href="../../database/sql/#cte">Что такое <abbr title="Common Table Expression — именованный подзапрос в WITH">CTE</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../database/sql/#normal-forms">Что такое нормальные формы?</a> — <em>Junior</em></li>
+<li><a href="../../database/sql/#denormalization">Когда денормализовать?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="transactions">Транзакции и <abbr title="Multi-Version Concurrency Control — читатели видят снимок версий строк и не блокируют писателей">MVCC</abbr><a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../database/transactions/#acid-properties">Что такое <abbr title="Atomicity, Consistency, Isolation, Durability — гарантии транзакции">ACID</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../database/transactions/#wal">Как БД гарантирует долговечность?</a> — <em>Middle</em></li>
+<li><a href="../../database/transactions/#read-anomalies">Какие бывают аномалии чтения?</a> — <em>Junior</em></li>
+<li><a href="../../database/transactions/#isolation-levels">Какие бывают уровни изоляции?</a> — <em>Middle</em></li>
+<li><a href="../../database/transactions/#serializable">Почему не ставить <code>SERIALIZABLE</code> везде?</a> — <em>Senior</em></li>
+<li><a href="../../database/transactions/#mvcc-how">Как работает <abbr title="Multi-Version Concurrency Control — читатели видят снимок версий строк и не блокируют писателей">MVCC</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../database/transactions/#mvcc-isolation">Как <abbr title="Multi-Version Concurrency Control — читатели видят снимок версий строк и не блокируют писателей">MVCC</abbr> реализует уровни изоляции?</a> — <em>Senior</em></li>
+<li><a href="../../database/transactions/#vacuum">Что такое table bloat и autovacuum?</a> — <em>Senior</em></li>
+<li><a href="../../database/transactions/#mvcc-postgres-vs-mysql">Чем <abbr title="Multi-Version Concurrency Control — читатели видят снимок версий строк и не блокируют писателей">MVCC</abbr> в PostgreSQL отличается от MySQL?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="locking">Блокировки и конкурентные обновления<a class="headerlink" href="#locking" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../database/locking/#lost-update">Что такое lost update и как его избежать?</a> — <em>Middle</em></li>
+<li><a href="../../database/locking/#write-skew">Что такое write skew и почему от него не спасает <code>REPEATABLE READ</code>?</a> — <em>Senior</em></li>
+<li><a href="../../database/locking/#optimistic-locking">Как работает оптимистичная блокировка?</a> — <em>Middle</em></li>
+<li><a href="../../database/locking/#pessimistic-locking">Как работает пессимистичная блокировка?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="nosql">NoSQL<a class="headerlink" href="#nosql" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../database/nosql/#nosql-vs-sql">Зачем NoSQL, если есть SQL?</a> — <em>Junior</em></li>
+<li><a href="../../database/nosql/#document-store">Что такое документная БД?</a> — <em>Junior</em></li>
+<li><a href="../../database/nosql/#key-value">Что такое key-value хранилище?</a> — <em>Junior</em></li>
+<li><a href="../../database/nosql/#redis-cluster">Redis, Memcached или Hazelcast?</a> — <em>Senior</em></li>
+<li><a href="../../database/nosql/#wide-column">Как устроены wide-column БД?</a> — <em>Middle</em></li>
+<li><a href="../../database/nosql/#graph">Когда нужна графовая БД?</a> — <em>Middle</em></li>
+<li><a href="../../database/nosql/#comparison">Как сравнить четыре семейства?</a> — <em>Middle</em></li>
+<li><a href="../../database/nosql/#polyglot">Что такое polyglot persistence?</a> — <em>Middle</em></li>
+</ul>
+<h2 id="kafka">Kafka<a class="headerlink" href="#kafka" title="Permanent link">&para;</a></h2>
+<h3 id="kafka-broker">Брокер: топики, партиции, хранение<a class="headerlink" href="#kafka-broker" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../kafka/kafka/#kafka-vs-rabbitmq">Чем Kafka отличается от RabbitMQ?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka/#topic-partition">Что такое топик и партиция?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka/#partition-scaling">Почему партиция — единица масштабирования?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka/#offset">Что такое оффсет партиции и оффсет консьюмера?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka/#consumer-offsets">Где Kafka хранит оффсеты консьюмеров?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka/#no-single-delete">Почему Kafka не удаляет сообщения по одному?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka/#segments">Как Kafka удаляет старые данные?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka/#why-retention">Зачем хранить сообщения неделями?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka/#log-compaction">Что такое log compaction?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="kafka-consumer-producer">Порядок, группы и ребаланс<a class="headerlink" href="#kafka-consumer-producer" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../kafka/kafka-consumer-producer/#no-global-order">Почему Kafka не гарантирует глобальный порядок?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#null-key">Что будет, если отправить сообщение без ключа?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#key-hashing">Как ключ гарантирует порядок?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#repartitioning">Что будет с порядком, если добавить партиции?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#consumer-group">Что такое consumer group?</a> — <em>Junior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#idle-consumers">Что будет, если консьюмеров больше, чем партиций?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#multiple-groups">Как несколько групп читают один топик?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#rebalance-triggers">Что такое ребаланс и когда он происходит?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#heartbeats">Как Kafka понимает, что консьюмер умер?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#group-leader">Кто распределяет партиции при ребалансе?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-consumer-producer/#cooperative-rebalance">Чем cooperative rebalancing лучше eager?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="kafka-reliability">Гарантии доставки<a class="headerlink" href="#kafka-reliability" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../kafka/kafka-reliability/#acks">Что задаёт параметр <code>acks</code> у продюсера?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-reliability/#replication-isr">Как работают replication factor и <abbr title="In-Sync Replicas — реплики партиции, не отставшие от лидера">ISR</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-reliability/#delivery-guarantees">Чем отличаются at-most-once, at-least-once и exactly-once?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-reliability/#exactly-once">Почему exactly-once называют «мифическим»?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-reliability/#offset-commit">Почему авто-коммит опасен и как коммитить вручную?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-reliability/#idempotent-consumer">Как сделать консьюмер идемпотентным?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-reliability/#dlq">Что делать с «ядовитым» сообщением?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="spring-kafka">Kafka в Spring<a class="headerlink" href="#spring-kafka" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../kafka/spring-kafka/#kafka-listener">Как работает <code>@KafkaListener</code>?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/spring-kafka/#listener-config">Как настроить коммит оффсетов и обработку ошибок листенера?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="kafka-streams">Kafka Streams<a class="headerlink" href="#kafka-streams" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../kafka/kafka-streams/#what-is-kafka-streams">Что такое Kafka Streams и чем он отличается от обычного консьюмера?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#topology">Что такое топология и из чего она состоит?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#kstream-ktable">Чем <code>KStream</code> отличается от <code>KTable</code> и <code>GlobalKTable</code>?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#state-stores">Где Kafka Streams хранит состояние?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#state-restore">Что происходит с состоянием при падении и ребалансе?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-streams/#repartition">Зачем Kafka Streams создаёт repartition-топики?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#joins">Как работают джойны в Kafka Streams?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-streams/#windows">Как работают окна и время в Kafka Streams?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#scaling">Как Kafka Streams масштабируется?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#streams-eos">Как в Kafka Streams включить exactly-once?</a> — <em>Senior</em></li>
+<li><a href="../../kafka/kafka-streams/#streams-errors">Как обрабатывать ошибки в Kafka Streams?</a> — <em>Middle</em></li>
+<li><a href="../../kafka/kafka-streams/#topology-test-driver">Как протестировать топологию?</a> — <em>Middle</em></li>
+</ul>
+<h2 id="system-design">System Design<a class="headerlink" href="#system-design" title="Permanent link">&para;</a></h2>
+<h3 id="interview">Интервью и оценка нагрузки<a class="headerlink" href="#interview" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../system-design/interview/#metrics">Какими метриками описывают систему?</a> — <em>Junior</em></li>
+<li><a href="../../system-design/interview/#estimation">Как оценить нагрузку «на салфетке»?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/interview/#scaling">Как масштабировать сервис?</a> — <em>Junior</em></li>
+<li><a href="../../system-design/interview/#methodology">Как проходить интервью по system design?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/interview/#url-shortener">Как спроектировать URL shortener?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/interview/#classic-tasks">Ради чего спрашивают классические задачи?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/interview/#case-round-robin">Почему Round Robin убивает один сервер?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/interview/#case-stampede">Что убило базу в 10:10, если Redis-узел сгорел в 10:05?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/interview/#case-sharding">Нужно ли шардировать таблицу на 100M строк?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/interview/#case-partition">Что делать сервису «Избранное», когда перерубили кабель между ДЦ?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/interview/#case-emails">Почему письма теряются, дублируются и блокируют очередь?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="building-blocks">Строительные блоки<a class="headerlink" href="#building-blocks" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../system-design/building-blocks/#l4-l7">Чем L4-балансировщик отличается от L7?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/building-blocks/#lb-algorithms">Какие есть алгоритмы балансировки?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/building-blocks/#sticky-sessions">Почему sticky sessions — антипаттерн?</a> — <em>Junior</em></li>
+<li><a href="../../system-design/building-blocks/#caching">Где и как кэшировать?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/building-blocks/#eviction">Как кэш вытесняет и инвалидирует данные?</a> — <em>Junior</em></li>
+<li><a href="../../system-design/building-blocks/#cache-stampede">Что такое cache stampede и как его лечить?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/building-blocks/#message-queues">Зачем нужны очереди сообщений?</a> — <em>Junior</em></li>
+<li><a href="../../system-design/building-blocks/#cdn">Что даёт <abbr title="Content Delivery Network — сеть edge-серверов рядом с пользователями">CDN</abbr>?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="distributed-data">Распределённые данные<a class="headerlink" href="#distributed-data" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../system-design/distributed-data/#replication">Как масштабировать БД репликацией?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/distributed-data/#partitioning">Чем партиционирование отличается от шардирования?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/distributed-data/#sharding">Как шардировать и выбрать shard key?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/distributed-data/#consistent-hashing">Что такое consistent hashing?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/distributed-data/#cap">Что утверждает <abbr title="Consistency, Availability, Partition tolerance — при разрыве сети выбирай C или A">CAP</abbr>-теорема?</a> — <em>Middle</em></li>
+<li><a href="../../system-design/distributed-data/#pacelc">Что добавляет <abbr title="Расширение CAP: без аварии выбор между latency и consistency">PACELC</abbr>?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/distributed-data/#consistency-models">Какие бывают модели согласованности?</a> — <em>Senior</em></li>
+<li><a href="../../system-design/distributed-data/#consensus">Как узлы договариваются: Raft и Paxos?</a> — <em>Senior</em></li>
+</ul>
+<h2 id="architecture">Архитектура<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<h3 id="ddd"><abbr title="Domain-Driven Design — проектирование от предметной области">DDD</abbr>, <abbr title="Command Query Responsibility Segregation — раздельные модели записи и чтения">CQRS</abbr> и Event Sourcing<a class="headerlink" href="#ddd" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../architecture/ddd/#ubiquitous-language">Что такое Ubiquitous Language?</a> — <em>Junior</em></li>
+<li><a href="../../architecture/ddd/#bounded-context">Что такое Bounded Context?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/ddd/#context-mapping">Как связываются контексты?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/ddd/#aggregate">Что такое Entity и Aggregate?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/ddd/#rich-domain-model">Где должна жить бизнес-логика?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/ddd/#value-object">Что такое Value Object?</a> — <em>Junior</em></li>
+<li><a href="../../architecture/ddd/#domain-events">Что такое доменные события?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/ddd/#cqrs">Что такое <abbr title="Command Query Responsibility Segregation — раздельные модели записи и чтения">CQRS</abbr>?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/ddd/#event-sourcing">Что такое Event Sourcing?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="hexagonal">Слоистая и гексагональная архитектура<a class="headerlink" href="#hexagonal" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../architecture/hexagonal/#layered">Чем плоха классическая слоистая архитектура?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/hexagonal/#hexagonal">Как устроена гексагональная архитектура?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/hexagonal/#layered-vs-hexagonal">Layered или Hexagonal?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/hexagonal/#where-annotations">В каких слоях живут аннотации Spring?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/hexagonal/#adapters-config">Как адаптеры и конфигурация связывают ядро со Spring?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/hexagonal/#transactional-ddd">Где ставить <code>@Transactional</code>, если в ядре нет Spring?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/hexagonal/#double-entities">Зачем маппить доменную модель в отдельную <abbr title="Jakarta Persistence API — стандарт ORM в Java">JPA</abbr> Entity?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="microservices">Микросервисы и отказоустойчивость<a class="headerlink" href="#microservices" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../architecture/microservices/#monolith-vs-microservices">Монолит или микросервисы?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#modular-monolith">Что такое модульный монолит?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#service-boundaries">Как high cohesion и low coupling работают в микросервисах?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/microservices/#sync-async">Синхронно или асинхронно?</a> — <em>Junior</em></li>
+<li><a href="../../architecture/microservices/#api-gateway">Зачем нужны API Gateway, <abbr title="Backend For Frontend — отдельный бэкенд под конкретный клиент">BFF</abbr> и Service Discovery?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#rate-limiting">Как работает rate limiting?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#timeout-retry">Зачем нужны timeout и retry с backoff?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#circuit-breaker">Как работает circuit breaker?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/microservices/#bulkhead">Что такое bulkhead и graceful degradation?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="distributed-transactions">Распределённые транзакции<a class="headerlink" href="#distributed-transactions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../architecture/distributed-transactions/#delivery-guarantees">Какие бывают гарантии доставки и при чём тут идемпотентность?</a> — <em>Middle</em></li>
+<li><a href="../../architecture/distributed-transactions/#two-phase-commit">Почему 2PC почти не используют в микросервисах?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/distributed-transactions/#saga">Как работает Saga?</a> — <em>Senior</em></li>
+<li><a href="../../architecture/distributed-transactions/#outbox">Что такое Transactional Outbox?</a> — <em>Senior</em></li>
+</ul>
+<h2 id="infrastructure">Инфраструктура<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h2>
+<h3 id="docker">Docker и Compose<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../infrastructure/docker/#why-docker">Какую проблему решает Docker?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#container-vs-vm">Чем контейнер отличается от виртуальной машины?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#image-container">Чем Dockerfile, образ и контейнер отличаются?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#namespaces-cgroups">На чём держится изоляция контейнера?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/docker/#dockerfile">Как написать хороший Dockerfile для Java?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/docker/#base-images">Какой базовый образ выбрать?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/docker/#non-root">Почему контейнер нельзя запускать под root?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#compose-dns">Как сервисы в Compose находят друг друга?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#healthcheck">Как дождаться готовности базы при старте?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#compose-profiles">Как запускать тяжёлые сервисы только по запросу?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/docker/#kraft">Как поднять Kafka в Compose без ZooKeeper?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/docker/#docker-networks">Какие сети бывают в Docker?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/docker/#volumes">Как Docker хранит данные?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="cicd"><abbr title="Continuous Integration — сборка и тесты на каждый коммит">CI</abbr>/CD и миграции БД<a class="headerlink" href="#cicd" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../infrastructure/cicd/#ci-cd">Чем <abbr title="Continuous Integration — сборка и тесты на каждый коммит">CI</abbr> отличается от Continuous Delivery и Continuous Deployment?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/cicd/#pipeline">Из каких стадий состоит Java-пайплайн?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/cicd/#deploy-strategies">Какие есть стратегии деплоя?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/cicd/#flyway">Зачем нужны Flyway и Liquibase?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/cicd/#migrations-cicd">Как запускать миграции в <abbr title="Continuous Integration — сборка и тесты на каждый коммит">CI</abbr>/CD?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/cicd/#flyway-checksum">Что будет, если изменить уже применённую миграцию?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/cicd/#flyway-lock">Что, если пять инстансов одновременно начнут миграцию?</a> — <em>Senior</em></li>
+<li><a href="../../infrastructure/cicd/#zero-downtime">Как мигрировать схему без простоя?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../infrastructure/kubernetes/#k8s-basics">Что даёт Kubernetes?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/kubernetes/#health-checks">Чем liveness отличается от readiness?</a> — <em>Junior</em></li>
+<li><a href="../../infrastructure/kubernetes/#sidecar">Что такое sidecar?</a> — <em>Middle</em></li>
+<li><a href="../../infrastructure/kubernetes/#reverse-proxy">Зачем нужен reverse proxy?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../infrastructure/observability/#observability">Что такое observability?</a> — <em>Middle</em></li>
+</ul>
+<h2 id="cs">Computer Science<a class="headerlink" href="#cs" title="Permanent link">&para;</a></h2>
+<h3 id="algorithms">Big O и структуры данных<a class="headerlink" href="#algorithms" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../algorithms/algorithms/#big-o-basics">Что такое Big O?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#simplification">Как упрощать Big O?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#space-complexity">Что такое сложность по памяти?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#array-linkedlist">Какая сложность у массива и связного списка?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#hash-structures">Как оценивать HashMap и HashSet в задачах?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#stack-queue">Чем пользоваться для стека и очереди?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#heap">Как работает куча (PriorityQueue)?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/algorithms/#tree-traversal">Как устроено BST и как обходить дерево?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#tree-bfs">Как обойти дерево по уровням?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#red-black-tree">Что такое красно-чёрное дерево?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/algorithms/#structures-complexity">Какая сложность у операций основных структур?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/algorithms/#algorithms-complexity">Какую сложность у основных алгоритмов назвать сразу?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="sorting-graphs">Сортировки и графы<a class="headerlink" href="#sorting-graphs" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../algorithms/sorting-graphs/#sorting-overview">Какие сортировки нужно знать?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/sorting-graphs/#merge-sort">Как работает Merge Sort?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/sorting-graphs/#quick-sort">Как работает Quick Sort?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/sorting-graphs/#graph-representation">Как хранить граф?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/sorting-graphs/#graph-bfs">Как найти кратчайший путь в невзвешенном графе?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/sorting-graphs/#graph-dfs">Как работает DFS?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/sorting-graphs/#dijkstra">Как работает алгоритм Дейкстры?</a> — <em>Senior</em></li>
+</ul>
+<h3 id="leetcode-patterns">Задачи: массивы и строки<a class="headerlink" href="#leetcode-patterns" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../algorithms/leetcode-patterns/#framework">Как решать задачу на собесе?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#edge-cases">Какие edge cases проверять всегда?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#two-pointers-basics">Когда применять два указателя?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#three-sum">Как найти все тройки с нулевой суммой (3Sum)?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#sliding-window-basics">Как работает скользящее окно?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#longest-substring">Как найти самую длинную подстроку без повторов?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#min-window">Как найти минимальное окно, покрывающее шаблон?</a> — <em>Senior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#prefix-sum-basics">Как посчитать сумму отрезка за O(1)?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#two-sum">Как найти два числа с заданной суммой (Two Sum)?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#group-anagrams">Как сгруппировать анаграммы?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#rotated-array">Как искать в повёрнутом отсортированном массиве?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#valid-parentheses">Как проверить скобочную последовательность?</a> — <em>Junior</em></li>
+<li><a href="../../algorithms/leetcode-patterns/#monotonic-stack">Как найти следующий больший элемент (монотонный стек)?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="leetcode-trees-dp">Задачи: деревья, графы, ДП<a class="headerlink" href="#leetcode-trees-dp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../algorithms/leetcode-trees-dp/#validate-bst">Как проверить, что дерево — валидное BST?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#islands">Как посчитать количество островов?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#maze">Как найти кратчайший путь в лабиринте?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#dp-basics">Что такое динамическое программирование?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#kadane">Как найти подмассив с максимальной суммой (Kadane)?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#coin-change">Как набрать сумму минимальным числом монет (Coin Change)?</a> — <em>Middle</em></li>
+<li><a href="../../algorithms/leetcode-trees-dp/#lcs">Как найти наибольшую общую подпоследовательность (LCS)?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="networks"><abbr title="Transmission Control Protocol — надёжная доставка с установкой соединения">TCP</abbr>/IP, HTTP и <abbr title="Transport Layer Security — шифрование и аутентификация поверх TCP">TLS</abbr><a class="headerlink" href="#networks" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../networks/networks/#osi-tcpip">На каких уровнях живут протоколы, которыми ты пользуешься?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#tcp-vs-udp">Чем <abbr title="Transmission Control Protocol — надёжная доставка с установкой соединения">TCP</abbr> отличается от <abbr title="User Datagram Protocol — доставка датаграмм без гарантий и соединения">UDP</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#tcp-handshake">Как <abbr title="Transmission Control Protocol — надёжная доставка с установкой соединения">TCP</abbr> устанавливает и закрывает соединение?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#reliable-udp">Можно ли сделать надёжную передачу поверх <abbr title="User Datagram Protocol — доставка датаграмм без гарантий и соединения">UDP</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../networks/networks/#http-message">Как выглядят HTTP-запрос и ответ?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#http-versions">Как HTTP эволюционировал от 1.0 до 3?</a> — <em>Middle</em></li>
+<li><a href="../../networks/networks/#status-codes">Какие коды статусов нужно знать?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#http-methods">Какие HTTP-методы идемпотентны?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#tls-basics">Что даёт <abbr title="Transport Layer Security — шифрование и аутентификация поверх TCP">TLS</abbr>?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#tls-handshake">Как проходит <abbr title="Transport Layer Security — шифрование и аутентификация поверх TCP">TLS</abbr> handshake?</a> — <em>Middle</em></li>
+<li><a href="../../networks/networks/#pki">Как клиент проверяет сертификат?</a> — <em>Middle</em></li>
+<li><a href="../../networks/networks/#url-flow">Что происходит, когда вводишь URL в браузере?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#dns-resolution">Как имя превращается в IP?</a> — <em>Junior</em></li>
+<li><a href="../../networks/networks/#dns-records">Какие бывают <abbr title="Domain Name System — превращает имя домена в IP-адрес">DNS</abbr>-записи?</a> — <em>Junior</em></li>
+</ul>
+<h3 id="api-styles">REST, gRPC и WebSocket<a class="headerlink" href="#api-styles" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../networks/api-styles/#rest">Что такое REST?</a> — <em>Junior</em></li>
+<li><a href="../../networks/api-styles/#grpc">Как устроен gRPC?</a> — <em>Middle</em></li>
+<li><a href="../../networks/api-styles/#rest-vs-grpc">REST, gRPC или GraphQL?</a> — <em>Middle</em></li>
+<li><a href="../../networks/api-styles/#websocket">Когда нужен WebSocket и чем он отличается от <abbr title="Server-Sent Events — односторонний поток событий от сервера по HTTP">SSE</abbr>?</a> — <em>Middle</em></li>
+</ul>
+<h3 id="soap">SOAP и XML-интеграции<a class="headerlink" href="#soap" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../networks/soap/#soap-vs-rest">Что такое SOAP и чем он отличается от REST?</a> — <em>Junior</em></li>
+<li><a href="../../networks/soap/#soap-envelope">Как устроено SOAP-сообщение?</a> — <em>Junior</em></li>
+<li><a href="../../networks/soap/#wsdl">Что такое <abbr title="Web Services Description Language — XML-контракт SOAP-сервиса: типы, операции, адрес">WSDL</abbr> и чем contract-first отличается от code-first?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#soap-styles">Чем отличаются стили document/literal и RPC/encoded?</a> — <em>Senior</em></li>
+<li><a href="../../networks/soap/#jaxb">Как <abbr title="Jakarta XML Binding — отображение XML на Java-классы и обратно">JAXB</abbr> превращает XML в объекты?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#xsd-validation">Как валидировать XML по <abbr title="XML Schema Definition — схема, по которой проверяют структуру и типы XML">XSD</abbr>?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#xxe">Чем опасен разбор XML от внешней системы?</a> — <em>Senior</em></li>
+<li><a href="../../networks/soap/#dom-sax-stax">Чем DOM отличается от SAX и StAX?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#spring-ws-client">Как вызвать SOAP-сервис из Spring?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#soap-fault">Что такое SOAP Fault и как его обработать?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#soap-timeouts-retry">Как настроить таймауты и повторы для SOAP-вызова?</a> — <em>Senior</em></li>
+<li><a href="../../networks/soap/#soap-logging">Как логировать SOAP-обмен для разбора инцидентов?</a> — <em>Middle</em></li>
+<li><a href="../../networks/soap/#ws-security">Чем WS-Security отличается от <abbr title="Transport Layer Security — шифрование и аутентификация поверх TCP">TLS</abbr>?</a> — <em>Senior</em></li>
+<li><a href="../../networks/soap/#mtom">Как передать большой файл через SOAP?</a> — <em>Senior</em></li>
+<li><a href="../../networks/soap/#soap-testing">Как протестировать интеграцию с SOAP-сервисом?</a> — <em>Middle</em></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../last-hour/" class="md-footer__link md-footer__link--prev" aria-label="Назад: За час до собеса">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                За час до собеса
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tags/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Теги">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Теги
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"Junior": "junior", "Middle": "middle", "Senior": "senior"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+  
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/moved-anchors.js"></script>
+      
+    
+
+  </body>
+</html>

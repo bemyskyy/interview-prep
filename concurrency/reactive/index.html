@@ -1,0 +1,5278 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
+      
+      
+        <meta name="author" content="bemyskyy">
+      
+      
+        <link rel="canonical" href="https://bemyskyy.github.io/interview-prep/concurrency/reactive/">
+      
+      
+        <link rel="prev" href="../virtual-threads/">
+      
+      
+        <link rel="next" href="../../design/composition/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Реактивное программирование - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+  
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+  
+  <style>:root{.md-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.41%2011.58-9-9A2%202%200%200%200%2011%202H4a2%202%200%200%200-2%202v7a2%202%200%200%200%20.59%201.42l9%209A2%202%200%200%200%2013%2022a2%202%200%200%200%201.41-.59l7-7A2%202%200%200%200%2022%2013a2%202%200%200%200-.59-1.42M13%2020l-9-9V4h7l9%209M6.5%205A1.5%201.5%200%201%201%205%206.5%201.5%201.5%200%200%201%206.5%205%22/%3E%3C/svg%3E');}.md-tag.md-tag--junior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zm-7%205v8h-2v-8zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--middle{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--senior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}}</style>
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Реактивное программирование
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Старт
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prep/last-hour/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Подготовка
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../threads/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Многопоточность
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/composition/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Дизайн кода
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/sql/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Данные
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system-design/interview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/ddd/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Архитектура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../infrastructure/docker/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Инфраструктура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Computer Science
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подготовка
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Подготовка
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/last-hour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    За час до собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/questions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Теги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы языка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/strings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Современная Java
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции и API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Коллекции и API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/hashmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/functional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лямбды и Optional
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/jvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память и сборка мусора
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Многопоточность
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потоки и ThreadLocal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и синхронизаторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JMM, volatile и атомики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deadlock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deadlock, livelock, starvation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пулы потоков и CompletableFuture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concurrent-collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потокобезопасные коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual-threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Виртуальные потоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реактивное программирование
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реактивное программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Основы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое реактивное программирование и когда оно нужно?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactor-vs-stream-cf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем Mono и Flux отличаются от Stream и CompletableFuture?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactive-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reactive Streams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reactive Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactive-streams-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как устроена спецификация Reactive Streams?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backpressure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое backpressure и как с ним работать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Reactor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Reactor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cold-hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему без подписки ничего не происходит и чем холодный поток отличается от горячего?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем map отличается от flatMap, concatMap и flatMapSequential?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работают publishOn и subscribeOn?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blocking-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как вызвать блокирующий код из реактивной цепочки?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactive-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как обрабатывать ошибки и повторы в реактивной цепочке?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactor-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как передать traceId и пользователя без ThreadLocal?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stepverifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как тестировать реактивный код?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор подхода
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Выбор подхода">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactive-vs-loom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Реактивщина или виртуальные потоки?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дизайн кода
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дизайн кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Композиция и зацепление
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/creational-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порождающие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/structural-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Структурные паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/behavioral-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поведенческие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ядро
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ядро
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Core: IoC, DI, AOP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Веб
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Веб
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring MVC и WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с БД
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с БД
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Data JPA и Hibernate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Кэширование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тесты и эксплуатация
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Тесты и эксплуатация
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тестирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-actuator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actuator и Micrometer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL и индексы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции и MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/locking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и конкурентные обновления
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kafka
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Брокер: топики, партиции, хранение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-consumer-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порядок, группы и ребаланс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гарантии доставки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/spring-kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Streams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Интервью и оценка нагрузки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строительные блоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/distributed-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые данные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Архитектура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ddd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDD, CQRS и Event Sourcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/hexagonal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Слоистая и гексагональная архитектура
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Микросервисы и отказоустойчивость
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/distributed-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые транзакции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инфраструктура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инфраструктура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker и Compose
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD и миграции БД
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Science
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Computer Science
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_1" id="__nav_12_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Алгоритмы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Алгоритмы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big O и структуры данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/sorting-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сортировки и графы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: массивы и строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-trees-dp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: деревья, графы, ДП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_2" id="__nav_12_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сети
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Сети
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP/IP, HTTP и TLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/api-styles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST, gRPC и WebSocket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/soap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP и XML-интеграции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Основы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Основы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-reactive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое реактивное программирование и когда оно нужно?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactor-vs-stream-cf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем Mono и Flux отличаются от Stream и CompletableFuture?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactive-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reactive Streams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reactive Streams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactive-streams-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как устроена спецификация Reactive Streams?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backpressure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое backpressure и как с ним работать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Reactor
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Reactor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cold-hot" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему без подписки ничего не происходит и чем холодный поток отличается от горячего?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем map отличается от flatMap, concatMap и flatMapSequential?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schedulers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работают publishOn и subscribeOn?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blocking-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как вызвать блокирующий код из реактивной цепочки?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactive-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как обрабатывать ошибки и повторы в реактивной цепочке?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reactor-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как передать traceId и пользователя без ThreadLocal?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stepverifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как тестировать реактивный код?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Выбор подхода
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Выбор подхода">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reactive-vs-loom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Реактивщина или виртуальные потоки?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../../prep/tags/#tag:java" class="md-tag md-tag-icon">Java</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:junior" class="md-tag md-tag-icon md-tag--junior">Junior</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:middle" class="md-tag md-tag-icon md-tag--middle">Middle</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:senior" class="md-tag md-tag-icon md-tag--senior">Senior</a>
+      
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../../prep/tags/#tag:spring" class="md-tag md-tag-icon">Spring</a>
+      
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../../prep/tags/#tag:многопоточность" class="md-tag md-tag-icon">Многопоточность</a>
+      
+    
+  </nav>
+
+
+  
+    <a href="https://github.com/bemyskyy/interview-prep/edit/main/docs/concurrency/reactive.md" title="Редактировать страницу" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="_1">Реактивное программирование<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Реактивный подход в Java: спецификация Reactive Streams, backpressure и Project Reactor, на котором работают Spring WebFlux, WebClient и <abbr title="Reactive Relational Database Connectivity — реактивный доступ к реляционным БД">R2DBC</abbr>. На собесе спрашивают, почему без подписки ничего не происходит, чем <code>flatMap</code> отличается от <code>concatMap</code>, как <code>publishOn</code> и <code>subscribeOn</code> переключают потоки, что делать с блокирующим вызовом и как передать <code>traceId</code>, если <code>ThreadLocal</code> не работает. Веб-стек WebFlux и выбор между ним и <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> — в <a href="../../spring/spring-mvc/#webflux">Spring <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> и WebFlux → WebFlux</a>.</p>
+<h2 id="basics">Основы<a class="headerlink" href="#basics" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-reactive">Что такое реактивное программирование и когда оно нужно?<a class="headerlink" href="#what-is-reactive" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Это асинхронная обработка потоков данных: вместо того чтобы ждать результат в блокированном потоке, ты описываешь цепочку операторов, которая сработает, когда данные придут. Потоков нужно немного, и они не простаивают на I/O. Ключевая часть — backpressure: потребитель сам говорит, сколько элементов готов принять, и быстрый источник не заваливает медленного получателя.</p>
+</div>
+<p>Как выглядит один и тот же сценарий в двух стилях:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Императивно: поток стоит на каждом вызове</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userClient</span><span class="p">.</span><span class="na">find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w">              </span><span class="c1">// ждём 50 мс</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">orderClient</span><span class="p">.</span><span class="na">find</span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w">    </span><span class="c1">// ещё 80 мс, хотя вызовы независимы</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Profile</span><span class="p">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="n">orders</span><span class="p">);</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// Реактивно: оба запроса летят параллельно, поток свободен, пока ждём ответы</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">return</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">zip</span><span class="p">(</span><span class="n">userClient</span><span class="p">.</span><span class="na">find</span><span class="p">(</span><span class="n">id</span><span class="p">),</span><span class="w"> </span><span class="n">orderClient</span><span class="p">.</span><span class="na">find</span><span class="p">(</span><span class="n">id</span><span class="p">).</span><span class="na">collectList</span><span class="p">())</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Profile</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="na">getT1</span><span class="p">(),</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="na">getT2</span><span class="p">()));</span>
+</span></code></pre></div>
+<p><strong>Когда реактивность оправдана:</strong></p>
+<ul>
+<li>Много одновременных соединений, которые в основном ждут I/O: шлюзы, прокси, агрегаторы чужих API.</li>
+<li>Стриминг: <abbr title="Server-Sent Events — односторонний поток событий от сервера по HTTP">SSE</abbr>, WebSocket, бесконечные потоки событий, где важны backpressure, окна и таймауты.</li>
+<li>Стек уже реактивный: Spring Cloud Gateway, <abbr title="Reactive Relational Database Connectivity — реактивный доступ к реляционным БД">R2DBC</abbr>, реактивные драйверы Mongo и Redis.</li>
+</ul>
+<p><strong>Когда не нужна:</strong> обычный <abbr title="Create, Read, Update, Delete — базовые операции с данными">CRUD</abbr> на <abbr title="Jakarta Persistence API — стандарт ORM в Java">JPA</abbr>, вычисления на CPU, команда без опыта Reactor. Цена — сложная отладка, нечитаемые стектрейсы и «заразность»: реактивным должен быть весь путь запроса.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «реактивный — значит быстрый»</p>
+<p>Реактивный код не ускоряет отдельный запрос и не ускоряет вычисления. Он позволяет держать больше одновременных запросов на тех же ресурсах, пока они ждут I/O. На CPU-bound задачах он медленнее обычного кода из-за накладных расходов операторов.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>За счёт чего реактивное приложение обходится небольшим числом потоков?</li>
+<li>Что такое backpressure одной фразой?</li>
+<li>В каких задачах реактивность не даёт выигрыша?</li>
+</ol>
+</details>
+<h3 id="reactor-vs-stream-cf">Чем <code>Mono</code> и <code>Flux</code> отличаются от <code>Stream</code> и <code>CompletableFuture</code>?<a class="headerlink" href="#reactor-vs-stream-cf" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><code>Stream</code> синхронный и одноразовый, <code>CompletableFuture</code> асинхронный, но на одно значение, и он стартует сразу при создании. <code>Mono</code> (0..1) и <code>Flux</code> (0..N) асинхронные и ленивые: пока нет подписки, ничего не выполняется, а каждая новая подписка запускает работу заново. Сверху у них backpressure, отмена и операторы времени: таймауты, задержки, окна.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong><code>Stream</code></strong></th>
+<th><strong><code>CompletableFuture</code></strong></th>
+<th><strong><code>Mono</code> / <code>Flux</code></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Элементов</strong></td>
+<td>0..N</td>
+<td>1</td>
+<td>0..1 / 0..N</td>
+</tr>
+<tr>
+<td><strong>Синхронность</strong></td>
+<td>Синхронный</td>
+<td>Асинхронный</td>
+<td>Асинхронный</td>
+</tr>
+<tr>
+<td><strong>Когда начинается работа</strong></td>
+<td>На терминальной операции</td>
+<td>Сразу при создании</td>
+<td>При подписке</td>
+</tr>
+<tr>
+<td><strong>Повторное использование</strong></td>
+<td>Нельзя</td>
+<td>Результат запоминается</td>
+<td>Каждая подписка выполняет заново</td>
+</tr>
+<tr>
+<td><strong>Backpressure</strong></td>
+<td>Pull: потребитель сам итерирует</td>
+<td>Нет</td>
+<td><code>request(n)</code></td>
+</tr>
+<tr>
+<td><strong>Отмена</strong></td>
+<td>Нет</td>
+<td><code>cancel()</code> не прерывает работу</td>
+<td><code>cancel()</code> идёт вверх по цепочке до источника</td>
+</tr>
+<tr>
+<td><strong>Время</strong></td>
+<td>Нет</td>
+<td><code>orTimeout()</code></td>
+<td><code>timeout</code>, <code>delay</code>, <code>interval</code>, <code>window</code></td>
+</tr>
+</tbody>
+</table>
+<p>Базовые примеры <code>Mono</code> и <code>Flux</code> в контроллере — в <a href="../../spring/spring-mvc/#mono-flux">Spring <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> и WebFlux → <code>Mono</code> и <code>Flux</code></a>. Как устроен <code>CompletableFuture</code> — в <a href="../executors/#completablefuture">Пулы потоков и CompletableFuture</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>Mono</code> как <code>Optional</code></p>
+<p><code>Mono.empty()</code> — не ошибка и не <code>null</code>, а сигнал «завершился без значения». Цепочка <code>map</code> после пустого <code>Mono</code> просто не выполнится, и контроллер вернёт пустой ответ 200. Отсутствие данных обрабатывают явно: <code>switchIfEmpty(Mono.error(new NotFoundException(id)))</code> или <code>defaultIfEmpty(...)</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Когда начинает работу <code>CompletableFuture</code>, а когда <code>Mono</code>?</li>
+<li>Что произойдёт, если подписаться на один <code>Flux</code> дважды?</li>
+<li>Что делает <code>map</code>, если <code>Mono</code> пустой?</li>
+</ol>
+</details>
+<h2 id="reactive-streams">Reactive Streams<a class="headerlink" href="#reactive-streams" title="Permanent link">&para;</a></h2>
+<h3 id="reactive-streams-spec">Как устроена спецификация Reactive Streams?<a class="headerlink" href="#reactive-streams-spec" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Это четыре интерфейса: <code>Publisher</code>, <code>Subscriber</code>, <code>Subscription</code> и <code>Processor</code>. Подписчик подписывается на издателя, получает <code>Subscription</code> и запрашивает через <code>request(n)</code> столько элементов, сколько готов обработать; издатель не вправе прислать больше. Поток заканчивается одним терминальным сигналом: <code>onComplete</code> или <code>onError</code>.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Publisher</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span><span class="n">Subscriber</span><span class="o">&lt;?</span><span class="w"> </span><span class="kd">super</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">);</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Subscriber</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onSubscribe</span><span class="p">(</span><span class="n">Subscription</span><span class="w"> </span><span class="n">s</span><span class="p">);</span><span class="w">  </span><span class="c1">// первый сигнал, ровно один раз</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onNext</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">t</span><span class="p">);</span><span class="w">                  </span><span class="c1">// не больше, чем запрошено через request(n)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">Throwable</span><span class="w"> </span><span class="n">t</span><span class="p">);</span><span class="w">         </span><span class="c1">// терминальный</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onComplete</span><span class="p">();</span><span class="w">                 </span><span class="c1">// терминальный</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Subscription</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">              </span><span class="c1">// спрос: «готов принять ещё n»</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">cancel</span><span class="p">();</span><span class="w">                     </span><span class="c1">// отписка, издатель прекращает работу</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Processor</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">Subscriber</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Publisher</span><span class="o">&lt;</span><span class="n">R</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{}</span>
+</span></code></pre></div>
+<pre class="mermaid"><code>sequenceDiagram
+    participant S as Subscriber
+    participant P as Publisher
+    S-&gt;&gt;P: subscribe(subscriber)
+    P-&gt;&gt;S: onSubscribe(subscription)
+    S-&gt;&gt;P: request(2)
+    P-&gt;&gt;S: onNext(a)
+    P-&gt;&gt;S: onNext(b)
+    Note over P: ждёт спроса, не шлёт третий элемент
+    S-&gt;&gt;P: request(1)
+    P-&gt;&gt;S: onNext(c)
+    P-&gt;&gt;S: onComplete()</code></pre>
+<p>Спецификация задаёт и правила: сигналы приходят последовательно, а не параллельно, после терминального сигнала ничего не приходит, <code>request(Long.MAX_VALUE)</code> означает «без ограничений». Её реализуют Reactor, RxJava, Akka Streams, драйверы БД — поэтому их можно соединять друг с другом.</p>
+<p>С Java 9 те же интерфейсы есть в <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> как вложенные в <code>java.util.concurrent.Flow</code>. Reactor реализует <code>org.reactivestreams.Publisher</code>, а для <code>Flow</code> есть адаптер <code>JdkFlowAdapter</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: свой <code>Publisher</code> руками</p>
+<p>Интерфейсы выглядят просто, но правил больше тридцати: учёт спроса при конкурентных <code>request</code>, отмена, запрет рекурсии <code>onNext</code> → <code>request</code> → <code>onNext</code>. Самописный издатель почти всегда нарушает какое-нибудь из них. Источники создают фабриками Reactor: <code>Flux.create</code>, <code>Flux.generate</code>, <code>Mono.fromCallable</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какие четыре интерфейса входят в Reactive Streams?</li>
+<li>Может ли издатель прислать больше элементов, чем запрошено?</li>
+<li>Какими сигналами заканчивается поток?</li>
+</ol>
+</details>
+<h3 id="backpressure">Что такое backpressure и как с ним работать?<a class="headerlink" href="#backpressure" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Коротко</label><label for="__tabbed_1_2">Подробно</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Backpressure — обратное давление: потребитель регулирует скорость источника через <code>request(n)</code>. Если источник умеет ждать (БД, файл, Kafka), он просто притормаживает. Если не умеет (клики, тики таймера, push от брокера), выбирают стратегию переполнения: буфер, отбросить новые, оставить последний или упасть с ошибкой.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>В Reactor спрос обычно не пишут руками: операторы запрашивают элементы пачками (prefetch) и дозапрашивают по мере обработки. <code>subscribe(lambda)</code> без своего <code>Subscriber</code> запрашивает <code>Long.MAX_VALUE</code>, то есть без ограничений.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Источник умеет ждать: читаем из R2DBC пачками по 100, а не всю таблицу сразу</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">repository</span><span class="p">.</span><span class="na">findAll</span><span class="p">()</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="p">.</span><span class="na">limitRate</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w">                    </span><span class="c1">// request(100), потом дозапрос по 75</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="p">.</span><span class="na">flatMap</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">sendToPartner</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w">   </span><span class="c1">// не больше 8 запросов к партнёру одновременно</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="p">.</span><span class="na">subscribe</span><span class="p">();</span>
+</span></code></pre></div>
+<p>Источник, который не умеет ждать, требует стратегии переполнения:</p>
+<table>
+<thead>
+<tr>
+<th>Оператор</th>
+<th>Что делает при переполнении</th>
+<th>Когда</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onBackpressureBuffer(n)</code></td>
+<td>Копит до <code>n</code>, потом ошибка или своя политика</td>
+<td>Короткие всплески</td>
+</tr>
+<tr>
+<td><code>onBackpressureDrop()</code></td>
+<td>Выбрасывает новые элементы</td>
+<td>Метрики, где пропуск не страшен</td>
+</tr>
+<tr>
+<td><code>onBackpressureLatest()</code></td>
+<td>Хранит только последний элемент</td>
+<td>Котировки, состояние «сейчас»</td>
+</tr>
+<tr>
+<td><code>onBackpressureError()</code></td>
+<td>Сразу <code>OverflowException</code></td>
+<td>Переполнение — баг, о нём надо знать</td>
+</tr>
+</tbody>
+</table>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Тики раз в 10 мс, а обработка — 100 мс</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Flux</span><span class="p">.</span><span class="na">interval</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMillis</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="p">.</span><span class="na">onBackpressureDrop</span><span class="p">(</span><span class="n">tick</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">"пропущен тик {}"</span><span class="p">,</span><span class="w"> </span><span class="n">tick</span><span class="p">))</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="p">.</span><span class="na">concatMap</span><span class="p">(</span><span class="n">tick</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">slowOperation</span><span class="p">(</span><span class="n">tick</span><span class="p">))</span><span class="w"> </span><span class="c1">// concatMap просит по одному</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="p">.</span><span class="na">subscribe</span><span class="p">();</span>
+</span></code></pre></div>
+<p>В <code>Flux.create</code> стратегия задаётся вторым аргументом (<code>FluxSink.OverflowStrategy</code>), по умолчанию — неограниченный буфер.</p>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>Flux.interval</code> без стратегии</p>
+<p><code>Flux.interval</code> не умеет ждать: таймер тикает независимо от спроса. Если обработка медленнее, поток падает с <code>OverflowException</code> «Could not emit tick … due to lack of requests». Медленный потребитель за таймером — сразу <code>onBackpressureDrop</code> или <code>onBackpressureLatest</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: неограниченный буфер</p>
+<p><code>onBackpressureBuffer()</code> без лимита и <code>Flux.create</code> по умолчанию копят всё, что не успели обработать. Источник быстрее потребителя в течение часа — и буфер съедает кучу до <code>OutOfMemoryError</code>. Буфер всегда задают с лимитом и решают, что делать при его переполнении.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Как подписчик сообщает источнику, сколько элементов готов принять?</li>
+<li>Какие стратегии переполнения есть в Reactor и когда какую выбрать?</li>
+<li>Почему <code>Flux.interval</code> падает, если подписчик медленный?</li>
+</ol>
+</details>
+<h2 id="reactor">Project Reactor<a class="headerlink" href="#reactor" title="Permanent link">&para;</a></h2>
+<h3 id="cold-hot">Почему без подписки ничего не происходит и чем холодный поток отличается от горячего?<a class="headerlink" href="#cold-hot" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Цепочка операторов — только описание работы (assembly time), выполняется она при подписке (subscription time). Большинство источников холодные (cold): каждая подписка запускает работу заново, например новый HTTP-запрос. Горячие (hot) источники существуют независимо от подписчиков и раздают им общие события; холодный поток делают горячим через <code>share()</code>, <code>cache()</code> или <code>Sinks</code>.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Rate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">webClient</span><span class="p">.</span><span class="na">get</span><span class="p">().</span><span class="na">uri</span><span class="p">(</span><span class="s">"/rates/USD"</span><span class="p">).</span><span class="na">retrieve</span><span class="p">().</span><span class="na">bodyToMono</span><span class="p">(</span><span class="n">Rate</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">rate</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">"1: {}"</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">));</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">rate</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span><span class="n">r</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">"2: {}"</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">));</span><span class="w">   </span><span class="c1">// ❌ второй HTTP-запрос: источник холодный</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Rate</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cached</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rate</span><span class="p">.</span><span class="na">cache</span><span class="p">();</span><span class="w">             </span><span class="c1">// ✅ первый подписчик вызывает, остальные получают результат</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Холодный</strong></th>
+<th><strong>Горячий</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Когда работает</strong></td>
+<td>На каждую подписку заново</td>
+<td>Независимо от подписчиков</td>
+</tr>
+<tr>
+<td><strong>Что видит поздний подписчик</strong></td>
+<td>Всё с начала</td>
+<td>Только новые события (если нет replay)</td>
+</tr>
+<tr>
+<td><strong>Примеры</strong></td>
+<td><code>WebClient</code>, <abbr title="Reactive Relational Database Connectivity — реактивный доступ к реляционным БД">R2DBC</abbr>-запрос, <code>Flux.range</code>, <code>Mono.fromCallable</code></td>
+<td><code>Sinks.many().multicast()</code>, события UI, тики после <code>share()</code></td>
+</tr>
+<tr>
+<td><strong>Как получить из холодного</strong></td>
+<td>—</td>
+<td><code>share()</code>, <code>publish().autoConnect(n)</code>, <code>cache()</code>, <code>replay()</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>Mono.just(вызов())</code> выполняет вызов сразу</p>
+<p><code>Mono.just(callBank())</code> вызывает <code>callBank()</code> в момент сборки цепочки, в текущем потоке, даже если на <code>Mono</code> никто не подпишется. Повтор через <code>retry()</code> тоже не повторит вызов — повторится выдача уже готового значения. Ленивые варианты — <code>Mono.fromCallable(() -&gt; callBank())</code> и <code>Mono.defer(() -&gt; callBankReactive())</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: двойная подписка в коде</p>
+<p>Результат одного <code>Mono</code> используют в двух местах: <code>mono.subscribe(...)</code> для лога и тот же <code>mono</code> возвращают из контроллера. Получаются две подписки и два запроса к БД или стороннему API, а при неидемпотентной операции — два платежа. Общий результат переиспользуют через <code>cache()</code> или собирают в одну цепочку.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Чем assembly time отличается от subscription time?</li>
+<li>Почему второй <code>subscribe()</code> на <code>WebClient</code>-запрос делает второй HTTP-вызов?</li>
+<li>Чем <code>Mono.just(f())</code> отличается от <code>Mono.fromCallable(() -&gt; f())</code>?</li>
+</ol>
+</details>
+<h3 id="flatmap">Чем <code>map</code> отличается от <code>flatMap</code>, <code>concatMap</code> и <code>flatMapSequential</code>?<a class="headerlink" href="#flatmap" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><code>map</code> — синхронное преобразование элемента в значение. Остальные три преобразуют элемент в <code>Publisher</code> и подписываются на него: <code>flatMap</code> — параллельно, результаты выходят в порядке готовности; <code>concatMap</code> — строго по одному, порядок сохраняется; <code>flatMapSequential</code> — параллельно, но выдаёт результаты в исходном порядке, буферизуя ранние.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">Flux</span><span class="p">.</span><span class="na">just</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="p">.</span><span class="na">flatMap</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="n">n</span><span class="p">)).</span><span class="na">thenReturn</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">// → 1, 2, 3 — порядок готовности, всё за 3 секунды</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">Flux</span><span class="p">.</span><span class="na">just</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="p">.</span><span class="na">concatMap</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="n">n</span><span class="p">)).</span><span class="na">thenReturn</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1">// → 3, 1, 2 — исходный порядок, по одному: 6 секунд</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">Flux</span><span class="p">.</span><span class="na">just</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="p">.</span><span class="na">flatMapSequential</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="n">n</span><span class="p">)).</span><span class="na">thenReturn</span><span class="p">(</span><span class="n">n</span><span class="p">));</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1">// → 3, 1, 2 — исходный порядок, параллельно: 3 секунды</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Оператор</th>
+<th>Параллельность</th>
+<th>Порядок</th>
+<th>Когда</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map</code></td>
+<td>—</td>
+<td>Сохраняется</td>
+<td>Синхронное преобразование без I/O</td>
+</tr>
+<tr>
+<td><code>flatMap</code></td>
+<td>До 256 по умолчанию</td>
+<td>Не сохраняется</td>
+<td>Независимые вызовы, порядок не важен</td>
+</tr>
+<tr>
+<td><code>concatMap</code></td>
+<td>1</td>
+<td>Сохраняется</td>
+<td>Порядок важен: события одного счёта, миграции</td>
+</tr>
+<tr>
+<td><code>flatMapSequential</code></td>
+<td>Как у <code>flatMap</code></td>
+<td>Сохраняется</td>
+<td>Нужны и скорость, и порядок</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>flatMap</code> без ограничения параллельности</p>
+<p><code>Flux.fromIterable(10_000 клиентов).flatMap(partnerApi::notify)</code> откроет до 256 одновременных запросов к партнёру, и он ответит 429 или ляжет. Второй аргумент задаёт потолок: <code>flatMap(partnerApi::notify, 8)</code>. Это и есть ручка backpressure для внешнего сервиса.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>map</code> с вызовом, который возвращает <code>Mono</code></p>
+<p><code>map(id -&gt; repository.findById(id))</code> вернёт <code>Flux&lt;Mono&lt;User&gt;&gt;</code>, и на внутренние <code>Mono</code> никто не подпишется — запросов в БД не будет вообще. Если функция возвращает <code>Publisher</code>, нужен <code>flatMap</code> или <code>concatMap</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему <code>flatMap</code> не сохраняет порядок?</li>
+<li>Как ограничить число одновременных вызовов внутри <code>flatMap</code>?</li>
+<li>Что получится, если в <code>map</code> вернуть <code>Mono</code>?</li>
+</ol>
+</details>
+<h3 id="schedulers">Как работают <code>publishOn</code> и <code>subscribeOn</code>?<a class="headerlink" href="#schedulers" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Коротко</label><label for="__tabbed_2_2">Подробно</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>По умолчанию Reactor не переключает потоки: цепочка выполняется там, где произошла подписка или где источник выдал сигнал. <code>subscribeOn</code> задаёт поток для подписки и источника, и где бы он ни стоял в цепочке, работает самый близкий к источнику. <code>publishOn</code> переключает поток для всех операторов ниже себя.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p><strong>Планировщики (Schedulers):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Планировщик</th>
+<th>Потоки</th>
+<th>Для чего</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Schedulers.immediate()</code></td>
+<td>Текущий поток</td>
+<td>Без переключения</td>
+</tr>
+<tr>
+<td><code>Schedulers.single()</code></td>
+<td>Один переиспользуемый</td>
+<td>Лёгкие последовательные задачи</td>
+</tr>
+<tr>
+<td><code>Schedulers.parallel()</code></td>
+<td>По числу ядер</td>
+<td>CPU-работа, никогда не блокировать</td>
+</tr>
+<tr>
+<td><code>Schedulers.boundedElastic()</code></td>
+<td>До 10 × ядер, очередь задач ограничена</td>
+<td>Блокирующие вызовы: <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr>, файлы, старые клиенты</td>
+</tr>
+</tbody>
+</table>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">Flux</span><span class="p">.</span><span class="na">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="s">"map1"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w">           </span><span class="c1">// поток boundedElastic — из-за subscribeOn</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="p">.</span><span class="na">publishOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="na">parallel</span><span class="p">())</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="s">"map2"</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">))</span><span class="w">           </span><span class="c1">// поток parallel — после publishOn</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">.</span><span class="na">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="na">boundedElastic</span><span class="p">())</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="p">.</span><span class="na">subscribe</span><span class="p">();</span>
+</span></code></pre></div>
+<pre class="mermaid"><code>flowchart LR
+    S["Flux.range"] --&gt; M1["map1"]
+    M1 --&gt; P["publishOn(parallel)"]
+    P --&gt; M2["map2"]
+    M2 --&gt; SUB["subscribe"]
+    SO["subscribeOn(boundedElastic)"] -.-&gt;|"подписка и источник&lt;br/&gt;на boundedElastic"| S
+    P -.-&gt;|"всё ниже&lt;br/&gt;на parallel"| M2</code></pre>
+<p>В WebFlux цепочка обычно работает на потоках event loop Netty (<code>reactor-http-nio-*</code>), а результат от <code>WebClient</code> приходит на его потоках. Переключаться вручную нужно в двух случаях: увести блокирующую работу на <code>boundedElastic</code> и увести тяжёлую CPU-работу с event loop на <code>parallel</code>.</p>
+<p>С Reactor 3.6 на Java 21+ <code>boundedElastic</code> можно перевести на виртуальные потоки системным свойством <code>reactor.schedulers.defaultBoundedElasticOnVirtualThreads=true</code>.</p>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: второй <code>subscribeOn</code> ничего не меняет</p>
+<p><code>subscribeOn</code> действует на подписку, которая поднимается снизу вверх, и учитывается тот, что ближе к источнику. Добавленный ниже по цепочке второй <code>subscribeOn(parallel())</code> не переключит источник с <code>boundedElastic</code>. Чтобы сменить поток для части цепочки — <code>publishOn</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>publishOn</code> в начале горячего пути</p>
+<p>Каждый <code>publishOn</code> — очередь и переключение потока на каждый элемент. Расставленные «на всякий случай» в каждом сервисе, они добавляют задержку и делают поведение непредсказуемым. Переключение потока — осознанное решение под блокирующую или CPU-работу.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>В каком потоке выполняется цепочка, если нет ни <code>publishOn</code>, ни <code>subscribeOn</code>?</li>
+<li>Какой из двух <code>subscribeOn</code> в цепочке сработает?</li>
+<li>Какой планировщик выбрать для <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr>-вызова и почему не <code>parallel</code>?</li>
+</ol>
+</details>
+<h3 id="blocking-calls">Как вызвать блокирующий код из реактивной цепочки?<a class="headerlink" href="#blocking-calls" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Блокирующий вызов оборачивают в <code>Mono.fromCallable</code> и уводят на <code>Schedulers.boundedElastic()</code> через <code>subscribeOn</code>, чтобы он не занял поток event loop. Вызывать <code>block()</code> внутри реактивной цепочки нельзя: на неблокирующих потоках Reactor бросит <code>IllegalStateException</code>. Найти забытые блокировки помогает BlockHound.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// ❌ JDBC прямо в цепочке: поток Netty стоит, пока идёт запрос</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Report</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">just</span><span class="p">(</span><span class="n">jdbcTemplate</span><span class="p">.</span><span class="na">queryForObject</span><span class="p">(</span><span class="n">SQL</span><span class="p">,</span><span class="w"> </span><span class="n">mapper</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">));</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">}</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1">// ✅ Блокирующий вызов — лениво и на отдельном пуле</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Report</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">fromCallable</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">jdbcTemplate</span><span class="p">.</span><span class="na">queryForObject</span><span class="p">(</span><span class="n">SQL</span><span class="p">,</span><span class="w"> </span><span class="n">mapper</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">))</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="p">.</span><span class="na">subscribeOn</span><span class="p">(</span><span class="n">Schedulers</span><span class="p">.</span><span class="na">boundedElastic</span><span class="p">());</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Почему это важно.</strong> Потоков event loop в Netty по числу ядер, но не меньше четырёх. Если 8 из 8 стоят на <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr>, приложение перестаёт принимать даже запросы, которым база не нужна, — health-check тоже, и Kubernetes перезапускает под.</p>
+<p><strong>BlockHound</strong> — Java-агент, который бросает ошибку при блокирующем вызове (<code>Thread.sleep</code>, <code>socket.read</code>, <code>synchronized</code> на занятом мониторе) из неблокирующего потока. Его включают в тестах: <code>BlockHound.install()</code> в <code>@BeforeAll</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>block()</code> внутри цепочки</p>
+<p><code>flatMap(order -&gt; Mono.just(clientMono.block()))</code> на потоке <code>parallel</code> или Netty падает с <code>IllegalStateException</code>: «block()/blockFirst()/blockLast() are blocking, which is not supported in thread …». На <code>boundedElastic</code> ошибки не будет, но поток всё равно занят ожиданием. Внутри цепочки результат другого <code>Mono</code> получают через <code>flatMap</code> или <code>zip</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr>-вызов на потоке event loop опасен для всего приложения?</li>
+<li>Как правильно обернуть блокирующий вызов?</li>
+<li>Что такое BlockHound и где его используют?</li>
+</ol>
+</details>
+<h3 id="reactive-errors">Как обрабатывать ошибки и повторы в реактивной цепочке?<a class="headerlink" href="#reactive-errors" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Коротко</label><label for="__tabbed_3_2">Подробно</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Ошибка в реактивной цепочке — терминальный сигнал <code>onError</code>: поток завершается, и <code>try/catch</code> вокруг цепочки её не поймает, потому что код выполнится позже. Обрабатывают операторами: <code>onErrorReturn</code> и <code>onErrorResume</code> — запасное значение или поток, <code>onErrorMap</code> — смена типа, <code>retryWhen</code> — повтор с backoff, <code>timeout</code> — ограничение по времени. <code>doOnError</code> только наблюдает и ошибку не гасит.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Rate</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">rate</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">currency</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">webClient</span><span class="p">.</span><span class="na">get</span><span class="p">().</span><span class="na">uri</span><span class="p">(</span><span class="s">"/rates/{c}"</span><span class="p">,</span><span class="w"> </span><span class="n">currency</span><span class="p">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="p">.</span><span class="na">retrieve</span><span class="p">()</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">        </span><span class="p">.</span><span class="na">bodyToMono</span><span class="p">(</span><span class="n">Rate</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="p">.</span><span class="na">timeout</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="w">                       </span><span class="c1">// TimeoutException через 2 с</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="p">.</span><span class="na">retryWhen</span><span class="p">(</span><span class="n">Retry</span><span class="p">.</span><span class="na">backoff</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">Duration</span><span class="p">.</span><span class="na">ofMillis</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span><span class="w">   </span><span class="c1">// 200 мс, 400, 800 + jitter</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">            </span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">isTransient</span><span class="p">)</span><span class="w">                        </span><span class="c1">// 4xx не повторяем</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">            </span><span class="p">.</span><span class="na">onRetryExhaustedThrow</span><span class="p">((</span><span class="n">spec</span><span class="p">,</span><span class="w"> </span><span class="n">signal</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">signal</span><span class="p">.</span><span class="na">failure</span><span class="p">()))</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">        </span><span class="p">.</span><span class="na">onErrorMap</span><span class="p">(</span><span class="n">WebClientResponseException</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="n">RateServiceException</span><span class="p">::</span><span class="k">new</span><span class="p">)</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="p">.</span><span class="na">doOnError</span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="na">warn</span><span class="p">(</span><span class="s">"Курс {} недоступен"</span><span class="p">,</span><span class="w"> </span><span class="n">currency</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">))</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">        </span><span class="p">.</span><span class="na">onErrorResume</span><span class="p">(</span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">cache</span><span class="p">.</span><span class="na">lastKnown</span><span class="p">(</span><span class="n">currency</span><span class="p">));</span><span class="w">        </span><span class="c1">// запасной вариант — последний известный курс</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Оператор</th>
+<th>Что делает</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onErrorReturn(value)</code></td>
+<td>Заменяет ошибку значением и завершает поток</td>
+</tr>
+<tr>
+<td><code>onErrorResume(e -&gt; publisher)</code></td>
+<td>Переключается на запасной поток: кэш, другой сервис</td>
+</tr>
+<tr>
+<td><code>onErrorMap(e -&gt; other)</code></td>
+<td>Меняет тип ошибки, поток всё равно завершается ошибкой</td>
+</tr>
+<tr>
+<td><code>onErrorComplete()</code></td>
+<td>Превращает ошибку в обычное завершение</td>
+</tr>
+<tr>
+<td><code>doOnError(...)</code></td>
+<td>Побочный эффект: лог, метрика. Ошибка идёт дальше</td>
+</tr>
+<tr>
+<td><code>retry(n)</code>, <code>retryWhen(Retry...)</code></td>
+<td>Переподписывается на источник</td>
+</tr>
+<tr>
+<td><code>timeout(d)</code></td>
+<td>Ошибка, если элемент не пришёл за <code>d</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>retry</code> повторяет переподпиской, поэтому повтор работает только с холодным ленивым источником — см. <a href="#cold-hot">холодные и горячие потоки</a>. Когда ретраить можно, а когда нельзя, — в <a href="../../architecture/microservices/#timeout-retry">Микросервисы → timeout и retry</a>.</p>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: ошибка завершает весь <code>Flux</code></p>
+<p>Обработка 1000 сообщений, на 37-м — исключение в <code>map</code>. Поток завершается, оставшиеся 963 не обработаются. Ошибку отдельного элемента обрабатывают внутри <code>flatMap</code>: <code>flatMap(msg -&gt; process(msg).onErrorResume(e -&gt; toDlq(msg, e)))</code>, тогда упавший элемент не роняет весь поток.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>RetryExhaustedException</code> вместо исходной ошибки</p>
+<p>После исчерпания попыток <code>Retry.backoff</code> по умолчанию бросает обёртку <code>RetryExhaustedException</code>, и обработчик <code>onErrorResume(TimeoutException.class, …)</code> её не поймает. Либо обрабатывай обёртку, либо верни исходную ошибку через <code>onRetryExhaustedThrow</code>, как в примере.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: стектрейс без твоего кода</p>
+<p>Исключение в реактивной цепочке показывает стек операторов Reactor и потока, на котором оно случилось, но не место, где цепочку собрали. Для отладки ставят <code>.checkpoint("загрузка курса")</code> в ключевых местах, а в проде подключают <code>ReactorDebugAgent</code> из <code>reactor-tools</code>. <code>Hooks.onOperatorDebug()</code> даёт полную картину, но дорог для прода.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему <code>try/catch</code> вокруг реактивной цепочки не ловит ошибку?</li>
+<li>Чем <code>onErrorResume</code> отличается от <code>doOnError</code>?</li>
+<li>Как обработать ошибку одного элемента, не завершая весь <code>Flux</code>?</li>
+</ol>
+</details>
+<h3 id="reactor-context">Как передать traceId и пользователя без <code>ThreadLocal</code>?<a class="headerlink" href="#reactor-context" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Реактивная цепочка прыгает между потоками, поэтому <code>ThreadLocal</code> и MDC теряются или, хуже, показывают данные чужого запроса. Для этого есть Reactor <code>Context</code>: неизменяемая карта, привязанная к подписке. Пишут в неё через <code>contextWrite</code>, читают через <code>deferContextual</code>, и она распространяется снизу вверх — от подписчика к источнику.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// Запись: фильтр WebFlux кладёт traceId в контекст подписки</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Void</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">ServerWebExchange</span><span class="w"> </span><span class="n">exchange</span><span class="p">,</span><span class="w"> </span><span class="n">WebFilterChain</span><span class="w"> </span><span class="n">chain</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">traceId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">exchange</span><span class="p">.</span><span class="na">getRequest</span><span class="p">().</span><span class="na">getHeaders</span><span class="p">().</span><span class="na">getFirst</span><span class="p">(</span><span class="s">"X-Trace-Id"</span><span class="p">);</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">chain</span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="n">exchange</span><span class="p">)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="p">.</span><span class="na">contextWrite</span><span class="p">(</span><span class="n">Context</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="s">"traceId"</span><span class="p">,</span><span class="w"> </span><span class="n">traceId</span><span class="p">));</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="p">}</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1">// Чтение: в любом месте цепочки выше contextWrite</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="kd">public</span><span class="w"> </span><span class="n">Mono</span><span class="o">&lt;</span><span class="n">Payment</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">pay</span><span class="p">(</span><span class="n">PaymentRequest</span><span class="w"> </span><span class="n">request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">deferContextual</span><span class="p">(</span><span class="n">ctx</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="n">String</span><span class="w"> </span><span class="n">traceId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">getOrDefault</span><span class="p">(</span><span class="s">"traceId"</span><span class="p">,</span><span class="w"> </span><span class="s">"none"</span><span class="p">);</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">bankClient</span><span class="p">.</span><span class="na">pay</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">traceId</span><span class="p">);</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="p">});</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Почему снизу вверх.</strong> Контекст едет вместе с подпиской, а подписка идёт от подписчика к источнику. Поэтому <code>contextWrite</code> виден операторам выше себя и не виден ниже.</p>
+<p><strong>MDC и трассировка автоматически.</strong> С Reactor 3.5.3+ и библиотекой Micrometer <code>context-propagation</code> <code>Hooks.enableAutomaticContextPropagation()</code> восстанавливает <code>ThreadLocal</code>-значения (MDC, трейс Micrometer Tracing) при переходе между потоками. В Spring Boot 3.2+ это включается свойством <code>spring.reactor.context-propagation=auto</code>. Так же работает и <code>ReactiveSecurityContextHolder</code> в Spring Security: пользователь лежит в Reactor <code>Context</code>, а не в <code>ThreadLocal</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>contextWrite</code> выше чтения</p>
+<p><code>Mono.deferContextual(...)</code> → <code>.contextWrite(...)</code> работает, а <code>.contextWrite(...)</code> в начале цепочки, а чтение ниже — нет: контекст поднимается вверх, а не стекает вниз. Типичный симптом — <code>traceId</code> равен <code>none</code> только в части логов.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: MDC в реактивном коде</p>
+<p><code>MDC.put("traceId", id)</code> в начале обработки, а через <code>flatMap</code> цепочка продолжилась на другом потоке — в логах <code>traceId</code> пропал. Хуже, если поток до этого обслуживал другой запрос и его MDC не очищен: в логах окажется чужой <code>traceId</code>. MDC в реактивном коде настраивают только через context propagation.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему <code>ThreadLocal</code> не работает в реактивной цепочке?</li>
+<li>В какую сторону распространяется Reactor <code>Context</code>?</li>
+<li>Как сделать так, чтобы MDC работал в WebFlux-приложении?</li>
+</ol>
+</details>
+<h3 id="stepverifier">Как тестировать реактивный код?<a class="headerlink" href="#stepverifier" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><code>StepVerifier</code> из <code>reactor-test</code> подписывается на <code>Publisher</code> и проверяет сигналы по шагам: какие элементы пришли, в каком порядке, чем закончилось. Для операторов времени есть виртуальное время: <code>withVirtualTime</code> подменяет планировщик, и задержка в час проверяется за миллисекунды. Тест обязательно заканчивается <code>verify…</code>, иначе подписки не будет.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@Test</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">fallsBackToCachedRateWhenClientFails</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="n">RateClient</span><span class="w"> </span><span class="n">failing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">currency</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">error</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">IOException</span><span class="p">(</span><span class="s">"connection reset"</span><span class="p">));</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="n">RateService</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RateService</span><span class="p">(</span><span class="n">failing</span><span class="p">,</span><span class="w"> </span><span class="n">cacheWith</span><span class="p">(</span><span class="s">"USD"</span><span class="p">,</span><span class="w"> </span><span class="s">"92.50"</span><span class="p">));</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="n">StepVerifier</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">service</span><span class="p">.</span><span class="na">rate</span><span class="p">(</span><span class="s">"USD"</span><span class="p">))</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">        </span><span class="p">.</span><span class="na">expectNext</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Rate</span><span class="p">(</span><span class="s">"USD"</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BigDecimal</span><span class="p">(</span><span class="s">"92.50"</span><span class="p">)))</span><span class="w">  </span><span class="c1">// значение из кэша</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">        </span><span class="p">.</span><span class="na">verifyComplete</span><span class="p">();</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">}</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="nd">@Test</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="kt">void</span><span class="w"> </span><span class="nf">emitsAfterOneHourOfVirtualTime</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">    </span><span class="n">StepVerifier</span><span class="p">.</span><span class="na">withVirtualTime</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Mono</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofHours</span><span class="p">(</span><span class="mi">1</span><span class="p">)).</span><span class="na">thenReturn</span><span class="p">(</span><span class="s">"done"</span><span class="p">))</span><span class="w"> </span><span class="c1">// источник — внутри лямбды</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">        </span><span class="p">.</span><span class="na">expectSubscription</span><span class="p">()</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">        </span><span class="p">.</span><span class="na">expectNoEvent</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofHours</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w">   </span><span class="c1">// виртуальный час проходит мгновенно</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">        </span><span class="p">.</span><span class="na">expectNext</span><span class="p">(</span><span class="s">"done"</span><span class="p">)</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">        </span><span class="p">.</span><span class="na">verifyComplete</span><span class="p">();</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Для проверки ошибки — <code>expectError(TimeoutException.class)</code> или <code>expectErrorMatches(e -&gt; ...)</code>. <code>TestPublisher</code> позволяет управлять источником вручную и проверять, как твой оператор реагирует на спрос и нарушения спецификации.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: тест без <code>verify()</code></p>
+<p><code>StepVerifier.create(flux).expectNext(1).expectComplete();</code> без финального <code>verify()</code> ничего не проверяет: цепочка ожиданий только описана, подписки не было. Тест зелёный при любом поведении кода. Заканчивай <code>verifyComplete()</code>, <code>verifyError()</code> или <code>.verify()</code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>Flux</code> создан вне <code>withVirtualTime</code></p>
+<p>Виртуальный планировщик подменяется только на время вызова лямбды. Если <code>Flux.interval</code> или <code>Mono.delay</code> создан заранее и передан в <code>withVirtualTime(() -&gt; flux)</code>, он уже привязан к настоящему таймеру, и тест на час ждёт час. Источник создают внутри лямбды.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что произойдёт, если не вызвать <code>verify()</code> у <code>StepVerifier</code>?</li>
+<li>Как проверить оператор с задержкой в час, не ожидая час?</li>
+<li>Где нужно создавать <code>Publisher</code> для <code>withVirtualTime</code>?</li>
+</ol>
+</details>
+<h2 id="choice">Выбор подхода<a class="headerlink" href="#choice" title="Permanent link">&para;</a></h2>
+<h3 id="reactive-vs-loom">Реактивщина или виртуальные потоки?<a class="headerlink" href="#reactive-vs-loom" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Обе технологии решают проблему потоков, простаивающих на I/O. Виртуальные потоки дают ту же масштабируемость для обычного блокирующего кода: читаемые стектрейсы, <code>ThreadLocal</code>, <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr> и <abbr title="Jakarta Persistence API — стандарт ORM в Java">JPA</abbr> работают как раньше. Реактивщина остаётся сильнее там, где нужны потоки данных: backpressure, стриминг, композиция таймаутов, окон и слияний, а также в готовых реактивных продуктах вроде Spring Cloud Gateway.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Реактивный стек</strong></th>
+<th><strong>Виртуальные потоки</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Стиль кода</strong></td>
+<td>Цепочки операторов</td>
+<td>Обычный последовательный код</td>
+</tr>
+<tr>
+<td><strong>Библиотеки</strong></td>
+<td>Нужны реактивные: <abbr title="Reactive Relational Database Connectivity — реактивный доступ к реляционным БД">R2DBC</abbr>, <code>WebClient</code>, реактивные драйверы</td>
+<td>Любые блокирующие: <abbr title="Java Database Connectivity — низкоуровневый API доступа к реляционным БД">JDBC</abbr>, <abbr title="Jakarta Persistence API — стандарт ORM в Java">JPA</abbr>, <code>RestClient</code></td>
+</tr>
+<tr>
+<td><strong>Отладка</strong></td>
+<td>Сложные стектрейсы, <code>checkpoint</code></td>
+<td>Обычные стектрейсы и профайлеры</td>
+</tr>
+<tr>
+<td><strong>Контекст</strong></td>
+<td>Reactor <code>Context</code></td>
+<td><code>ThreadLocal</code>, <code>ScopedValue</code></td>
+</tr>
+<tr>
+<td><strong>Backpressure</strong></td>
+<td>Встроен в протокол</td>
+<td>Нет, ограничивают семафором или пулом соединений</td>
+</tr>
+<tr>
+<td><strong>Стриминг и операторы времени</strong></td>
+<td>Сильная сторона</td>
+<td>Пишутся руками</td>
+</tr>
+<tr>
+<td><strong>Включение в Spring Boot</strong></td>
+<td>WebFlux целиком</td>
+<td><code>spring.threads.virtual.enabled=true</code> (Boot 3.2+)</td>
+</tr>
+</tbody>
+</table>
+<p>Для нового <abbr title="Create, Read, Update, Delete — базовые операции с данными">CRUD</abbr>-сервиса на Java 21+ разумный выбор по умолчанию — <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> на виртуальных потоках. Реактивщину берут, когда задача сама по себе потоковая или стек уже реактивный. Как устроены виртуальные потоки и что такое pinning — в <a href="../virtual-threads/#virtual-threads">Виртуальные потоки</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: виртуальные потоки без ограничений</p>
+<p>Реактивный стек ограничивает нагрузку на внешний сервис через backpressure и <code>flatMap(…, concurrency)</code>. С виртуальными потоками миллион задач одновременно пойдут в базу или к партнёру, и упрутся в пул соединений или положат сервис. Параллельность к внешним ресурсам ограничивают явно: семафором, размером пула, rate limiter.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какую общую проблему решают реактивный стек и виртуальные потоки?</li>
+<li>В каких задачах реактивщина остаётся лучше виртуальных потоков?</li>
+<li>Чем заменить backpressure в коде на виртуальных потоках?</li>
+</ol>
+</details>
+<h2 id="cheatsheet">Шпаргалка<a class="headerlink" href="#cheatsheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Тема</th>
+<th>Запомнить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Реактивность</strong></td>
+<td>Асинхронные потоки данных + backpressure. Выигрыш — на I/O и высокой конкурентности, не на CPU</td>
+</tr>
+<tr>
+<td><strong><code>Mono</code> / <code>Flux</code></strong></td>
+<td>0..1 / 0..N, ленивые: без подписки ничего не выполняется. <code>CompletableFuture</code> стартует сразу</td>
+</tr>
+<tr>
+<td><strong>Reactive Streams</strong></td>
+<td><code>Publisher</code>, <code>Subscriber</code>, <code>Subscription</code>, <code>Processor</code>. Не больше <code>request(n)</code>, конец — <code>onComplete</code> или <code>onError</code>. В <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> — <code>java.util.concurrent.Flow</code></td>
+</tr>
+<tr>
+<td><strong>Backpressure</strong></td>
+<td><code>limitRate</code>, <code>flatMap(f, concurrency)</code>. Для источников без ожидания — <code>onBackpressureBuffer/Drop/Latest/Error</code></td>
+</tr>
+<tr>
+<td><strong>Cold / hot</strong></td>
+<td>Холодный выполняется на каждую подписку. <code>Mono.just(f())</code> — f вызван сразу, нужен <code>fromCallable</code> или <code>defer</code>. Общий результат — <code>cache()</code></td>
+</tr>
+<tr>
+<td><strong><code>flatMap</code> / <code>concatMap</code></strong></td>
+<td>Параллельно без порядка (до 256) / по одному с порядком. <code>flatMapSequential</code> — параллельно с порядком</td>
+</tr>
+<tr>
+<td><strong>Schedulers</strong></td>
+<td><code>parallel</code> — CPU, <code>boundedElastic</code> — блокирующее. <code>subscribeOn</code> — источник, срабатывает ближний к нему; <code>publishOn</code> — всё ниже</td>
+</tr>
+<tr>
+<td><strong>Блокирующий код</strong></td>
+<td><code>Mono.fromCallable(...).subscribeOn(boundedElastic())</code>. <code>block()</code> внутри цепочки — <code>IllegalStateException</code>. BlockHound в тестах</td>
+</tr>
+<tr>
+<td><strong>Ошибки</strong></td>
+<td>Терминальны, <code>try/catch</code> не ловит. <code>onErrorResume</code>, <code>onErrorMap</code>, <code>retryWhen(Retry.backoff)</code>, <code>timeout</code>. Ошибка элемента — внутри <code>flatMap</code></td>
+</tr>
+<tr>
+<td><strong>Context</strong></td>
+<td>Вместо <code>ThreadLocal</code>. <code>contextWrite</code> → виден выше. MDC — через <code>context-propagation</code></td>
+</tr>
+<tr>
+<td><strong>Тесты</strong></td>
+<td><code>StepVerifier</code> + обязательный <code>verify…</code>. <code>withVirtualTime</code> — источник внутри лямбды</td>
+</tr>
+<tr>
+<td><strong>vs виртуальные потоки</strong></td>
+<td><abbr title="Create, Read, Update, Delete — базовые операции с данными">CRUD</abbr> на Java 21+ — <abbr title="Model-View-Controller — разделение на модель, представление и контроллер">MVC</abbr> + виртуальные потоки. Стриминг, backpressure, реактивный стек — Reactor</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../virtual-threads/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Виртуальные потоки">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Виртуальные потоки
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../design/composition/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Композиция и зацепление">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Композиция и зацепление
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"Junior": "junior", "Middle": "middle", "Senior": "senior"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+  
+    <script src="../../assets/vendor/mermaid/mermaid.min.js"></script>
+    <script src="../../javascripts/mermaid-theme.js"></script>
+  
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/moved-anchors.js"></script>
+      
+    
+
+  </body>
+</html>

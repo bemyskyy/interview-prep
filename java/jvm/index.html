@@ -1,0 +1,5272 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
+      
+      
+        <meta name="author" content="bemyskyy">
+      
+      
+        <link rel="canonical" href="https://bemyskyy.github.io/interview-prep/java/jvm/">
+      
+      
+        <link rel="prev" href="../io-nio/">
+      
+      
+        <link rel="next" href="../../concurrency/threads/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Память и сборка мусора - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+  
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+  
+  <style>:root{.md-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.41%2011.58-9-9A2%202%200%200%200%2011%202H4a2%202%200%200%200-2%202v7a2%202%200%200%200%20.59%201.42l9%209A2%202%200%200%200%2013%2022a2%202%200%200%200%201.41-.59l7-7A2%202%200%200%200%2022%2013a2%202%200%200%200-.59-1.42M13%2020l-9-9V4h7l9%209M6.5%205A1.5%201.5%200%201%201%205%206.5%201.5%201.5%200%200%201%206.5%205%22/%3E%3C/svg%3E');}.md-tag.md-tag--junior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zm-7%205v8h-2v-8zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--middle{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--senior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}}</style>
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Память и сборка мусора
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Старт
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prep/last-hour/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Подготовка
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../concurrency/threads/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Многопоточность
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/composition/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Дизайн кода
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../spring/spring-core/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/sql/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Данные
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system-design/interview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/ddd/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Архитектура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../infrastructure/docker/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Инфраструктура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Computer Science
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подготовка
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Подготовка
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/last-hour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    За час до собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/questions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Теги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы языка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../strings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Современная Java
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции и API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Коллекции и API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hashmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лямбды и Optional
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память и сборка мусора
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память и сборка мусора
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Платформа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Платформа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-jre-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем отличаются JVM, JRE и JDK?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Чем отличаются JVM, JRE и JDK?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM (Java Virtual Machine) — исполнитель
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRE (Java Runtime Environment) — среда выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JDK (Java Development Kit) — инструменты разработчика
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Garbage Collector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Garbage Collector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gc-roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как GC понимает, что объект больше не нужен?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое гипотеза поколений?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mark-sweep-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работает Mark-Sweep-Compact?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Stop-The-World?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие сборщики мусора есть и какой выбрать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Память JVM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Память JVM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем Stack отличается от Heap?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Чем Stack отличается от Heap?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stack (стек) — личный рабочий стол потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap (куча) — общий склад
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Metaspace и чем он отличается от PermGen?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где живут статические переменные и String Pool?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaspace-gc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как очищается Metaspace?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OutOfMemoryError
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OutOfMemoryError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oom-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oom-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие бывают OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oom-investigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как расследовать и лечить OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Многопоточность
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потоки и ThreadLocal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и синхронизаторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/jmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JMM, volatile и атомики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/deadlock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deadlock, livelock, starvation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/executors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пулы потоков и CompletableFuture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/concurrent-collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потокобезопасные коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/virtual-threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Виртуальные потоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/reactive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реактивное программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дизайн кода
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дизайн кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Композиция и зацепление
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/creational-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порождающие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/structural-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Структурные паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/behavioral-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поведенческие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ядро
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ядро
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Core: IoC, DI, AOP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Веб
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Веб
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring MVC и WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с БД
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с БД
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-data-jpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Data JPA и Hibernate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Кэширование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тесты и эксплуатация
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Тесты и эксплуатация
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тестирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spring/spring-actuator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actuator и Micrometer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL и индексы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции и MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/locking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и конкурентные обновления
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kafka
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Брокер: топики, партиции, хранение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-consumer-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порядок, группы и ребаланс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гарантии доставки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/spring-kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Streams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Интервью и оценка нагрузки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строительные блоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/distributed-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые данные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Архитектура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ddd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDD, CQRS и Event Sourcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/hexagonal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Слоистая и гексагональная архитектура
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Микросервисы и отказоустойчивость
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/distributed-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые транзакции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инфраструктура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инфраструктура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker и Compose
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD и миграции БД
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Science
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Computer Science
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_1" id="__nav_12_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Алгоритмы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Алгоритмы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big O и структуры данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/sorting-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сортировки и графы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: массивы и строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-trees-dp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: деревья, графы, ДП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_2" id="__nav_12_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сети
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Сети
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP/IP, HTTP и TLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/api-styles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST, gRPC и WebSocket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/soap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP и XML-интеграции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Платформа
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Платформа">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm-jre-jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем отличаются JVM, JRE и JDK?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Чем отличаются JVM, JRE и JDK?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jvm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JVM (Java Virtual Machine) — исполнитель
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRE (Java Runtime Environment) — среда выполнения
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JDK (Java Development Kit) — инструменты разработчика
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Garbage Collector
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Garbage Collector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gc-roots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как GC понимает, что объект больше не нужен?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое гипотеза поколений?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mark-sweep-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как работает Mark-Sweep-Compact?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Stop-The-World?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие сборщики мусора есть и какой выбрать?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Память JVM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Память JVM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack-heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем Stack отличается от Heap?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Чем Stack отличается от Heap?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stack (стек) — личный рабочий стол потока
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Heap (куча) — общий склад
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое Metaspace и чем он отличается от PermGen?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-location" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Где живут статические переменные и String Pool?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metaspace-gc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как очищается Metaspace?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#oom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OutOfMemoryError
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OutOfMemoryError">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oom-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oom-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие бывают OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oom-investigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как расследовать и лечить OutOfMemoryError?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../../prep/tags/#tag:java" class="md-tag md-tag-icon">Java</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:junior" class="md-tag md-tag-icon md-tag--junior">Junior</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:middle" class="md-tag md-tag-icon md-tag--middle">Middle</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:senior" class="md-tag md-tag-icon md-tag--senior">Senior</a>
+      
+    
+  </nav>
+
+
+  
+    <a href="https://github.com/bemyskyy/interview-prep/edit/main/docs/java/jvm.md" title="Редактировать страницу" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="_1">Память и сборка мусора<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>Как Java-код превращается в работающую программу, где <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> хранит данные и как работает сборщик мусора. Чаще всего спрашивают разницу <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr>/<abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr>/<abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr>, Stack против Heap, поколения <abbr title="Garbage Collector — сборщик мусора">GC</abbr>, Metaspace и что делать при <code>OutOfMemoryError</code>.</p>
+<h2 id="platform">Платформа<a class="headerlink" href="#platform" title="Permanent link">&para;</a></h2>
+<h3 id="jvm-jre-jdk">Чем отличаются <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr>, <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> и <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr>?<a class="headerlink" href="#jvm-jre-jdk" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> выполняет байт-код, <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> — это <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> плюс стандартные библиотеки для запуска программ, <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> — это <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> плюс инструменты разработки вроде компилятора <code>javac</code>. Байт-код платформонезависим, а сама <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> у каждой ОС своя — так работает принцип <em>"Write Once, Run Anywhere"</em>.</p>
+</div>
+<pre class="mermaid"><code>flowchart LR
+    A["Main.java"] -- "javac (JDK)" --&gt; B["Main.class&lt;br/&gt;байт-код"]
+    B --&gt; C["JVM: интерпретатор"]
+    C -- "горячий код" --&gt; D["JIT-компилятор"]
+    D --&gt; E["Машинный код&lt;br/&gt;конкретной ОС и CPU"]
+    C --&gt; E</code></pre>
+<h4 id="jvm"><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> (Java Virtual Machine) — исполнитель<a class="headerlink" href="#jvm" title="Permanent link">&para;</a></h4>
+<p><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> — виртуальная машина, которая непосредственно выполняет Java-код.</p>
+<ul>
+<li><strong>Как это работает:</strong> ты пишешь код на Java (<code>.java</code>), компилятор превращает его в промежуточный байт-код (<code>.class</code>). <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> берёт байт-код и переводит его в машинный код конкретной ОС (Windows, Linux, macOS).</li>
+<li><strong>Принцип:</strong> именно <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> обеспечивает <em>"Write Once, Run Anywhere"</em> (написал один раз — запускай где угодно).</li>
+<li><strong>Что внутри (кратко):</strong><ul>
+<li><strong>Classloader</strong> загружает классы в память.</li>
+<li><strong>Memory Area</strong> управляет памятью: здесь живут Heap, Stack, Metaspace.</li>
+<li><strong>Execution Engine</strong> выполняет код: интерпретатор, <abbr title="Just-In-Time компилятор — переводит горячий байт-код в машинный код во время работы">JIT</abbr>-компилятор для оптимизации «горячего» кода и Garbage Collector, который чистит память.</li>
+</ul>
+</li>
+</ul>
+<h4 id="jre"><abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> (Java Runtime Environment) — среда выполнения<a class="headerlink" href="#jre" title="Permanent link">&para;</a></h4>
+<p><abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> — минимальный набор для <strong>запуска</strong> уже скомпилированных Java-приложений.</p>
+<ul>
+<li><strong>Из чего состоит:</strong> <strong><abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> = <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> + Core Libraries</strong> (базовые библиотеки).</li>
+<li><strong>Зачем библиотеки:</strong> сама <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> только выполняет инструкции. Чтобы приложение работало с файлами, сетью и коллекциями (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code>), нужны готовые классы — их даёт <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr>.</li>
+<li><strong>Кому это нужно:</strong> серверам и пользователям, на которых приложение просто должно работать. Сейчас вместо <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> чаще собирают урезанный образ под приложение (<code>jlink</code>), но концептуально это то же самое.</li>
+</ul>
+<h4 id="jdk"><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> (Java Development Kit) — инструменты разработчика<a class="headerlink" href="#jdk" title="Permanent link">&para;</a></h4>
+<p><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> — полный набор инструментов для <strong>разработки</strong> на Java.</p>
+<ul>
+<li><strong>Из чего состоит:</strong> <strong><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> = <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> + Development Tools</strong>.</li>
+<li><strong>Утилиты:</strong> <code>javac</code> (компилятор в байт-код), <code>java</code> (запуск), <code>jdb</code> (отладчик), <code>javadoc</code> (генератор документации), <code>javap</code> (дизассемблер байт-кода) и множество профилировщиков и анализаторов.</li>
+<li><strong>Кому это нужно:</strong> разработчикам. На рабочий компьютер всегда ставят именно <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr>.</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>javac<span class="w"> </span>Main.java<span class="w">     </span><span class="c1"># JDK: исходник → байт-код Main.class</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>javap<span class="w"> </span>-c<span class="w"> </span>Main<span class="w">       </span><span class="c1"># JDK: посмотреть байт-код</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>java<span class="w"> </span>Main<span class="w">           </span><span class="c1"># JRE/JVM: запустить</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «Java платформонезависима — значит, и <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> одна на всех»</p>
+<p>Платформонезависим <strong>байт-код</strong>. <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> — платформозависима: для каждой ОС и архитектуры процессора нужна своя сборка.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: писать код с одним <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr></p>
+<p>В <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> нет компилятора <code>javac</code>, поэтому собрать проект с ним нельзя. Для разработки нужен <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что входит в <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> и что <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> добавляет сверху?</li>
+<li>Что из цепочки <code>.java → .class → машинный код</code> платформонезависимо?</li>
+<li>Зачем <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> нужен <abbr title="Just-In-Time компилятор — переводит горячий байт-код в машинный код во время работы">JIT</abbr>-компилятор, если есть интерпретатор?</li>
+</ol>
+</details>
+<h2 id="gc">Garbage Collector<a class="headerlink" href="#gc" title="Permanent link">&para;</a></h2>
+<h3 id="gc-roots">Как <abbr title="Garbage Collector — сборщик мусора">GC</abbr> понимает, что объект больше не нужен?<a class="headerlink" href="#gc-roots" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="Garbage Collector — сборщик мусора">GC</abbr> идёт от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots — локальных переменных в стеках потоков, статических полей и активных потоков — и помечает всё, до чего можно добраться по ссылкам. Всё недостижимое — мусор, даже если эти объекты ссылаются друг на друга по кругу. Ссылки <abbr title="Garbage Collector — сборщик мусора">GC</abbr> не считает.</p>
+</div>
+<p>В C или C++ программист сам выделяет и сам освобождает память. Забыл освободить — получил утечку памяти (memory leak). В Java ты просто создаёшь объекты (<code>new Object()</code>), а <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> сама решает, когда их уничтожить.</p>
+<p><abbr title="Garbage Collector — сборщик мусора">GC</abbr> не считает ссылки объектов друг на друга (reference counting), чтобы не попасть в ловушку циклических ссылок: объект А ссылается на Б, Б — на А, а программе оба уже не нужны. Вместо этого <abbr title="Garbage Collector — сборщик мусора">GC</abbr> использует <strong>трассировку (tracing)</strong> от <strong><abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots</strong> — заведомо живых объектов:</p>
+<ul>
+<li>локальные переменные в выполняемых сейчас методах (в стеках потоков);</li>
+<li>статические переменные классов;</li>
+<li>активные потоки (threads).</li>
+</ul>
+<p><strong>Правило:</strong> <abbr title="Garbage Collector — сборщик мусора">GC</abbr> строит граф ссылок от корней. Если до объекта можно добраться по цепочке ссылок от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Root — он <strong>жив</strong>. Если цепочка оборвалась — он <strong>мусор</strong>.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">class</span> <span class="nc">Node</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">Node</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">Node</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">();</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">Node</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Node</span><span class="p">();</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">a</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">b</span><span class="p">.</span><span class="na">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="c1">// цикл ссылок</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w">   </span><span class="c1">// от GC Roots до пары не дойти — обе станут мусором, несмотря на цикл</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «раз есть <abbr title="Garbage Collector — сборщик мусора">GC</abbr>, утечек памяти не бывает»</p>
+<p>Утечка в Java — это объект, который больше не нужен, но всё ещё достижим от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Root. Классика — статическая коллекция-кэш, в которую только добавляют. <abbr title="Garbage Collector — сборщик мусора">GC</abbr> её никогда не очистит.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что относится к <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots?</li>
+<li>Соберёт ли <abbr title="Garbage Collector — сборщик мусора">GC</abbr> два объекта, которые ссылаются друг на друга, но недостижимы из корней?</li>
+<li>Как в Java может возникнуть утечка памяти, если есть <abbr title="Garbage Collector — сборщик мусора">GC</abbr>?</li>
+</ol>
+</details>
+<h3 id="generations">Что такое гипотеза поколений?<a class="headerlink" href="#generations" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Большинство объектов умирают молодыми, а пережившие несколько сборок обычно живут долго. Поэтому куча делится на Young Generation (Eden и два Survivor) и Old Generation. Young чистится часто и быстро (Minor <abbr title="Garbage Collector — сборщик мусора">GC</abbr>), Old — редко и дорого.</p>
+</div>
+<p>Это фундамент большинства сборщиков в Java. Создатели <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> заметили закономерность в поведении программ — слабую гипотезу поколений (weak generational hypothesis):</p>
+<ol>
+<li><strong>Большинство объектов умирают молодыми.</strong> Например, переменные внутри цикла или метода: метод отработал — они больше не нужны.</li>
+<li><strong>Объекты, пережившие пару сборок, скорее всего, будут жить долго.</strong> Например, кэши, пулы соединений с базой, синглтоны Spring.</li>
+</ol>
+<p>Поэтому кучу (heap) разделили на области, чтобы не сканировать всю память каждый раз:</p>
+<ul>
+<li><strong>Young Generation (молодое поколение):</strong> здесь создаются все новые объекты. Состоит из <strong>Eden</strong> и двух небольших зон <strong>Survivor</strong> (S0 и S1).<ul>
+<li>Когда Eden заполняется, происходит быстрая сборка — <strong>Minor <abbr title="Garbage Collector — сборщик мусора">GC</abbr></strong>, и выжившие объекты переезжают в Survivor.</li>
+</ul>
+</li>
+<li><strong>Old Generation / Tenured (старое поколение):</strong> сюда попадают «долгожители», пережившие несколько Minor <abbr title="Garbage Collector — сборщик мусора">GC</abbr>. Когда заполняется эта зона, запускается сборка старого поколения — <strong>Major <abbr title="Garbage Collector — сборщик мусора">GC</abbr></strong>, а при сборке всей кучи — <strong>Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr></strong>. Это тяжёлая и долгая операция: сканируется огромный объём памяти.</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    N["new Object()"] --&gt; E["Eden"]
+    E -- "Minor GC: выжил" --&gt; S["Survivor S0 / S1"]
+    S -- "Minor GC: выжил снова" --&gt; S
+    S -- "пережил N сборок" --&gt; O["Old Generation"]
+    E -- "Minor GC: мёртв" --&gt; X["освобождено"]
+    S -- "Minor GC: мёртв" --&gt; X
+    O -- "Major / Full GC: мёртв" --&gt; X</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Сколько сборок объект должен пережить в Survivor, прежде чем уехать в Old (по умолчанию до 15)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>java<span class="w"> </span>-XX:MaxTenuringThreshold<span class="o">=</span><span class="m">15</span><span class="w"> </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: Major <abbr title="Garbage Collector — сборщик мусора">GC</abbr> и Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr> — не одно и то же</p>
+<p>Термины часто смешивают. Major <abbr title="Garbage Collector — сборщик мусора">GC</abbr> чистит старое поколение, Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr> — всю кучу целиком, обычно с самой долгой паузой. Если в логах <abbr title="Garbage Collector — сборщик мусора">GC</abbr> регулярно появляется Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr>, это сигнал разбираться с памятью.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Из каких двух наблюдений состоит гипотеза поколений?</li>
+<li>Из каких зон состоит Young Generation и что происходит при Minor <abbr title="Garbage Collector — сборщик мусора">GC</abbr>?</li>
+<li>Когда объект попадает в Old Generation?</li>
+</ol>
+</details>
+<h3 id="mark-sweep-compact">Как работает Mark-Sweep-Compact?<a class="headerlink" href="#mark-sweep-compact" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Сначала <abbr title="Garbage Collector — сборщик мусора">GC</abbr> помечает все живые объекты, проходя от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots (Mark). Потом освобождает память всех непомеченных (Sweep). В конце сдвигает живые объекты вплотную друг к другу, чтобы убрать фрагментацию (Compact).</p>
+</div>
+<p>Когда <abbr title="Garbage Collector — сборщик мусора">GC</abbr> решает навести порядок, он делает три шага:</p>
+<ol>
+<li><strong>Mark (маркировка):</strong> проходит от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots и ставит «флажок» на всех живых объектах.</li>
+<li><strong>Sweep (очистка):</strong> проходит по памяти и освобождает все объекты без флажка.</li>
+<li><strong>Compact (сжатие, опционально, но важно):</strong> после очистки память похожа на швейцарский сыр (фрагментация). <abbr title="Garbage Collector — сборщик мусора">GC</abbr> сдвигает живые объекты в начало памяти, чтобы новые объекты выделялись быстро и целым куском.</li>
+</ol>
+<pre class="mermaid"><code>flowchart LR
+    M["Mark&lt;br/&gt;пометить живые от GC Roots"] --&gt; S["Sweep&lt;br/&gt;освободить непомеченные"]
+    S --&gt; C["Compact&lt;br/&gt;сдвинуть живые вплотную"]</code></pre>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">System</span><span class="p">.</span><span class="na">gc</span><span class="p">();</span><span class="w"> </span><span class="c1">// лишь просьба к JVM запустить сборку — она может её проигнорировать</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>System.gc()</code> в коде</p>
+<p><code>System.gc()</code> ничего не гарантирует, а если <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> всё же послушается — это может быть Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr> с долгой паузой. В продакшен-коде его не вызывают; флаг <code>-XX:+DisableExplicitGC</code> вообще отключает такие вызовы.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что делает каждая из фаз Mark, Sweep и Compact?</li>
+<li>Зачем нужна фаза Compact?</li>
+<li>Гарантирует ли <code>System.gc()</code> сборку мусора?</li>
+</ol>
+</details>
+<h3 id="stw">Что такое Stop-The-World?<a class="headerlink" href="#stw" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Это пауза, во время которой <abbr title="Garbage Collector — сборщик мусора">GC</abbr> останавливает все потоки приложения, чтобы безопасно пометить или переместить объекты. Пока она идёт, приложение не отвечает. Вся эволюция сборщиков в Java — борьба за то, чтобы эти паузы были как можно короче.</p>
+</div>
+<p>Самый важный концепт для понимания <abbr title="Garbage Collector — сборщик мусора">GC</abbr>. Когда сборщик делает свою основную работу (особенно перемещает объекты в памяти), он <strong>ставит на паузу все потоки приложения</strong>. Это называется <strong>Stop-The-World (STW)</strong>: код замирает, API не отвечает, данные не пишутся.</p>
+<p>Вся эволюция сборщиков в Java сводится к одной цели: <strong>сделать STW-паузы максимально короткими</strong>, чтобы приложение не «фризило».</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Посмотреть все паузы GC в логе</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>java<span class="w"> </span>-Xlog:gc*:file<span class="o">=</span>gc.log<span class="w"> </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «у <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> нет пауз»</p>
+<p>STW-паузы есть у всех сборщиков. <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> и Shenandoah делают почти всю работу параллельно с приложением, поэтому их паузы очень короткие, но не нулевые.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что происходит с приложением во время STW-паузы?</li>
+<li>Почему <abbr title="Garbage Collector — сборщик мусора">GC</abbr> вообще нужно останавливать потоки?</li>
+<li>Как посмотреть, сколько длятся паузы <abbr title="Garbage Collector — сборщик мусора">GC</abbr> в твоём приложении?</li>
+</ol>
+</details>
+<h3 id="collectors">Какие сборщики мусора есть и какой выбрать?<a class="headerlink" href="#collectors" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Serial — однопоточный для крошечных приложений, Parallel — многопоточный с упором на пропускную способность, G1 — сборщик по умолчанию с Java 9, балансирует пропускную способность и паузы. <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> и Shenandoah делают почти всю работу параллельно с приложением, и паузы у них не зависят от размера кучи.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th><strong>Сборщик</strong></th>
+<th><strong>Суть</strong></th>
+<th><strong>Когда</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Serial <abbr title="Garbage Collector — сборщик мусора">GC</abbr></strong></td>
+<td>Однопоточный</td>
+<td>Крошечные приложения, 1 CPU</td>
+</tr>
+<tr>
+<td><strong>Parallel <abbr title="Garbage Collector — сборщик мусора">GC</abbr></strong></td>
+<td>Несколько потоков сборки, но долгие STW-паузы. Долгое время был сборщиком по умолчанию</td>
+<td>Пакетная обработка, где важна пропускная способность, а не паузы</td>
+</tr>
+<tr>
+<td><strong>G1 <abbr title="Garbage Collector — сборщик мусора">GC</abbr> (Garbage-First)</strong></td>
+<td>По умолчанию с Java 9. Делит кучу на множество регионов и чистит сначала те, где больше всего мусора</td>
+<td>Большинство серверных приложений</td>
+</tr>
+<tr>
+<td><strong><abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr></strong></td>
+<td>Почти вся работа, включая перемещение объектов, — параллельно с приложением. Паузы — меньше миллисекунды даже на кучах в терабайты</td>
+<td>Высоконагруженные сервисы с требованиями к задержкам</td>
+</tr>
+<tr>
+<td><strong>Shenandoah</strong></td>
+<td>Тоже перемещает объекты параллельно с приложением; паузы не зависят от размера кучи. Есть в сборках OpenJDK, но не в Oracle <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr></td>
+<td>То же, что <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr></td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>java<span class="w"> </span>-XX:+UseSerialGC<span class="w">     </span>-jar<span class="w"> </span>app.jar
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>java<span class="w"> </span>-XX:+UseParallelGC<span class="w">   </span>-jar<span class="w"> </span>app.jar
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>java<span class="w"> </span>-XX:+UseG1GC<span class="w">         </span>-jar<span class="w"> </span>app.jar<span class="w">   </span><span class="c1"># по умолчанию с Java 9</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>java<span class="w"> </span>-XX:+UseZGC<span class="w">          </span>-jar<span class="w"> </span>app.jar
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>java<span class="w"> </span>-XX:+UseShenandoahGC<span class="w"> </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: в маленьком контейнере G1 может и не включиться</p>
+<p>Если <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> видит меньше 2 CPU или меньше ~1792 МБ памяти, она считает машину «не серверной» и по умолчанию выбирает Serial <abbr title="Garbage Collector — сборщик мусора">GC</abbr>. В Kubernetes-подах с лимитом в 1 CPU это частая причина долгих пауз — сборщик стоит задавать явно.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: короткие паузы не бесплатны</p>
+<p><abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> и Shenandoah платят за короткие паузы дополнительным CPU и памятью. Если сервису важна пропускная способность, а не задержки (например, ночная пакетная обработка), Parallel или G1 могут оказаться выгоднее.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какой сборщик используется по умолчанию начиная с Java 9 и как он устроен?</li>
+<li>Чем <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> и Shenandoah отличаются от G1?</li>
+<li>Почему в контейнере с 1 CPU <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> может выбрать Serial <abbr title="Garbage Collector — сборщик мусора">GC</abbr>?</li>
+</ol>
+</details>
+<h2 id="memory">Память <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr><a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
+<h3 id="stack-heap">Чем Stack отличается от Heap?<a class="headerlink" href="#stack-heap" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Stack у каждого потока свой: в нём лежат фреймы методов с локальными переменными, примитивами и ссылками, и он очищается сам, когда метод завершается. Heap один на всё приложение: в нём живут все объекты, и чистит его <abbr title="Garbage Collector — сборщик мусора">GC</abbr>. Переполнение стека — <code>StackOverflowError</code>, кучи — <code>OutOfMemoryError</code>.</p>
+</div>
+<h4 id="stack">Stack (стек) — личный рабочий стол потока<a class="headerlink" href="#stack" title="Permanent link">&para;</a></h4>
+<p>Стек — быстрая, но небольшая область памяти. Главное правило: <strong>у каждого потока (thread) свой собственный стек</strong>, заглядывать в чужие стеки потоки не могут.</p>
+<ul>
+<li><strong>Как это работает:</strong> стек работает по принципу <abbr title="Last In, First Out — последним пришёл, первым ушёл (стек)">LIFO</abbr> (Last In, First Out). Представь стопку тарелок: кладёшь сверху и берёшь всегда только верхнюю.</li>
+<li><strong>Что внутри (фреймы):</strong> при вызове метода в стеке создаётся новый фрейм (frame). В нём хранятся:<ul>
+<li>локальные переменные метода;</li>
+<li>примитивные значения (<code>int</code>, <code>double</code>, <code>boolean</code>, <code>char</code> и т.д.);</li>
+<li><strong>ссылки</strong> на объекты — сами объекты здесь не живут, только их «адреса».</li>
+</ul>
+</li>
+<li><strong>Жизненный цикл:</strong> метод отработал — его фрейм сразу удаляется из стека. Память освобождается сама, без Garbage Collector.</li>
+<li><strong>Главная ошибка:</strong> если методы вызывают друг друга бесконечно (например, рекурсия без выхода), стопка упрётся в потолок — получишь <code>StackOverflowError</code>.</li>
+</ul>
+<h4 id="heap">Heap (куча) — общий склад<a class="headerlink" href="#heap" title="Permanent link">&para;</a></h4>
+<p>Куча — большая область памяти, которая выделяется приложению при запуске. Главное правило: <strong>куча одна на всё приложение, и все потоки имеют к ней доступ</strong>.</p>
+<ul>
+<li><strong>Что внутри:</strong> <strong>все объекты</strong> — экземпляры классов, созданные через <code>new</code>, массивы, строки.</li>
+<li><strong>Связь со стеком:</strong> при <code>User user = new User();</code> в стеке создаётся локальная переменная <code>user</code> (ссылка), а в куче выделяется место под сам объект <code>User</code>. Ссылка из стека указывает на объект в куче.</li>
+<li><strong>Жизненный цикл:</strong> объект живёт, пока до него можно добраться от <abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots (в том числе по ссылкам из стеков). Как только ссылки пропадают, приходит Garbage Collector.</li>
+<li><strong>Главная ошибка:</strong> если создавать слишком много объектов и не отпускать ссылки (например, складывать всё в бесконечный <code>List</code>), место закончится — <code>OutOfMemoryError: Java heap space</code>.</li>
+</ul>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">handle</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">               </span><span class="c1">// примитив — прямо во фрейме стека</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">User</span><span class="p">();</span><span class="w">      </span><span class="c1">// ссылка user — в стеке, сам объект User — в куче</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span><span class="w">                                </span><span class="c1">// фрейм удалён; объект User станет мусором для GC</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kt">int</span><span class="w"> </span><span class="nf">depth</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">depth</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">         </span><span class="c1">// ❌ рекурсия без выхода → StackOverflowError</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong>Stack (стек)</strong></th>
+<th><strong>Heap (куча)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Доступ</strong></td>
+<td>Локальный (только свой поток)</td>
+<td>Глобальный (общий для всех потоков)</td>
+</tr>
+<tr>
+<td><strong>Что хранится</strong></td>
+<td>Фреймы методов: примитивы, ссылки</td>
+<td>Объекты и массивы</td>
+</tr>
+<tr>
+<td><strong>Управление</strong></td>
+<td>Автоматически при вызове и выходе из метода</td>
+<td>Garbage Collector</td>
+</tr>
+<tr>
+<td><strong>Скорость</strong></td>
+<td>Очень быстрая</td>
+<td>Медленнее: нужно найти место, работает <abbr title="Garbage Collector — сборщик мусора">GC</abbr></td>
+</tr>
+<tr>
+<td><strong>Размер</strong></td>
+<td>Маленький, задаётся флагом <code>-Xss</code></td>
+<td>Большой, задаётся флагами <code>-Xms</code> и <code>-Xmx</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>-Xss</code> — это размер стека каждого потока</p>
+<p><code>-Xss</code> задаётся на поток, а не на всё приложение. Увеличишь его ради глубокой рекурсии — каждая тысяча потоков съест в тысячу раз больше памяти.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Где окажутся ссылка и объект при <code>User user = new User();</code>?</li>
+<li>Почему стек не нужно чистить сборщиком мусора?</li>
+<li>Какая ошибка возникает при переполнении стека и при переполнении кучи?</li>
+</ol>
+</details>
+<h3 id="metaspace">Что такое Metaspace и чем он отличается от PermGen?<a class="headerlink" href="#metaspace" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Metaspace хранит метаданные классов — их структуру, байт-код методов, данные <abbr title="Just-In-Time компилятор — переводит горячий байт-код в машинный код во время работы">JIT</abbr> — и находится в нативной памяти, вне кучи. Он появился в Java 8 вместо PermGen, который жил внутри памяти <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> с жёстким лимитом и падал с <code>OutOfMemoryError: PermGen space</code>. Metaspace по умолчанию растёт, пока хватает памяти машины.</p>
+</div>
+<p>Объекты живут в куче, локальные переменные и вызовы методов — в стеке. А где <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> хранит информацию о самих классах — их структуру, методы, имена полей? Для этого есть <strong>Metaspace</strong>.</p>
+<ul>
+<li><strong>Где физически:</strong> Metaspace находится <strong>вне кучи (off-heap)</strong> — в нативной памяти (native memory), которую ОС выделяет процессу <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> напрямую.</li>
+<li><strong>Что хранится:</strong> метаданные классов — «чертежи» объектов: структура класса, байт-код методов, данные <abbr title="Just-In-Time компилятор — переводит горячий байт-код в машинный код во время работы">JIT</abbr>-компилятора и другая служебная информация.</li>
+</ul>
+<p>На собесе почти наверняка спросят: <em>"А что было до Metaspace и почему это изменили в Java 8?"</em></p>
+<ul>
+<li><strong>До Java 8:</strong> эта область называлась <strong>PermGen</strong> (Permanent Generation). Она находилась <em>внутри</em> памяти <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> и имела жёстко заданный максимум. Если приложение динамически создавало много классов (а Spring и Hibernate делают это постоянно через прокси), PermGen переполнялся и приложение падало с <code>OutOfMemoryError: PermGen space</code>.</li>
+<li><strong>С Java 8:</strong> PermGen удалили и заменили на Metaspace. Главное отличие — по умолчанию Metaspace <strong>растёт динамически</strong> и ограничен только объёмом оперативной памяти сервера. Ошибка <code>OOM: PermGen</code> ушла в прошлое.</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Ограничить Metaspace явно — без флага он ограничен только памятью машины</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>java<span class="w"> </span>-XX:MaxMetaspaceSize<span class="o">=</span>256m<span class="w"> </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: Metaspace без лимита в контейнере</p>
+<p>В Kubernetes, где память жёстко лимитирована, всегда ограничивай Metaspace флагом вроде <code>-XX:MaxMetaspaceSize=256m</code>. Иначе при утечке классов Metaspace съест всю память контейнера, и ОС убьёт его через <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> Killer. С лимитом ты хотя бы получишь понятную <code>OutOfMemoryError: Metaspace</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что хранится в Metaspace и где он находится физически?</li>
+<li>Почему PermGen заменили на Metaspace?</li>
+<li>Зачем ограничивать Metaspace в контейнере?</li>
+</ol>
+</details>
+<h3 id="static-location">Где живут статические переменные и String Pool?<a class="headerlink" href="#static-location" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>В куче. String Pool переехал в кучу ещё в Java 7, а статические переменные — в Java 8, вместе с объектами <code>java.lang.Class</code>. В Metaspace осталась только метаинформация о классах и байт-код.</p>
+</div>
+<p>Самый каверзный вопрос по теме памяти. Многие по старым книжкам про Java 7 отвечают, что статические переменные и String Pool хранятся в Metaspace (или PermGen). <strong>Это грубая ошибка.</strong></p>
+<ul>
+<li><strong>String Pool</strong> переехал в основную кучу (heap) ещё в Java 7.</li>
+<li><strong>Статические переменные</strong> (и сами объекты <code>java.lang.Class</code>) переехали из PermGen в кучу в Java 8.</li>
+</ul>
+<p>В Metaspace осталась <em>только</em> метаинформация о классах и байт-код для <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr>.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">class</span> <span class="nc">Config</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="c1">// значение статического поля и сама Map — в куче (внутри объекта Config.class);</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="c1">// в Metaspace — только описание класса Config</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">CACHE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «статика — в Metaspace»</p>
+<p>Это ответ из эпохи Java 7 и PermGen. С Java 8 значения статических полей лежат в куче, поэтому статическая коллекция, которая только растёт, даёт <code>OutOfMemoryError: Java heap space</code>, а не ошибку Metaspace.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Где хранятся значения статических полей начиная с Java 8?</li>
+<li>В какой версии Java String Pool переехал в кучу?</li>
+<li>Какую ошибку получишь, если статическая коллекция бесконечно растёт?</li>
+</ol>
+</details>
+<h3 id="metaspace-gc">Как очищается Metaspace?<a class="headerlink" href="#metaspace-gc" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Метаданные класса живут в Metaspace, пока жив его <code>ClassLoader</code>. В обычном приложении базовые классы живут от старта до остановки. Metaspace освобождается, только когда весь <code>ClassLoader</code> вместе с классами становится недостижим — например, при горячей перезагрузке приложения в сервере приложений.</p>
+</div>
+<p>Хотя Metaspace растягивается, он не бесконечен. Метаданные класса живут, пока жив его <strong>ClassLoader</strong> (загрузчик классов):</p>
+<ul>
+<li>В обычном приложении базовые классы живут от старта до остановки сервера.</li>
+<li>При «горячей замене» кода (hot reload) или в серверах приложений вроде Tomcat старые <code>ClassLoader</code>-ы уничтожаются вместе со своими классами. Тогда <abbr title="Garbage Collector — сборщик мусора">GC</abbr> освобождает и нативную память Metaspace.</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Смотрим, сколько классов загружено и сколько из них выгружено</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>java<span class="w"> </span>-Xlog:class+load,class+unload<span class="w"> </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: утечка ClassLoader</p>
+<p>Если после редеплоя хоть один объект старого приложения остаётся достижим (через <a href="../../concurrency/threads/#thread-local"><code>ThreadLocal</code></a>, статическое поле библиотеки, незавершённый поток), весь старый <code>ClassLoader</code> со всеми классами не выгрузится. После нескольких редеплоев — <code>OutOfMemoryError: Metaspace</code>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>От чего зависит время жизни метаданных класса в Metaspace?</li>
+<li>В каких сценариях Metaspace реально очищается?</li>
+<li>Как один <code>ThreadLocal</code> может вызвать утечку Metaspace?</li>
+</ol>
+</details>
+<h2 id="oom">OutOfMemoryError<a class="headerlink" href="#oom" title="Permanent link">&para;</a></h2>
+<h3 id="oom-basics">Что такое OutOfMemoryError?<a class="headerlink" href="#oom-basics" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Это не исключение, а <code>Error</code> — наследник <code>VirtualMachineError</code>. <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> бросает его, когда <abbr title="Garbage Collector — сборщик мусора">GC</abbr> сделал всё что мог, но места для нового объекта нет. Ловить его технически можно, но приложение уже в нестабильном состоянии.</p>
+</div>
+<p>Первое правило для собеса: <strong><abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> — это не Exception, это Error</strong>. Он наследуется от <code>java.lang.VirtualMachineError</code> и сигнализирует о критической ситуации: память закончилась, <abbr title="Garbage Collector — сборщик мусора">GC</abbr> не смог освободить место. Ловить его через <code>try-catch</code> — плохая практика, хоть технически и возможно.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">huge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">byte</span><span class="o">[</span><span class="n">Integer</span><span class="p">.</span><span class="na">MAX_VALUE</span><span class="o">]</span><span class="p">;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">OutOfMemoryError</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="c1">// ❌ технически поймать можно, но состояние приложения уже непредсказуемо</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>catch (Exception e)</code> не поймает <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr></p>
+<p><code>OutOfMemoryError</code> — наследник <code>Error</code>, а не <code>Exception</code>. Общий <code>catch (Exception e)</code> его пропустит, и это правильно: восстанавливаться после <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> внутри обычной бизнес-логики бесполезно.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>От какого класса наследуется <code>OutOfMemoryError</code>?</li>
+<li>Почему ловить <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> — плохая идея?</li>
+<li>Поймает ли его <code>catch (Exception e)</code>?</li>
+</ol>
+</details>
+<h3 id="oom-types">Какие бывают OutOfMemoryError?<a class="headerlink" href="#oom-types" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Чаще всего — <code>Java heap space</code>: в куче нет места под объект. Ещё бывают <code>GC overhead limit exceeded</code>, когда <abbr title="Garbage Collector — сборщик мусора">GC</abbr> работает почти постоянно и почти ничего не освобождает, <code>Metaspace</code> — переполнены метаданные классов, и <code>unable to create new native thread</code> — ОС не даёт создать поток.</p>
+</div>
+<p>На собесе не говори просто «закончилась память». Память бывает разная:</p>
+<table>
+<thead>
+<tr>
+<th>Тип ошибки</th>
+<th>Суть проблемы</th>
+<th>Частая причина в коде</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Java heap space</strong></td>
+<td>В куче нет места для нового объекта</td>
+<td>Утечка памяти (коллекция бесконечно растёт), загрузка огромного файла или <code>SELECT *</code> из БД целиком в память</td>
+</tr>
+<tr>
+<td><strong><abbr title="Garbage Collector — сборщик мусора">GC</abbr> overhead limit exceeded</strong></td>
+<td>Приложение «буксует»: <abbr title="Garbage Collector — сборщик мусора">GC</abbr> работает больше 98% времени, но освобождает меньше 2% памяти (проверка есть у Parallel <abbr title="Garbage Collector — сборщик мусора">GC</abbr>)</td>
+<td>Слишком много временных объектов, <abbr title="Garbage Collector — сборщик мусора">GC</abbr> не успевает их чистить</td>
+</tr>
+<tr>
+<td><strong>Metaspace</strong></td>
+<td>Переполнилась область метаданных классов</td>
+<td>Динамическая генерация классов (часто — фреймворки при кривой настройке), утечка <code>ClassLoader</code></td>
+</tr>
+<tr>
+<td><strong>Unable to create new native thread</strong></td>
+<td><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> не может создать новый поток на уровне ОС</td>
+<td>Исчерпан лимит ОС на число потоков или закончилась физическая память</td>
+</tr>
+</tbody>
+</table>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Cache</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">byte</span><span class="o">[]&gt;</span><span class="w"> </span><span class="n">DATA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">remember</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">chunk</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">        </span><span class="n">DATA</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">chunk</span><span class="p">);</span><span class="w"> </span><span class="c1">// ❌ только добавляем и никогда не удаляем → Java heap space</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «unable to create new native thread» — не про кучу</p>
+<p>Увеличение <code>-Xmx</code> здесь не поможет и даже навредит: потоки живут вне кучи. Причина — слишком много потоков (например, <code>newCachedThreadPool</code> под нагрузкой) или лимиты ОС.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Чем <code>Java heap space</code> отличается от <code>GC overhead limit exceeded</code>?</li>
+<li>Какая причина у <code>OutOfMemoryError: Metaspace</code>?</li>
+<li>Поможет ли увеличение <code>-Xmx</code> при <code>unable to create new native thread</code>?</li>
+</ol>
+</details>
+<h3 id="oom-investigation">Как расследовать и лечить OutOfMemoryError?<a class="headerlink" href="#oom-investigation" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Senior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Включить <code>-XX:+HeapDumpOnOutOfMemoryError</code>, забрать heap dump и открыть его в Eclipse MAT: Dominator Tree или Leak Suspects покажут, кто держит память. Дальше чинить код — утечку или загрузку данных целиком. Увеличивать <code>-Xmx</code> — только если утечки нет и памяти реально не хватает под нагрузку.</p>
+</div>
+<p>Обычно <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> обнаруживается сам — приложение умирает с ошибкой в логах. Задача инженера — понять, <strong>почему</strong> это произошло.</p>
+<ul>
+<li><strong>Флаги <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> (включай всегда):</strong> <code>-XX:+HeapDumpOnOutOfMemoryError</code> — в момент падения <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> сама сохранит снимок памяти (heap dump). <code>-XX:HeapDumpPath=...</code> указывает, куда его положить.</li>
+<li><strong>Мониторинг (Grafana / Prometheus):</strong> если график памяти днями плавно ползёт вверх и не падает после сборок мусора — это утечка памяти. Если взлетел вертикально за секунду — резкий всплеск трафика или тяжёлый запрос к БД.</li>
+<li><strong>JMX и профилировщики:</strong> VisualVM или JProfiler подключаются к работающей <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> и показывают, какие объекты занимают место.</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>java<span class="w"> </span>-XX:+HeapDumpOnOutOfMemoryError<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">     </span>-XX:HeapDumpPath<span class="o">=</span>/var/dumps<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">     </span>-jar<span class="w"> </span>app.jar
+</span></code></pre></div>
+<p>Любимый вопрос: <em>"У тебя упал <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr>, твои действия?"</em> Не отвечай «увеличу <code>-Xmx</code>» — при утечке это лишь отсрочит следующее падение. Правильный алгоритм:</p>
+<ol>
+<li><strong>Собрать данные:</strong> забрать heap dump, который <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> сохранила при падении.</li>
+<li><strong>Проанализировать:</strong> открыть дамп в <strong>Eclipse MAT</strong> (Memory Analyzer Tool).</li>
+<li><strong>Найти виновника:</strong> <em>Dominator Tree</em> или <em>Leak Suspects Report</em> покажут, например: «этот <code>HashMap</code> держит 80% памяти, внутри — миллионы объектов <code>User</code>».</li>
+<li><strong>Починить код:</strong><ul>
+<li>Утечка — найти, где объекты складываются в кэш или коллекцию и не удаляются.</li>
+<li>Всплеск данных — читать из БД страницами (батчами по 1000 строк, а не миллион за раз), читать файлы потоково (<code>BufferedReader</code>, Stream API), а не грузить в <code>byte[]</code> целиком.</li>
+</ul>
+</li>
+<li><strong>Настроить <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr>:</strong> только если анализ показал, что утечки нет, а приложению реально нужно больше памяти под возросшую нагрузку, аккуратно увеличить <code>-Xmx</code>.</li>
+</ol>
+<pre class="mermaid"><code>flowchart TD
+    A["OutOfMemoryError"] --&gt; B["Heap dump&lt;br/&gt;-XX:+HeapDumpOnOutOfMemoryError"]
+    B --&gt; C["Eclipse MAT:&lt;br/&gt;Dominator Tree, Leak Suspects"]
+    C --&gt; D{"Что держит память?"}
+    D -- "растущая коллекция, кэш" --&gt; E["Утечка: удалять ненужное,&lt;br/&gt;ограничить кэш"]
+    D -- "огромная выборка, файл" --&gt; F["Пагинация, потоковое чтение"]
+    D -- "утечки нет, просто нагрузка" --&gt; G["Увеличить -Xmx"]</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «просто увеличу <code>-Xmx</code>»</p>
+<p>При утечке памяти больший хип только отодвинет падение и сделает Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr> ещё дольше. Сначала дамп и анализ, потом — решение.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какие флаги <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> нужны, чтобы при <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr> остался heap dump?</li>
+<li>Как по графику памяти отличить утечку от всплеска нагрузки?</li>
+<li>Когда увеличение <code>-Xmx</code> — правильное решение?</li>
+</ol>
+</details>
+<h2 id="cheatsheet">Шпаргалка<a class="headerlink" href="#cheatsheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Тема</th>
+<th>Запомнить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> / <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> / <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr></strong></td>
+<td><abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> выполняет байт-код; <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> = <abbr title="Java Virtual Machine — виртуальная машина, исполняющая байт-код">JVM</abbr> + библиотеки; <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> = <abbr title="Java Runtime Environment — JVM + стандартная библиотека">JRE</abbr> + <code>javac</code> и утилиты</td>
+</tr>
+<tr>
+<td><strong><abbr title="Garbage Collector — сборщик мусора">GC</abbr> Roots</strong></td>
+<td>Стеки потоков, статические поля, активные потоки; недостижимое — мусор, циклы не мешают</td>
+</tr>
+<tr>
+<td><strong>Поколения</strong></td>
+<td>Eden → Survivor → Old; Minor <abbr title="Garbage Collector — сборщик мусора">GC</abbr> часто и быстро, Major/Full <abbr title="Garbage Collector — сборщик мусора">GC</abbr> — редко и дорого</td>
+</tr>
+<tr>
+<td><strong>Mark-Sweep-Compact</strong></td>
+<td>Пометить живые → освободить остальное → убрать фрагментацию</td>
+</tr>
+<tr>
+<td><strong>Stop-The-World</strong></td>
+<td>Пауза всех потоков приложения; эволюция <abbr title="Garbage Collector — сборщик мусора">GC</abbr> — борьба за короткие паузы</td>
+</tr>
+<tr>
+<td><strong>Сборщики</strong></td>
+<td>Serial, Parallel, G1 (по умолчанию с Java 9), <abbr title="Z Garbage Collector — сборщик с паузами до миллисекунды, не зависящими от размера кучи">ZGC</abbr> и Shenandoah (паузы не зависят от размера кучи)</td>
+</tr>
+<tr>
+<td><strong>Stack vs Heap</strong></td>
+<td>Стек — свой у потока, фреймы и ссылки, <code>-Xss</code>; куча — общая, объекты, <code>-Xmx</code></td>
+</tr>
+<tr>
+<td><strong>Metaspace</strong></td>
+<td>Метаданные классов вне кучи, с Java 8 вместо PermGen; ограничивай <code>-XX:MaxMetaspaceSize</code></td>
+</tr>
+<tr>
+<td><strong>Статика и String Pool</strong></td>
+<td>В куче: пул — с Java 7, статические поля — с Java 8</td>
+</tr>
+<tr>
+<td><strong><abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr></strong></td>
+<td><code>Error</code>, а не <code>Exception</code>; виды: heap space, <abbr title="Garbage Collector — сборщик мусора">GC</abbr> overhead, Metaspace, native thread</td>
+</tr>
+<tr>
+<td><strong>Расследование <abbr title="OutOfMemoryError — JVM не смогла выделить память">OOM</abbr></strong></td>
+<td><code>-XX:+HeapDumpOnOutOfMemoryError</code> → Eclipse MAT → чинить код → и только потом <code>-Xmx</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../io-nio/" class="md-footer__link md-footer__link--prev" aria-label="Назад: IO / NIO">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                IO / NIO
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../concurrency/threads/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Потоки и ThreadLocal">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Потоки и ThreadLocal
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"Junior": "junior", "Middle": "middle", "Senior": "senior"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+  
+    <script src="../../assets/vendor/mermaid/mermaid.min.js"></script>
+    <script src="../../javascripts/mermaid-theme.js"></script>
+  
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/moved-anchors.js"></script>
+      
+    
+
+  </body>
+</html>

@@ -1,0 +1,5248 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="База знаний для подготовки к техническим собеседованиям по Java и backend">
+      
+      
+        <meta name="author" content="bemyskyy">
+      
+      
+        <link rel="canonical" href="https://bemyskyy.github.io/interview-prep/spring/spring-core/">
+      
+      
+        <link rel="prev" href="../../design/behavioral-patterns/">
+      
+      
+        <link rel="next" href="../spring-boot/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Spring Core: IoC, DI, AOP - Interview Prep</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+  
+  
+    
+      
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+    
+      
+      
+        
+      
+      
+    
+  
+  
+  <style>:root{.md-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m21.41%2011.58-9-9A2%202%200%200%200%2011%202H4a2%202%200%200%200-2%202v7a2%202%200%200%200%20.59%201.42l9%209A2%202%200%200%200%2013%2022a2%202%200%200%200%201.41-.59l7-7A2%202%200%200%200%2022%2013a2%202%200%200%200-.59-1.42M13%2020l-9-9V4h7l9%209M6.5%205A1.5%201.5%200%201%201%205%206.5%201.5%201.5%200%200%201%206.5%205%22/%3E%3C/svg%3E');}.md-tag.md-tag--junior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zm-7%205v8h-2v-8zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--middle{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M19.5%205.5v13h-2v-13zM21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}.md-tag.md-tag--senior{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M21%204h-5v16h5zm-7%205H9v11h5zm-7%205H2v6h5z%22/%3E%3C/svg%3E');}}</style>
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spring-core-ioc-di-aop" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../.." title="Interview Prep" class="md-header__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Interview Prep
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spring Core: IoC, DI, AOP
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Тёмная тема"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Тёмная тема" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Светлая тема"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Светлая тема" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Поделиться" aria-label="Поделиться" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Вкладки" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Старт
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prep/last-hour/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Подготовка
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../java/basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Java
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../concurrency/threads/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Многопоточность
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/composition/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Дизайн кода
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../database/sql/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Данные
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kafka/kafka/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Kafka
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../system-design/interview/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  System Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/ddd/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Архитектура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../infrastructure/docker/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Инфраструктура
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../algorithms/algorithms/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Computer Science
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Interview Prep" class="md-nav__button md-logo" aria-label="Interview Prep" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-2-2 2 2 0 0 0 2-2V5h2V3m6 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3z"/></svg>
+
+    </a>
+    Interview Prep
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bemyskyy/interview-prep" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bemyskyy/interview-prep
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Старт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Подготовка
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Подготовка
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/last-hour/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    За час до собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/questions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Вопросы собеса
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../prep/tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Теги
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Java
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Java
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Язык
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Язык
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Основы языка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/strings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/oop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ООП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Исключения
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/generics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дженерики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/modern-java/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Современная Java
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции и API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Коллекции и API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/hashmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HashMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stream API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/functional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Лямбды и Optional
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/io-nio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IO / NIO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JVM
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    JVM
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/jvm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Память и сборка мусора
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Многопоточность
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Многопоточность
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потоки и ThreadLocal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/locks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и синхронизаторы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/jmm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JMM, volatile и атомики
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/deadlock/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deadlock, livelock, starvation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/executors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Пулы потоков и CompletableFuture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/concurrent-collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Потокобезопасные коллекции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/virtual-threads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Виртуальные потоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concurrency/reactive/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Реактивное программирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дизайн кода
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Дизайн кода
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/composition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Композиция и зацепление
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/solid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOLID
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/creational-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порождающие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/structural-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Структурные паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/behavioral-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Поведенческие паттерны
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ядро
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Ядро
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Core: IoC, DI, AOP
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Core: IoC, DI, AOP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ioc-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IoC и DI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IoC и DI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ioc-vs-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое IoC и чем он отличается от DI?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему внедрение через конструктор лучше, чем через поле?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Почему внедрение через конструктор лучше, чем через поле?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#field-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Внедрение через поле (Field Injection) — антипаттерн
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-injection-good" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Внедрение через конструктор (Constructor Injection) — стандарт
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circular-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что будет при циклической зависимости бинов?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контейнер
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контейнер">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applicationcontext-vs-beanfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем ApplicationContext отличается от BeanFactory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bean-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Жизненный цикл бина
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Жизненный цикл бина">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bean-lifecycle-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Через какие этапы проходит бин?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfpp-vs-bpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем BeanFactoryPostProcessor отличается от BeanPostProcessor?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        На каком этапе создаётся прокси?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Скоупы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Скоупы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bean-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие бывают скоупы бинов?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prototype-in-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что будет, если внедрить prototype в singleton?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fresh-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как получать новый prototype при каждом вызове?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AOP и прокси
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AOP и прокси">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-aop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужен AOP?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как Spring оборачивает бины в прокси?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jdk-proxy-vs-cglib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем JDK Dynamic Proxy отличается от CGLIB?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему не срабатывает @Transactional при вызове метода через this?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-boot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Веб
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Веб
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring MVC и WebFlux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Работа с БД
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Работа с БД
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-data-jpa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Data JPA и Hibernate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Кэширование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тесты и эксплуатация
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Тесты и эксплуатация
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Тестирование
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spring-actuator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Actuator и Micrometer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Данные
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Данные
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/sql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL и индексы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Транзакции и MVCC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/locking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Блокировки и конкурентные обновления
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/nosql/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NoSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kafka
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Брокер: топики, партиции, хранение
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-consumer-producer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Порядок, группы и ребаланс
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-reliability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Гарантии доставки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/spring-kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka в Spring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kafka/kafka-streams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka Streams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/interview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Интервью и оценка нагрузки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/building-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Строительные блоки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../system-design/distributed-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые данные
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Архитектура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Архитектура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/ddd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DDD, CQRS и Event Sourcing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/hexagonal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Слоистая и гексагональная архитектура
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/microservices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Микросервисы и отказоустойчивость
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/distributed-transactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Распределённые транзакции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Инфраструктура
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Инфраструктура
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Docker и Compose
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD и миграции БД
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/kubernetes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kubernetes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../infrastructure/observability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Observability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Computer Science
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Computer Science
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_1" id="__nav_12_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Алгоритмы
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Алгоритмы
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/algorithms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Big O и структуры данных
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/sorting-graphs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сортировки и графы
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: массивы и строки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../algorithms/leetcode-trees-dp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Задачи: деревья, графы, ДП
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_12_2" id="__nav_12_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Сети
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_12_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Сети
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/networks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TCP/IP, HTTP и TLS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/api-styles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST, gRPC и WebSocket
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../networks/soap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP и XML-интеграции
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="Содержание">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Содержание
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ioc-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IoC и DI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IoC и DI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ioc-vs-di" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что такое IoC и чем он отличается от DI?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему внедрение через конструктор лучше, чем через поле?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Почему внедрение через конструктор лучше, чем через поле?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#field-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ❌ Внедрение через поле (Field Injection) — антипаттерн
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constructor-injection-good" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Внедрение через конструктор (Constructor Injection) — стандарт
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circular-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что будет при циклической зависимости бинов?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Контейнер
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Контейнер">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applicationcontext-vs-beanfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем ApplicationContext отличается от BeanFactory?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bean-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Жизненный цикл бина
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Жизненный цикл бина">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bean-lifecycle-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Через какие этапы проходит бин?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfpp-vs-bpp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем BeanFactoryPostProcessor отличается от BeanPostProcessor?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        На каком этапе создаётся прокси?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Скоупы
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Скоупы">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bean-scopes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Какие бывают скоупы бинов?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prototype-in-singleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Что будет, если внедрить prototype в singleton?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fresh-prototype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как получать новый prototype при каждом вызове?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AOP и прокси
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AOP и прокси">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-aop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зачем нужен AOP?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Как Spring оборачивает бины в прокси?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jdk-proxy-vs-cglib" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Чем JDK Dynamic Proxy отличается от CGLIB?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#self-invocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Почему не срабатывает @Transactional при вызове метода через this?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cheatsheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Шпаргалка
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:junior" class="md-tag md-tag-icon md-tag--junior">Junior</a>
+      
+    
+      
+      
+      
+        
+        
+          
+        
+      
+      
+        <a href="../../prep/tags/#tag:middle" class="md-tag md-tag-icon md-tag--middle">Middle</a>
+      
+    
+      
+      
+      
+        
+        
+      
+      
+        <a href="../../prep/tags/#tag:spring" class="md-tag md-tag-icon">Spring</a>
+      
+    
+  </nav>
+
+
+  
+    <a href="https://github.com/bemyskyy/interview-prep/edit/main/docs/spring/spring-core.md" title="Редактировать страницу" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="spring-core-ioc-di-aop">Spring Core: <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>, <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>, <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr><a class="headerlink" href="#spring-core-ioc-di-aop" title="Permanent link">&para;</a></h1>
+<p>Как Spring создаёт объекты, связывает их и оборачивает в прокси: <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>-контейнер, внедрение зависимостей, жизненный цикл и скоупы бинов, <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>. Чаще всего спрашивают разницу <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> и <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>, почему внедрение через конструктор лучше, жизненный цикл бина, prototype внутри singleton и почему <code>@Transactional</code> не срабатывает при вызове через <code>this</code>.</p>
+<h2 id="ioc-di"><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> и <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr><a class="headerlink" href="#ioc-di" title="Permanent link">&para;</a></h2>
+<h3 id="ioc-vs-di">Что такое <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> и чем он отличается от <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>?<a class="headerlink" href="#ioc-vs-di" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> (Inversion of Control) — архитектурный принцип: объекты создаёт и связывает не твой код, а контейнер. <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> (Dependency Injection) — конкретный паттерн, которым этот принцип реализован: класс объявляет, что ему нужно, а Spring находит подходящую реализацию и подставляет её.</p>
+</div>
+<p><strong><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> — инверсия контроля.</strong> Это принцип, а не конкретный код. Его описывает «голливудский принцип»: <em>«Не звоните нам, мы сами вам позвоним»</em>.</p>
+<ul>
+<li><strong>Прямой контроль (как было):</strong> код сам создаёт объекты. Если <code>HabitService</code> нужен репозиторий, ты пишешь <code>HabitRepository repo = new HabitRepositoryImpl()</code>, и сервис жёстко привязан к конкретной реализации.</li>
+<li><strong>Инверсия контроля (как стало):</strong> ты забираешь у класса право создавать объекты через <code>new</code> и отдаёшь его фреймворку — <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>-контейнеру (<code>ApplicationContext</code>). Spring сам решает, когда создать бины, как их настроить и когда уничтожить. Твой код просто ждёт, когда ему дадут всё необходимое.</li>
+</ul>
+<p><strong><abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> — внедрение зависимостей.</strong> Если <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> — общая стратегия, то <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> — конкретная тактика (паттерн) её реализации. <code>HabitService</code> говорит: <em>«Мне нужен любой класс, реализующий <code>HabitRepository</code>»</em>. При старте Spring видит это требование, находит подходящую реализацию в контексте и передаёт её в сервис.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> и <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> — не синонимы</p>
+<p><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> отвечает на вопрос «кто управляет созданием объектов», <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> — «как зависимость попадает в объект». На собесе ждут именно это разделение: принцип и паттерн.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что такое «голливудский принцип» и как он связан с <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>?</li>
+<li>Чем <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> отличается от <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>?</li>
+<li>Что делает Spring, когда видит, что сервису нужен <code>HabitRepository</code>?</li>
+</ol>
+</details>
+<h3 id="constructor-injection">Почему внедрение через конструктор лучше, чем через поле?<a class="headerlink" href="#constructor-injection" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Через конструктор поле можно сделать <code>final</code>, класс тестируется обычным <code>new</code> без Spring, а раздутый список зависимостей сразу виден. Внедрение через поле (<code>@Autowired</code> на поле) не даёт <code>final</code>, требует рефлексии в тестах и привязывает класс к <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>-контейнеру.</p>
+</div>
+<h4 id="field-injection">❌ Внедрение через поле (Field Injection) — антипаттерн<a class="headerlink" href="#field-injection" title="Permanent link">&para;</a></h4>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Service</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HabitService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nd">@Autowired</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">HabitRepository</span><span class="w"> </span><span class="n">habitRepository</span><span class="p">;</span><span class="w"> </span><span class="c1">// так делать не надо</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Почему плохо:</p>
+<ol>
+<li><strong>Нельзя <code>final</code></strong> — поле не защищено от изменений после создания.</li>
+<li><strong>Сложно тестировать</strong> — поле приватное, конструктора нет. Чтобы подсунуть мок в юнит-тесте без Spring-контекста, нужна рефлексия.</li>
+<li><strong>Скрывает God Object</strong> — легко добавить 15–20 зависимостей, и никто не заметит. Нарушение <a href="../../design/solid/#srp"><abbr title="Single Responsibility Principle — у класса одна причина для изменения">SRP</abbr></a> становится невидимым.</li>
+<li><strong>Привязка к фреймворку</strong> — класс физически не работает без <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>-контейнера, а это нарушает принципы чистой архитектуры.</li>
+</ol>
+<h4 id="constructor-injection-good">✅ Внедрение через конструктор (Constructor Injection) — стандарт<a class="headerlink" href="#constructor-injection-good" title="Permanent link">&para;</a></h4>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@Service</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">HabitService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">HabitRepository</span><span class="w"> </span><span class="n">habitRepository</span><span class="p">;</span><span class="w"> </span><span class="c1">// поле final!</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="c1">// С Spring 4.3 @Autowired не нужен, если конструктор один</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">HabitService</span><span class="p">(</span><span class="n">HabitRepository</span><span class="w"> </span><span class="n">habitRepository</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">habitRepository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">habitRepository</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>На практике конструктор руками почти никто не пишет — его генерирует <code>@RequiredArgsConstructor</code> из Lombok.</p>
+<p>Почему это правильно:</p>
+<ol>
+<li><strong>Иммутабельность</strong> — поля <code>final</code>, инициализируются один раз и защищены от изменений. Thread-safe.</li>
+<li><strong>Чистая Java</strong> — в юнит-тесте просто <code>new HabitService(mockRepository)</code>, никакого Spring.</li>
+<li><strong>Fail-fast</strong> — циклическая зависимость падает на старте, а не прячется (подробно — в <a href="#circular-dependencies">следующей теме</a>).</li>
+<li><strong>Видимый запах кода</strong> — конструктор с 10 параметрами сразу бросается в глаза. Это сигнал разбить класс.</li>
+</ol>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>@Autowired</code> на единственном конструкторе</p>
+<p>С Spring 4.3 аннотация на единственном конструкторе не нужна — Spring использует его сам. Если конструкторов несколько, нужный придётся пометить <code>@Autowired</code> явно.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Назови четыре минуса внедрения через поле.</li>
+<li>Как протестировать сервис с внедрением через конструктор без Spring?</li>
+<li>С какой версии Spring можно не писать <code>@Autowired</code> над конструктором?</li>
+</ol>
+</details>
+<h3 id="circular-dependencies">Что будет при циклической зависимости бинов?<a class="headerlink" href="#circular-dependencies" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>При внедрении через конструктор цикл A → B → A неразрешим: приложение падает на старте с <code>BeanCurrentlyInCreationException</code>. При внедрении через поле Spring раньше тихо разрывал цикл ранней ссылкой на недособранный бин. С Spring Boot 2.6 циклы запрещены по умолчанию при любом способе внедрения.</p>
+</div>
+<ul>
+<li><strong>Конструктор.</strong> Чтобы создать A, нужен готовый B, а чтобы создать B — готовый A. Разрешить это невозможно в принципе, поэтому контекст падает с <code>BeanCurrentlyInCreationException</code>.</li>
+<li><strong>Поле.</strong> <code>StackOverflowError</code> здесь нет: Spring разрывает цикл сам — отдаёт B ссылку на ещё недособранный A (раннюю ссылку из кэша синглтонов). Цикл тихо работает и прячет плохой дизайн.</li>
+<li><strong>Spring Boot 2.6+.</strong> Циклы запрещены по умолчанию: при любом виде внедрения приложение падает на старте с ошибкой <em>«The dependencies of some of the beans in the application context form a cycle»</em>.</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Вернуть старое поведение — костыль, а не решение</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">spring</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">main</span><span class="p">:</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">allow-circular-references</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: лечить цикл настройкой</p>
+<p><code>spring.main.allow-circular-references=true</code> возвращает старое поведение, но цикл остаётся. Правильнее разорвать его в дизайне: вынести общую логику в третий бин или развернуть зависимость.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему цикл при внедрении через конструктор неразрешим?</li>
+<li>Как Spring раньше разрывал цикл при внедрении через поле?</li>
+<li>Что изменилось в Spring Boot 2.6?</li>
+</ol>
+</details>
+<h2 id="container">Контейнер<a class="headerlink" href="#container" title="Permanent link">&para;</a></h2>
+<h3 id="applicationcontext-vs-beanfactory">Чем <code>ApplicationContext</code> отличается от <code>BeanFactory</code>?<a class="headerlink" href="#applicationcontext-vs-beanfactory" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Оба — <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr>-контейнеры, <code>ApplicationContext</code> наследует <code>BeanFactory</code>. <code>BeanFactory</code> даёт только <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> и создаёт бины лениво, по <code>getBean()</code>. <code>ApplicationContext</code> создаёт синглтоны при старте и добавляет <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>, события, i18n, веб-скоупы и автоматическую регистрацию <code>BeanPostProcessor</code>.</p>
+</div>
+<p>Оба контейнера читают конфигурацию, создают бины и связывают их.</p>
+<ul>
+<li><strong><code>BeanFactory</code></strong> — базовый контейнер, только <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>. Корень всего Spring.</li>
+<li><strong><code>ApplicationContext</code></strong> — наследник <code>BeanFactory</code> со всеми его возможностями плюс корпоративные фичи.</li>
+</ul>
+<p><strong>Стратегия загрузки бинов:</strong></p>
+<ul>
+<li><strong><code>BeanFactory</code> (lazy)</strong> — создаёт бин только при явном <code>getBean()</code>. Экономит память, но ошибки конфигурации всплывут в рантайме.</li>
+<li><strong><code>ApplicationContext</code> (eager)</strong> — создаёт все синглтон-бины при старте контекста. Если забыл зависимость или ошибся в <code>@Value</code>, приложение упадёт сразу. Так ловится 90% ошибок конфигурации.</li>
+</ul>
+<p><strong>Корпоративные фичи <code>ApplicationContext</code>:</strong></p>
+<ol>
+<li><strong><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr></strong> — поддержка аспектов (транзакции, логирование) из коробки.</li>
+<li><strong><code>MessageSource</code> (i18n)</strong> — интернационализация.</li>
+<li><strong>Публикация событий (Event Publication)</strong> — механизм событий, паттерн <a href="../../design/behavioral-patterns/#observer">Observer</a>.</li>
+<li><strong>Веб-скоупы</strong> — <code>request</code>, <code>session</code>, интеграция с <code>DispatcherServlet</code>.</li>
+<li><strong>Авторегистрация <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr></strong> — <code>BeanPostProcessor</code>-ы регистрируются автоматически (в <code>BeanFactory</code> — вручную).</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>Характеристика</strong></th>
+<th><strong><code>BeanFactory</code></strong></th>
+<th><strong><code>ApplicationContext</code></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Инициализация</strong></td>
+<td>Lazy (по запросу)</td>
+<td>Eager (при старте)</td>
+</tr>
+<tr>
+<td><strong>Регистрация <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr></strong></td>
+<td>Вручную</td>
+<td>Автоматически</td>
+</tr>
+<tr>
+<td><strong><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr></strong></td>
+<td>Нет</td>
+<td>Да</td>
+</tr>
+<tr>
+<td><strong>События</strong></td>
+<td>Нет</td>
+<td>Да</td>
+</tr>
+<tr>
+<td><strong>Где используется</strong></td>
+<td>Легаси / IoT / ограниченные ресурсы</td>
+<td>Все современные приложения</td>
+</tr>
+</tbody>
+</table>
+<p><code>ApplicationContext</code> — стандарт де-факто: <code>SpringApplication.run()</code> возвращает именно его.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: «lazy — значит лучше»</p>
+<p>Ленивая загрузка экономит память на старте, но ошибка конфигурации всплывёт только при первом обращении к бину — уже в проде. Eager-создание синглтонов в <code>ApplicationContext</code> — осознанный выбор в пользу fail-fast.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Когда <code>BeanFactory</code> создаёт бин, а когда — <code>ApplicationContext</code>?</li>
+<li>Какие возможности добавляет <code>ApplicationContext</code>?</li>
+<li>Что возвращает <code>SpringApplication.run()</code>?</li>
+</ol>
+</details>
+<h2 id="bean-lifecycle">Жизненный цикл бина<a class="headerlink" href="#bean-lifecycle" title="Permanent link">&para;</a></h2>
+<h3 id="bean-lifecycle-phases">Через какие этапы проходит бин?<a class="headerlink" href="#bean-lifecycle-phases" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Сначала Spring строит чертежи — <code>BeanDefinition</code>, и их правят <code>BeanFactoryPostProcessor</code>-ы. Затем вызывается конструктор, внедряются зависимости, вызываются Aware-методы. Дальше <code>BeanPostProcessor</code>-ы: до инициализации срабатывает <code>@PostConstruct</code>, после — создаётся прокси; при остановке контекста вызывается <code>@PreDestroy</code>.</p>
+</div>
+<pre class="mermaid"><code>flowchart TD
+    A["BeanDefinition — чертёж бина"] --&gt; B["BFPP: подмена плейсхолдеров в чертежах"]
+    B --&gt; C["Конструктор — голый объект"]
+    C --&gt; D["Dependency Injection"]
+    D --&gt; E["Aware-интерфейсы"]
+    E --&gt; F["BPP.postProcessBeforeInitialization — @PostConstruct"]
+    F --&gt; G["Инициализация — afterPropertiesSet, initMethod"]
+    G --&gt; H["BPP.postProcessAfterInitialization — создание прокси для @Transactional / AOP"]
+    H --&gt; I["Бин готов к работе"]
+    I --&gt; J["Остановка контекста: @PreDestroy → destroy()"]</code></pre>
+<p><strong>Фаза 0. Чертежи и <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr>.</strong> Прежде чем создать хоть один объект, Spring сканирует код и создаёт <strong><code>BeanDefinition</code></strong> — чертёж будущего бина (класс, скоуп, зависимости). Затем работает <strong><code>BeanFactoryPostProcessor</code> (<abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr>)</strong> — он правит чертежи, а не объекты (подробнее — в <a href="#bfpp-vs-bpp">следующей теме</a>).</p>
+<p><strong>Фаза 1. Создание и <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr>.</strong></p>
+<ol>
+<li><strong>Instantiation</strong> — Spring вызывает конструктор через рефлексию. Создаётся «голый» Java-объект без зависимостей.</li>
+<li><strong>Populate Properties</strong> — внедряются зависимости. При внедрении через конструктор шаги 1 и 2 сливаются в один.</li>
+<li><strong>Aware-интерфейсы</strong> — если бину нужно знать своё имя или получить ссылку на <code>ApplicationContext</code>, Spring вызывает методы Aware-интерфейсов (<code>setBeanName()</code>, <code>setApplicationContext()</code> и т.д.).</li>
+</ol>
+<p><strong>Фаза 2. <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> и инициализация.</strong> Объект с зависимостями проходит через <strong><code>BeanPostProcessor</code> (<abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr>)</strong> — интерфейс с двумя методами.</p>
+<ol>
+<li><strong><code>postProcessBeforeInitialization</code></strong> — здесь <code>InitDestroyAnnotationBeanPostProcessor</code> находит метод с <code>@PostConstruct</code> и выполняет его.</li>
+<li><strong>Инициализация</strong> — вызывается <code>afterPropertiesSet()</code> (если реализован <code>InitializingBean</code>) или метод из <code>@Bean(initMethod = "...")</code>. Это легаси-способы, сейчас используют <code>@PostConstruct</code>.</li>
+<li><strong><code>postProcessAfterInitialization</code></strong> — здесь создаются прокси-объекты (подробнее — в <a href="#proxy-creation">теме про прокси</a>).</li>
+</ol>
+<p><strong>Фаза 3. Работа и уничтожение.</strong></p>
+<ul>
+<li><strong>Использование</strong> — бин готов, лежит в контейнере и обрабатывает запросы.</li>
+<li><strong>Уничтожение</strong> — при остановке контекста Spring вызывает <code>@PreDestroy</code> (через <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr>), затем <code>destroy()</code> (если реализован <code>DisposableBean</code>). Здесь закрывают коннекты к БД и открытые файлы.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: порядок <code>@PostConstruct</code> и <code>afterPropertiesSet()</code></p>
+<p><code>@PostConstruct</code> выполняется в <code>postProcessBeforeInitialization</code>, то есть <strong>раньше</strong> <code>afterPropertiesSet()</code> и <code>initMethod</code>. А прокси появляется <strong>после</strong> всех init-методов — внутри <code>@PostConstruct</code> ты работаешь с оригинальным объектом, а не с прокси.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Перечисли этапы жизненного цикла бина по порядку.</li>
+<li>Когда вызывается <code>@PostConstruct</code> относительно <code>afterPropertiesSet()</code>?</li>
+<li>Что Spring вызывает при остановке контекста?</li>
+</ol>
+</details>
+<h3 id="bfpp-vs-bpp">Чем <code>BeanFactoryPostProcessor</code> отличается от <code>BeanPostProcessor</code>?<a class="headerlink" href="#bfpp-vs-bpp" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> работает с чертежами (<code>BeanDefinition</code>) до создания любых объектов. <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> работает с уже созданными объектами: до и после их инициализации. Пример <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> — подстановка значений в <code>@Value</code>, пример <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> — обработка <code>@PostConstruct</code> и создание прокси.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong><code>BeanFactoryPostProcessor</code></strong></th>
+<th><strong><code>BeanPostProcessor</code></strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>С чем работает</strong></td>
+<td>С чертежами (<code>BeanDefinition</code>)</td>
+<td>С объектами бинов</td>
+</tr>
+<tr>
+<td><strong>Когда</strong></td>
+<td>До создания любых бинов</td>
+<td>До и после инициализации каждого бина</td>
+</tr>
+<tr>
+<td><strong>Пример</strong></td>
+<td><code>PropertySourcesPlaceholderConfigurer</code></td>
+<td><code>InitDestroyAnnotationBeanPostProcessor</code>, создатели прокси</td>
+</tr>
+</tbody>
+</table>
+<p>Пример <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> из жизни: <code>@Value("${db.password}")</code>. В чертеже лежит строка-плейсхолдер. Встроенный <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> <code>PropertySourcesPlaceholderConfigurer</code> читает <code>application.yml</code> и подменяет <code>${db.password}</code> на реальное значение ещё до создания бина.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> работает до создания бинов</p>
+<p><abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> вызывается, когда обычные бины ещё не созданы, — он видит только чертежи. Всё, что меняет готовые объекты (обёртки, прокси, init-логика), делается в <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>С чем работает <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr>, а с чем — <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr>?</li>
+<li>Какой <abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> подставляет значения в <code>@Value</code>?</li>
+<li>Какой <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> вызывает <code>@PostConstruct</code>?</li>
+</ol>
+</details>
+<h3 id="proxy-creation">На каком этапе создаётся прокси?<a class="headerlink" href="#proxy-creation" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>В <code>postProcessAfterInitialization</code> — последнем шаге <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr>. Если на бине или его методах висят <code>@Transactional</code>, <code>@Async</code> или <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>-аспекты, Spring оборачивает оригинальный объект в прокси и кладёт в контейнер именно прокси. Все, кто запрашивает этот бин, получают обёртку.</p>
+</div>
+<p><code>postProcessAfterInitialization</code> — критичный этап: здесь рождаются прокси-объекты. Spring проверяет, нужны ли бину аспекты, и если да — возвращает в контейнер не оригинал, а обёртку.</p>
+<p>Все остальные бины, запрашивающие <code>HabitService</code>, получат не оригинал, а прокси, который умеет открывать транзакции. Как прокси устроен — в разделе <a href="#aop"><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> и прокси</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: прокси создаётся после init-методов</p>
+<p>Внутри <code>@PostConstruct</code> прокси ещё нет. Вызов <code>@Transactional</code>-метода из <code>@PostConstruct</code> идёт по <code>this</code> и выполнится без транзакции.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>В каком методе <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> создаётся прокси?</li>
+<li>Какие аннотации приводят к созданию прокси?</li>
+<li>Что получают другие бины, которые внедряют проксируемый бин?</li>
+</ol>
+</details>
+<h2 id="scopes">Скоупы<a class="headerlink" href="#scopes" title="Permanent link">&para;</a></h2>
+<h3 id="bean-scopes">Какие бывают скоупы бинов?<a class="headerlink" href="#bean-scopes" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>По умолчанию <code>singleton</code> — один экземпляр на весь контекст, он обязан быть stateless. <code>prototype</code> создаётся заново при каждом обращении к контейнеру, и <code>@PreDestroy</code> для него не вызывается. В веб-приложениях есть ещё <code>request</code> (на HTTP-запрос) и <code>session</code> (на HTTP-сессию).</p>
+</div>
+<p><strong>Базовые скоупы:</strong></p>
+<ul>
+<li><strong><code>singleton</code> (по умолчанию)</strong> — один экземпляр на весь <code>ApplicationContext</code>.</li>
+<li><strong><code>prototype</code></strong> — новый экземпляр при каждом обращении к контейнеру. Spring создаёт прототип, отдаёт и забывает: методы уничтожения (<code>@PreDestroy</code>) для прототипов <strong>не вызываются</strong>, память чистит <abbr title="Garbage Collector — сборщик мусора">GC</abbr>.</li>
+</ul>
+<p><strong>Веб-скоупы</strong> доступны только в веб-приложениях (когда поднят <code>DispatcherServlet</code>):</p>
+<ul>
+<li><strong><code>request</code></strong> — новый экземпляр на каждый HTTP-запрос. Запрос обработан — бин уничтожен. Подходит для <code>traceId</code> и данных текущего запроса.</li>
+<li><strong><code>session</code></strong> — один экземпляр на всю HTTP-сессию пользователя.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: состояние в синглтоне</p>
+<p>Синглтон общий для всех потоков, поэтому <strong>в нём нельзя хранить состояние</strong> — поля, которые меняются в процессе работы. Если сохранить <code>private User currentUser</code>, Вася увидит данные Пети при параллельном запросе. Синглтоны обязаны быть stateless.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какой скоуп у бина по умолчанию?</li>
+<li>Почему синглтон должен быть stateless?</li>
+<li>Вызывается ли <code>@PreDestroy</code> для прототипа?</li>
+</ol>
+</details>
+<h3 id="prototype-in-singleton">Что будет, если внедрить prototype в singleton?<a class="headerlink" href="#prototype-in-singleton" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Прототип создастся один раз и навсегда останется в синглтоне. Синглтон создаётся один раз, <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> для него тоже проходит один раз, поэтому Spring честно создаёт один экземпляр прототипа и вшивает его в конструктор. Фактически прототип становится синглтоном.</p>
+</div>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@Component</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nd">@Scope</span><span class="p">(</span><span class="s">"prototype"</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">PrototypeBean</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nd">@Service</span><span class="w"> </span><span class="c1">// singleton по умолчанию</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SingletonService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">PrototypeBean</span><span class="w"> </span><span class="n">prototypeBean</span><span class="p">;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">SingletonService</span><span class="p">(</span><span class="n">PrototypeBean</span><span class="w"> </span><span class="n">prototypeBean</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">prototypeBean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prototypeBean</span><span class="p">;</span><span class="w"> </span><span class="c1">// инжект происходит ОДИН РАЗ</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doWork</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">        </span><span class="c1">// сколько раз ни вызывай — prototypeBean один и тот же!</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Вопрос на собесе: <em>«Сколько экземпляров <code>PrototypeBean</code> создастся при 10 вызовах <code>doWork()</code>?»</em></p>
+<ul>
+<li><strong>Частый неверный ответ:</strong> 10 — ведь стоит <code>@Scope("prototype")</code>.</li>
+<li><strong>Правильный ответ:</strong> <strong>один.</strong> <code>SingletonService</code> создаётся один раз при старте, <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> тоже проходит один раз. Больше этот конструктор не вызывается.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: prototype не значит «новый при каждом вызове метода»</p>
+<p>Прототип новый при каждом обращении <strong>к контейнеру</strong>, а не при каждом обращении к полю. Чтобы получать свежий экземпляр, нужно каждый раз ходить в контейнер — способы в <a href="#fresh-prototype">следующей теме</a>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Сколько экземпляров прототипа создастся при 10 вызовах метода синглтона?</li>
+<li>Почему <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> в синглтон происходит один раз?</li>
+<li>«Новый при каждом обращении» — к чему именно?</li>
+</ol>
+</details>
+<h3 id="fresh-prototype">Как получать новый prototype при каждом вызове?<a class="headerlink" href="#fresh-prototype" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Рекомендуемый способ — <code>ObjectProvider&lt;T&gt;</code>: каждый <code>getObject()</code> возвращает новый экземпляр, и его легко замокать. Альтернатива — <code>@Lookup</code>, метод, который Spring переопределяет через <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr>. Для веб-скоупов используют scoped proxy с <code>proxyMode = TARGET_CLASS</code>.</p>
+</div>
+<p><strong>Решение А: <code>ObjectProvider</code> — современно и тестируемо (рекомендуется)</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@Service</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SingletonService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">ObjectProvider</span><span class="o">&lt;</span><span class="n">PrototypeBean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">provider</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">SingletonService</span><span class="p">(</span><span class="n">ObjectProvider</span><span class="o">&lt;</span><span class="n">PrototypeBean</span><span class="o">&gt;</span><span class="w"> </span><span class="n">provider</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">provider</span><span class="p">;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doWork</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="n">PrototypeBean</span><span class="w"> </span><span class="n">fresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">provider</span><span class="p">.</span><span class="na">getObject</span><span class="p">();</span><span class="w"> </span><span class="c1">// новый экземпляр каждый раз</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Решение Б: <code>@Lookup</code> — переопределение метода через <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr></strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@Service</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">SingletonService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nd">@Lookup</span><span class="w"> </span><span class="c1">// Spring переопределит этот метод через CGLIB Proxy</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">PrototypeBean</span><span class="w"> </span><span class="nf">getPrototypeBean</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">null</span><span class="p">;</span><span class="w"> </span><span class="c1">// эта строка никогда не выполнится</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">doWork</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="n">PrototypeBean</span><span class="w"> </span><span class="n">fresh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getPrototypeBean</span><span class="p">();</span><span class="w"> </span><span class="c1">// вернёт новый объект из контейнера</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Решение В: Scoped Proxy (для веб-скоупов)</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@Component</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nd">@Scope</span><span class="p">(</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">WebApplicationContext</span><span class="p">.</span><span class="na">SCOPE_REQUEST</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">proxyMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ScopedProxyMode</span><span class="p">.</span><span class="na">TARGET_CLASS</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">RequestScopedBean</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p>Spring внедрит в синглтон не сам объект, а прокси-заглушку. При каждом вызове она сама ищет актуальный объект в текущем HTTP-запросе.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: почему <code>@Lookup</code> хуже <code>ObjectProvider</code></p>
+<p>Метод с <code>@Lookup</code> нельзя сделать <code>private</code> или <code>final</code> — <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> его не переопределит. В юнит-тесте без Spring-контекста метод вернёт <code>null</code>. С <code>ObjectProvider</code> мок подставляется тривиально.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Как <code>ObjectProvider</code> решает проблему прототипа в синглтоне?</li>
+<li>Почему метод с <code>@Lookup</code> не может быть <code>final</code>?</li>
+<li>Как request-scoped бин попадает в синглтон?</li>
+</ol>
+</details>
+<h2 id="aop"><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> и прокси<a class="headerlink" href="#aop" title="Permanent link">&para;</a></h2>
+<h3 id="why-aop">Зачем нужен <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>?<a class="headerlink" href="#why-aop" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Junior</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> (аспектно-ориентированное программирование) выносит сквозную функциональность — логирование, проверку прав, транзакции — в отдельные классы-аспекты. Бизнес-код остаётся чистым, а Spring оборачивает бины нужным кодом сам, когда видит аннотацию вроде <code>@Transactional</code>.</p>
+</div>
+<p>В 50 сервисах нужно логировать время выполнения, проверять права и открывать транзакции. Если писать это руками, бизнес-логика тонет в техническом коде. Это <strong>сквозная функциональность (cross-cutting concerns)</strong>.</p>
+<p><abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> позволяет вынести технический код в отдельный класс — <strong>аспект (aspect)</strong>. Вешаешь <code>@Transactional</code> — Spring сам оборачивает класс нужным кодом.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: Spring <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> — не AspectJ</p>
+<p>Spring не модифицирует байт-код твоих классов, как AspectJ. Он создаёт прокси-обёртки, поэтому аспект срабатывает только на вызовах, которые проходят через прокси (подробно — в <a href="#self-invocation">теме про самовызов</a>).</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Что такое сквозная функциональность?</li>
+<li>Что такое аспект?</li>
+<li>Чем подход Spring <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> отличается от AspectJ?</li>
+</ol>
+</details>
+<h3 id="proxy">Как Spring оборачивает бины в прокси?<a class="headerlink" href="#proxy" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Через паттерн Proxy: вместо оригинального бина другим бинам отдаётся обёртка. Прокси перехватывает вызов, выполняет код аспекта «до» (например, открывает транзакцию), вызывает оригинальный метод и выполняет код «после» — commit или rollback.</p>
+</div>
+<p>Когда другой бин запрашивает <code>HabitService</code>, Spring отдаёт ему <strong>не оригинал, а прокси</strong>. При вызове метода <code>save()</code>:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client as Клиент
+    participant Proxy as Proxy HabitService
+    participant Target as Оригинальный HabitService
+    Client-&gt;&gt;Proxy: save()
+    Proxy-&gt;&gt;Proxy: открыть транзакцию (аспект «до»)
+    Proxy-&gt;&gt;Target: save()
+    Target--&gt;&gt;Proxy: результат или исключение
+    Proxy-&gt;&gt;Proxy: commit / rollback (аспект «после»)
+    Proxy--&gt;&gt;Client: результат</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: прокси видит только внешние вызовы</p>
+<p>Код аспекта выполняется только тогда, когда вызов пришёл снаружи через прокси. Вызов метода изнутри того же объекта прокси не видит — это <a href="#self-invocation">самовызов</a>.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какой паттерн использует Spring <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr>?</li>
+<li>Что получает бин, который внедряет <code>HabitService</code> с <code>@Transactional</code>?</li>
+<li>В какой момент прокси открывает и закрывает транзакцию?</li>
+</ol>
+</details>
+<h3 id="jdk-proxy-vs-cglib">Чем <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Dynamic Proxy отличается от <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr>?<a class="headerlink" href="#jdk-proxy-vs-cglib" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Dynamic Proxy встроен в Java и работает через рефлексию, но требует интерфейса: прокси реализует тот же интерфейс. <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> генерирует байт-код подкласса и переопределяет публичные методы, поэтому не работает с <code>final</code>-классами и <code>final</code>/<code>private</code>-методами. С Spring Boot 2.0 по умолчанию используется <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr>.</p>
+</div>
+<p><strong><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Dynamic Proxy</strong> (встроен в Java, через Reflection):</p>
+<ul>
+<li><strong>Условие:</strong> класс <strong>обязан</strong> реализовывать интерфейс.</li>
+<li>Spring генерирует новый класс, реализующий тот же интерфейс. Через прокси доступны только методы интерфейса.</li>
+</ul>
+<p><strong><abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr></strong> (генерация байт-кода):</p>
+<ul>
+<li><strong>Условие:</strong> класс <strong>не</strong> реализует интерфейс, или принудительно задано <code>proxyTargetClass = true</code>.</li>
+<li><abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> генерирует подкласс (наследника) твоего класса и переопределяет все публичные методы.</li>
+</ul>
+<p>Начиная с Spring Boot 2.0, <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> используется по умолчанию для <strong>всех</strong> бинов, даже если у них есть интерфейсы. Это избавило от странных ошибок при приведении типов (casting). Но разницу между <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Proxy и <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> всё равно спрашивают на собесах.</p>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: <code>final</code> и <code>private</code> для <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr></p>
+<p><abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> работает через наследование, поэтому <strong>не может обернуть <code>final</code>-классы и <code>final</code>/<code>private</code>-методы</strong>. Если повесить <code>@Transactional</code> на <code>private</code>-метод, Spring молча проигнорирует аннотацию — транзакция не откроется.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Какое условие нужно для <abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Dynamic Proxy?</li>
+<li>Как <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> создаёт прокси и что он не может обернуть?</li>
+<li>Какой механизм Spring Boot использует по умолчанию с версии 2.0?</li>
+</ol>
+</details>
+<h3 id="self-invocation">Почему не срабатывает <code>@Transactional</code> при вызове метода через <code>this</code>?<a class="headerlink" href="#self-invocation" title="Permanent link">&para;</a></h3>
+<p><strong>Уровень:</strong> Middle</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Коротко</label><label for="__tabbed_1_2">Подробно</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="admonition abstract">
+<p class="admonition-title">Ответ вслух</p>
+<p>Аспект живёт в прокси, а вызов <code>this.method()</code> изнутри бина идёт напрямую в оригинальный объект, минуя прокси. Поэтому <code>@Transactional</code>, <code>@Async</code>, <code>@Cacheable</code> и любые другие аспекты на таком вызове не срабатывают. Лечится выносом метода в отдельный бин или self-injection.</p>
+</div>
+</div>
+<div class="tabbed-block">
+<p>Это самовызов (self-invocation) — классический баг, на котором теряют часы дебага даже опытные разработчики.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@Service</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">OrderService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">createOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="c1">// ...бизнес-логика...</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="n">saveToDatabase</span><span class="p">();</span><span class="w"> </span><span class="c1">// внутренний вызов!</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nd">@Transactional</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">saveToDatabase</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="c1">// Откроется ли транзакция?</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Вопрос на собесе: <em>«Откроется ли транзакция при вызове <code>saveToDatabase()</code> изнутри <code>createOrder()</code>?»</em> Ответ: <strong>нет.</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Client as Внешний код
+    participant Proxy as Proxy OrderService
+    participant Target as Оригинальный OrderService
+    Client-&gt;&gt;Proxy: createOrder()
+    Note over Proxy: над createOrder() нет аспекта
+    Proxy-&gt;&gt;Target: createOrder()
+    Target-&gt;&gt;Target: this.saveToDatabase() — мимо прокси
+    Note over Target: транзакция не открыта</code></pre>
+<p>Внешний код вызывает <code>createOrder()</code> через прокси, и прокси пробрасывает вызов в реальный объект. Дальше <code>createOrder()</code> внутри реального объекта вызывает <code>this.saveToDatabase()</code> — <strong>напрямую, минуя прокси</strong>. Аспект транзакции не задействован.</p>
+<p><strong>Как чинить:</strong></p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Вариант 1 — разнести по разным сервисам (лучший)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nd">@Service</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">OrderPersistenceService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nd">@Transactional</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">saveToDatabase</span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">}</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1">// Вариант 2 — Self-injection (получить свой же Proxy)</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nd">@Service</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">OrderService</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nd">@Lazy</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nd">@Autowired</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">OrderService</span><span class="w"> </span><span class="n">self</span><span class="p">;</span><span class="w"> </span><span class="c1">// Spring заинжектит Proxy, а не this</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">createOrder</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">        </span><span class="n">self</span><span class="p">.</span><span class="na">saveToDatabase</span><span class="p">();</span><span class="w"> </span><span class="c1">// теперь вызов идёт через Proxy</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">    </span><span class="nd">@Transactional</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">saveToDatabase</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>@Lazy</code> в варианте 2 разрывает циклическую зависимость при внедрении бина в самого себя. Для транзакций есть и третий способ — программное управление через <code>TransactionTemplate</code>; чем самовызов опасен именно для транзакций, разобрано в <a href="../spring-transactions/#self-invocation-transactions">Транзакции в Spring → Самовызов и транзакции</a>.</p>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Ловушка: касается любого аспекта, не только транзакций</p>
+<p><code>@Cacheable</code>, <code>@Async</code>, свои аспекты — всё это работает через тот же прокси. <code>this.findById()</code> внутри класса с <code>@Cacheable</code> минует прокси, и кэш не сработает.</p>
+</div>
+<details class="question">
+<summary>Проверь себя</summary>
+<ol>
+<li>Почему вызов <code>this.saveToDatabase()</code> не открывает транзакцию?</li>
+<li>Назови два способа починить самовызов.</li>
+<li>Зачем при self-injection нужен <code>@Lazy</code>?</li>
+</ol>
+</details>
+<h2 id="cheatsheet">Шпаргалка<a class="headerlink" href="#cheatsheet" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Тема</th>
+<th>Запомнить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> vs <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr></strong></td>
+<td><abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr> — принцип (кто управляет созданием). <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> — конкретный паттерн реализации <abbr title="Inversion of Control — объекты создаёт и связывает контейнер, а не сам код">IoC</abbr></td>
+</tr>
+<tr>
+<td><strong>Field vs Constructor Injection</strong></td>
+<td>Только конструктор. Field — антипаттерн: нет <code>final</code>, сложно тестировать, скрывает нарушения <abbr title="Single Responsibility Principle — у класса одна причина для изменения">SRP</abbr></td>
+</tr>
+<tr>
+<td><strong>Циклические зависимости</strong></td>
+<td>Конструктор — <code>BeanCurrentlyInCreationException</code>. С Spring Boot 2.6 запрещены при любом внедрении</td>
+</tr>
+<tr>
+<td><strong><code>BeanFactory</code> vs <code>ApplicationContext</code></strong></td>
+<td>BF — lazy, без <abbr title="Aspect-Oriented Programming — сквозная логика (транзакции, логи) через прокси">AOP</abbr> и событий. AC — eager, все фичи. В 99% случаев используем AC</td>
+</tr>
+<tr>
+<td><strong>Жизненный цикл</strong></td>
+<td><abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> → конструктор → <abbr title="Dependency Injection — внедрение зависимостей извне">DI</abbr> → Aware → <code>@PostConstruct</code> (<abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> before) → initMethod → прокси (<abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> after) → работа → <code>@PreDestroy</code></td>
+</tr>
+<tr>
+<td><strong><abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> vs <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr></strong></td>
+<td><abbr title="BeanFactoryPostProcessor — хук Spring для правки определений бинов до их создания">BFPP</abbr> правит чертежи (<code>@Value</code>), <abbr title="BeanPostProcessor — хук Spring для обработки бинов после создания">BPP</abbr> — объекты (<code>@PostConstruct</code>, прокси)</td>
+</tr>
+<tr>
+<td><strong>Singleton vs Prototype</strong></td>
+<td>Singleton — один на контекст, stateless. Prototype — новый при каждом обращении к контейнеру, <code>@PreDestroy</code> не вызывается</td>
+</tr>
+<tr>
+<td><strong>Prototype в singleton</strong></td>
+<td>Фактически становится синглтоном. Решение: <code>ObjectProvider</code>, <code>@Lookup</code>, scoped proxy</td>
+</tr>
+<tr>
+<td><strong><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> Proxy vs <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr></strong></td>
+<td><abbr title="Java Development Kit — JRE + компилятор javac и утилиты разработчика">JDK</abbr> — нужен интерфейс, через рефлексию. <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr> — наследник класса, не работает с <code>final</code>/<code>private</code>. Дефолт с Boot 2.0 — <abbr title="Библиотека генерации прокси через наследование от класса">CGLIB</abbr></td>
+</tr>
+<tr>
+<td><strong>Самовызов</strong></td>
+<td><code>this.method()</code> минует прокси → <code>@Transactional</code>, <code>@Cacheable</code>, <code>@Async</code> не работают. Решение: разные сервисы или self-injection</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  К началу
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Нижний колонтитул" >
+        
+          
+          <a href="../../design/behavioral-patterns/" class="md-footer__link md-footer__link--prev" aria-label="Назад: Поведенческие паттерны">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Назад
+              </span>
+              <div class="md-ellipsis">
+                Поведенческие паттерны
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../spring-boot/" class="md-footer__link md-footer__link--next" aria-label="Вперед: Spring Boot">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Вперед
+              </span>
+              <div class="md-ellipsis">
+                Spring Boot
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.top", "navigation.footer", "navigation.indexes", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": {"Junior": "junior", "Middle": "middle", "Senior": "senior"}, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+  
+    <script src="../../assets/vendor/mermaid/mermaid.min.js"></script>
+    <script src="../../javascripts/mermaid-theme.js"></script>
+  
+  
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../javascripts/moved-anchors.js"></script>
+      
+    
+
+  </body>
+</html>
