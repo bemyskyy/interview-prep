@@ -6,7 +6,7 @@ tags:
 
 # REST, gRPC и WebSocket
 
-Стили API поверх HTTP: что такое REST и чем глаголы в URL его ломают, как устроен gRPC, когда выбирать REST, gRPC или GraphQL и когда нужна связь в реальном времени через WebSocket или SSE. Транспорт, HTTP и TLS, на которых всё это работает, — на странице [TCP/IP, HTTP и TLS](networks.md).
+Стили API поверх HTTP: что такое REST и чем глаголы в URL его ломают, как устроен gRPC, когда выбирать REST, gRPC или GraphQL и когда нужна связь в реальном времени через WebSocket или SSE. Транспорт, HTTP и TLS, на которых всё это работает, — на странице [TCP/IP, HTTP и TLS](networks.md). SOAP и интеграции на XML — на странице [SOAP и XML-интеграции](soap.md).
 
 ## REST и gRPC { #api-styles }
 

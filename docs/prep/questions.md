@@ -7,7 +7,7 @@ tags:
 
 # Вопросы собеса
 
-Все 437 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
+Все 476 вопросов базы в порядке изучения, у каждого — уровень и ссылка на ответ.
 Тренируйся так: прочитай вопрос, ответь вслух за 30 секунд и только потом открой ответ.
 
 ## Java { #java }
@@ -222,6 +222,21 @@ tags:
 - [Чем виртуальные потоки отличаются от платформенных?](../concurrency/virtual-threads.md#virtual-threads) — *Middle*
 - [Что такое pinning?](../concurrency/virtual-threads.md#pinning) — *Senior*
 - [Что такое Structured Concurrency?](../concurrency/virtual-threads.md#structured-concurrency) — *Senior*
+
+### Реактивное программирование { #reactive }
+
+- [Что такое реактивное программирование и когда оно нужно?](../concurrency/reactive.md#what-is-reactive) — *Junior*
+- [Чем `Mono` и `Flux` отличаются от `Stream` и `CompletableFuture`?](../concurrency/reactive.md#reactor-vs-stream-cf) — *Junior*
+- [Как устроена спецификация Reactive Streams?](../concurrency/reactive.md#reactive-streams-spec) — *Middle*
+- [Что такое backpressure и как с ним работать?](../concurrency/reactive.md#backpressure) — *Middle*
+- [Почему без подписки ничего не происходит и чем холодный поток отличается от горячего?](../concurrency/reactive.md#cold-hot) — *Middle*
+- [Чем `map` отличается от `flatMap`, `concatMap` и `flatMapSequential`?](../concurrency/reactive.md#flatmap) — *Middle*
+- [Как работают `publishOn` и `subscribeOn`?](../concurrency/reactive.md#schedulers) — *Senior*
+- [Как вызвать блокирующий код из реактивной цепочки?](../concurrency/reactive.md#blocking-calls) — *Middle*
+- [Как обрабатывать ошибки и повторы в реактивной цепочке?](../concurrency/reactive.md#reactive-errors) — *Middle*
+- [Как передать traceId и пользователя без `ThreadLocal`?](../concurrency/reactive.md#reactor-context) — *Senior*
+- [Как тестировать реактивный код?](../concurrency/reactive.md#stepverifier) — *Middle*
+- [Реактивщина или виртуальные потоки?](../concurrency/reactive.md#reactive-vs-loom) — *Senior*
 
 ## Дизайн кода { #design }
 
@@ -443,6 +458,21 @@ tags:
 - [Как работает `@KafkaListener`?](../kafka/spring-kafka.md#kafka-listener) — *Middle*
 - [Как настроить коммит оффсетов и обработку ошибок листенера?](../kafka/spring-kafka.md#listener-config) — *Middle*
 
+### Kafka Streams { #kafka-streams }
+
+- [Что такое Kafka Streams и чем он отличается от обычного консьюмера?](../kafka/kafka-streams.md#what-is-kafka-streams) — *Middle*
+- [Что такое топология и из чего она состоит?](../kafka/kafka-streams.md#topology) — *Middle*
+- [Чем `KStream` отличается от `KTable` и `GlobalKTable`?](../kafka/kafka-streams.md#kstream-ktable) — *Middle*
+- [Где Kafka Streams хранит состояние?](../kafka/kafka-streams.md#state-stores) — *Middle*
+- [Что происходит с состоянием при падении и ребалансе?](../kafka/kafka-streams.md#state-restore) — *Senior*
+- [Зачем Kafka Streams создаёт repartition-топики?](../kafka/kafka-streams.md#repartition) — *Middle*
+- [Как работают джойны в Kafka Streams?](../kafka/kafka-streams.md#joins) — *Senior*
+- [Как работают окна и время в Kafka Streams?](../kafka/kafka-streams.md#windows) — *Middle*
+- [Как Kafka Streams масштабируется?](../kafka/kafka-streams.md#scaling) — *Middle*
+- [Как в Kafka Streams включить exactly-once?](../kafka/kafka-streams.md#streams-eos) — *Senior*
+- [Как обрабатывать ошибки в Kafka Streams?](../kafka/kafka-streams.md#streams-errors) — *Middle*
+- [Как протестировать топологию?](../kafka/kafka-streams.md#topology-test-driver) — *Middle*
+
 ## System Design { #system-design }
 
 ### Интервью и оценка нагрузки { #interview }
@@ -640,3 +670,21 @@ tags:
 - [Как устроен gRPC?](../networks/api-styles.md#grpc) — *Middle*
 - [REST, gRPC или GraphQL?](../networks/api-styles.md#rest-vs-grpc) — *Middle*
 - [Когда нужен WebSocket и чем он отличается от SSE?](../networks/api-styles.md#websocket) — *Middle*
+
+### SOAP и XML-интеграции { #soap }
+
+- [Что такое SOAP и чем он отличается от REST?](../networks/soap.md#soap-vs-rest) — *Junior*
+- [Как устроено SOAP-сообщение?](../networks/soap.md#soap-envelope) — *Junior*
+- [Что такое WSDL и чем contract-first отличается от code-first?](../networks/soap.md#wsdl) — *Middle*
+- [Чем отличаются стили document/literal и RPC/encoded?](../networks/soap.md#soap-styles) — *Senior*
+- [Как JAXB превращает XML в объекты?](../networks/soap.md#jaxb) — *Middle*
+- [Как валидировать XML по XSD?](../networks/soap.md#xsd-validation) — *Middle*
+- [Чем опасен разбор XML от внешней системы?](../networks/soap.md#xxe) — *Senior*
+- [Чем DOM отличается от SAX и StAX?](../networks/soap.md#dom-sax-stax) — *Middle*
+- [Как вызвать SOAP-сервис из Spring?](../networks/soap.md#spring-ws-client) — *Middle*
+- [Что такое SOAP Fault и как его обработать?](../networks/soap.md#soap-fault) — *Middle*
+- [Как настроить таймауты и повторы для SOAP-вызова?](../networks/soap.md#soap-timeouts-retry) — *Senior*
+- [Как логировать SOAP-обмен для разбора инцидентов?](../networks/soap.md#soap-logging) — *Middle*
+- [Чем WS-Security отличается от TLS?](../networks/soap.md#ws-security) — *Senior*
+- [Как передать большой файл через SOAP?](../networks/soap.md#mtom) — *Senior*
+- [Как протестировать интеграцию с SOAP-сервисом?](../networks/soap.md#soap-testing) — *Middle*

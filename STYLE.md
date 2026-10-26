@@ -138,6 +138,7 @@ int index = (n - 1) & hash;
 | `synchronized`, `wait`/`notify`, `ReentrantLock`, синхронизаторы, AQS | [concurrency/locks.md](docs/concurrency/locks.md) |
 | JMM, happens-before, `volatile`, атомики, CAS, false sharing | [concurrency/jmm.md](docs/concurrency/jmm.md) |
 | Пулы потоков, `ForkJoinPool`, `CompletableFuture` | [concurrency/executors.md](docs/concurrency/executors.md) |
+| Reactive Streams, backpressure, Reactor: `flatMap`, `publishOn` и `subscribeOn`, `Context`, `StepVerifier` | [concurrency/reactive.md](docs/concurrency/reactive.md) |
 | Потокобезопасные коллекции и `BlockingQueue` | [concurrency/concurrent-collections.md](docs/concurrency/concurrent-collections.md) |
 | Композиция против наследования, cohesion и coupling | [design/composition.md](docs/design/composition.md) |
 | Принципы SOLID | [design/solid.md](docs/design/solid.md) |
@@ -152,12 +153,14 @@ int index = (n - 1) & hash;
 | Lost update, write skew, оптимистичная и пессимистичная блокировки (`@Version`, `@Lock`) | [database/locking.md](docs/database/locking.md) |
 | SQL или NoSQL, кластер Redis, polyglot persistence | [database/nosql.md](docs/database/nosql.md) |
 | Коммит оффсетов, идемпотентный консьюмер, DLQ в Kafka | [kafka/kafka-reliability.md](docs/kafka/kafka-reliability.md) |
+| Kafka Streams: `KStream` и `KTable`, state store, окна, джойны | [kafka/kafka-streams.md](docs/kafka/kafka-streams.md) |
 | Стратегии кэширования, cache stampede, очереди сообщений | [system-design/building-blocks.md](docs/system-design/building-blocks.md) |
 | Репликация, шардирование, CAP, PACELC, консенсус | [system-design/distributed-data.md](docs/system-design/distributed-data.md) |
 | Rate limiting, circuit breaker, retry | [architecture/microservices.md](docs/architecture/microservices.md) |
 | Гарантии доставки в общем виде, 2PC, Saga, Outbox | [architecture/distributed-transactions.md](docs/architecture/distributed-transactions.md) |
 | Пробы liveness и readiness, sidecar | [infrastructure/kubernetes.md](docs/infrastructure/kubernetes.md) |
 | Метрики, логи, трейсы | [infrastructure/observability.md](docs/infrastructure/observability.md) |
+| SOAP, WSDL, JAXB, XSD-валидация, XXE | [networks/soap.md](docs/networks/soap.md) |
 | Красно-чёрное дерево | [algorithms/algorithms.md](docs/algorithms/algorithms.md) |
 
 ## Схемы

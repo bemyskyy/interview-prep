@@ -84,6 +84,11 @@
 *[JWT]: JSON Web Token — подписанный токен с данными пользователя
 *[RTT]: Round-Trip Time — время туда и обратно
 *[HOL]: Head-of-Line blocking — потерянный пакет задерживает всё, что за ним
+*[WSDL]: Web Services Description Language — XML-контракт SOAP-сервиса: типы, операции, адрес
+*[XSD]: XML Schema Definition — схема, по которой проверяют структуру и типы XML
+*[JAXB]: Jakarta XML Binding — отображение XML на Java-классы и обратно
+*[MTOM]: Message Transmission Optimization Mechanism — бинарные данные SOAP отдельной MIME-частью вместо Base64
+*[XXE]: XML External Entity — атака через внешние сущности DTD: чтение файлов и запросы от имени сервера
 
 *[CI]: Continuous Integration — сборка и тесты на каждый коммит
 *[K8s]: Kubernetes — оркестратор контейнеров
